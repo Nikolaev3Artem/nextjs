@@ -1,0 +1,30 @@
+.content {
+  display: flex;
+  overflow: hidden;
+  background: #FABA17;
+  width: 100%;
+  height: 380px;
+  position: relative;
+}
+.card_content {
+  display: flex;
+  align-items: center;
+  z-index: 100;
+
+}
+.text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 140%;
+  color: #0E2645;
+}
+
+.map {
+  background: #FABA17;
+  opacity: 0.3;
+  height: 380px;
+  overflow: hidden;
+
+}

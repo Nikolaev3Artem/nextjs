@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  background-color: #296FCA;
+  padding: 16px 24px;
+  border-radius: 4px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+
+.r {
+  flex-direction: row;
+  align-items: center;
+
+}
+
+.c {
+  flex-direction: column-reverse;
+  min-height: 200px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lg__title {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}

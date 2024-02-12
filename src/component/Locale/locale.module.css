@@ -1,0 +1,23 @@
+.arrow {
+  transform: rotate(0deg);
+  transition: all 0.3s;
+}
+
+.active {
+  transition: all 0.3s;
+  transform: rotate(180deg);
+}
+
+.test ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.MuiList-root-MuiMenu-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+/*# sourceMappingURL=locale.module.css.map */

@@ -1,0 +1,9 @@
+.content {
+  display: flex;
+  height: 400px;
+  width: 100%;
+  justify-content: center;
+  background-color: #e5e5e5;
+}
+
+/*# sourceMappingURL=content.module.css.map */

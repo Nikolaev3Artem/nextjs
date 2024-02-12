@@ -1,0 +1,19 @@
+.currency_select_list {
+  max-height: 40px;
+    &:hover, &:active, &:focus {
+    border-radius: 4px;
+  }
+}
+
+.arrow {
+  transform: rotate(0deg);
+  transition: transform 0.3s!important;
+
+}
+
+.active {
+  transition: transform 0.3s!important;
+  transform: rotate(180deg);
+}
+
+

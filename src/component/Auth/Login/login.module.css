@@ -1,0 +1,100 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10vh;
+}
+.login h2 {
+  text-align: center;
+  color: #333333;
+  font-family: Roboto, sans-serif;
+  line-height: 1.75;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.login__servise {
+  margin-bottom: 16px;
+}
+
+.login__content {
+  display: flex;
+  background-color: #fff;
+  padding: 24px;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.login__content .divider {
+  height: 10px;
+  margin-bottom: 16px;
+}
+.login__content .divider span {
+  color: #333333;
+}
+.login__content h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333333;
+  font-family: Roboto, sans-serif;
+  line-height: 1.75;
+  width: 250px;
+  text-align: center;
+}
+.login__content a {
+  color: #0070f3;
+  margin: 16px 0 16px 0;
+  font-weight: 400;
+  font-size: 14px;
+}
+.login__content p {
+  color: #333333;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  line-height: 1.75;
+  font-weight: 500;
+}
+.login__content label:hover {
+  border-radius: 4px;
+}
+
+.login__registration {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px 0 40px;
+  height: 30px;
+  width: 100%;
+  margin-top: 16px;
+}
+.login__registration p {
+  color: #333333;
+  font-size: 14px;
+  margin-right: 8px;
+}
+.login__registration a {
+  color: #0070f3;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.tab__content {
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+  height: 40px;
+}
+
+.tab {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  position: relative;
+}
+
+/*# sourceMappingURL=login.module.css.map */
