@@ -1,0 +1,27 @@
+{
+  "navigate": [
+    { "id": 1, "name": "home", "title": "Principal", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Sobre nós", "path": "/about" },
+
+    { "id": 4, "name": "rules", "title": "Regras", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Parcelas", "path": "/parcels" },
+
+    { "id": 7, "name": "contact", "title": "Contatos", "path": "/contact" }
+  ],
+
+  "collaboration": [
+    { "id": 6, "name": "managers", "title": "Gerentes", "path": "/managers" },
+    {
+      "id": 2,
+      "name": "bus_rent",
+      "title": "Alugue um ônibus",
+      "path": "/bus_rent"
+    }
+  ],
+  "cooperation": "Cooperação",
+  "copyright": "© 2023 Todos os direitos reservados",
+  "managers": "gerentes",
+  "mobile_app": "Aplicativo móvel",
+  "nav": "Navegação",
+  "support": "Apoiar"
+}

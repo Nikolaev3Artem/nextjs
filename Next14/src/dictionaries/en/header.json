@@ -1,0 +1,25 @@
+{
+  "pages": [
+    { "id": 1, "name": "home", "title": "Home", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "About us", "path": "/about" },
+    {
+      "id": 3,
+      "name": "directions",
+      "title": "Directions",
+      "path": "/direction"
+    },
+    { "id": 4, "name": "rules", "title": "Rules", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Parcels", "path": "/parcels" },
+    { "id": 6, "name": "bus_rent", "title": "Rent a bus", "path": "/bus_rent" },
+    { "id": 7, "name": "contact", "title": "Contacts", "path": "/contact" }
+  ],
+  "settings": [
+    { "id": 1, "name": "profile", "title": "Profile", "path": "/profile" },
+    { "id": 2, "name": "my_tickets", "title": "My tickets", "path": "/order" },
+    { "id": 3, "name": "admin", "title": "Admin", "path": "/dashboard" }
+  ],
+
+  "registration": "Sign up",
+  "sign_in": "Sign in",
+  "sign_out": "Sign out"
+}

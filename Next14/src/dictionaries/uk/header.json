@@ -1,0 +1,30 @@
+{
+  "pages": [
+    { "id": 1, "name": "home", "title": "Головна", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Про нас", "path": "/about" },
+    {
+      "id": 3,
+      "name": "directions",
+      "title": "Напрямки",
+      "path": "/direction"
+    },
+    { "id": 4, "name": "rules", "title": "Правила", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Посилки", "path": "/parcels" },
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "title": "Оренда автобуса",
+      "path": "/bus_rent"
+    },
+    { "id": 7, "name": "contact", "title": "Контакти", "path": "/contact" }
+  ],
+  "settings": [
+    { "id": 1, "name": "profile", "title": "Профіль", "path": "/profile" },
+    { "id": 2, "name": "my_tickets", "title": "Мої квитки", "path": "/order" },
+    { "id": 3, "name": "admin", "title": "Admin", "path": "/dashboard" }
+  ],
+
+  "registration": "Реєстрація",
+  "sign_in": "Увійти",
+  "sign_out": "Вийти"
+}

@@ -1,0 +1,15 @@
+.content {
+  display: flex;
+
+  height: 350px;
+  width: 100%;
+  justify-content: center;
+}
+
+.title {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 140%;
+}

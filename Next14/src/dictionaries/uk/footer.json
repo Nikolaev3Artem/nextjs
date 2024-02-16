@@ -1,0 +1,28 @@
+{
+  "navigate": [
+    { "id": 1, "name": "home", "title": "Головна", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Про нас", "path": "/about" },
+
+    { "id": 4, "name": "rules", "title": "Правила", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Посилки", "path": "/parcels" },
+
+    { "id": 7, "name": "contact", "title": "Контакти", "path": "/contact" }
+  ],
+
+  "collaboration": [
+    { "id": 6, "name": "managers", "title": "Менеджерам", "path": "/managers" },
+    {
+      "id": 2,
+      "name": "bus_rent",
+      "title": "Оренда автобуса",
+      "path": "/bus_rent"
+    }
+  ],
+
+  "cooperation": "Співпраця",
+  "copyright": "© 2023 Всі права захищені",
+  "managers": "Менеджерам",
+  "mobile_app": "Мобільний додаток",
+  "nav": "Навігація",
+  "support": "Підтримка"
+}
