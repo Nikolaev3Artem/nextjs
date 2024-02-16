@@ -34,3 +34,11 @@ export interface infoBuyStaticDataProp {
 export interface PopularStaticDataProp {
   title: string;
 }
+
+export interface MainStaticDataProps {
+  date_input: string;
+  from: string;
+  search_btn: string;
+  search_title: string;
+  to: string;
+}
