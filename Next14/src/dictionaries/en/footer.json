@@ -1,0 +1,23 @@
+{
+  "navigate": [
+    { "id": 1, "name": "home", "title": "Home", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "About us", "path": "/about" },
+
+    { "id": 4, "name": "rules", "title": "Rules", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Parcels", "path": "/parcels" },
+
+    { "id": 7, "name": "contact", "title": "Contacts", "path": "/contact" }
+  ],
+
+  "collaboration": [
+    { "id": 6, "name": "managers", "title": "Menegers", "path": "/managers" },
+    { "id": 2, "name": "bus_rent", "title": "Rent a bus", "path": "/bus_rent" }
+  ],
+
+  "cooperation": "Cooperation",
+  "copyright": "© 2023 All rights reserved",
+  "managers": "Managers",
+  "mobile_app": "Mobile app",
+  "nav": "Navigation",
+  "support": "Support"
+}

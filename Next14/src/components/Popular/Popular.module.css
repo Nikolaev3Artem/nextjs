@@ -1,0 +1,239 @@
+.popular .content .card_content {
+  display: flex;
+  align-items: center;
+  z-index: 100;
+}
+.popular .text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 140%;
+  color: #0e2645;
+}
+
+.popular .content {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  height: 380px;
+  position: relative;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(250, 186, 23, 0.65),
+      rgba(250, 186, 23, 0.65)
+    ),
+    url('/images/map-sm-1x.jpg');
+  background-repeat: no-repeat;
+
+  background-position: center;
+  background-size: cover;
+}
+@media (min-device-pixel-ratio: 2),
+  (min-resolution: 192dpi),
+  (min-resolution: 2dppx) {
+  .content {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+      url('/images/map-sm-2x.jpg');
+  }
+}
+
+@supports (
+  background-image:
+    linear-gradient(
+      to bottom,
+      rgba(250, 186, 23, 0.65),
+      rgba(250, 186, 23, 0.65)
+    ),
+  url('/images/map-sm-1x.webp')
+) {
+  .content {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+      url('/images/map-sm-1x.webp');
+    background-repeat: no-repeat;
+
+    background-position: center;
+    background-size: cover;
+  }
+  @media (min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-sm-2x.webp');
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .content {
+    background-size: cover;
+    background-image: linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+      url('/images/map-md-1x.img');
+  }
+  @media (min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-md-2x.img');
+    }
+  }
+
+  @supports (
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+    url('/images/map-md-1x.webp')
+  ) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-md-1x.webp');
+    }
+    @media (min-device-pixel-ratio: 2),
+      (min-resolution: 192dpi),
+      (min-resolution: 2dppx) {
+      .content {
+        background-image: linear-gradient(
+            to bottom,
+            rgba(250, 186, 23, 0.65),
+            rgba(250, 186, 23, 0.65)
+          ),
+          url('/images/map-md-2x.webp');
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .content {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+      url('/images/map-lg-1x.img');
+  }
+  @media (min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-lg-2x.img');
+    }
+  }
+  @supports (
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+    url('/images/map-lg-1x.webp')
+  ) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-lg-1x.webp');
+    }
+    @media (min-device-pixel-ratio: 2),
+      (min-resolution: 192dpi),
+      (min-resolution: 2dppx) {
+      .content {
+        background-image: linear-gradient(
+            to bottom,
+            rgba(250, 186, 23, 0.65),
+            rgba(250, 186, 23, 0.65)
+          ),
+          url('/images/map-lg-2x.webp');
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .content {
+    background-image: linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+      url('/images/map-xl-1x.img');
+  }
+  @media (min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi),
+    (min-resolution: 2dppx) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-xl-2x.img');
+    }
+  }
+  @supports (
+    background-image:
+      linear-gradient(
+        to bottom,
+        rgba(250, 186, 23, 0.65),
+        rgba(250, 186, 23, 0.65)
+      ),
+    url('/images/map-xl-1x.webp')
+  ) {
+    .content {
+      background-image: linear-gradient(
+          to bottom,
+          rgba(250, 186, 23, 0.65),
+          rgba(250, 186, 23, 0.65)
+        ),
+        url('/images/map-xl-1x.webp');
+    }
+    @media (min-device-pixel-ratio: 2),
+      (min-resolution: 192dpi),
+      (min-resolution: 2dppx) {
+      .content {
+        background-image: linear-gradient(
+            to bottom,
+            rgba(250, 186, 23, 0.65),
+            rgba(250, 186, 23, 0.65)
+          ),
+          url('/images/map-xl-2x.webp');
+      }
+    }
+  }
+}

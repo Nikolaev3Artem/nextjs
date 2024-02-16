@@ -1,0 +1,27 @@
+{
+  "navigate": [
+    { "id": 1, "name": "home", "title": "Pagrindinis", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Apie mus", "path": "/about" },
+
+    { "id": 4, "name": "rules", "title": "Taisyklės", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Siuntiniai", "path": "/parcels" },
+
+    { "id": 7, "name": "contact", "title": "Kontaktai", "path": "/contact" }
+  ],
+
+  "collaboration": [
+    { "id": 6, "name": "managers", "title": "Vadovai", "path": "/managers" },
+    {
+      "id": 2,
+      "name": "bus_rent",
+      "title": "Išsinuomoti autobusą",
+      "path": "/bus_rent"
+    }
+  ],
+  "cooperation": "Bendradarbiavimas",
+  "copyright": "© 2023 Visos teisės saugomos",
+  "managers": "Vadovai",
+  "mobile_app": "Mobilioji aplikacija",
+  "nav": "Navigacija",
+  "support": "Palaikymas"
+}

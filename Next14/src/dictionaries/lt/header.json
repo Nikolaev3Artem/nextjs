@@ -1,0 +1,35 @@
+{
+  "pages": [
+    { "id": 1, "name": "home", "title": "Pagrindinis", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Apie mus", "path": "/about" },
+    {
+      "id": 3,
+      "name": "directions",
+      "title": "Kryptys",
+      "path": "/direction"
+    },
+    { "id": 4, "name": "rules", "title": "Taisyklės", "path": "/rule" },
+    { "id": 5, "name": "parcels", "title": "Siuntiniai", "path": "/parcels" },
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "title": "Išsinuomoti autobusą",
+      "path": "/bus_rent"
+    },
+    { "id": 7, "name": "contact", "title": "Kontaktai", "path": "/contact" }
+  ],
+  "settings": [
+    { "id": 1, "name": "profile", "title": "Profilis", "path": "/profile" },
+    {
+      "id": 2,
+      "name": "my_tickets",
+      "title": "Mano bilietai",
+      "path": "/order"
+    },
+    { "id": 3, "name": "admin", "title": "Admin", "path": "/dashboard" }
+  ],
+
+  "registration": "Registruotis",
+  "sign_in": "Prisijungti",
+  "sign_out": "Išeiti"
+}

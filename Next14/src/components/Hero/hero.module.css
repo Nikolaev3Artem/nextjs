@@ -1,0 +1,12 @@
+.content {
+  display: flex !important;
+  height: 416px;
+  width: 100%;
+  justify-content: center;
+  position: relative;
+}
+
+.content__box {
+  display: flex;
+  position: absolute;
+}

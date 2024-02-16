@@ -1,0 +1,40 @@
+.content {
+  width: 100%;
+  display: flex;
+  background-color: #031327;
+}
+
+.content .wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.content .title {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 140%;
+}
+
+.content .copyright_content {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copyright_content .copyright_text {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+}
+
+.content .List_hover :hover {
+  color: #c9c9c9;
+  transition: color 0.3s ease-out;
+}
