@@ -1,5 +1,7 @@
 export interface IEditorText {
-	id?: number
-	text?: string
-	text2?: string
+  id?: number;
+  title?: string;
+  title2?: string;
+  text?: string;
+  text2?: string;
 }
