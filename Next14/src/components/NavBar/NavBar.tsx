@@ -111,29 +111,39 @@ export const NavBar = ({
                 <Logo width={40} height={40} alt={'logo'} />
               </Link>
             </Grid>
-            <Grid display="flex" justifyContent="flex-start" item lg={6} xl={7}>
+            <Grid
+              display="flex"
+              justifyContent="flex-start"
+              item
+              lg={6}
+              xl={7}
+              component={'nav'}
+            >
               <Box
                 sx={{
                   flexGrow: 1,
                   display: { xs: 'none', md: 'flex' },
                 }}
+                component={'ul'}
               >
                 {staticData.pages.map(page => (
-                  <Link key={page.id} href={`/${lang}${page.path}`}>
-                    <Button
-                      component={'span'}
-                      onClick={handleCloseNavMenu}
-                      sx={{
-                        color: 'white',
-                        fontSize: 13,
-                        textTransform: 'uppercase',
-                        fontFamily: 'Inter',
-                        fontWeight: 300,
-                      }}
-                    >
-                      {page.title}
-                    </Button>
-                  </Link>
+                  <li key={page.id}>
+                    <Link href={`/${lang}${page.path}`}>
+                      <Button
+                        component={'span'}
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          color: 'white',
+                          fontSize: 13,
+                          textTransform: 'uppercase',
+                          fontFamily: 'Inter',
+                          fontWeight: 300,
+                        }}
+                      >
+                        {page.title}
+                      </Button>
+                    </Link>
+                  </li>
                 ))}
               </Box>
             </Grid>
@@ -231,6 +241,7 @@ export const NavBar = ({
                     <Stack direction="row" spacing={2}>
                       <Link href={`/${lang}/auth`}>
                         <Button
+                          component={'span'}
                           // href={"/auth"}
                           sx={{
                             fontWeight: '400',
@@ -245,6 +256,7 @@ export const NavBar = ({
                       </Link>
                       <Link href={'/auth/registration'}>
                         <Button
+                          component={'span'}
                           color={'secondary'}
                           sx={{
                             fontWeight: '400',

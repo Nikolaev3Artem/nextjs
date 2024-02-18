@@ -34,7 +34,7 @@ export function InfoBuy({
                   color={'primary'}
                   fontSize={32}
                   fontWeight={700}
-                  variant={'h3'}
+                  variant={'h2'}
                 >
                   {staticData.title}
                 </Typography>
