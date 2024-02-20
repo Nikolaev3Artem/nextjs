@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-import Style from './hero.module.css';
+import Style from './Hero.module.css';
 import Banner from '@/components/Banner/Banner';
 
 import { IBanner } from '@/interface/IBanner';
@@ -20,7 +20,7 @@ export const Hero = ({
       <Box className={Style.content__box}>
         {banner && banner[0]?.is_active === true ? (
           <Banner
-            img={`${process.env.NEXT_PUBLIC_BASE_URL}${banner[0]?.img}`}
+            img={banner[0]?.img ? banner[0]?.img : defaultImg}
             alt={banner[0]?.alt}
             h1={banner[0]?.h1}
             description={banner[0]?.description}

@@ -17,7 +17,7 @@ import { FaViber } from 'react-icons/fa';
 import { TbBrandTelegram } from 'react-icons/tb';
 
 import Logo from '../../../public/logo33.svg';
-import Style from './footer.module.css';
+import Style from './Footer.module.css';
 import { footerStaticDataProp } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 

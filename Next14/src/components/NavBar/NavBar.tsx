@@ -32,7 +32,7 @@ import Logo from '../../../public/logo.svg';
 // import { removeUser, setUser } from '../../store/auth/userSlice';
 
 // import { LocaleChange } from '../Locale/LocaleChange';
-import Style from './navbar.module.css';
+import Style from './Navbar.module.css';
 import { Locale } from '@/i18n.config';
 import { CurrencySelect } from '@/components/CurrencySelect';
 import { LocaleChange } from '@/components/LocaleChange';
