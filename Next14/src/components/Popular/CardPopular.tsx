@@ -56,7 +56,7 @@ const CardPopular = (props: IProps) => {
         elevation={0}
       >
         <CardContent className={Style.content}>
-          <Popular_svg width={40} height={40} />
+          <Popular_svg width={16} height={45} />
           <Box className={Style.content_text}>
             <Typography component={'span'} className={Style.text}>
               {val1}

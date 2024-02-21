@@ -280,7 +280,7 @@ const getContact = async (lang: Locale) => {
         {
           id: 1,
           title: 'Our address',
-          icon: 'uk',
+          icon: 'en',
           address: 'Stryiska str, 109, Lviv, Lviv District, Ukraine',
           email: 'lehendatrans@gmail.com',
           phone: [
@@ -312,7 +312,7 @@ const getContact = async (lang: Locale) => {
         {
           id: 1,
           title: 'Adresas',
-          icon: 'uk',
+          icon: 'lt',
           address: 'Stryiska str, 109, Lviv, Lviv District, Ukraine',
           email: 'lehendatrans@gmail.com',
           phone: [
@@ -344,7 +344,7 @@ const getContact = async (lang: Locale) => {
         {
           id: 1,
           title: 'Nosso endereço',
-          icon: 'uk',
+          icon: 'pt',
           address: 'Stryiska str, 109, Lviv, Lviv District, Ukraine',
           email: 'lehendatrans@gmail.com',
           phone: [

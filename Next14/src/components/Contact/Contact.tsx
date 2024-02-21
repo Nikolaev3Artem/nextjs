@@ -23,6 +23,7 @@ import { contactStaticDataProp } from '@/interface/IStaticData';
 interface FlagSVGProps {
   width: number;
   height: number;
+  className?: string;
 }
 
 type FlagSVGComponent =
@@ -74,7 +75,8 @@ export const Contact = ({
               <Typography component={'h3'} variant={'h4'}>
                 {contact.title ? contact.title : staticData.title}
               </Typography>
-              <FlagSVG width={32} height={19} />
+
+              <FlagSVG width={32} height={20} />
             </Box>
 
             <Grid
@@ -88,7 +90,14 @@ export const Contact = ({
               gap={4}
               className={Style.content__wrapper}
             >
-              <Grid item container direction={'column'} md={33}>
+              <Grid
+                item
+                container
+                direction={'column'}
+                md={33}
+                xl={80}
+                minWidth={'300px'}
+              >
                 <Box fontSize={16} component={'div'} className="">
                   <Link
                     href={''}
@@ -154,7 +163,13 @@ export const Contact = ({
                     ))}
                 </Box>
               </Grid>
-              <Grid item container direction={'column'} md={24}>
+              <Grid
+                item
+                container
+                direction={'column'}
+                md={24}
+                minWidth={'max-content'}
+              >
                 <Box fontSize={16} component={'div'}>
                   <Typography
                     mb={2}
