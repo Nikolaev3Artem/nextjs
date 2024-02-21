@@ -1,1 +1,18 @@
-{"email":"paštas","forgot_pass":"Pamiršai slaptažodį?","login_email":"Prisijunkite naudodami savo el. pašto adresą","pass":"Slaptažodis","phone":"Telefonas","reg_link":"Neturite paskyros? Registruotis","service_help":"Su tarnybos pagalba"}
+{
+  "email": "paštas",
+  "forgot_pass": "Pamiršai slaptažodį?",
+  "login_email": "Prisijunkite naudodami savo el. pašto adresą",
+  "pass": "Slaptažodis",
+  "phone": "Telefonas",
+  "reg_link": "Neturite paskyros? Registruotis",
+  "service_help": "Su tarnybos pagalba",
+  "pages": [
+    { "id": 1, "name": "home", "title": "Pagrindinis", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Apie mus", "path": "/about" },
+
+    { "id": 7, "name": "contact", "title": "Kontaktai", "path": "/contact" }
+  ],
+  "registration": "Registruotis",
+  "sign_in": "Prisijungti",
+  "sign_out": "Išeiti"
+}

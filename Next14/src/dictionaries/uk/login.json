@@ -1,1 +1,19 @@
-{"email":"E-mail","forgot_pass":"Забули пароль ?","login_email":"Увійдіть за допомогою електронної адреси","pass":"Пароль","phone":"Телефон","reg_link":"Немає облікового запису ? Зареєструйтесь","service_help":"За допомогою сервісу"}
+{
+  "email": "E-mail",
+  "forgot_pass": "Забули пароль ?",
+  "login_email": "Увійдіть за допомогою електронної адреси",
+  "pass": "Пароль",
+  "phone": "Телефон",
+  "reg_link": "Немає облікового запису ? Зареєструйтесь",
+  "service_help": "За допомогою сервісу",
+
+  "pages": [
+    { "id": 1, "name": "home", "title": "Головна", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Про нас", "path": "/about" },
+    { "id": 7, "name": "contact", "title": "Контакти", "path": "/contact" }
+  ],
+
+  "registration": "Реєстрація",
+  "sign_in": "Увійти",
+  "sign_out": "Вийти"
+}

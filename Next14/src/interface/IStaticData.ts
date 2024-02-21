@@ -49,3 +49,17 @@ export interface contactStaticDataProp {
   lunchtime: string;
   weekend: string;
 }
+
+export interface loginStaticDataProp {
+  email: string;
+  forgot_pass: string;
+  login_email: string;
+  pass: string;
+  phone: string;
+  reg_link: string;
+  service_help: string;
+  pages: { id: number; name: string; title: string; path: string }[];
+  registration: string;
+  sign_in: string;
+  sign_out: string;
+}
