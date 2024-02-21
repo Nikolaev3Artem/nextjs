@@ -5,13 +5,13 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-import AboutSvg from '../../../public/icons/about.svg';
+import RuleSvg from '../../../public/icons/rule.svg';
 import { IEditorText } from '../../interface/IEditorText';
 
-import Style from './About.module.css';
+import Style from './Rule.module.css';
 import cn from 'clsx';
 
-export const About = ({ about }: { about: IEditorText }) => {
+export const Rule = ({ rule }: { rule: IEditorText }) => {
   return (
     <Container
       className={cn(Style.content, Style.content__wrapper)}
@@ -31,7 +31,6 @@ export const About = ({ about }: { about: IEditorText }) => {
             direction={'row'}
             justifyContent={'flex-start'}
             alignItems="flex-start"
-            width={'100%'}
             component={'div'}
             className={Style.wrapper}
           >
@@ -48,20 +47,20 @@ export const About = ({ about }: { about: IEditorText }) => {
                   <Box className={Style.content__title} component={'div'}>
                     <Typography
                       component={'h3'}
-                      className={Style.about__title}
+                      className={Style.rule__title}
                       variant={'h4'}
                     >
-                      {about.title}
+                      {rule.title}
                     </Typography>
                   </Box>
                 </Grid>
 
                 <Box
-                  className={Style.about_text_content}
+                  className={Style.rule_text_content}
                   fontSize={16}
                   color={'darkslategray'}
                   dangerouslySetInnerHTML={{
-                    __html: about.text || '',
+                    __html: rule.text || '',
                   }}
                 />
               </Grid>
@@ -76,10 +75,10 @@ export const About = ({ about }: { about: IEditorText }) => {
               >
                 <Fade in={true} timeout={2000}>
                   <Box>
-                    <AboutSvg
+                    <RuleSvg
                       width={350}
                       height={328}
-                      className={Style.about__image}
+                      className={Style.rule__image}
                     />
                   </Box>
                 </Fade>
@@ -88,7 +87,7 @@ export const About = ({ about }: { about: IEditorText }) => {
           </Grid>
         </Grid>
 
-        {(about.title2 || about.text2) && (
+        {(rule.title2 || rule.text2) && (
           <Grid item>
             <Grid
               container
@@ -102,18 +101,18 @@ export const About = ({ about }: { about: IEditorText }) => {
               <Box className={Style.content__title} component={'div'}>
                 <Typography
                   component={'h3'}
-                  className={Style.about__subtitle}
+                  className={Style.rule__subtitle}
                   fontSize={16}
                 >
-                  {about.title2}
+                  {rule.title2}
                 </Typography>
               </Box>
               <Box
-                className={Style.about_text_content}
+                className={Style.rule_text_content}
                 fontSize={16}
                 color={'darkslategray'}
                 dangerouslySetInnerHTML={{
-                  __html: about.text2 || '',
+                  __html: rule.text2 || '',
                 }}
               />
             </Grid>

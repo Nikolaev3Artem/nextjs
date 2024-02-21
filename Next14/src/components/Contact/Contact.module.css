@@ -1,0 +1,130 @@
+.content {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding: 0 !important;
+  max-width: initial !important;
+}
+
+.content .wrapper {
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.content .content__wrapper {
+  flex-direction: column;
+}
+
+@media screen and (min-width: 900px) {
+  .content .wrapper {
+    flex-wrap: nowrap;
+  }
+
+  .content .content__wrapper {
+    padding-right: 16px;
+    flex-direction: row;
+  }
+}
+
+.content .content__title {
+  display: flex;
+  width: 100%;
+  position: relative;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  column-gap: 10px;
+}
+
+.content .contact_text:not(:last-child) {
+  margin-bottom: 16px;
+}
+
+.content .contact_text_content {
+  display: flex;
+  width: 100%;
+  position: relative;
+  flex-direction: column;
+}
+
+.content .contact_text:hover,
+.contact__phone:hover {
+  color: #296fca;
+}
+
+.content .contact__title {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 140%;
+  color: #404040;
+}
+
+.content .contact__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+  color: #404040;
+  margin-bottom: 4px;
+}
+
+.contact__image {
+  width: 245px;
+  height: auto;
+}
+
+.contact__address,
+.contact__phone,
+.contact__email,
+.contact__schedule {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  column-gap: 10px;
+}
+
+.contact__address::before,
+.contact__email::before,
+.contact__phone::before,
+.contact__schedule::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.contact__address::before {
+  background-image: url('/icons/map-marker.svg');
+}
+
+.contact__email::before {
+  background-image: url('/icons/email.svg');
+}
+
+.contact__phone::before {
+  background-image: url('/icons/phone.svg');
+}
+
+.contact__schedule::before {
+  background-image: url('/icons/clock.svg');
+}
+
+@media screen and (min-width: 480px) {
+  .contact__image {
+    width: 350px;
+    height: 328px;
+  }
+}
+
+.List_hover:hover {
+  color: #c9c9c9;
+  transition: color 0.3s ease-out;
+}
+
+.content__title .List_hover {
+  padding: 0;
+}

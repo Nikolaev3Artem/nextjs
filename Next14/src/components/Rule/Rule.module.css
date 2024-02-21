@@ -29,13 +29,13 @@
   justify-content: flex-start;
   margin-bottom: 16px;
 }
-.content .about_text_content {
+.content .rule_text_content {
   display: flex;
   width: 100%;
   position: relative;
   flex-direction: column;
 }
-.content .about__title {
+.content .rule__title {
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -44,7 +44,7 @@
   color: #404040;
 }
 
-.content .about__subtitle {
+.content .rule__subtitle {
   font-family: 'Inter', sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -53,13 +53,13 @@
   color: #404040;
 }
 
-.about__image {
+.rule__image {
   width: 245px;
   height: auto;
 }
 
 @media screen and (min-width: 480px) {
-  .about__image {
+  .rule__image {
     width: 350px;
     height: 328px;
   }

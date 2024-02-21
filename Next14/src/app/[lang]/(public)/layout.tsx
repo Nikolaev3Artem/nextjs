@@ -30,7 +30,7 @@ export default async function PublicLayout({
       <main>
         {children}
         <InfoBuy staticData={infobuy} lang={lang} />
-        <Popular staticData={popular} lang={lang} />{' '}
+        <Popular staticData={popular} lang={lang} />
       </main>
 
       <Footer staticData={footer} lang={lang} />

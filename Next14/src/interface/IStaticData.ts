@@ -42,3 +42,10 @@ export interface MainStaticDataProps {
   search_title: string;
   to: string;
 }
+
+export interface contactStaticDataProp {
+  title: string;
+  schedule: string;
+  lunchtime: string;
+  weekend: string;
+}

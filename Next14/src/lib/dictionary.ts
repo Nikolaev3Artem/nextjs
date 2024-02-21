@@ -13,7 +13,8 @@ const dictionaries = {
     ...(await import(`@/dictionaries/en/main.json`)).default,
     ...(await import(`@/dictionaries/en/popular.json`)).default,
     ...(await import(`@/dictionaries/en/registration.json`)).default,
-    ...(await import(`@/dictionaries/en/сontent.json`)).default,
+    ...(await import(`@/dictionaries/en/content.json`)).default,
+    ...(await import(`@/dictionaries/en/contact.json`)).default,
   }),
 
   uk: async () => ({
@@ -27,7 +28,8 @@ const dictionaries = {
     ...(await import(`@/dictionaries/uk/main.json`)).default,
     ...(await import(`@/dictionaries/uk/popular.json`)).default,
     ...(await import(`@/dictionaries/uk/registration.json`)).default,
-    ...(await import(`@/dictionaries/uk/сontent.json`)).default,
+    ...(await import(`@/dictionaries/uk/content.json`)).default,
+    ...(await import(`@/dictionaries/uk/contact.json`)).default,
   }),
   lt: async () => ({
     ...(await import(`@/dictionaries/lt/common.json`)).default,
@@ -40,7 +42,8 @@ const dictionaries = {
     ...(await import(`@/dictionaries/lt/main.json`)).default,
     ...(await import(`@/dictionaries/lt/popular.json`)).default,
     ...(await import(`@/dictionaries/lt/registration.json`)).default,
-    ...(await import(`@/dictionaries/lt/сontent.json`)).default,
+    ...(await import(`@/dictionaries/lt/content.json`)).default,
+    ...(await import(`@/dictionaries/lt/contact.json`)).default,
   }),
   pt: async () => ({
     ...(await import(`@/dictionaries/pt/common.json`)).default,
@@ -53,7 +56,8 @@ const dictionaries = {
     ...(await import(`@/dictionaries/pt/main.json`)).default,
     ...(await import(`@/dictionaries/pt/popular.json`)).default,
     ...(await import(`@/dictionaries/pt/registration.json`)).default,
-    ...(await import(`@/dictionaries/pt/сontent.json`)).default,
+    ...(await import(`@/dictionaries/pt/content.json`)).default,
+    ...(await import(`@/dictionaries/pt/contact.json`)).default,
   }),
 };
 
@@ -132,10 +136,17 @@ const registrationDictionaries = {
 };
 
 const contentDictionaries = {
-  en: async () => (await import(`@/dictionaries/en/registration.json`)).default,
-  uk: async () => (await import(`@/dictionaries/uk/registration.json`)).default,
-  lt: async () => (await import(`@/dictionaries/lt/registration.json`)).default,
-  pt: async () => (await import(`@/dictionaries/pt/registration.json`)).default,
+  en: async () => (await import(`@/dictionaries/en/content.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/content.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/content.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/content.json`)).default,
+};
+
+const contactDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/contact.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/contact.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/contact.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/contact.json`)).default,
 };
 
 export const getDictionary = async (lang: Locale) => dictionaries[lang]();
@@ -167,8 +178,11 @@ export const getPopularDictionaries = async (lang: Locale) =>
 export const getRegistrationDictionaries = async (lang: Locale) =>
   registrationDictionaries[lang]();
 
-export const getContentnDictionaries = async (lang: Locale) =>
+export const getContentDictionaries = async (lang: Locale) =>
   contentDictionaries[lang]();
+
+export const getContactDictionaries = async (lang: Locale) =>
+  contactDictionaries[lang]();
 
 export const getCommonDictionaries = async (lang: Locale) =>
   commonDictionaries[lang]();

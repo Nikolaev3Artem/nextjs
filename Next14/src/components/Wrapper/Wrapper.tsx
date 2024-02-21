@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import * as React from 'react';
 
-import Style from './wrapper.module.css';
+import Style from './Wrapper.module.css';
 
 interface IContentProps {
   children: React.ReactNode;
