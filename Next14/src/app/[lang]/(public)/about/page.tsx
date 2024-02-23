@@ -74,7 +74,8 @@ const getAbout = async (lang: Locale) => {
     );
 
     if (response.status === 200) {
-      return response.data;
+      console.log(response.data);
+      return response.data.results;
     } else return defaultData[lang];
   } catch (error) {
     return defaultData[lang];
@@ -90,12 +91,16 @@ export default async function AboutPage({
 
   const about = await getAbout(lang);
   const defaultImg = '/images/about_us_bg_default.jpg';
-
+  console.log('a', about[0]);
   return (
     <>
-      <Hero banner={about} defaultImg={defaultImg} />
+      <Hero
+        banner={about}
+        defaultImg={defaultImg}
+        defaultData={defaultData[lang]}
+      />
       <Wrapper>
-        <About about={about[0]} />
+        <About about={about[1]} defaultData={defaultData[lang]} />
       </Wrapper>
     </>
   );

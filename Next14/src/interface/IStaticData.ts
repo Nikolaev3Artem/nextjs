@@ -58,7 +58,29 @@ export interface loginStaticDataProp {
   phone: string;
   reg_link: string;
   service_help: string;
-  pages: { id: number; name: string; title: string; path: string }[];
+  pages: loginStaticDataPageProp[];
+  registration: string;
+  sign_in: string;
+  sign_out: string;
+}
+
+export interface loginStaticDataPageProp {
+  id: number;
+  name: string;
+  title: string;
+  path: string;
+}
+
+export interface registrationStaticDataProp {
+  email: string;
+  login_link: string;
+  name: string;
+  pass: string;
+  phone: string;
+  reg_button: string;
+  reg_email: string;
+  reg_phone: string;
+  service: string;
   registration: string;
   sign_in: string;
   sign_out: string;
