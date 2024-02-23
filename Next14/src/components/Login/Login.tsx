@@ -116,7 +116,6 @@ export function Login({
   //   const dispatch = useAppDispatch();
   const SignIn = async (event: SyntheticEvent) => {
     event.preventDefault();
-
     // Cookies.remove('access');
     // const { data: token }: any = await getToken(val);
     // console.log(token)

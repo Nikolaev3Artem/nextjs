@@ -5,6 +5,7 @@ import { CacheProvider } from '@emotion/react';
 // import { active, arrow } from "./locale.Drawer.module.scss"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { ListItemButton, Stack } from '@mui/material';
+import dynamic from 'next/dynamic';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
@@ -121,12 +122,6 @@ export function LocaleChange({ color, weight, lang }: IColor) {
     const locale = data[0]?.min_title;
     return locale;
   };
-  const getCode = () => {
-    const data = langData.filter(item => item.lang === lang);
-    const icon = data[0]?.icon;
-    console.log('ic', icon);
-    return icon;
-  };
 
   return (
     <>
@@ -164,15 +159,15 @@ export function LocaleChange({ color, weight, lang }: IColor) {
                   alignItems: 'center',
                   display: 'flex',
                 }}
-                // primary={
-                //   // <Image
-                //   //   height={14}
-                //   //   width={24}
-                //   //   // src={`/${getCode()}.svg`}
-                //   //   alt="flag"
-                //   //   priority
-                //   // />
-                // }
+                primary={
+                  <Image
+                    height={14}
+                    width={24}
+                    src={`/icons/${lang}.svg`}
+                    alt="flag"
+                    priority
+                  />
+                }
                 secondary={getLocalTitle()}
               />
               <KeyboardArrowDownIcon
