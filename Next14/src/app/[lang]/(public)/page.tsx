@@ -1,6 +1,6 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
-import { IBanner } from '@/interface/IBanner';
+import { IBanner, IGetBanner } from '@/interface/IBanner';
 import { Hero } from '@/components/Hero';
 import { Wrapper } from '@/components/Wrapper';
 import { getMainDictionaries } from '@/lib/dictionary';
@@ -8,99 +8,23 @@ import { MainSection } from '@/components/MainSection';
 
 const getBanner = async (lang: Locale) => {
   try {
-    const response = await axios.get<IBanner[]>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/main/`,
+    const response = await axios.get<IGetBanner>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/mai/`,
     );
-
-    // const data = {
-    //   uk: [
-    //     {
-    //       id: 0,
-    //       h1: 'Міжнародні перевезення в Португалію та Литву',
-    //       alt: 'string',
-    //       is_active: false,
-    //       img: '/images/map-lg-1x.jpg',
-    //       description: 'Замовляйте кращі квитки на кращі рейси',
-    //     },
-    //   ],
-    //   en: [
-    //     {
-    //       id: 0,
-    //       h1: 'International transportation to Portugal and Lithuania',
-    //       alt: 'string',
-    //       is_active: false,
-    //       img: '/images/map-lg-1x.jpg',
-    //       description: 'Order the best tickets for the best flights.',
-    //     },
-    //   ],
-    //   lt: [
-    //     {
-    //       id: 0,
-    //       h1: 'Tarptautiniai vežimai į Portugaliją ir Lietuvą',
-    //       alt: 'string',
-    //       is_active: false,
-    //       img: '/images/map-lg-1x.jpg',
-    //       description:
-    //         'Užsisakykite geriausius bilietus į geriausius skrydžius',
-    //     },
-    //   ],
-    //   pt: [
-    //     {
-    //       id: 0,
-    //       h1: 'Transportes internacionais para Portugal e Lituânia',
-    //       alt: 'string',
-    //       is_active: false,
-    //       img: '/images/map-lg-1x.jpg',
-    //       description: 'Encomende os melhores bilhetes para os melhores voos.',
-    //     },
-    //   ],
-    // };
-    return response.data;
+    if (response.status === 200) {
+      return {
+        id: response.data.results[response.data.results.length - 1].id,
+        h1: response.data.results[response.data.results.length - 1].h1,
+        alt: response.data.results[response.data.results.length - 1].alt,
+        is_active:
+          response.data.results[response.data.results.length - 1].is_active,
+        img: response.data.results[response.data.results.length - 1].img,
+        description:
+          response.data.results[response.data.results.length - 1].description,
+      };
+    } else return {};
   } catch (error) {
-    const data = {
-      uk: [
-        {
-          id: 0,
-          h1: 'Міжнародні перевезення в Португалію та Литву',
-          alt: 'string',
-          is_active: false,
-          img: '/images/map-lg-1x.jpg',
-          description: 'Замовляйте кращі квитки на кращі рейси',
-        },
-      ],
-      en: [
-        {
-          id: 0,
-          h1: 'International transportation to Portugal and Lithuania',
-          alt: 'string',
-          is_active: false,
-          img: '/images/map-lg-1x.jpg',
-          description: 'Order the best tickets for the best flights.',
-        },
-      ],
-      lt: [
-        {
-          id: 0,
-          h1: 'Tarptautiniai vežimai į Portugaliją ir Lietuvą',
-          alt: 'string',
-          is_active: false,
-          img: '/images/map-lg-1x.jpg',
-          description:
-            'Užsisakykite geriausius bilietus į geriausius skrydžius',
-        },
-      ],
-      pt: [
-        {
-          id: 0,
-          h1: 'Transportes internacionais para Portugal e Lituânia',
-          alt: 'string',
-          is_active: false,
-          img: '/images/map-lg-1x.jpg',
-          description: 'Encomende os melhores bilhetes para os melhores voos.',
-        },
-      ],
-    };
-    return data[lang];
+    return {};
   }
 };
 
@@ -116,7 +40,12 @@ export default async function Home({
 
   return (
     <>
-      <Hero banner={banner} isMain={true} defaultImg={defaultImg} />
+      <Hero
+        banner={banner}
+        isMain={true}
+        defaultImg={defaultImg}
+        staticData={staticData}
+      />
       <Wrapper>
         <MainSection staticData={staticData} lang={lang} />
       </Wrapper>

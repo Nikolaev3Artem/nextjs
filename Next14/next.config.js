@@ -21,8 +21,10 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: 'api.lehendatrans.com',
+        port: '',
+        pathname: '/media/**',
       },
     ],
   },

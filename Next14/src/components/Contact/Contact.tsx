@@ -112,8 +112,8 @@ export const Contact = ({
                     {contact.email}
                   </Link>
 
-                  {contact?.phone &&
-                    contact.phone.map(el => (
+                  {contact?.contacts &&
+                    contact.contacts.map(el => (
                       <Box
                         className={cn(Style.content__title)}
                         fontSize={16}
@@ -121,14 +121,14 @@ export const Contact = ({
                         key={el.id}
                       >
                         <Link
-                          href={`tel: ${el.number}`}
+                          href={`tel: ${el.phone_number}`}
                           className={cn(Style.contact__phone)}
                         >
-                          {el.number}
+                          {el.phone_number}
                         </Link>
-                        {el.support.isTelegram && (
+                        {el.telegram && (
                           <Link
-                            href={`https://t.me/+38${el.number}`}
+                            href={el.telegram}
                             target="blank"
                             rel="noreferrer nofollow"
                           >
@@ -137,9 +137,9 @@ export const Contact = ({
                             </IconButton>
                           </Link>
                         )}
-                        {el.support.isViber && (
+                        {el.viber && (
                           <Link
-                            href={`viber://chat?number=+38${el.number}`}
+                            href={el.viber}
                             target="blank"
                             rel="noreferrer nofollow"
                           >
@@ -148,9 +148,9 @@ export const Contact = ({
                             </IconButton>
                           </Link>
                         )}
-                        {el.support.isWhatsUp && (
+                        {el.whatsup && (
                           <Link
-                            href={`https://wa.me/38${el.number}`}
+                            href={el.whatsup}
                             target="blank"
                             rel="noreferrer nofollow"
                           >
@@ -186,13 +186,13 @@ export const Contact = ({
                       component={'p'}
                       className={Style.contact__subtitle}
                     >
-                      {contact.schedule.weekdays.days}
+                      {contact.weekdays_work}
                     </Typography>
                     <Typography component={'p'} className={Style.contact_text}>
-                      <time> {contact.schedule.weekdays.time}</time>
+                      <time> {contact.weekdays_time}</time>
                     </Typography>
                   </Box>
-                  {contact.schedule.lunchtime.time && (
+                  {contact.lunch_time && (
                     <Box mb={0.5}>
                       <Typography
                         component={'p'}
@@ -200,31 +200,23 @@ export const Contact = ({
                       >
                         {staticData.lunchtime}
                       </Typography>
-                      {contact.schedule.lunchtime.days && (
-                        <Typography
-                          component={'p'}
-                          className={Style.contact__subtitle}
-                        >
-                          {contact.schedule.lunchtime.days}
-                        </Typography>
-                      )}
 
                       <Typography
                         component={'p'}
                         className={Style.contact_text}
                       >
-                        <time>{contact.schedule.lunchtime.time}</time>
+                        <time>{contact.lunch_time}</time>
                       </Typography>
                     </Box>
                   )}
 
-                  {contact.schedule.weekend.days && (
+                  {contact.weekends && (
                     <Box>
                       <Typography
                         component={'p'}
                         className={Style.contact__subtitle}
                       >
-                        {contact.schedule.weekend.days}
+                        {contact.weekends}
                       </Typography>
 
                       <Typography

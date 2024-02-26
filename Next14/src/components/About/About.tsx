@@ -11,14 +11,7 @@ import { IEditorText } from '../../interface/IEditorText';
 import Style from './About.module.css';
 import cn from 'clsx';
 
-export const About = ({
-  about,
-  defaultData,
-}: {
-  about: IEditorText;
-  defaultData: IEditorText;
-}) => {
-  console.log(defaultData);
+export const About = ({ about }: { about: IEditorText }) => {
   return (
     <Container
       className={cn(Style.content, Style.content__wrapper)}
@@ -58,7 +51,7 @@ export const About = ({
                       className={Style.about__title}
                       variant={'h4'}
                     >
-                      {about.title ? about?.title : defaultData[0].title}
+                      {about.title1 ? about?.title1 : ''}
                     </Typography>
                   </Box>
                 </Grid>
@@ -70,10 +63,10 @@ export const About = ({
                 >
                   <Typography
                     component={'p'}
-                    className={Style.about__title}
-                    variant={'h4'}
+                    className={Style.about_text_content}
+                    fontSize={16}
                   >
-                    {about.text ? about.text : defaultData[0].text}
+                    {about.text1 ? about.text1 : ''}
                   </Typography>
                 </Box>
               </Grid>

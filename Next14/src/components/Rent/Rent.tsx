@@ -5,32 +5,20 @@ import Typography from '@mui/material/Typography';
 import { RentCard } from '../RentCard';
 import { IRent } from '@/interface/IRent';
 import { Locale } from '@/i18n.config';
+import { BusRentStaticDataPageProp } from '@/interface/IStaticData';
 
 export const Rent = ({
   bus_rent,
   lang,
+  staticData,
 }: {
   bus_rent: IRent[];
   lang: Locale;
+  staticData: BusRentStaticDataPageProp;
 }) => {
   console.log('a', bus_rent);
   return (
     <Stack width={'100%'} direction={'column'}>
-      <Box>
-        <Typography
-          color={'darkslategray'}
-          sx={{
-            fontFamily: 'Inter',
-            fontStyle: 'normal',
-            fontWeight: '700',
-            fontSize: '24px',
-            lineHeight: '140%',
-          }}
-          mb={4}
-        >
-          Оренда автобуса
-        </Typography>
-      </Box>
       <Grid container spacing={{ xs: 3, sm: 2, md: 3, lg: 2 }}>
         {bus_rent.map(item => (
           <Grid key={item.id} item xs={12} sm={6} md={4} lg={4} xl={3}>

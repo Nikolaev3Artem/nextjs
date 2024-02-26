@@ -15,6 +15,10 @@ const dictionaries = {
     ...(await import(`@/dictionaries/en/registration.json`)).default,
     ...(await import(`@/dictionaries/en/content.json`)).default,
     ...(await import(`@/dictionaries/en/contact.json`)).default,
+    ...(await import(`@/dictionaries/en/about.json`)).default,
+    ...(await import(`@/dictionaries/en/rule.json`)).default,
+    ...(await import(`@/dictionaries/en/parcels.json`)).default,
+    ...(await import(`@/dictionaries/en/bus_rent.json`)).default,
   }),
 
   uk: async () => ({
@@ -30,6 +34,10 @@ const dictionaries = {
     ...(await import(`@/dictionaries/uk/registration.json`)).default,
     ...(await import(`@/dictionaries/uk/content.json`)).default,
     ...(await import(`@/dictionaries/uk/contact.json`)).default,
+    ...(await import(`@/dictionaries/uk/about.json`)).default,
+    ...(await import(`@/dictionaries/uk/rule.json`)).default,
+    ...(await import(`@/dictionaries/uk/parcels.json`)).default,
+    ...(await import(`@/dictionaries/uk/bus_rent.json`)).default,
   }),
   lt: async () => ({
     ...(await import(`@/dictionaries/lt/common.json`)).default,
@@ -44,6 +52,10 @@ const dictionaries = {
     ...(await import(`@/dictionaries/lt/registration.json`)).default,
     ...(await import(`@/dictionaries/lt/content.json`)).default,
     ...(await import(`@/dictionaries/lt/contact.json`)).default,
+    ...(await import(`@/dictionaries/lt/about.json`)).default,
+    ...(await import(`@/dictionaries/lt/rule.json`)).default,
+    ...(await import(`@/dictionaries/lt/parcels.json`)).default,
+    ...(await import(`@/dictionaries/lt/bus_rent.json`)).default,
   }),
   pt: async () => ({
     ...(await import(`@/dictionaries/pt/common.json`)).default,
@@ -58,6 +70,10 @@ const dictionaries = {
     ...(await import(`@/dictionaries/pt/registration.json`)).default,
     ...(await import(`@/dictionaries/pt/content.json`)).default,
     ...(await import(`@/dictionaries/pt/contact.json`)).default,
+    ...(await import(`@/dictionaries/pt/about.json`)).default,
+    ...(await import(`@/dictionaries/pt/rule.json`)).default,
+    ...(await import(`@/dictionaries/pt/parcels.json`)).default,
+    ...(await import(`@/dictionaries/pt/bus_rent.json`)).default,
   }),
 };
 
@@ -66,6 +82,13 @@ const commonDictionaries = {
   uk: async () => (await import(`@/dictionaries/uk/common.json`)).default,
   lt: async () => (await import(`@/dictionaries/lt/common.json`)).default,
   pt: async () => (await import(`@/dictionaries/pt/common.json`)).default,
+};
+
+const aboutDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/about.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/about.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/about.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/about.json`)).default,
 };
 
 const dashboardDictionaries = {
@@ -149,6 +172,27 @@ const contactDictionaries = {
   pt: async () => (await import(`@/dictionaries/pt/contact.json`)).default,
 };
 
+const ruleDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/rule.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/rule.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/rule.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/rule.json`)).default,
+};
+
+const parcelsDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/parcels.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/parcels.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/parcels.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/parcels.json`)).default,
+};
+
+const busRentDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/bus_rent.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/bus_rent.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/bus_rent.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/bus_rent.json`)).default,
+};
+
 export const getDictionary = async (lang: Locale) => dictionaries[lang]();
 
 export const getDashboardDictionaries = async (lang: Locale) =>
@@ -186,3 +230,15 @@ export const getContactDictionaries = async (lang: Locale) =>
 
 export const getCommonDictionaries = async (lang: Locale) =>
   commonDictionaries[lang]();
+
+export const getAboutDictionaries = async (lang: Locale) =>
+  aboutDictionaries[lang]();
+
+export const getRuleDictionaries = async (lang: Locale) =>
+  ruleDictionaries[lang]();
+
+export const getParcelsDictionaries = async (lang: Locale) =>
+  parcelsDictionaries[lang]();
+
+export const getBusRentDictionaries = async (lang: Locale) =>
+  busRentDictionaries[lang]();

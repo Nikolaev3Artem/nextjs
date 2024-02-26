@@ -41,10 +41,13 @@ export interface MainStaticDataProps {
   search_btn: string;
   search_title: string;
   to: string;
+  title: string;
+  description: string;
 }
 
 export interface contactStaticDataProp {
   title: string;
+  section_title: string;
   schedule: string;
   lunchtime: string;
   weekend: string;
@@ -85,3 +88,5 @@ export interface registrationStaticDataProp {
   sign_in: string;
   sign_out: string;
 }
+
+export interface BusRentStaticDataPageProp {}
