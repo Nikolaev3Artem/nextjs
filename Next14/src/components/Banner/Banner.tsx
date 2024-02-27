@@ -4,8 +4,6 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import Image from 'next/image';
-import * as React from 'react';
 import cn from 'clsx';
 
 import { IBanner } from '../../interface/IBanner';

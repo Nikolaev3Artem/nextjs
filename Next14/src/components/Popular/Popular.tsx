@@ -6,13 +6,9 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import Image from 'next/image';
-import React, { useEffect } from 'react';
-
 import theme from '../../theme';
 import CardPopular from './CardPopular';
 import Style from './Popular.module.css';
-import { Locale } from '@/i18n.config';
 import { PopularStaticDataProp } from '@/interface/IStaticData';
 import { IPopular } from '@/interface/IPopular';
 
