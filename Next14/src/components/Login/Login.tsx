@@ -144,18 +144,21 @@ export function Login({
       localStorage.setItem('access', response.data.access);
       localStorage.setItem('refresh', response.data.refresh);
       // dispatch(userFetching());
+      console.log(response.data.access);
       const { data } = await axios.get<IProfile[]>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}api/customer/`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
         {
           headers: {
-            'TopContent-Type': 'application/json',
+            'Content-Type': 'application/json',
             Authorization: 'Bearer ' + response.data.access,
           },
         },
       );
+
+      console.log(data);
       // dispatch(userFetchingSuccsess(data));
 
-      router.push(`${lang}/dashboard`);
+      router.push(`/${lang}/dashboard`);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // dispatch(userFetchingErorr(error.message));

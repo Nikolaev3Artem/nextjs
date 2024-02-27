@@ -1,3 +1,28 @@
 {
-  "title": "Bus rental"
+  "title": "Bus rental",
+  "name": "Name: ",
+  "service": "Amenities: ",
+  "model": "Model: ",
+  "first_floor": "Seats: ",
+  "second_floor": "Seats on 2nd floor:",
+  "see_more_btn": "See More",
+  "order_btn": "Order",
+  "close_btn": "Close",
+  "character": "Characteristics",
+  "photo": "Photo",
+  "set_number": "Enter phone number",
+  "messages": {
+    "send": "Order sent",
+    "manager": "Our managers will contact you shortly to clarify the details"
+  },
+  "form": {
+    "required": "Please specify a phone number",
+    "pattern_message": "Phone number should be in the format (+380XXXXXXXXX), where 'X' represents any digit",
+    "label": "Phone number"
+  },
+  "caption": {
+    "title": "Order",
+    "model": "Bus Model: ",
+    "tel": "Customer Phone: "
+  }
 }

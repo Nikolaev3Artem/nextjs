@@ -94,6 +94,7 @@ export function Input({
               popularRoutsTo.map((el: string) => {
                 return (
                   <Grid
+                    key={el}
                     item
                     component={'li'}
                     className={Style.input__popular}
@@ -130,6 +131,7 @@ export function Input({
                 return (
                   <Grid
                     item
+                    key={el}
                     component={'li'}
                     className={Style.input__popular}
                     py={0.5}

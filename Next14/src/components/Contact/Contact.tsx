@@ -128,8 +128,8 @@ export const Contact = ({
                         </Link>
                         {el.telegram && (
                           <Link
-                            href={el.telegram}
-                            target="blank"
+                            href={`https://t.me/+38${el.telegram}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>
@@ -139,8 +139,8 @@ export const Contact = ({
                         )}
                         {el.viber && (
                           <Link
-                            href={el.viber}
-                            target="blank"
+                            href={`viber://chat?number=+38${el.viber}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>
@@ -150,8 +150,8 @@ export const Contact = ({
                         )}
                         {el.whatsup && (
                           <Link
-                            href={el.whatsup}
-                            target="blank"
+                            href={`https://wa.me/+3${el.whatsup.replace(/\s/g, '')}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>

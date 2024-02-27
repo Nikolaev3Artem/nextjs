@@ -32,23 +32,22 @@ export const RentCard = ({
   id,
   name,
   busIdService,
-  poster,
-  places,
-  floor,
+  images_list,
+  photo,
+  second_floor_seats,
+  first_floor_seats,
+  plates_number,
   lang,
+  staticData,
 }: IRent) => {
-  const BASE_URL: string | undefined = process.env.REACT_APP_URL;
   const [data, setData] = useState<IRent | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const rout = useRouter();
-  console.log(poster);
 
   const handleClick = async () => {
     const response = await axios.get<IRent>(
       `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/rent/${id}`,
     );
     const data = response.data;
-
     setData(data);
     setIsOpen(true);
   };
@@ -59,12 +58,12 @@ export const RentCard = ({
     <>
       <Card elevation={0} sx={{ minWidth: 220 }} className={Style.rent_card}>
         <CardActionArea sx={{ padding: 0 }} onClick={handleClick}>
-          {poster ? (
+          {photo ? (
             <CardMedia
               sx={{ padding: 2, borderRadius: 5 }}
               component="img"
               height="195"
-              image={poster}
+              image={photo}
               alt="Paella dish"
             />
           ) : (
@@ -85,6 +84,7 @@ export const RentCard = ({
                 }}
                 color={colorHeading}
               >
+                {staticData.name}
                 {name}
               </Typography>
             </Stack>
@@ -101,7 +101,7 @@ export const RentCard = ({
                 variant="h6"
                 color={color}
               >
-                Зручності:
+                {staticData.service}
               </Typography>
               {/* <BusService busIdService={busIdService} /> */}
             </Stack>
@@ -118,8 +118,9 @@ export const RentCard = ({
                 variant="h6"
                 color={color}
               >
-                Поверхів:
+                {staticData.first_floor}
               </Typography>
+
               <Typography
                 sx={{
                   fontFamily: 'Inter',
@@ -131,38 +132,41 @@ export const RentCard = ({
                 }}
                 color={color}
               >
-                {floor}
+                {first_floor_seats}
               </Typography>
             </Stack>
-            <Stack alignItems={'center'} spacing={1} direction={'row'}>
-              <Typography
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  textTransform: 'none',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                }}
-                variant="h6"
-                color={color}
-              >
-                Місьць:
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  textTransform: 'none',
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                }}
-                color={color}
-              >
-                {places}
-              </Typography>
-            </Stack>
+
+            {second_floor_seats && (
+              <Stack alignItems={'center'} spacing={1} direction={'row'}>
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    textTransform: 'none',
+                    fontWeight: 400,
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                  }}
+                  variant="h6"
+                  color={color}
+                >
+                  {staticData.second_floor}
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    textTransform: 'none',
+                    fontWeight: 400,
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                  }}
+                  color={color}
+                >
+                  {second_floor_seats}
+                </Typography>
+              </Stack>
+            )}
           </Stack>
         </CardContent>
         <CardActions sx={{ padding: 2 }} disableSpacing>
@@ -181,12 +185,17 @@ export const RentCard = ({
             color={'secondary'}
             variant={'contained'}
           >
-            Переглянути
+            {staticData.see_more_btn}
           </Button>
         </CardActions>
       </Card>
       {data ? (
-        <CardInfo data={data} isOpen={isOpen} onClose={handleClose} />
+        <CardInfo
+          data={data}
+          isOpen={isOpen}
+          onClose={handleClose}
+          staticData={staticData}
+        />
       ) : (
         <></>
       )}

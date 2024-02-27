@@ -29,17 +29,20 @@ import { IRent } from '@/interface/IRent';
 import theme from '@/theme';
 import { BusService } from '@/components/BusService';
 import { CardInfoModal } from '@/components/CardInfoModal';
-import Style from './cadrinfo.module.css';
+import Style from './cardinfo.module.css';
+import defaultImg from '../../../public/images/rent_bus_default.webp';
+import { BusRentStaticDataPageProp } from '@/interface/IStaticData';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
-const intupColor = grey[400];
-const intupLabelColor = grey[600];
+const inputColor = grey[400];
+const inputLabelColor = grey[600];
 
 interface ICardInfoProps {
   data: IRent;
   isOpen: boolean;
   onClose: () => void;
+  staticData: BusRentStaticDataPageProp;
 }
 
 interface IFormInput {
@@ -64,11 +67,9 @@ interface IFormInput {
 // 	alt: yup.string().max(30, "ALT не має містити більше ніж 30 символів")
 // })
 
-const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
-  const BASE_URL: string | undefined = process.env.REACT_APP_URL;
-  const telegramBotKey = process.env.TELEGRAM_BOT_TOKEN;
-  const chat_id = process.env.TELEGRAM_USER_ID;
-
+const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
+  const telegramBotKey = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
+  const chat_id = process.env.NEXT_PUBLIC_TELEGRAM_USER_ID;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
@@ -99,8 +100,6 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
     clearErrors('phone');
   }, [isOpen]);
 
-  const rout = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -125,16 +124,15 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
 
   const sendTelegram = data;
   const onSubmit: SubmitHandler<IFormInput> = async data => {
-    // let lang = localStorage.getItem("lang")
     setIsLoading(true);
     const parse_mode = 'html';
-    const photo = 'https://wallpaperaccess.com/full/1628621.jpg';
+
     const caption =
-      `🇺🇦<b>Замовлення</b>‼️\n` +
-      `🚍 Модель автобуса :  ${sendTelegram.name}\n` +
-      `💺 Місць:  ${sendTelegram.places}\n` +
-      `🪜 Поверх:  ${sendTelegram.floor}\n` +
-      `☎️ Телефон замовника:  ${data.phone}\n`;
+      `🇺🇦<b>${staticData.caption.title}</b>‼️\n` +
+      `🚍 ${staticData.caption.model}   ${sendTelegram.name}\n` +
+      `💺 ${staticData.first_floor}  ${sendTelegram.first_floor_seats}\n` +
+      `🪜 ${staticData.second_floor}  ${sendTelegram.second_floor_seats}\n` +
+      `☎️ ${staticData.caption.tel}  ${data.phone}\n`;
 
     const response = await axios.post(
       `https://api.telegram.org/bot${telegramBotKey}/sendPhoto`,
@@ -142,7 +140,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        photo,
+        defaultImg,
         caption,
         chat_id,
         parse_mode,
@@ -161,13 +159,6 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
       }, 1000);
     }
   };
-  //
-  // const namesData: string = [
-  // 	{ name: "model" },
-  // 	{ name: "busService" },
-  // 	{ name: "places" },
-  // 	{ name: "floor" }
-  // ]
 
   function Arrow(props: {
     disabled: boolean;
@@ -211,51 +202,49 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
               direction={'row'}
               alignItems={'center'}
               display={'flex'}
-              justifyContent={'flex-end'}
+              justifyContent={'space-between'}
             >
-              {/*<Typography*/}
-              {/*	sx={{*/}
-              {/*		fontFamily: "Inter",*/}
-              {/*		fontStyle: "normal",*/}
-              {/*		fontWeight: 700,*/}
-              {/*		fontSize: "16px",*/}
-              {/*		lineHeight: "140%",*/}
-              {/*		color: color_title*/}
-              {/*	}}*/}
-              {/*>*/}
-              {/*	Фото*/}
-              {/*</Typography>*/}
-              {/*<IconButton*/}
-              {/*	onClick={onClose}*/}
-              {/*	sx={{*/}
-              {/*		// position: "absolute",*/}
-              {/*		// top: "20px",*/}
-              {/*		// right: "20px",*/}
-              {/*		fontSize: "18px"*/}
-              {/*	}}*/}
-              {/*>*/}
-              {/*	<MdOutlineClose />*/}
-              {/*</IconButton>*/}
+              <Typography
+                sx={{
+                  fontFamily: 'Inter',
+                  fontStyle: 'normal',
+                  fontWeight: 700,
+                  fontSize: '16px',
+                  lineHeight: '140%',
+                  color: color_title,
+                }}
+              >
+                {staticData.photo}
+              </Typography>
+              <IconButton
+                onClick={onClose}
+                sx={{
+                  fontSize: '18px',
+                }}
+              >
+                <MdOutlineClose />
+              </IconButton>
             </Stack>
           </Box>
+
           <Box width={'100%'} px={3} pb={3}>
             <Grid>
-              <Grid item>
-                <Box
-                  style={{
-                    borderRadius: '4px',
-                  }}
-                  className={Style.navigation_wrapper}
-                >
+              {data?.images_list && data?.images_list.length > 0 ? (
+                <Grid item>
                   <Box
                     style={{
                       borderRadius: '4px',
                     }}
-                    ref={sliderRef}
-                    className="keen-slider"
+                    className={Style.navigation_wrapper}
                   >
-                    {data.images &&
-                      data.images.map((image, index) => (
+                    <Box
+                      style={{
+                        borderRadius: '4px',
+                      }}
+                      ref={sliderRef}
+                      className="keen-slider"
+                    >
+                      {data?.images_list?.map((image, index) => (
                         <Box
                           key={index}
                           style={{
@@ -270,8 +259,6 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                               objectFit: 'fill',
                             }}
                             src={image.image || ''}
-                            // width={852}
-                            // height={400}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             fill
                             quality={100}
@@ -279,52 +266,85 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                           />
                         </Box>
                       ))}
-                  </Box>
-                  {/* {loaded && instanceRef.current && (
-                    <>
-                      <Arrow
-                        left
-                        onClick={(e: any) =>
-                          e.stopPropagation() || instanceRef.current?.prev()
-                        }
-                        disabled={currentSlide === 0}
-                      />
+                    </Box>
+                    {loaded && instanceRef.current && (
+                      <>
+                        <Arrow
+                          left
+                          onClick={(e: any) =>
+                            e.stopPropagation() || instanceRef.current?.prev()
+                          }
+                          disabled={currentSlide === 0}
+                        />
 
-                      <Arrow
-                        onClick={(e: any) =>
-                          e.stopPropagation() || instanceRef.current?.next()
-                        }
-                        disabled={
-                          currentSlide ===
-                          instanceRef.current.track.details.slides.length - 1
-                        }
-                      />
-                    </>
-                  )} */}
-                </Box>
-                {loaded && instanceRef.current && (
-                  <div className={Style.dots}>
-                    {/* {[
-                      ...Array(
-                        instanceRef.current.track.details.slides.length,
-                      ).keys(),
-                    ].map(idx => {
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => {
-                            instanceRef.current?.moveToIdx(idx);
-                          }}
-                          className={cn(
-                            [Style.dot],
-                            currentSlide === idx ? Style.active : '',
-                          )}
-                        ></button>
-                      );
-                    })} */}
-                  </div>
-                )}
-              </Grid>
+                        <Arrow
+                          onClick={(e: any) =>
+                            e.stopPropagation() || instanceRef.current?.next()
+                          }
+                          disabled={
+                            currentSlide ===
+                            instanceRef.current.track.details.slides.length - 1
+                          }
+                        />
+                      </>
+                    )}
+                  </Box>
+                  {loaded && instanceRef.current && (
+                    <div className={Style.dots}>
+                      {[
+                        ...Array(
+                          instanceRef.current.track.details.slides.length,
+                        ).keys(),
+                      ].map(idx => {
+                        return (
+                          <button
+                            key={idx}
+                            onClick={() => {
+                              instanceRef.current?.moveToIdx(idx);
+                            }}
+                            className={cn(
+                              [Style.dot],
+                              currentSlide === idx ? Style.active : '',
+                            )}
+                          ></button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Grid>
+              ) : (
+                <Grid item mb={1}>
+                  <Box
+                    style={{
+                      borderRadius: '4px',
+                    }}
+                    className={Style.navigation_wrapper}
+                  >
+                    <Box
+                      style={{
+                        borderRadius: '4px',
+                      }}
+                    >
+                      <Box
+                        style={{
+                          borderRadius: '4px',
+                        }}
+                        height={sm ? 200 : 350}
+                        className="keen-slider__slide"
+                        position={'static'}
+                      >
+                        <Image
+                          src={data.photo}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          fill
+                          quality={100}
+                          alt={'Bus photo'}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                </Grid>
+              )}
               <Grid item>
                 <Stack spacing={2} display={'flex'} direction={'column'}>
                   <Stack spacing={2} direction={'column'}>
@@ -338,9 +358,10 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                         color: color_title,
                       }}
                     >
-                      Характеристики
+                      {staticData.character}
                     </Typography>
                     <Grid
+                      container
                       direction={sm ? 'column' : 'row'}
                       width={'100%'}
                       display={'flex'}
@@ -348,11 +369,15 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                       sx={{
                         bgcolor: '#E3EDF9',
                         borderRadius: '4px',
-                        // boxShadow: "0 0 2px 1px #00000026"
-                        // border: "1px solid #ccc"
                       }}
                     >
-                      <Grid item sm={7} display={'flex'} direction={'column'}>
+                      <Grid
+                        item
+                        sm={7}
+                        display={'flex'}
+                        direction={'column'}
+                        container
+                      >
                         <Stack
                           spacing={1}
                           alignItems={'center'}
@@ -368,7 +393,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                               color: color_title,
                             }}
                           >
-                            Модель:
+                            {staticData.model}
                           </Typography>
                           <Typography
                             sx={{
@@ -381,7 +406,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.name}
+                            {data.plates_number}
                           </Typography>
                         </Stack>
                         <Stack
@@ -399,12 +424,18 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                               color: color_title,
                             }}
                           >
-                            Зручності:
+                            {staticData.service}
                           </Typography>
                           {/* <BusService busIdService={data.busIdService} /> */}
                         </Stack>
                       </Grid>
-                      <Grid item sm={5} display={'flex'} direction={'column'}>
+                      <Grid
+                        item
+                        sm={5}
+                        display={'flex'}
+                        direction={'column'}
+                        container
+                      >
                         <Stack
                           spacing={1}
                           alignItems={'center'}
@@ -420,7 +451,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                               color: color_title,
                             }}
                           >
-                            Місць:
+                            {staticData.first_floor}
                           </Typography>
                           <Typography
                             sx={{
@@ -433,7 +464,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.places}
+                            {data.first_floor_seats}
                           </Typography>
                         </Stack>
                         <Stack
@@ -451,7 +482,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                               color: color_title,
                             }}
                           >
-                            Поверх:
+                            {staticData.second_floor}
                           </Typography>
                           <Typography
                             sx={{
@@ -464,7 +495,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.floor}
+                            {data.second_floor_seats}
                           </Typography>
                         </Stack>
                       </Grid>
@@ -487,7 +518,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                           color: color_title,
                         }}
                       >
-                        Введіть номер телефону
+                        {staticData.set_number}
                       </Typography>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <Stack
@@ -498,11 +529,10 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                         >
                           <TextField
                             {...register('phone', {
-                              required: 'Вкажіть номер телефону',
+                              required: staticData.form.required,
                               pattern: {
                                 value: /^\+380\s\d{2}\s\d{3}\s\d{4}$/,
-                                message:
-                                  'Номер телефону у форматі (+380XXXXXXXXX), де "X" позначає будь-яку цифру',
+                                message: staticData.form.pattern_message,
                               },
                             })}
                             color={'secondary'}
@@ -518,7 +548,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
 
                               '& label': {
                                 fontSize: 14,
-                                color: intupLabelColor,
+                                color: inputLabelColor,
                               },
                               '& label.Mui-focused': {
                                 color: 'secondary',
@@ -526,7 +556,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
 
                               '& .MuiOutlinedInput-root': {
                                 '& fieldset': {
-                                  borderColor: intupColor,
+                                  borderColor: inputColor,
                                 },
                                 // "&:hover fieldset": {
                                 // 	borderColor: color_title
@@ -539,7 +569,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             InputLabelProps={{
                               color: 'secondary',
                             }}
-                            label={'Номер телефону'}
+                            label={staticData.form.label}
                             placeholder={'+380X XXX XX XX'}
                             variant={'outlined'}
                             size={'small'}
@@ -560,7 +590,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             color={'secondary'}
                             variant={'contained'}
                           >
-                            Замовити
+                            {staticData.order_btn}
                           </Button>
                         </Stack>
                       </form>
@@ -601,7 +631,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                         }}
                         textAlign={'center'}
                       >
-                        Замовлення надіслано
+                        {staticData.messages.send}
                       </Typography>
                       <Typography
                         textAlign={'center'}
@@ -614,8 +644,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                           color: color_title,
                         }}
                       >
-                        Наші менеджери зв'яжуться з вами найближчим часом, щоб
-                        уточнити деталі
+                        {staticData.messages.manager}
                       </Typography>
                       <Box display={'flex'} justifyContent={'center'}>
                         <Button
@@ -631,7 +660,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                             textTransform: 'none',
                           }}
                         >
-                          Закрити
+                          {staticData.close_btn}
                         </Button>
                       </Box>
                     </Stack>
@@ -639,7 +668,7 @@ const CardInfo = ({ data, isOpen, onClose }: ICardInfoProps) => {
                 </Fade>
               </Box>
             ) : (
-              <CircularProgress sx={{ color: intupLabelColor }} />
+              <CircularProgress sx={{ color: inputLabelColor }} />
             )}
           </Box>
         </Box>

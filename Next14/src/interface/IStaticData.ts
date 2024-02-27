@@ -89,4 +89,31 @@ export interface registrationStaticDataProp {
   sign_out: string;
 }
 
-export interface BusRentStaticDataPageProp {}
+export interface BusRentStaticDataPageProp {
+  title: string;
+  name: string;
+  service: string;
+  model: string;
+  first_floor: string;
+  second_floor: string;
+  see_more_btn: string;
+  order_btn: string;
+  close_btn: string;
+  character: string;
+  photo: string;
+  set_number: string;
+  messages: {
+    send: string;
+    manager: string;
+  };
+  form: {
+    required: string;
+    pattern_message: string;
+    label: string;
+  };
+  caption: {
+    title: string;
+    model: string;
+    tel: string;
+  };
+}

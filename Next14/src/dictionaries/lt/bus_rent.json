@@ -1,3 +1,28 @@
 {
-  "title": "Autobuso nuoma"
+  "title": "Autobusų nuoma",
+  "name": "Pavadinimas: ",
+  "service": "Patogumai: ",
+  "model": "Modelis: ",
+  "first_floor": "Vietų: ",
+  "second_floor": "Vietų ant 2 aukšto:",
+  "see_more_btn": "Peržiūrėti",
+  "order_btn": "Užsakyti",
+  "close_btn": "Uždaryti",
+  "character": "Charakteristikos",
+  "photo": "Nuotrauka",
+  "set_number": "Įveskite telefono numerį",
+  "messages": {
+    "send": "Užsakymas išsiųstas",
+    "manager": "Mūsų vadybininkai susisieks su jumis artimiausiu metu, kad sužinotų daugiau informacijos"
+  },
+  "form": {
+    "required": "Nurodykite telefono numerį",
+    "pattern_message": "Telefono numeris turi būti pateiktas tokiu formatu (+380XXXXXXXXX), kur 'X' žymi bet kurį skaitmenį",
+    "label": "Telefono numeris"
+  },
+  "caption": {
+    "title": "Užsakymas",
+    "model": "Autobuso modelis: ",
+    "tel": "Užsakovų telefonas: "
+  }
 }
