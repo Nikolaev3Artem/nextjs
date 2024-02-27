@@ -1,27 +1,33 @@
 export interface IEditorText {
   id?: number;
-  title?: string;
+  title1?: string;
   title2?: string;
-  text?: string;
+  text1?: string;
   text2?: string;
 }
 
 export interface IContactText {
-  id: number;
-  title: string;
-  icon: string;
-  address: string;
-  email: string;
-  phone: PhoneType[];
-  schedule: {
-    weekdays: { days: string | null; time: string | null };
-    weekend: { days: string | null; time: string | null };
-    lunchtime: { days: string | null; time: string | null };
-  };
+  id?: number;
+  title?: string;
+  icon?: string;
+  address?: string;
+  email?: string;
+  main_title?: string;
+  contacts?: PhoneType[];
+  weekdays_work?: string;
+  weekdays_time?: string;
+  weekends?: string;
+  lunch_time?: string;
+  description?: string;
+  text?: string;
+  img?: string;
+  main_desc?: string;
 }
 
 export interface PhoneType {
   id: number;
-  number: string;
-  support: { isTelegram: boolean; isViber: boolean; isWhatsUp: boolean };
+  phone_number: string;
+  telegram: string;
+  viber: string;
+  whatsup: string;
 }

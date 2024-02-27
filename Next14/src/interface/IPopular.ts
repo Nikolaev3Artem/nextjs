@@ -1,5 +1,8 @@
 export interface IPopular {
-	val1?: any
-	val2?: any
-	active?: boolean
+  id: number;
+  from_place: string;
+  to_place: string;
+  stops: [];
+  price: number;
+  isPopular: boolean;
 }

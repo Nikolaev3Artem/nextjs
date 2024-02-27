@@ -50,7 +50,7 @@ export const Rule = ({ rule }: { rule: IEditorText }) => {
                       className={Style.rule__title}
                       variant={'h4'}
                     >
-                      {rule.title}
+                      {rule.title1 ? rule.title1 : ''}
                     </Typography>
                   </Box>
                 </Grid>
@@ -60,7 +60,7 @@ export const Rule = ({ rule }: { rule: IEditorText }) => {
                   fontSize={16}
                   color={'darkslategray'}
                   dangerouslySetInnerHTML={{
-                    __html: rule.text || '',
+                    __html: rule.text1 || '',
                   }}
                 />
               </Grid>
@@ -104,7 +104,7 @@ export const Rule = ({ rule }: { rule: IEditorText }) => {
                   className={Style.rule__subtitle}
                   fontSize={16}
                 >
-                  {rule.title2}
+                  {rule.title2 ? rule.title2 : ''}
                 </Typography>
               </Box>
               <Box

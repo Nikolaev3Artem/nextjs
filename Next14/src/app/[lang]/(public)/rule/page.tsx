@@ -5,68 +5,7 @@ import { IBanner } from '@/interface/IBanner';
 import { Hero } from '@/components/Hero';
 import { Wrapper } from '@/components/Wrapper';
 import { Rule } from '@/components/Rule';
-
-const defaultData = {
-  uk: [
-    {
-      id: 1,
-      h1: 'Правила',
-      alt: 'string',
-      is_active: false,
-      img: '/images/map-lg-1x.jpg',
-      description: '',
-      title: 'Заголовок2',
-      title2: 'Заголовок 3',
-      text: `Шукайте випадкові слова в Україні, щоб використовувати їх у своїх проєктах, веб-сайтах, макетах, презентаціях та інших матеріалах. Цей текст наданий для тимчасового заповнення відсутнього контенту. Він не має сенсу і може містити випадкові слова, які не пов'язані між собою. Просто скопіюйте та вставте його в свої проєкти, де потрібен текст-заповнювач.`,
-      text2: `Шукайте випадкові слова в Україні, щоб використовувати їх у своїх проєктах, веб-сайтах, макетах, презентаціях та інших матеріалах. Цей текст наданий для тимчасового заповнення відсутнього контенту. Він не має сенсу і може містити випадкові слова, які не пов'язані між собою. Просто скопіюйте та вставте його в свої проєкти, де потрібен текст-заповнювач.`,
-    },
-  ],
-  en: [
-    {
-      id: 2,
-      h1: 'Rule',
-      alt: 'string',
-      is_active: false,
-      img: '/images/map-lg-1x.jpg',
-      description: '',
-      title: 'Head2',
-      title2: 'Head2',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-      text2:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-    },
-  ],
-  lt: [
-    {
-      id: 3,
-      h1: 'Taisyklės',
-      alt: 'string',
-      is_active: false,
-      img: '/images/map-lg-1x.jpg',
-      description: '',
-      title: 'Head2',
-      title2: 'Head2',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-      text2:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-    },
-  ],
-  pt: [
-    {
-      id: 4,
-      h1: 'Regras',
-      alt: 'string',
-      is_active: false,
-      img: '/images/map-lg-1x.jpg',
-      description: '',
-      title: 'Head2',
-      title2: 'Head2',
-      text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-      text2:
-        'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor ea id itaque neque reiciendis sit veniam, voluptatum. Aliquid culpa debitis dolor dolorum, explicabo fugiat modi molestiae molestias necessitatibus quaerat quidem, repudiandae tempore veniam veritatis voluptatem! Commodi exercitationem fugit iusto non quas repellat repellendus rerum voluptate. Doloremque fugiat, ipsum laudantium numquam odit officiis pariatur reprehenderit vero! Minima molestias quaerat reiciendis rem temporibus! Consectetur corporis cumque ducimus eos minima ut voluptatum!',
-    },
-  ],
-};
+import { getRuleDictionaries } from '@/lib/dictionary';
 
 const getRule = async (lang: Locale) => {
   try {
@@ -74,11 +13,31 @@ const getRule = async (lang: Locale) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/rule/`,
     );
 
+    console.log(response.data.results[response.data.results.length - 1].img);
     if (response.status === 200) {
-      return response.data;
-    } else return defaultData[lang];
+      return {
+        banner: {
+          is_active: true,
+          id: response.data.results[response.data.results.length - 1].id,
+          h1: response.data.results[response.data.results.length - 1]
+            .main_title,
+          alt: response.data.results[response.data.results.length - 1].title1,
+          img: response.data.results[response.data.results.length - 1].img,
+          description:
+            response.data.results[response.data.results.length - 1].main_desc,
+        },
+        section: {
+          title1:
+            response.data.results[response.data.results.length - 1].title1,
+          text1: response.data.results[response.data.results.length - 1].text1,
+          title2:
+            response.data.results[response.data.results.length - 1].title2,
+          text2: response.data.results[response.data.results.length - 1].text2,
+        },
+      };
+    } else return { banner: {}, section: {} };
   } catch (error) {
-    return defaultData[lang];
+    return { banner: {}, section: {} };
   }
 };
 
@@ -91,12 +50,16 @@ export default async function RulePage({
 
   const rule = await getRule(lang);
   const defaultImg = '/images/rule_bg_default.jpg';
-
+  const staticData = await getRuleDictionaries(lang);
   return (
     <>
-      <Hero banner={rule} defaultImg={defaultImg} />
+      <Hero
+        banner={rule.banner}
+        defaultImg={defaultImg}
+        staticData={staticData}
+      />
       <Wrapper>
-        <Rule rule={rule[0]} />
+        <Rule rule={rule.section} />
       </Wrapper>
     </>
   );

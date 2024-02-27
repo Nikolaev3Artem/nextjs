@@ -33,6 +33,7 @@
   justify-content: flex-start;
   margin-bottom: 16px;
   column-gap: 10px;
+  align-items: center;
 }
 
 .content .contact_text:not(:last-child) {
@@ -127,4 +128,10 @@
 
 .content__title .List_hover {
   padding: 0;
+}
+
+.svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

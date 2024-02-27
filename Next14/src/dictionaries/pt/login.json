@@ -1,1 +1,18 @@
-{"email":"E-mail","forgot_pass":"Esqueceu sua senha?","login_email":"Faça login com seu endereço de e-mail","pass":"Senha","phone":"Telefone","reg_link":"Não tem uma conta? Inscrever-se","service_help":"Com a ajuda do serviço"}
+{
+  "email": "E-mail",
+  "forgot_pass": "Esqueceu sua senha?",
+  "login_email": "Faça login com seu endereço de e-mail",
+  "pass": "Senha",
+  "phone": "Telefone",
+  "reg_link": "Não tem uma conta? Inscrever-se",
+  "service_help": "Com a ajuda do serviço",
+  "pages": [
+    { "id": 1, "name": "home", "title": "Principal", "path": "/" },
+    { "id": 2, "name": "about_us", "title": "Sobre nós", "path": "/about" },
+
+    { "id": 7, "name": "contact", "title": "Contatos", "path": "/contact" }
+  ],
+  "registration": "Cadastro",
+  "sign_in": "Entrar",
+  "sign_out": "Saia"
+}

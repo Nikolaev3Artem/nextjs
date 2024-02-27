@@ -23,6 +23,7 @@ import { contactStaticDataProp } from '@/interface/IStaticData';
 interface FlagSVGProps {
   width: number;
   height: number;
+  className?: string;
 }
 
 type FlagSVGComponent =
@@ -74,7 +75,8 @@ export const Contact = ({
               <Typography component={'h3'} variant={'h4'}>
                 {contact.title ? contact.title : staticData.title}
               </Typography>
-              <FlagSVG width={32} height={19} />
+
+              <FlagSVG width={32} height={20} />
             </Box>
 
             <Grid
@@ -88,7 +90,14 @@ export const Contact = ({
               gap={4}
               className={Style.content__wrapper}
             >
-              <Grid item container direction={'column'} md={33}>
+              <Grid
+                item
+                container
+                direction={'column'}
+                md={33}
+                xl={80}
+                minWidth={'300px'}
+              >
                 <Box fontSize={16} component={'div'} className="">
                   <Link
                     href={''}
@@ -103,8 +112,8 @@ export const Contact = ({
                     {contact.email}
                   </Link>
 
-                  {contact?.phone &&
-                    contact.phone.map(el => (
+                  {contact?.contacts &&
+                    contact.contacts.map(el => (
                       <Box
                         className={cn(Style.content__title)}
                         fontSize={16}
@@ -112,15 +121,15 @@ export const Contact = ({
                         key={el.id}
                       >
                         <Link
-                          href={`tel: ${el.number}`}
+                          href={`tel: ${el.phone_number}`}
                           className={cn(Style.contact__phone)}
                         >
-                          {el.number}
+                          {el.phone_number}
                         </Link>
-                        {el.support.isTelegram && (
+                        {el.telegram && (
                           <Link
-                            href={`https://t.me/+38${el.number}`}
-                            target="blank"
+                            href={`https://t.me/+38${el.telegram}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>
@@ -128,10 +137,10 @@ export const Contact = ({
                             </IconButton>
                           </Link>
                         )}
-                        {el.support.isViber && (
+                        {el.viber && (
                           <Link
-                            href={`viber://chat?number=+38${el.number}`}
-                            target="blank"
+                            href={`viber://chat?number=+38${el.viber}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>
@@ -139,10 +148,10 @@ export const Contact = ({
                             </IconButton>
                           </Link>
                         )}
-                        {el.support.isWhatsUp && (
+                        {el.whatsup && (
                           <Link
-                            href={`https://wa.me/38${el.number}`}
-                            target="blank"
+                            href={`https://wa.me/+3${el.whatsup.replace(/\s/g, '')}`}
+                            target="_blank"
                             rel="noreferrer nofollow"
                           >
                             <IconButton className={Style.List_hover}>
@@ -154,7 +163,13 @@ export const Contact = ({
                     ))}
                 </Box>
               </Grid>
-              <Grid item container direction={'column'} md={24}>
+              <Grid
+                item
+                container
+                direction={'column'}
+                md={24}
+                minWidth={'max-content'}
+              >
                 <Box fontSize={16} component={'div'}>
                   <Typography
                     mb={2}
@@ -171,13 +186,13 @@ export const Contact = ({
                       component={'p'}
                       className={Style.contact__subtitle}
                     >
-                      {contact.schedule.weekdays.days}
+                      {contact.weekdays_work}
                     </Typography>
                     <Typography component={'p'} className={Style.contact_text}>
-                      <time> {contact.schedule.weekdays.time}</time>
+                      <time> {contact.weekdays_time}</time>
                     </Typography>
                   </Box>
-                  {contact.schedule.lunchtime.time && (
+                  {contact.lunch_time && (
                     <Box mb={0.5}>
                       <Typography
                         component={'p'}
@@ -185,31 +200,23 @@ export const Contact = ({
                       >
                         {staticData.lunchtime}
                       </Typography>
-                      {contact.schedule.lunchtime.days && (
-                        <Typography
-                          component={'p'}
-                          className={Style.contact__subtitle}
-                        >
-                          {contact.schedule.lunchtime.days}
-                        </Typography>
-                      )}
 
                       <Typography
                         component={'p'}
                         className={Style.contact_text}
                       >
-                        <time>{contact.schedule.lunchtime.time}</time>
+                        <time>{contact.lunch_time}</time>
                       </Typography>
                     </Box>
                   )}
 
-                  {contact.schedule.weekend.days && (
+                  {contact.weekends && (
                     <Box>
                       <Typography
                         component={'p'}
                         className={Style.contact__subtitle}
                       >
-                        {contact.schedule.weekend.days}
+                        {contact.weekends}
                       </Typography>
 
                       <Typography

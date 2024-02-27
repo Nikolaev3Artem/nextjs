@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import React, {
   MouseEvent,
   MouseEventHandler,
@@ -15,6 +17,7 @@ import Popular_svg from '../../../public/icons/popular_svg.svg';
 // import { useAppDispatch } from '../../store/auth/redux';
 // import { removePopular, setPopular } from '../../store/popular/popularSlice';
 import Style from './Card.module.css';
+import { Locale } from '@/i18n.config';
 
 interface IProps {
   name1: string;
@@ -26,13 +29,27 @@ const CardPopular = (props: IProps) => {
   const [val2, setVal2] = useState<string>('');
   const [active, setActive] = useState<boolean>(true);
   const router = useRouter();
+  const params = useParams<{ lang: string }>();
+  const pathname = usePathname();
+
   useEffect(() => {
     setVal1(props.name1);
     setVal2(props.name2);
   });
+
   //   const dispatch = useAppDispatch();
   const PopularPush = (e: MouseEvent<HTMLDivElement>) => {
-    // e.preventDefault();
+    e.preventDefault();
+
+    if (pathname !== `/${params.lang}`) {
+      router.push(`/${params.lang}`);
+      sessionStorage.setItem('PopularRouteTo', val1);
+      sessionStorage.setItem('PopularRouteFrom', val2);
+    } else {
+      router.push(`/${params.lang}`);
+      sessionStorage.setItem('PopularRouteTo', val1);
+      sessionStorage.setItem('PopularRouteFrom', val2);
+    }
     // if (router !== '/') {
     //   router.push('/').then(() => {
     //     // dispatch(setPopular({ val1, val2, active }));
@@ -56,7 +73,7 @@ const CardPopular = (props: IProps) => {
         elevation={0}
       >
         <CardContent className={Style.content}>
-          <Popular_svg width={40} height={40} />
+          <Popular_svg width={16} height={45} />
           <Box className={Style.content_text}>
             <Typography component={'span'} className={Style.text}>
               {val1}

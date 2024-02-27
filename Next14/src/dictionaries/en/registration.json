@@ -7,5 +7,8 @@
   "reg_button": "Sign Up",
   "reg_email": "Register using an email address",
   "reg_phone": "Register using a phone number",
-  "service": "With the help of the service"
+  "service": "With the help of the service",
+  "registration": "Sign up",
+  "sign_in": "Sign in",
+  "sign_out": "Sign out"
 }

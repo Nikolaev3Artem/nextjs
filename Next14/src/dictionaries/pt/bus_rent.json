@@ -1,0 +1,28 @@
+{
+  "title": "Aluguer de autocarros",
+  "name": "Nome: ",
+  "service": "Serviço: ",
+  "model": "Modelo: ",
+  "first_floor": "Assentos: ",
+  "second_floor": "Assentos no 2º andar:",
+  "see_more_btn": "Ver mais",
+  "order_btn": "Encomendar",
+  "close_btn": "Fechar",
+  "character": "Características",
+  "photo": "Foto",
+  "set_number": "Introduza o número de telefone",
+  "messages": {
+    "send": "Pedido enviado",
+    "manager": "Os nossos gestores entrarão em contato consigo em breve para esclarecer os detalhes"
+  },
+  "form": {
+    "required": "Indique o número de telefone",
+    "pattern_message": "Número de telefone no formato (+380XXXXXXXXX), onde 'X' representa qualquer dígito",
+    "label": "Número de telefone"
+  },
+  "caption": {
+    "title": "Encomenda",
+    "model": "Modelo do autocarro: ",
+    "tel": "Telefone do cliente: "
+  }
+}

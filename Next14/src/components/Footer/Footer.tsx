@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,57 +21,20 @@ import Logo from '../../../public/logo33.svg';
 import Style from './Footer.module.css';
 import { footerStaticDataProp } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
+import { PhoneType } from '@/interface/IEditorText';
 
-const getContacts = async (lang: Locale) => {
-  const phones = {
-    uk: [
-      { id: 1, name: '+380 87 777 77 77', path: '' },
-      { id: 2, name: '+380 87 777 77 77', path: '' },
-      { id: 3, name: '+380 87 777 77 77', path: '' },
-      { id: 4, name: '+380 87 777 77 77', path: '' },
-    ],
-    en: [
-      { id: 1, name: '+380 87 777 77 77', path: '' },
-      { id: 2, name: '+380 87 777 77 77', path: '' },
-      { id: 3, name: '+380 87 777 77 77', path: '' },
-      { id: 4, name: '+380 87 777 77 77', path: '' },
-    ],
-    lt: [
-      { id: 1, name: '+380 87 777 77 77', path: '' },
-      { id: 2, name: '+380 87 777 77 77', path: '' },
-      { id: 3, name: '+380 87 777 77 77', path: '' },
-      { id: 4, name: '+380 87 777 77 77', path: '' },
-    ],
-    pt: [
-      { id: 1, name: '+380 87 777 77 77', path: '' },
-      { id: 2, name: '+380 87 777 77 77', path: '' },
-      { id: 3, name: '+380 87 777 77 77', path: '' },
-      { id: 4, name: '+380 87 777 77 77', path: '' },
-    ],
-  };
-  const socials = {
-    uk: {
-      telegram: '#',
-      facebook: '#',
-      viber: '#',
-    },
-    en: {
-      telegram: '#',
-      facebook: '#',
-      viber: '#',
-    },
-    lt: {
-      telegram: '#',
-      facebook: '#',
-      viber: '#',
-    },
-    pt: {
-      telegram: '#',
-      facebook: '#',
-      viber: '#',
-    },
-  };
-  return { phones: phones[lang], socials: socials[lang] };
+const getContact = async (lang: Locale): Promise<PhoneType[]> => {
+  try {
+    const response = await axios.get<PhoneType[]>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/social_media/`,
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else return [];
+  } catch (error) {
+    return [];
+  }
 };
 
 export const Footer = async ({
@@ -80,7 +44,7 @@ export const Footer = async ({
   staticData: footerStaticDataProp;
   lang: Locale;
 }) => {
-  const contacts = await getContacts(lang);
+  const contacts = await getContact(lang);
 
   return (
     <Box className={Style.content} component={'footer'}>
@@ -177,13 +141,13 @@ export const Footer = async ({
                 </Typography>
                 <Box>
                   <List>
-                    {contacts.phones.map(list => (
+                    {contacts.map(list => (
                       <ListItem
                         sx={{ marginTop: '8px' }}
                         key={list.id}
                         disablePadding
                       >
-                        <Link href={`${lang}${list.path}`}>
+                        <Link href={`tel:${list.phone_number}`}>
                           <ListItemText
                             className={Style.List_hover}
                             primaryTypographyProps={{
@@ -193,28 +157,48 @@ export const Footer = async ({
                               textTransform: 'uppercase',
                               fontWeight: '400',
                             }}
-                            primary={list.name}
+                            primary={list.phone_number}
                           />
                         </Link>
                       </ListItem>
                     ))}
                   </List>
                   <Stack spacing={1} direction={'row'}>
-                    <Link href={contacts.socials.telegram}>
-                      <IconButton className={Style.List_hover}>
-                        <TbBrandTelegram color={'white'} />
-                      </IconButton>
-                    </Link>
-                    <Link href={contacts.socials.facebook}>
-                      <IconButton className={Style.List_hover}>
-                        <BsFacebook color={'white'} />
-                      </IconButton>
-                    </Link>
-                    <Link href={contacts.socials.viber}>
-                      <IconButton className={Style.List_hover}>
-                        <FaViber color={'white'} />
-                      </IconButton>
-                    </Link>
+                    {contacts && contacts[0]?.telegram && (
+                      <Link
+                        href={`https://t.me/+38${contacts[0].telegram.replace(/\s/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer nofollow"
+                      >
+                        <IconButton className={Style.List_hover}>
+                          <TbBrandTelegram color={'white'} />
+                        </IconButton>
+                      </Link>
+                    )}
+
+                    {contacts[0]?.whatsup && (
+                      <Link
+                        href={`https://wa.me/+3${contacts[0].whatsup.replace(/\s/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer nofollow"
+                      >
+                        <IconButton className={Style.List_hover}>
+                          <BsFacebook color={'white'} />
+                        </IconButton>
+                      </Link>
+                    )}
+
+                    {contacts[0]?.viber && (
+                      <Link
+                        href={`viber://chat?number=+38${contacts[0].viber.replace(/\s/g, '')}`}
+                        target="_blank"
+                        rel="noreferrer nofollow"
+                      >
+                        <IconButton className={Style.List_hover}>
+                          <FaViber color={'white'} />
+                        </IconButton>
+                      </Link>
+                    )}
                   </Stack>
                 </Box>
               </Grid>

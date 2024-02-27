@@ -18,13 +18,6 @@ export const LocalCard = ({
   handleMenuItemClick: any;
   lang: Locale;
 }) => {
-  const Icon = dynamic(
-    () => import(`../../../public/icons/${option.icon}.svg`),
-    {
-      ssr: true,
-    },
-  );
-
   return (
     <Link href={pathname}>
       <MenuItem
@@ -33,7 +26,13 @@ export const LocalCard = ({
         onClick={event => handleMenuItemClick(event, option.id)}
       >
         <div className={style.svg}>
-          <Icon width={24} height={14} className={style.svg} />
+          <Image
+            height={14}
+            width={24}
+            src={`/icons/${option.icon}.svg`}
+            alt="flag"
+            priority
+          />
         </div>
         <Typography sx={{ ml: '8px' }}>{option.title}</Typography>
       </MenuItem>

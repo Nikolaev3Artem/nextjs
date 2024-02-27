@@ -24,9 +24,10 @@
   padding-top: 120px;
 }
 
-.banner .content__title {
+.banner .content__title,
+.banner .content__title_page {
   position: relative;
-  justify-content: center;
+
   display: flex;
   align-items: center;
   max-width: 80%;
@@ -59,6 +60,10 @@
   text-align: center;
 }
 
+.banner .subtitle_page {
+  align-self: flex-start;
+}
+
 @media screen and (max-width: 1199.98px) {
   .banner .subtitle {
     display: none;
@@ -68,6 +73,14 @@
 @media screen and (min-width: 600px) {
   .banner .content__title {
     max-width: 350px;
+  }
+  .banner .content__title_page {
+    max-width: initial;
+  }
+
+  .banner .title.fz32 {
+    font-size: 32px;
+    align-self: start;
   }
 }
 
@@ -95,6 +108,8 @@
     max-width: 100%;
     width: 100%;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .banner .content__title .container {

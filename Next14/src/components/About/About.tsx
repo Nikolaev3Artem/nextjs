@@ -51,7 +51,7 @@ export const About = ({ about }: { about: IEditorText }) => {
                       className={Style.about__title}
                       variant={'h4'}
                     >
-                      {about.title}
+                      {about.title1 ? about?.title1 : ''}
                     </Typography>
                   </Box>
                 </Grid>
@@ -60,10 +60,15 @@ export const About = ({ about }: { about: IEditorText }) => {
                   className={Style.about_text_content}
                   fontSize={16}
                   color={'darkslategray'}
-                  dangerouslySetInnerHTML={{
-                    __html: about.text || '',
-                  }}
-                />
+                >
+                  <Typography
+                    component={'p'}
+                    className={Style.about_text_content}
+                    fontSize={16}
+                  >
+                    {about.text1 ? about.text1 : ''}
+                  </Typography>
+                </Box>
               </Grid>
             </Grid>
 
@@ -88,7 +93,7 @@ export const About = ({ about }: { about: IEditorText }) => {
           </Grid>
         </Grid>
 
-        {(about.title2 || about.text2) && (
+        {(about?.title2 || about?.text2) && (
           <Grid item>
             <Grid
               container
