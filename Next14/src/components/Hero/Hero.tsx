@@ -18,7 +18,7 @@ export const Hero = ({
   defaultImg: string;
   staticData: { title: string; description?: string };
 }) => {
-  console.log(banner?.img);
+  console.log('hero', banner.img);
   return (
     <Container className={Style.content} maxWidth={false} component={'section'}>
       <Box className={Style.content__box}>
@@ -31,6 +31,7 @@ export const Hero = ({
               banner?.description ? banner?.description : staticData.description
             }
             isMain={isMain}
+            defaultImg={defaultImg}
           />
         ) : (
           <Banner
@@ -41,6 +42,7 @@ export const Hero = ({
             img={defaultImg}
             alt={staticData.title}
             isMain={isMain}
+            defaultImg={defaultImg}
           />
         )}
       </Box>

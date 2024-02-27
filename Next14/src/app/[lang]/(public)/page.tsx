@@ -9,7 +9,7 @@ import { MainSection } from '@/components/MainSection';
 const getBanner = async (lang: Locale) => {
   try {
     const response = await axios.get<IGetBanner>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/mai/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/main/`,
     );
     if (response.status === 200) {
       return {

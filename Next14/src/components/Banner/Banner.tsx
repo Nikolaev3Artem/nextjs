@@ -10,21 +10,17 @@ import cn from 'clsx';
 
 import { IBanner } from '../../interface/IBanner';
 import Style from './Banner.module.css';
+import CustomImage from '../CustomImage/CustomImage';
 
 const Banner = (props: IBanner) => {
   return (
     <Container className={Style.banner} maxWidth={false}>
       <Fade timeout={1000} in={true}>
         <Box className={Style.wrapper_img}>
-          <Image
+          <CustomImage
             src={props.img as string}
             alt={props.alt as string}
-            style={{
-              objectFit: 'cover',
-            }}
-            fill
-            priority={true}
-            quality={100}
+            defaultImg={props.defaultImg as string}
           />
         </Box>
       </Fade>

@@ -6,6 +6,7 @@ export interface IBanner {
   is_active?: boolean;
   img?: string;
   isMain?: boolean;
+  defaultImg?: string;
 }
 
 export interface IGetBanner {

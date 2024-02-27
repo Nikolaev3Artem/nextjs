@@ -16,6 +16,7 @@ const getAbout = async (lang: Locale) => {
     if (response.status === 200) {
       return {
         banner: {
+          is_active: true,
           id: response.data.results[response.data.results.length - 1].id,
           h1: response.data.results[response.data.results.length - 1]
             .main_title,
