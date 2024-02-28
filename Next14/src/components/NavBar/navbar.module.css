@@ -1,6 +1,6 @@
 .navbar {
   height: 64px;
-  padding-right: 0 !important;
+  justify-content: center;
 }
 
 .navbar .navbar_open {

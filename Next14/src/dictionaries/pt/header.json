@@ -31,5 +31,8 @@
 
   "registration": "Cadastro",
   "sign_in": "Entrar",
-  "sign_out": "Saia"
+  "sign_out": "Saia",
+  "logo": {
+    "label": "Logotipo da empresa"
+  }
 }

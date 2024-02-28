@@ -21,5 +21,8 @@
 
   "registration": "Sign up",
   "sign_in": "Sign in",
-  "sign_out": "Sign out"
+  "sign_out": "Sign out",
+  "logo": {
+    "label": "Company logo"
+  }
 }

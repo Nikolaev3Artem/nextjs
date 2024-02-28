@@ -179,6 +179,7 @@ export function LocaleChange({ color, weight, lang }: IColor) {
           <Menu
             id="lock-menu2"
             anchorEl={anchorEl}
+            disableScrollLock={true}
             open={open}
             onClose={handleClose}
             MenuListProps={{

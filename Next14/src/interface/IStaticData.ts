@@ -1,4 +1,5 @@
 export interface headerStaticDataProp {
+  logo: { label: string };
   pages: HeaderStaticLinksProp[];
   settings: HeaderStaticLinksProp[];
   registration: string;
