@@ -34,5 +34,7 @@
   "sign_out": "Saia",
   "logo": {
     "label": "Logotipo da empresa"
-  }
+  },
+  "avatar": { "alt": "Usuário Avatar" },
+  "support": "Apoiar"
 }

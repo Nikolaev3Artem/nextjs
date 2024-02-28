@@ -3,6 +3,7 @@ import { headerStaticDataProp } from '@/interface/IStaticData';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
 import { CssBaseline, Drawer, Fade, Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -16,10 +17,20 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import SupportSvg from '../../../../public/icons/support.svg';
+
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+
 // import Cookies from 'js-cookie';
 import Link from 'next/link';
-import Style from '../Navbar.module.css';
+import Style from './MobileNavMenu.module.css';
 import { FaUser } from 'react-icons/fa';
+import { useState } from 'react';
+import { PhoneType } from '@/interface/IEditorText';
 
 export const MobileNavMenu = ({
   staticData,
@@ -29,9 +40,7 @@ export const MobileNavMenu = ({
   isSuccess,
   user,
   lang,
-  handleOpenUserMenu,
-  anchorElUser,
-  handleCloseUserMenu,
+  contacts,
 }: {
   staticData: headerStaticDataProp;
   toggleDrawer: any;
@@ -43,27 +52,51 @@ export const MobileNavMenu = ({
   handleOpenUserMenu: any;
   anchorElUser: any;
   handleCloseUserMenu: any;
+  contacts: PhoneType[];
 }) => {
-  console.log(anchorElUser);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   return (
     <Box
-      sx={{ height: '100vh' }}
+      sx={{
+        height: '100vh',
+        width: { xs: '100vw', md: '250px' },
+        marginX: 'auto',
+      }}
       role="presentation"
-      onClick={toggleDrawer(false)}
+      // onClick={toggleDrawer(false)}
       className={Style.nav_menu}
       justifyContent={'center'}
       py={7}
-      px={4}
     >
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={toggleDrawer(!open)}
+        sx={{ color: 'white', position: 'absolute', top: 2, right: 2 }}
+      >
+        <CloseIcon />
+      </IconButton>
       <Grid
         display="flex"
-        justifyContent="flex-end"
+        container
         item
         lg={2}
         xl={1}
         sx={{
           flexGrow: 0.3,
           display: 'flex',
+          width: '100%',
+          color: 'white',
+          justifyContent: { xs: 'center', md: 'space-between' },
         }}
       >
         {isLoading ? (
@@ -74,80 +107,110 @@ export const MobileNavMenu = ({
               sx={{
                 flexGrow: 0,
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'space-between',
+                marginBottom: '24px',
+                width: { xs: '100vw', md: '100%' },
+                flexDirection: 'column',
               }}
             >
-              <Button
-                onClick={handleOpenUserMenu}
-                variant={'text'}
-                color={'inherit'}
-                sx={{ padding: 0 }}
-              >
-                <Avatar sx={{ width: 30, height: 30 }} alt="Remy Sharp">
-                  <FaUser />
-                </Avatar>
-                <Typography
-                  sx={{
-                    ml: 2,
-                    mr: 0.5,
-                    textTransform: 'none',
-                    color: '#fff',
-                    fontSize: 13,
-                    fontFamily: 'Inter',
-                    fontWeight: 300,
-                  }}
-                  className={Style.navbar__text}
-                  component={'a'}
-                  color={'white'}
-                >
-                  {user && user[0]?.user.email}
-                </Typography>
-                <KeyboardArrowDownIcon
-                  sx={{ fontSize: 22 }}
-                  className={anchorElUser ? Style.active : Style.arrow}
-                />
-              </Button>
+              <Accordion
+                disableGutters
+                square
+                sx={{
+                  backgroundColor: 'transparent',
+                  boxShadow: 'none',
+                  color: 'white',
 
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                disableScrollLock={true}
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  margin: 0,
+                  minHeight: 'initial',
                 }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
               >
-                {staticData.settings.map(setting => (
-                  <MenuItem key={setting.id} onClick={handleCloseUserMenu}>
-                    <Link href={setting.path}>
-                      <Typography component={'span'} textAlign="center">
-                        {setting.title}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))}
-                <MenuItem onClick={handleLogout}>
-                  <Typography component={'span'} textAlign="center">
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    {staticData.sign_out}
+                <AccordionSummary
+                  expandIcon={
+                    <KeyboardArrowDownIcon
+                      sx={{
+                        fontSize: 22,
+                        color: 'white',
+                      }}
+                      className={anchorElUser ? Style.active : Style.arrow}
+                    />
+                  }
+                  sx={{
+                    paddingX: '32px',
+                    width: { xs: '250px', md: '100%' },
+                    marginX: 'auto',
+                    marginBottom: 2,
+                    minHeight: 'initial',
+                  }}
+                  aria-controls="panel2-content"
+                  id="panel2-header"
+                >
+                  <Avatar
+                    sx={{ width: 30, height: 30 }}
+                    alt={staticData.avatar.alt}
+                  >
+                    <FaUser />
+                  </Avatar>
+                  <Typography
+                    sx={{
+                      ml: 2,
+                      mr: 0.5,
+                      textTransform: 'none',
+                      color: '#fff',
+                      fontSize: 13,
+                      fontFamily: 'Inter',
+                      fontWeight: 300,
+                    }}
+                    className={Style.navbar__text}
+                    component={'a'}
+                    color={'white'}
+                  >
+                    {user && user[0]?.user.email}
                   </Typography>
-                </MenuItem>
-              </Menu>
+                </AccordionSummary>
+                <AccordionDetails
+                  sx={{
+                    paddingX: '32px',
+                    paddingY: '16px',
+                    backgroundColor: '#091E39',
+                    margin: 0,
+                    minHeight: 'initial',
+                  }}
+                >
+                  {staticData.settings.map(setting => (
+                    <MenuItem
+                      key={setting.id}
+                      onClick={handleCloseUserMenu}
+                      disableGutters
+                      sx={{
+                        justifyContent: { xs: 'center', md: 'flex-start' },
+                      }}
+                    >
+                      <Link href={setting.path}>
+                        <Typography component={'span'} textAlign="center">
+                          {setting.title}
+                        </Typography>
+                      </Link>
+                    </MenuItem>
+                  ))}
+                  <MenuItem
+                    onClick={handleLogout}
+                    disableGutters
+                    sx={{
+                      justifyContent: { xs: 'center', md: 'flex-start' },
+                    }}
+                  >
+                    <Typography component={'span'} textAlign="center">
+                      {staticData.sign_out}
+                    </Typography>
+                  </MenuItem>
+                </AccordionDetails>
+              </Accordion>
             </Box>
           </Fade>
         ) : (
           <Fade in appear={false}>
-            <Box mb={7} width={'100%'}>
+            <Box mb={7} width={'100%'} px={4}>
               <Stack direction="row" justifyContent={'space-between'}>
                 <Link href={`/${lang}/auth`}>
                   <Button
@@ -185,18 +248,108 @@ export const MobileNavMenu = ({
         )}
       </Grid>
 
-      {staticData.pages.map(page => (
-        <MenuItem key={page.id} onClick={toggleDrawer(!open)}>
-          <Link href={page.path} passHref>
-            <Typography sx={{}} textAlign="center">
-              {page.title}
+      <Grid
+        container
+        display={'flex'}
+        flexDirection={'column'}
+        gap={2}
+        px={4}
+        mb={2}
+      >
+        {staticData.pages.map(page => (
+          <MenuItem
+            key={page.id}
+            onClick={toggleDrawer(!open)}
+            disableGutters
+            sx={{
+              padding: 0,
+              justifyContent: { xs: 'center', md: 'flex-start' },
+            }}
+          >
+            <Link href={page.path} passHref>
+              <Typography sx={{ color: 'white' }} textAlign="center">
+                {page.title}
+              </Typography>
+            </Link>
+          </MenuItem>
+        ))}
+      </Grid>
+
+      <Grid display={'flex'} flexDirection={'column'} gap={2}>
+        <Accordion
+          disableGutters
+          square
+          sx={{
+            backgroundColor: 'transparent',
+            boxShadow: 'none',
+            color: 'white',
+
+            margin: 0,
+            minHeight: 'initial',
+          }}
+        >
+          <AccordionSummary
+            expandIcon={
+              <KeyboardArrowDownIcon
+                sx={{
+                  fontSize: 22,
+                  color: 'white',
+                }}
+                className={anchorElUser ? Style.active : Style.arrow}
+              />
+            }
+            sx={{
+              paddingX: '32px',
+              width: { xs: '250px', md: '100%' },
+              marginX: 'auto',
+              marginBottom: 2,
+              minHeight: 'initial',
+            }}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <SupportSvg width={20} height={20} />
+
+            <Typography
+              sx={{
+                ml: 2,
+                mr: 0.5,
+                textTransform: 'none',
+                color: '#fff',
+              }}
+              className={Style.navbar__text}
+              component={'a'}
+              color={'white'}
+            >
+              {staticData.support}
             </Typography>
-          </Link>
-        </MenuItem>
-      ))}
-      <MenuItem onClick={handleLogout}>
-        <Typography textAlign="center">{staticData.sign_out}</Typography>
-      </MenuItem>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              paddingX: '32px',
+              paddingY: '16px',
+              backgroundColor: '#091E39',
+              margin: 0,
+              minHeight: 'initial',
+            }}
+          >
+            {contacts.map(tel => (
+              <MenuItem
+                key={tel.id}
+                onClick={handleCloseUserMenu}
+                disableGutters
+                sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
+              >
+                <Link href={`tel:${tel.phone_number}`}>
+                  <Typography component={'span'} textAlign="center">
+                    {tel.phone_number}
+                  </Typography>
+                </Link>
+              </MenuItem>
+            ))}
+          </AccordionDetails>
+        </Accordion>
+      </Grid>
     </Box>
   );
 };

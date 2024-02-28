@@ -24,5 +24,7 @@
   "sign_out": "Sign out",
   "logo": {
     "label": "Company logo"
-  }
+  },
+  "avatar": { "alt": "User`s avatar" },
+  "support": "Support"
 }

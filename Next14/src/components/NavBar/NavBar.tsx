@@ -41,39 +41,38 @@ import { CurrencySelect } from '@/components/CurrencySelect';
 import { LocaleChange } from '@/components/LocaleChange';
 import { IProfile } from '@/interface/IUser';
 import { MobileNavMenu } from './MobileNavMenu';
+import axios from 'axios';
+import { PhoneType } from '@/interface/IEditorText';
 
 export const NavBar = ({
   staticData,
   lang,
+  contacts,
 }: {
   staticData: headerStaticDataProp;
   lang: Locale;
+  contacts: PhoneType[];
 }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState<boolean>(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
 
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
 
-  // const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorElNav(true);
-  // };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
   // const handleCloseNavMenu = () => {
   //   setAnchorElNav(false);
   // };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   // const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -207,7 +206,10 @@ export const NavBar = ({
                       variant={'text'}
                       color={'inherit'}
                     >
-                      <Avatar sx={{ width: 30, height: 30 }} alt="Remy Sharp">
+                      <Avatar
+                        sx={{ width: 30, height: 30 }}
+                        alt={staticData.avatar.alt}
+                      >
                         <FaUser />
                       </Avatar>
                       <Typography
@@ -314,7 +316,7 @@ export const NavBar = ({
               sx={{
                 flexGrow: { xs: 1, sm: 0.3 },
                 justifyContent: { xs: 'flex-end' },
-                display: { xs: 'flex ', md: 'none' },
+                display: { xs: 'flex ', lg: 'none' },
               }}
             >
               <IconButton
@@ -333,11 +335,11 @@ export const NavBar = ({
                 disableScrollLock={true}
                 className={Style.drawer}
                 sx={{
-                  width: drawerWidth,
+                  width: { xs: '100vw', sm: drawerWidth },
                   flexShrink: 0,
                   '& .MuiDrawer-paper': {
                     backgroundColor: primary,
-                    width: drawerWidth,
+                    width: { xs: '100vw', md: drawerWidth },
                     boxSizing: 'border-box',
                   },
                 }}
@@ -356,6 +358,7 @@ export const NavBar = ({
                   handleOpenUserMenu={handleOpenUserMenu}
                   anchorElUser={anchorElUser}
                   handleCloseUserMenu={handleCloseUserMenu}
+                  contacts={contacts}
                 />
               </Drawer>
             </Box>

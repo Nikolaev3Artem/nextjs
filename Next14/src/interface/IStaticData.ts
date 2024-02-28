@@ -5,6 +5,8 @@ export interface headerStaticDataProp {
   registration: string;
   sign_in: string;
   sign_out: string;
+  avatar: { alt: string };
+  support: string;
 }
 
 export interface HeaderStaticLinksProp {

@@ -34,5 +34,7 @@
   "sign_out": "Išeiti",
   "logo": {
     "label": "Įmonės logotipas"
-  }
+  },
+  "avatar": { "alt": "Vartotojo avataras" },
+  "support": "Palaikymas"
 }
