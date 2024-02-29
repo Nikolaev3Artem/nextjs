@@ -12,6 +12,7 @@ import { NavBar } from '@/components/NavBar';
 import { InfoBuy } from '@/components/InfoBuy';
 import { Popular } from '@/components/Popular';
 import { PhoneType } from '@/interface/IEditorText';
+import { RoutsContextProvider } from '@/app/context';
 
 const getPopularRouts = async (lang: Locale) => {
   try {
@@ -58,7 +59,7 @@ export default async function PublicLayout({
   const contacts = await getContact(lang);
 
   return (
-    <>
+    <RoutsContextProvider>
       <NavBar staticData={header} lang={lang} contacts={contacts} />
       <main>
         {children}
@@ -69,6 +70,6 @@ export default async function PublicLayout({
       </main>
 
       <Footer staticData={footer} lang={lang} contacts={contacts} />
-    </>
+    </RoutsContextProvider>
   );
 }

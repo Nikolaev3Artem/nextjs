@@ -23,3 +23,10 @@
   transition: all 0.3s;
   transform: rotate(180deg);
 }
+
+.navbar .List_hover :hover,
+.navbar .navbar__text:hover,
+.List_hover:hover > .arrow {
+  color: #c9c9c9;
+  transition: color 0.3s ease-out;
+}

@@ -77,8 +77,14 @@ export const CurrencySelect = () => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClickListItem}
           >
-            <Stack alignItems={'center'} direction={'row'} spacing={0.5}>
+            <Stack
+              alignItems={'center'}
+              direction={'row'}
+              spacing={0.5}
+              className={Style.List_hover}
+            >
               <ListItemText
+                className={Style.List_hover}
                 secondaryTypographyProps={{
                   color: 'white',
                   fontSize: 13,
@@ -89,7 +95,7 @@ export const CurrencySelect = () => {
                 secondary={getCurrency()}
               />
               <KeyboardArrowDownIcon
-                sx={{ fontSize: 22 }}
+                sx={{ fontSize: 22, color: 'white' }}
                 className={open ? Style.active : Style.arrow}
               />
             </Stack>

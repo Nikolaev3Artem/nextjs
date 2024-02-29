@@ -31,6 +31,8 @@ import Style from './MobileNavMenu.module.css';
 import { FaUser } from 'react-icons/fa';
 import { useState } from 'react';
 import { PhoneType } from '@/interface/IEditorText';
+import { CurrencySelect } from '@/components/CurrencySelect';
+import { LocaleChange } from '@/components/LocaleChange';
 
 export const MobileNavMenu = ({
   staticData,
@@ -62,6 +64,7 @@ export const MobileNavMenu = ({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <Box
       sx={{
@@ -81,7 +84,13 @@ export const MobileNavMenu = ({
         aria-controls="menu-appbar"
         aria-haspopup="true"
         onClick={toggleDrawer(!open)}
-        sx={{ color: 'white', position: 'absolute', top: 2, right: 2 }}
+        sx={{
+          color: 'white',
+          position: 'absolute',
+          top: 2,
+          right: 2,
+          '&:hover': { color: '#c9c9c9' },
+        }}
       >
         <CloseIcon />
       </IconButton>
@@ -186,7 +195,7 @@ export const MobileNavMenu = ({
                         justifyContent: { xs: 'center', md: 'flex-start' },
                       }}
                     >
-                      <Link href={setting.path}>
+                      <Link href={setting.path} className={Style.List_hover}>
                         <Typography component={'span'} textAlign="center">
                           {setting.title}
                         </Typography>
@@ -196,6 +205,7 @@ export const MobileNavMenu = ({
                   <MenuItem
                     onClick={handleLogout}
                     disableGutters
+                    className={Style.List_hover}
                     sx={{
                       justifyContent: { xs: 'center', md: 'flex-start' },
                     }}
@@ -211,7 +221,13 @@ export const MobileNavMenu = ({
         ) : (
           <Fade in appear={false}>
             <Box mb={7} width={'100%'} px={4}>
-              <Stack direction="row" justifyContent={'space-between'}>
+              <Stack
+                direction="row"
+                sx={{
+                  justifyContent: { xs: 'center', md: 'space-between' },
+                  gap: { xs: '16px', md: 0 },
+                }}
+              >
                 <Link href={`/${lang}/auth`}>
                   <Button
                     component={'span'}
@@ -261,6 +277,7 @@ export const MobileNavMenu = ({
             key={page.id}
             onClick={toggleDrawer(!open)}
             disableGutters
+            className={Style.List_hover}
             sx={{
               padding: 0,
               justifyContent: { xs: 'center', md: 'flex-start' },
@@ -275,7 +292,7 @@ export const MobileNavMenu = ({
         ))}
       </Grid>
 
-      <Grid display={'flex'} flexDirection={'column'} gap={2}>
+      <Grid display={'flex'} flexDirection={'column'}>
         <Accordion
           disableGutters
           square
@@ -298,11 +315,12 @@ export const MobileNavMenu = ({
                 className={anchorElUser ? Style.active : Style.arrow}
               />
             }
+            className={Style.List_hover}
             sx={{
               paddingX: '32px',
               width: { xs: '250px', md: '100%' },
               marginX: 'auto',
-              marginBottom: 2,
+              marginY: 1,
               minHeight: 'initial',
             }}
             aria-controls="panel2-content"
@@ -338,6 +356,7 @@ export const MobileNavMenu = ({
                 key={tel.id}
                 onClick={handleCloseUserMenu}
                 disableGutters
+                className={Style.List_hover}
                 sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
               >
                 <Link href={`tel:${tel.phone_number}`}>
