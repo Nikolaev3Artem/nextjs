@@ -1,9 +1,12 @@
 export interface headerStaticDataProp {
+  logo: { label: string };
   pages: HeaderStaticLinksProp[];
   settings: HeaderStaticLinksProp[];
   registration: string;
   sign_in: string;
   sign_out: string;
+  avatar: { alt: string };
+  support: string;
 }
 
 export interface HeaderStaticLinksProp {

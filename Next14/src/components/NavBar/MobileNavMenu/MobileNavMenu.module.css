@@ -3,23 +3,33 @@
   justify-content: center;
 }
 
-.navbar .navbar_open {
+.nav_menu .nav_menu_open {
   width: calc(100% - 240px);
   margin-left: 240px;
   transition: all ease-out;
   transition-duration: 0.2s;
 }
 
-.navbar .navbar__text {
+.nav_menu .navbar__text {
   text-transform: none;
 }
 
-.navbar .arrow {
+.nav_menu .arrow {
   transform: rotate(0deg);
   transition: all 0.3s;
 }
 
-.navbar .active {
+.nav_menu .active {
   transition: all 0.3s;
   transform: rotate(180deg);
+}
+
+.nav_menu :global .MuiAccordionSummary-content {
+  margin: 0;
+  min-height: initial;
+  align-items: center;
+}
+
+.nav_menu :global .MuiMenuItem-root:hover {
+  background-color: inherit;
 }

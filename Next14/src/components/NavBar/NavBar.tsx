@@ -3,7 +3,7 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Fade, Stack } from '@mui/material';
+import { CssBaseline, Drawer, Fade, Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -16,6 +16,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { FaUser } from 'react-icons/fa';
 // import Cookies from 'js-cookie';
 
 import Link from 'next/link';
@@ -31,46 +32,53 @@ import Logo from '../../../public/logo.svg';
 // import { useGetUserQuery, userApi } from '../../store/auth/user.api';
 // import { removeUser, setUser } from '../../store/auth/userSlice';
 
-// import { LocaleChange } from '../Locale/LocaleChange';
+import theme from '@/theme';
+const drawerWidth = 250;
+const primary = theme.palette.primary.main;
 import Style from './Navbar.module.css';
 import { Locale } from '@/i18n.config';
 import { CurrencySelect } from '@/components/CurrencySelect';
 import { LocaleChange } from '@/components/LocaleChange';
 import { IProfile } from '@/interface/IUser';
+import { MobileNavMenu } from './MobileNavMenu';
+import axios from 'axios';
+import { PhoneType } from '@/interface/IEditorText';
 
 export const NavBar = ({
   staticData,
   lang,
+  contacts,
 }: {
   staticData: headerStaticDataProp;
   lang: Locale;
+  contacts: PhoneType[];
 }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null,
-  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const [open, setOpen] = React.useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
+  // const handleCloseNavMenu = () => {
+  //   setAnchorElNav(false);
+  // };
+
   // const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleLogout = () => {
-    handleCloseUserMenu();
+    // handleCloseUserMenu();
+    toggleDrawer(false);
     // Cookies.remove('access');
     // dispatch(removeUser(''));
     // dispatch(userApi.util.resetApiState());
@@ -81,10 +89,14 @@ export const NavBar = ({
 
   // const { data, isLoading, isSuccess } = useGetUserQuery('');
   const isLoading = false;
-  const isSuccess = false;
+  const isSuccess = true;
 
   const user = [
-    { id: 1, user: { last_name: 'user1', email: 'email.com' }, logo: null },
+    {
+      id: 1,
+      user: { last_name: 'user1', email: 'user1@email.com' },
+      logo: null,
+    },
   ];
 
   // useEffect(() => {
@@ -97,32 +109,39 @@ export const NavBar = ({
     <AppBar color={'primary'} className={Style.navbar} position="fixed">
       <Toolbar disableGutters>
         <Container maxWidth={'xl'}>
-          <Grid container direction="row" alignItems="center">
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent={'space-between'}
+          >
             <Grid
               display="flex"
               justifyContent="flex-start"
               alignItems={'center'}
               item
               md={1}
-              lg={1}
-              xl={1}
+              lg={0.6}
+              xl={0.6}
             >
-              <Link href={`/${lang}`}>
-                <Logo width={40} height={40} alt={'logo'} />
+              <Link href={`/${lang}`} style={{ display: 'flex' }}>
+                <Logo
+                  width={40}
+                  height={40}
+                  aria-label={staticData.logo.label}
+                />
               </Link>
             </Grid>
             <Grid
               display="flex"
               justifyContent="flex-start"
               item
-              lg={6}
-              xl={7}
               component={'nav'}
             >
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: 'none', md: 'flex' },
+                  display: { xs: 'none', lg: 'flex' },
                 }}
                 component={'ul'}
               >
@@ -131,7 +150,6 @@ export const NavBar = ({
                     <Link href={`/${lang}${page.path}`}>
                       <Button
                         component={'span'}
-                        onClick={handleCloseNavMenu}
                         sx={{
                           color: 'white',
                           fontSize: 13,
@@ -147,13 +165,31 @@ export const NavBar = ({
                 ))}
               </Box>
             </Grid>
-            <Grid display="flex" justifyContent="flex-end" item lg={2} xl={2}>
+            <Grid
+              display="flex"
+              justifyContent="flex-end"
+              item
+              sx={{
+                flexGrow: { sm: 3, lg: 0 },
+                display: { xs: 'none', sm: 'flex' },
+              }}
+            >
               <Stack direction={'row'}>
                 <CurrencySelect />
                 <LocaleChange lang={lang} />
               </Stack>
             </Grid>
-            <Grid display="flex" justifyContent="flex-end" item lg={3} xl={2}>
+            <Grid
+              display="flex"
+              justifyContent="flex-end"
+              item
+              lg={2}
+              xl={1}
+              sx={{
+                flexGrow: 0.3,
+                display: { xs: 'none', md: 'flex' },
+              }}
+            >
               {isLoading ? (
                 <></>
               ) : user && isSuccess ? (
@@ -171,9 +207,11 @@ export const NavBar = ({
                       color={'inherit'}
                     >
                       <Avatar
-                        src={user[0]?.logo || '/public/images/default_user.png'}
-                        alt="Remy Sharp"
-                      />
+                        sx={{ width: 30, height: 30 }}
+                        alt={staticData.avatar.alt}
+                      >
+                        <FaUser />
+                      </Avatar>
                       <Typography
                         sx={{
                           ml: 2,
@@ -199,6 +237,7 @@ export const NavBar = ({
                     <Menu
                       sx={{ mt: '45px' }}
                       id="menu-appbar"
+                      disableScrollLock={true}
                       anchorEl={anchorElUser}
                       anchorOrigin={{
                         vertical: 'top',
@@ -242,7 +281,6 @@ export const NavBar = ({
                       <Link href={`/${lang}/auth`}>
                         <Button
                           component={'span'}
-                          // href={"/auth"}
                           sx={{
                             fontWeight: '400',
                             minWidth: '104px',
@@ -276,8 +314,9 @@ export const NavBar = ({
 
             <Box
               sx={{
-                flexGrow: 1,
-                display: { xs: 'flex', md: 'none' },
+                flexGrow: { xs: 1, sm: 0.3 },
+                justifyContent: { xs: 'flex-end' },
+                display: { xs: 'flex ', lg: 'none' },
               }}
             >
               <IconButton
@@ -285,44 +324,43 @@ export const NavBar = ({
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
-                onClick={handleOpenNavMenu}
+                onClick={toggleDrawer(!open)}
                 color="inherit"
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
+
+              <Drawer
                 id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
+                disableScrollLock={true}
+                className={Style.drawer}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  width: { xs: '100vw', sm: drawerWidth },
+                  flexShrink: 0,
+                  '& .MuiDrawer-paper': {
+                    backgroundColor: primary,
+                    width: { xs: '100vw', md: drawerWidth },
+                    boxSizing: 'border-box',
+                  },
                 }}
+                anchor="right"
+                open={open}
+                onClose={toggleDrawer(false)}
               >
-                {staticData.pages.map(page => (
-                  <MenuItem key={page.id} onClick={handleCloseNavMenu}>
-                    <Link href={page.path} passHref>
-                      <Typography sx={{}} textAlign="center">
-                        {page.title}
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                ))}
-                <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">
-                    {staticData.sign_out}
-                  </Typography>
-                </MenuItem>
-              </Menu>
+                <MobileNavMenu
+                  staticData={staticData}
+                  toggleDrawer={toggleDrawer}
+                  handleLogout={handleLogout}
+                  isLoading={isLoading}
+                  isSuccess={isSuccess}
+                  user={user}
+                  lang={lang}
+                  handleOpenUserMenu={handleOpenUserMenu}
+                  anchorElUser={anchorElUser}
+                  handleCloseUserMenu={handleCloseUserMenu}
+                  contacts={contacts}
+                />
+              </Drawer>
             </Box>
           </Grid>
         </Container>

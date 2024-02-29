@@ -11,11 +11,26 @@ import {
 import { NavBar } from '@/components/NavBar';
 import { InfoBuy } from '@/components/InfoBuy';
 import { Popular } from '@/components/Popular';
+import { PhoneType } from '@/interface/IEditorText';
 
 const getPopularRouts = async (lang: Locale) => {
   try {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/routes/popular_routes`,
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    } else return [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const getContact = async (lang: Locale): Promise<PhoneType[]> => {
+  try {
+    const response = await axios.get<PhoneType[]>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/social_media/`,
     );
 
     if (response.status === 200) {
@@ -40,9 +55,11 @@ export default async function PublicLayout({
   const popular = await getPopularDictionaries(lang);
   const popularRouts = await getPopularRouts(lang);
 
+  const contacts = await getContact(lang);
+
   return (
     <>
-      <NavBar staticData={header} lang={lang} />
+      <NavBar staticData={header} lang={lang} contacts={contacts} />
       <main>
         {children}
         <InfoBuy staticData={infobuy} lang={lang} />
@@ -51,7 +68,7 @@ export default async function PublicLayout({
         )}
       </main>
 
-      <Footer staticData={footer} lang={lang} />
+      <Footer staticData={footer} lang={lang} contacts={contacts} />
     </>
   );
 }

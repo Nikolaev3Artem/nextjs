@@ -31,5 +31,10 @@
 
   "registration": "Registruotis",
   "sign_in": "Prisijungti",
-  "sign_out": "Išeiti"
+  "sign_out": "Išeiti",
+  "logo": {
+    "label": "Įmonės logotipas"
+  },
+  "avatar": { "alt": "Vartotojo avataras" },
+  "support": "Palaikymas"
 }

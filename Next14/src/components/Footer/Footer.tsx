@@ -1,6 +1,6 @@
-import { Divider, ListItem, ListItemButton, Stack } from '@mui/material';
+import { Divider, ListItem, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
@@ -9,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { BiSupport } from 'react-icons/bi';
@@ -21,31 +20,17 @@ import Logo from '../../../public/logo33.svg';
 import Style from './Footer.module.css';
 import { footerStaticDataProp } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { PhoneType } from '@/interface/IEditorText';
-
-const getContact = async (lang: Locale): Promise<PhoneType[]> => {
-  try {
-    const response = await axios.get<PhoneType[]>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/social_media/`,
-    );
-
-    if (response.status === 200) {
-      return response.data;
-    } else return [];
-  } catch (error) {
-    return [];
-  }
-};
+import { IContactText, PhoneType } from '@/interface/IEditorText';
 
 export const Footer = async ({
   staticData,
   lang,
+  contacts,
 }: {
   staticData: footerStaticDataProp;
   lang: Locale;
+  contacts: PhoneType[];
 }) => {
-  const contacts = await getContact(lang);
-
   return (
     <Box className={Style.content} component={'footer'}>
       <Container maxWidth={'xl'}>

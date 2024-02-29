@@ -100,6 +100,7 @@ export const CurrencySelect = () => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          disableScrollLock={true}
           MenuListProps={{
             'aria-labelledby': 'lock-button',
             role: 'listbox',
