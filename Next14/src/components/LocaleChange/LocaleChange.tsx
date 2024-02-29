@@ -21,7 +21,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { i18n } from '@/i18n.config';
 
-import style from './locale.module.css';
+import Style from './locale.module.css';
 import { Locale } from '@/i18n.config';
 
 import { LocalCard } from '../LocalCard';
@@ -143,6 +143,7 @@ export function LocaleChange({ color, weight, lang }: IColor) {
               aria-controls="lock-menu2"
               aria-expanded={open ? 'true' : undefined}
               onClick={handleClickListItem}
+              className={Style.List_hover}
             >
               <ListItemText
                 sx={{
@@ -172,7 +173,7 @@ export function LocaleChange({ color, weight, lang }: IColor) {
               />
               <KeyboardArrowDownIcon
                 sx={{ color: color, fontSize: 22 }}
-                className={open ? style.active : style.arrow}
+                className={open ? Style.active : Style.arrow}
               />
             </Button>
           </ListItem>

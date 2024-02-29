@@ -18,6 +18,7 @@ import Popular_svg from '../../../public/icons/popular_svg.svg';
 // import { removePopular, setPopular } from '../../store/popular/popularSlice';
 import Style from './Card.module.css';
 import { Locale } from '@/i18n.config';
+import { useRoutsContext } from '@/app/context';
 
 interface IProps {
   name1: string;
@@ -28,6 +29,12 @@ const CardPopular = (props: IProps) => {
   const [val1, setVal1] = useState<string>('');
   const [val2, setVal2] = useState<string>('');
   const [active, setActive] = useState<boolean>(true);
+  const {
+    selectRoutsTo,
+    setSelectRoutsTo,
+    selectRoutsFrom,
+    setSelectRoutsFrom,
+  } = useRoutsContext();
   const router = useRouter();
   const params = useParams<{ lang: string }>();
   const pathname = usePathname();
@@ -43,26 +50,12 @@ const CardPopular = (props: IProps) => {
 
     if (pathname !== `/${params.lang}`) {
       router.push(`/${params.lang}`);
-      sessionStorage.setItem('PopularRouteTo', val1);
-      sessionStorage.setItem('PopularRouteFrom', val2);
+      setSelectRoutsTo(val1);
+      setSelectRoutsFrom(val2);
     } else {
-      router.push(`/${params.lang}`);
-      sessionStorage.setItem('PopularRouteTo', val1);
-      sessionStorage.setItem('PopularRouteFrom', val2);
+      setSelectRoutsTo(val1);
+      setSelectRoutsFrom(val2);
     }
-    // if (router !== '/') {
-    //   router.push('/').then(() => {
-    //     // dispatch(setPopular({ val1, val2, active }));
-    //     // setTimeout(() => {
-    //     //   dispatch(removePopular());
-    //     // }, 1000);
-    //   });
-    // } else {
-    //   //   dispatch(setPopular({ val1, val2, active }));
-    //   //   setTimeout(() => {
-    //   //     dispatch(removePopular());
-    //   //   }, 1000);
-    // }
   };
   return (
     <Box>

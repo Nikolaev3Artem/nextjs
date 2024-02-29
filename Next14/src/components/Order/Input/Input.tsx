@@ -13,6 +13,7 @@ import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Style from './Input.module.css';
+import { useRoutsContext } from '@/app/context';
 
 // import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
 // import { removePopular, setPopular } from '../../../store/popular/popularSlice';
@@ -34,16 +35,17 @@ export function Input({
 }) {
   const [value1, setValue1] = useState<any>('');
   const [value2, setValue2] = useState<any>('');
-
+  const {
+    selectRoutsTo,
+    setSelectRoutsTo,
+    selectRoutsFrom,
+    setSelectRoutsFrom,
+  } = useRoutsContext();
   const ref1 = useRef(null);
 
   //   state => state.popular.active,
   // );
   let active = true;
-  // useEffect(() => {
-  //   setVal2(sessionStorage.getItem('PopularRouteTo'));
-  //   setVal1(sessionStorage.getItem('PopularRouteFrom'));
-  // }, [active, value1, val2]);
 
   const router = useRouter();
 
@@ -54,14 +56,11 @@ export function Input({
         left: 0,
         behavior: 'smooth',
       });
-      setValue1(sessionStorage.getItem('PopularRouteTo'));
-      setValue2(sessionStorage.getItem('PopularRouteFrom'));
-      setTimeout(() => {
-        sessionStorage.setItem('PopularRouteTo', '');
-        sessionStorage.setItem('PopularRouteFrom', '');
-      }, 1000);
+      setValue1(selectRoutsTo);
+      setValue2(selectRoutsFrom);
+      setTimeout(() => {}, 1000);
     }
-  }, [active]);
+  }, [selectRoutsTo, selectRoutsFrom]);
 
   const handlePopRoutToClick = (el: string) => {
     setValue1(el);
@@ -103,6 +102,7 @@ export function Input({
                     borderRadius={1}
                     bgcolor={'#E5E5E5'}
                     onClick={() => handlePopRoutToClick(el)}
+                    sx={{ cursor: 'pointer' }}
                   >
                     {el}
                   </Grid>
@@ -138,6 +138,7 @@ export function Input({
                     px={1}
                     borderRadius={1}
                     bgcolor={'#E5E5E5'}
+                    sx={{ cursor: 'pointer' }}
                     onClick={() => handlePopRoutFromClick(el)}
                   >
                     {el}

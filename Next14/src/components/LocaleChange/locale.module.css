@@ -25,4 +25,13 @@
   width: 24px;
 }
 
+.List_hover :hover {
+  color: #c9c9c9;
+  transition: color 0.3s ease-out;
+}
+
+.List_hover:hover > .arrow {
+  color: #c9c9c9;
+  transition: color 0.3s ease-out;
+}
 /*# sourceMappingURL=locale.module.css.map */

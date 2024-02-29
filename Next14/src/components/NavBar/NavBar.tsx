@@ -147,7 +147,10 @@ export const NavBar = ({
               >
                 {staticData.pages.map(page => (
                   <li key={page.id}>
-                    <Link href={`/${lang}${page.path}`}>
+                    <Link
+                      href={`/${lang}${page.path}`}
+                      className={Style.List_hover}
+                    >
                       <Button
                         component={'span'}
                         sx={{
@@ -205,6 +208,7 @@ export const NavBar = ({
                       onClick={handleOpenUserMenu}
                       variant={'text'}
                       color={'inherit'}
+                      className={Style.List_hover}
                     >
                       <Avatar
                         sx={{ width: 30, height: 30 }}
@@ -326,6 +330,7 @@ export const NavBar = ({
                 aria-haspopup="true"
                 onClick={toggleDrawer(!open)}
                 color="inherit"
+                sx={{ color: 'white', '&:hover': { color: '#c9c9c9' } }}
               >
                 <MenuIcon />
               </IconButton>

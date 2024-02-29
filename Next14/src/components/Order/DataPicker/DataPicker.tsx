@@ -52,7 +52,7 @@ export function DataPicker({
           onClose={() => setOpen(false)}
           label={staticData.date_input}
           minDate={today}
-          autoFocus={true}
+          autoFocus={false}
           value={datePickerValue}
           onChange={newValue => {
             setDatePickerValue(newValue);
