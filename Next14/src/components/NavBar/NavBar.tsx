@@ -21,6 +21,7 @@ import { FaUser } from 'react-icons/fa';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { headerStaticDataProp } from '@/interface/IStaticData';
@@ -43,19 +44,28 @@ import { IProfile } from '@/interface/IUser';
 import { MobileNavMenu } from './MobileNavMenu';
 import axios from 'axios';
 import { PhoneType } from '@/interface/IEditorText';
+import { logout } from '@/lib/auth';
 
 export const NavBar = ({
   staticData,
   lang,
   contacts,
+  user,
 }: {
   staticData: headerStaticDataProp;
   lang: Locale;
   contacts: PhoneType[];
+  user: string | undefined | null;
 }) => {
+  const [userMail, setUserMail] = React.useState('');
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
+
+  useEffect(() => {
+    user ? setUserMail(user) : setUserMail('');
+  }, [user]);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -74,30 +84,16 @@ export const NavBar = ({
   // };
 
   // const dispatch = useAppDispatch();
-  const router = useRouter();
-
   const handleLogout = () => {
-    // handleCloseUserMenu();
     toggleDrawer(false);
-    // Cookies.remove('access');
-    // dispatch(removeUser(''));
-    // dispatch(userApi.util.resetApiState());
-    router.push(`/${lang}/auth`);
+    logout();
   };
   // const token = useAppSelector((state) => state.token.access)
   // const user: IProfile[] = useAppSelector(state => state.user.user);
 
   // const { data, isLoading, isSuccess } = useGetUserQuery('');
   const isLoading = false;
-  const isSuccess = true;
-
-  const user = [
-    {
-      id: 1,
-      user: { last_name: 'user1', email: 'user1@email.com' },
-      logo: null,
-    },
-  ];
+  // const isSuccess = true;
 
   // useEffect(() => {
   //   if (data) {
@@ -193,10 +189,8 @@ export const NavBar = ({
                 display: { xs: 'none', md: 'flex' },
               }}
             >
-              {isLoading ? (
-                <></>
-              ) : user && isSuccess ? (
-                <Fade in={user.length > 0} appear={false}>
+              {userMail ? (
+                <Fade in={userMail.length > 0} appear={false}>
                   <Box
                     sx={{
                       flexGrow: 0,
@@ -230,7 +224,7 @@ export const NavBar = ({
                         component={'a'}
                         color={'white'}
                       >
-                        {user && user[0]?.user.email}
+                        {userMail}
                       </Typography>
                       <KeyboardArrowDownIcon
                         sx={{ fontSize: 22 }}
@@ -356,9 +350,7 @@ export const NavBar = ({
                   staticData={staticData}
                   toggleDrawer={toggleDrawer}
                   handleLogout={handleLogout}
-                  isLoading={isLoading}
-                  isSuccess={isSuccess}
-                  user={user}
+                  user={userMail}
                   lang={lang}
                   handleOpenUserMenu={handleOpenUserMenu}
                   anchorElUser={anchorElUser}
