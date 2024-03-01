@@ -13,6 +13,7 @@ import { InfoBuy } from '@/components/InfoBuy';
 import { Popular } from '@/components/Popular';
 import { PhoneType } from '@/interface/IEditorText';
 import { RoutsContextProvider } from '@/app/context';
+import { getSession, getUser } from '@/lib/auth';
 
 const getPopularRouts = async (lang: Locale) => {
   try {
@@ -57,10 +58,11 @@ export default async function PublicLayout({
   const popularRouts = await getPopularRouts(lang);
 
   const contacts = await getContact(lang);
+  const user = await getUser();
 
   return (
     <RoutsContextProvider>
-      <NavBar staticData={header} lang={lang} contacts={contacts} />
+      <NavBar staticData={header} lang={lang} contacts={contacts} user={user} />
       <main>
         {children}
         <InfoBuy staticData={infobuy} lang={lang} />

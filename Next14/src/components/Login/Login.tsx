@@ -41,6 +41,8 @@ import Style from './Login.module.css';
 import { Locale } from '@/i18n.config';
 import { loginStaticDataProp } from '@/interface/IStaticData';
 import axios from 'axios';
+import { cookies } from 'next/headers';
+import { getSession, login } from '@/lib/auth';
 
 interface State {
   email: string;
@@ -106,67 +108,24 @@ export function Login({
     event.preventDefault();
   };
 
-  //   const [getToken, {}] = useGetTokenMutation();
-
   let val = {
     email: values.email,
     password: values.password,
   };
-
-  //   const dispatch = useAppDispatch();
   const SignIn = async (event: SyntheticEvent) => {
     event.preventDefault();
-    // Cookies.remove('access');
-    // const { data: token }: any = await getToken(val);
-    // console.log(token)
-
-    // if (token) {
-    //   // dispatch(setToken(token))
-    //   //   Cookies.set('access', token.access);
-    //   // localStorage.setItem("access", token.access)
-    //   // localStorage.setItem("refresh", token.refresh)
-    //   await router.push('/');
-    // }
-
     try {
-      const response = await axios.post<IToken>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}auth/jwt/create/`,
-        {
-          headers: {
-            'TopContent-Type': 'application/json',
-          },
-          email: values.email,
-          password: values.password,
-        },
-      );
-      // dispatch(setToken(response.data));
-      // dispatch(setTokenRefresh(response.data.refresh))
-      localStorage.setItem('access', response.data.access);
-      localStorage.setItem('refresh', response.data.refresh);
-      // dispatch(userFetching());
-      console.log(response.data.access);
-      const { data } = await axios.get<IProfile[]>(
-        `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + response.data.access,
-          },
-        },
-      );
+      const result = await login(values);
 
-      console.log(data);
-      // dispatch(userFetchingSuccsess(data));
-
-      router.push(`/${lang}/dashboard`);
+      if (result === 200) {
+        router.back();
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // dispatch(userFetchingErorr(error.message));
         console.log('error message: ', error.message);
-        // 👇️ error: AxiosError<any, any>
         return error.message;
       } else {
-        console.log('unexpected error: ', error);
+        console.log('unexpected error: ');
         return 'An unexpected error occurred';
       }
     }
@@ -180,7 +139,6 @@ export function Login({
     event.preventDefault();
     console.log(phone);
   };
-
   return (
     <Fade in>
       <Container maxWidth="xs" disableGutters>
@@ -192,6 +150,7 @@ export function Login({
           }}
           className={Style.login__content}
         >
+          <div></div>
           <Link href={`/${lang}`}>
             <Avatar
               sx={{

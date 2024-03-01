@@ -27,6 +27,8 @@ import Logo from '../../../public/logobleck.svg';
 import Style from './signup.module.css';
 import { Locale } from '@/i18n.config';
 import { registrationStaticDataProp } from '@/interface/IStaticData';
+import { login } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 interface State {
   email: string;
   password: string;
@@ -47,7 +49,7 @@ export default function Signup({
     showPassword: false,
   });
   const [phone, setPhone] = useState('');
-
+  const router = useRouter();
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setData({ ...data, [prop]: event.target.value });
@@ -80,17 +82,27 @@ export default function Signup({
 
   const signup = async (event: any) => {
     event.preventDefault();
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_BASE_URL}auth/users/`,
-      {
-        headers: {
-          'TopContent-Type': 'application/json',
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/users/`,
+        {
+          headers: {
+            'TopContent-Type': 'application/json',
+          },
+          email: data.email,
+          password: data.password,
         },
-        email: data.email,
-        password: data.password,
-      },
-    );
-    console.log(res.data);
+      );
+
+      if (res.status === 201) {
+        const log = await login(formData);
+        if (log === 200) {
+          router.push(`/${lang}`);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   const SignInPhone = (event: any) => {
     event.preventDefault();
