@@ -20,8 +20,7 @@
   ],
   "settings": [
     { "id": 1, "name": "profile", "title": "Профіль", "path": "/profile" },
-    { "id": 2, "name": "my_tickets", "title": "Мої квитки", "path": "/order" },
-    { "id": 3, "name": "admin", "title": "Admin", "path": "/dashboard" }
+    { "id": 2, "name": "my_tickets", "title": "Мої квитки", "path": "/order" }
   ],
 
   "registration": "Реєстрація",

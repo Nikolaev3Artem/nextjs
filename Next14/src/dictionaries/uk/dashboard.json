@@ -1,1 +1,84 @@
-{"about":"Про нас","bus":"Автобуси","city":"Міста","contact":"Контакти","content":"Контент","dashboard":"Панель","flights":"Рейси","home":"Головна","parcel":"Посилки","rent":"Оренда автобусів","rout":"Маршрути","rule":"Правила","search_ticket":"Пошук квитка","settings":"Налаштування","tickets":"Квитки"}
+{
+  "about": "Про нас",
+  "bus": "Автобуси",
+  "city": "Міста",
+  "contact": "Контакти",
+  "content": "Контент",
+  "dashboard": "Панель",
+  "flights": "Рейси",
+  "home": "Головна",
+  "parcel": "Посилки",
+  "rent": "Оренда автобусів",
+  "rout": "Маршрути",
+  "rule": "Правила",
+  "search_ticket": "Пошук квитка",
+  "settings": "Налаштування",
+  "tickets": "Квитки",
+  "navigation": "Навігація",
+  "navUser": [
+    { "id": 1, "title": "Профіль", "path": "/profile", "name": "profile" },
+    {
+      "id": 2,
+      "title": "Мої квитки",
+      "path": "/order",
+      "name": "my_order"
+    }
+  ],
+
+  "navAdminMain": [
+    {
+      "id": 1,
+      "name": "home",
+      "path": "/",
+      "title": "Головна "
+    },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/about",
+      "title": "Про нас"
+    },
+    {
+      "id": 3,
+      "name": "rules",
+      "path": "/rule",
+      "title": "Правила"
+    },
+    {
+      "id": 4,
+      "name": "parcels",
+      "path": "/parcel",
+      "title": "Посилки"
+    },
+    {
+      "id": 5,
+      "name": "bus_rent",
+      "path": "/rent",
+      "title": "Оренда автобусів"
+    },
+    {
+      "id": 6,
+      "name": "contact",
+      "path": "/contact",
+      "title": "Контакти"
+    }
+  ],
+  "navAdmin": [
+    {
+      "id": 1,
+      "name": "dashboard",
+      "path": "/dashboard",
+      "title": "Панель"
+    },
+    {
+      "id": 2,
+      "name": "tickets",
+      "path": "/dashboard/tickets",
+      "title": "Пошук квитка"
+    },
+    { "id": 3, "name": "bus", "path": "/dashboard/bus", "title": "Автобуси" },
+    { "id": 4, "name": "city", "path": "/dashboard/city", "title": "Міста" },
+    { "id": 5, "name": "rout", "path": "/dashboard/rout", "title": "Маршрути" },
+    { "id": 6, "name": "flights", "path": "/#", "title": "Рейси" }
+  ]
+}

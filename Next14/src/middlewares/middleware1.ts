@@ -5,7 +5,7 @@ import { CustomMiddleware } from './chain';
 import { getSession, updateSession } from '@/lib/auth';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 
-const protectedPaths = ['/dashboard'];
+const protectedPaths = ['/dashboard', '/profile', '/order'];
 
 function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
   let protectedPathsWithLocale = [...protectedPaths];

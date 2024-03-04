@@ -25,8 +25,7 @@
       "name": "my_tickets",
       "title": "Meus ingressos",
       "path": "/order"
-    },
-    { "id": 3, "name": "admin", "title": "Admin", "path": "/dashboard" }
+    }
   ],
 
   "registration": "Cadastro",

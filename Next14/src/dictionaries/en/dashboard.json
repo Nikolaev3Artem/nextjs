@@ -13,5 +13,73 @@
   "rule": "Rules",
   "search_ticket": "Ticket search",
   "settings": "Settings",
-  "tickets": "Tickets"
+  "tickets": "Tickets",
+  "navigation": "Navigation",
+
+  "navUser": [
+    { "id": 1, "title": "Profile", "path": "/profile", "name": "profile" },
+    {
+      "id": 2,
+      "title": "My Tickets",
+      "path": "/order",
+      "name": "my_order"
+    }
+  ],
+
+  "navAdminMain": [
+    {
+      "id": 1,
+      "name": "home",
+      "path": "/",
+      "title": "Home"
+    },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/about",
+      "title": "About Us"
+    },
+    {
+      "id": 3,
+      "name": "rules",
+      "path": "/rule",
+      "title": "Rules"
+    },
+    {
+      "id": 4,
+      "name": "parcels",
+      "path": "/parcel",
+      "title": "Parcels"
+    },
+    {
+      "id": 5,
+      "name": "bus_rent",
+      "path": "/rent",
+      "title": "Bus Rental"
+    },
+    {
+      "id": 6,
+      "name": "contact",
+      "path": "/contact",
+      "title": "Contacts"
+    }
+  ],
+  "navAdmin": [
+    {
+      "id": 1,
+      "name": "dashboard",
+      "path": "/dashboard",
+      "title": "Dashboard"
+    },
+    {
+      "id": 2,
+      "name": "tickets",
+      "path": "/#",
+      "title": "Ticket Search"
+    },
+    { "id": 3, "name": "bus", "path": "/#", "title": "Buses" },
+    { "id": 4, "name": "city", "path": "/#", "title": "Cities" },
+    { "id": 5, "name": "rout", "path": "/#", "title": "Routes" },
+    { "id": 6, "name": "flights", "path": "/#", "title": "Trips" }
+  ]
 }

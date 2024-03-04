@@ -1,1 +1,84 @@
-{"about":"Sobre nós","bus":"ônibus","city":"Cidades","contact":"Contatos","content":"contente","dashboard":"Painel","flights":"voos","home":"Principal","parcel":"Encomendas","rent":"Aluguel de ônibus","rout":"Rotas","rule":"Regras","search_ticket":"Pesquisa de ingressos","settings":"Configurações","tickets":"bilhetes"}
+{
+  "about": "Sobre nós",
+  "bus": "ônibus",
+  "city": "Cidades",
+  "contact": "Contatos",
+  "content": "contente",
+  "dashboard": "Painel",
+  "flights": "voos",
+  "home": "Principal",
+  "parcel": "Encomendas",
+  "rent": "Aluguel de ônibus",
+  "rout": "Rotas",
+  "rule": "Regras",
+  "search_ticket": "Pesquisa de ingressos",
+  "settings": "Configurações",
+  "tickets": "bilhetes",
+  "navigation": "Navegação",
+  "navUser": [
+    { "id": 1, "title": "Perfil", "path": "/profile", "name": "profile" },
+    {
+      "id": 2,
+      "title": " Meus Bilhetes",
+      "path": "/order",
+      "name": "my_order"
+    }
+  ],
+
+  "navAdminMain": [
+    {
+      "id": 1,
+      "name": "home",
+      "path": "/",
+      "title": "Página Inicial"
+    },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/about",
+      "title": "Sobre Nós"
+    },
+    {
+      "id": 3,
+      "name": "rules",
+      "path": "/rule",
+      "title": "Regras"
+    },
+    {
+      "id": 4,
+      "name": "parcels",
+      "path": "/parcel",
+      "title": "Encomendas"
+    },
+    {
+      "id": 5,
+      "name": "bus_rent",
+      "path": "/rent",
+      "title": "Aluguel de Ônibus"
+    },
+    {
+      "id": 6,
+      "name": "contact",
+      "path": "/contact",
+      "title": "Contatos"
+    }
+  ],
+  "navAdmin": [
+    {
+      "id": 1,
+      "name": "dashboard",
+      "path": "/dashboard",
+      "title": "Painel de controle"
+    },
+    {
+      "id": 2,
+      "name": "tickets",
+      "path": "/#",
+      "title": "Pesquisa de bilhetes"
+    },
+    { "id": 3, "name": "bus", "path": "/#", "title": "Ônibus" },
+    { "id": 4, "name": "city", "path": "/#", "title": "Cidades" },
+    { "id": 5, "name": "rout", "path": "/#", "title": "Rotas" },
+    { "id": 6, "name": "flights", "path": "/#", "title": "Viagens" }
+  ]
+}

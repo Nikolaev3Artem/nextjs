@@ -192,7 +192,10 @@ export const MobileNavMenu = ({
                           justifyContent: { xs: 'center', md: 'flex-start' },
                         }}
                       >
-                        <Link href={setting.path} className={Style.List_hover}>
+                        <Link
+                          href={`/${lang}${setting.path}`}
+                          className={Style.List_hover}
+                        >
                           <Typography component={'span'} textAlign="center">
                             {setting.title}
                           </Typography>
@@ -281,7 +284,7 @@ export const MobileNavMenu = ({
               justifyContent: { xs: 'center', md: 'flex-start' },
             }}
           >
-            <Link href={page.path} passHref>
+            <Link href={`/${lang}${page.path}`} passHref>
               <Typography sx={{ color: 'white' }} textAlign="center">
                 {page.title}
               </Typography>

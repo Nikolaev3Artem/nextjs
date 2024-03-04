@@ -162,7 +162,7 @@ export function LocaleChange({ color, weight, lang }: IColor) {
                 }}
                 primary={
                   <Image
-                    height={14}
+                    height={20}
                     width={24}
                     src={`/icons/${lang}.svg`}
                     alt="flag"
