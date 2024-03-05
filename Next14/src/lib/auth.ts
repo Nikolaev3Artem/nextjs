@@ -28,7 +28,7 @@ export async function login(values: LoginProps) {
     },
   );
 
-  const expires = new Date(Date.now() + 1000 * 1000);
+  const expires = new Date(Date.now() + 1000 * 10000);
   const session = {
     access: response.data.access,
     refresh: response.data.refresh,

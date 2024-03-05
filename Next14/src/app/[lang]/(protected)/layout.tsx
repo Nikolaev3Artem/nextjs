@@ -1,5 +1,11 @@
+import { NavBarAdmin } from '@/components/NavBarAdmin';
 import { Locale } from '@/i18n.config';
-import { getFooterDictionaries, getHeaderDictionaries } from '@/lib/dictionary';
+import { getUser } from '@/lib/auth';
+import {
+  getDashboardDictionaries,
+  getFooterDictionaries,
+  getHeaderDictionaries,
+} from '@/lib/dictionary';
 
 export default async function RootLayout({
   children,
@@ -10,13 +16,13 @@ export default async function RootLayout({
 }>) {
   const lang = params.lang;
   const header = await getHeaderDictionaries(lang);
-  const footer = await getFooterDictionaries(lang);
-
+  const dashboard = await getDashboardDictionaries(lang);
+  const user = await getUser();
+  const staticData = { dashboard, header };
   return (
     <>
-      {/* <NavBar staticData={header} lang={lang} /> */}
+      <NavBarAdmin lang={lang} user={user} staticData={staticData} />
       {children}
-      {/* <Footer staticData={footer} lang={lang} /> */}
     </>
   );
 }

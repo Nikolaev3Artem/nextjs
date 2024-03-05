@@ -120,3 +120,32 @@ export interface BusRentStaticDataPageProp {
     tel: string;
   };
 }
+
+export interface dashBoardStaticData {
+  about: string;
+  bus: string;
+  city: string;
+  contact: string;
+  content: string;
+  dashboard: string;
+  flights: string;
+  home: string;
+  parcel: string;
+  rent: string;
+  rout: string;
+  rule: string;
+  search_ticket: string;
+  settings: string;
+  tickets: string;
+  navigation: string;
+  navUser: dashBoardNavStaticData[];
+  navAdminMain: dashBoardNavStaticData[];
+  navAdmin: dashBoardNavStaticData[];
+}
+
+export interface dashBoardNavStaticData {
+  id: number;
+  name: string;
+  path: string;
+  title: string;
+}

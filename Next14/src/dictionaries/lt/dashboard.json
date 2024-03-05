@@ -1,1 +1,85 @@
-{"about":"Apie mus","bus":"Autobusai","city":"Miestai","contact":"Kontaktai","content":"Turinys","dashboard":"Skydas","flights":"Skrydžiai","home":"Pagrindinis","parcel":"Siuntiniai","rent":"Autobusų nuoma","rout":"Maršrutai","rule":"Taisyklės","search_ticket":"Bilietų paieška","settings":"Nustatymai","tickets":"bilietai"}
+{
+  "about": "Apie mus",
+  "bus": "Autobusai",
+  "city": "Miestai",
+  "contact": "Kontaktai",
+  "content": "Turinys",
+  "dashboard": "Skydas",
+  "flights": "Skrydžiai",
+  "home": "Pagrindinis",
+  "parcel": "Siuntiniai",
+  "rent": "Autobusų nuoma",
+  "rout": "Maršrutai",
+  "rule": "Taisyklės",
+  "search_ticket": "Bilietų paieška",
+  "settings": "Nustatymai",
+  "tickets": "bilietai",
+  "navigation": "Navigacija",
+
+  "navUser": [
+    { "id": 1, "title": "Profilis", "path": "/profile", "name": "profile" },
+    {
+      "id": 2,
+      "title": "Mano bilietai",
+      "path": "/order",
+      "name": "my_order"
+    }
+  ],
+
+  "navAdminMain": [
+    {
+      "id": 1,
+      "name": "home",
+      "path": "/",
+      "title": " Pagrindinis"
+    },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/about",
+      "title": "Apie mus"
+    },
+    {
+      "id": 3,
+      "name": "rules",
+      "path": "/rule",
+      "title": "Taisyklės"
+    },
+    {
+      "id": 4,
+      "name": "parcels",
+      "path": "/parcel",
+      "title": "Siuntos"
+    },
+    {
+      "id": 5,
+      "name": "bus_rent",
+      "path": "/rent",
+      "title": "Autobusų nuoma"
+    },
+    {
+      "id": 6,
+      "name": "contact",
+      "path": "/contact",
+      "title": "Kontaktai"
+    }
+  ],
+  "navAdmin": [
+    {
+      "id": 1,
+      "name": "dashboard",
+      "path": "/dashboard",
+      "title": "Suvestinėe"
+    },
+    {
+      "id": 2,
+      "name": "tickets",
+      "path": "/#",
+      "title": "Bilio paieška"
+    },
+    { "id": 3, "name": "bus", "path": "/#", "title": "Autobusai" },
+    { "id": 4, "name": "city", "path": "/#", "title": "Miestai" },
+    { "id": 5, "name": "rout", "path": "/#", "title": "Maršrutai" },
+    { "id": 6, "name": "flights", "path": "/#", "title": "Skrydžiai" }
+  ]
+}

@@ -58,7 +58,6 @@ export const NavBar = ({
   user: string | undefined | null;
 }) => {
   const [userMail, setUserMail] = React.useState('');
-
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
@@ -92,7 +91,7 @@ export const NavBar = ({
   // const user: IProfile[] = useAppSelector(state => state.user.user);
 
   // const { data, isLoading, isSuccess } = useGetUserQuery('');
-  const isLoading = false;
+
   // const isSuccess = true;
 
   // useEffect(() => {
@@ -254,7 +253,7 @@ export const NavBar = ({
                           key={setting.id}
                           onClick={handleCloseUserMenu}
                         >
-                          <Link href={setting.path}>
+                          <Link href={`/${lang}${setting.path}`}>
                             <Typography component={'span'} textAlign="center">
                               {setting.title}
                             </Typography>
@@ -262,7 +261,11 @@ export const NavBar = ({
                         </MenuItem>
                       ))}
                       <MenuItem onClick={handleLogout}>
-                        <Typography component={'span'} textAlign="center">
+                        <Typography
+                          component={'span'}
+                          textAlign="center"
+                          sx={{ display: 'flex', alignItems: 'center' }}
+                        >
                           <ListItemIcon>
                             <Logout fontSize="small" />
                           </ListItemIcon>
