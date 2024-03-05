@@ -41,6 +41,7 @@ import {
 import { DashboardNavBar } from '@/components/DashboardNavBar';
 
 import theme from '@/theme';
+import { PhoneType } from '@/interface/IEditorText';
 
 const primary = theme.palette.primary.main;
 
@@ -48,10 +49,12 @@ export const NavBarAdmin = ({
   lang,
   user,
   staticData,
+  contacts,
 }: {
   lang: Locale;
   user: string | null | undefined;
   staticData: { dashboard: dashBoardStaticData; header: headerStaticDataProp };
+  contacts: PhoneType[];
 }) => {
   const [userMail, setUserMail] = React.useState('');
 
@@ -273,6 +276,7 @@ export const NavBarAdmin = ({
         open={open}
         userEmail={user}
         onClose={handleCloseNavMenu}
+        contacts={contacts}
       />
     </>
   );
