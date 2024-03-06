@@ -62,7 +62,11 @@ export default async function ContactPage({
         staticData={staticData}
       />
       <Wrapper>
-        <Contact contact={contact.section} staticData={staticData} />
+        <Contact
+          contact={contact.section}
+          staticData={staticData}
+          lang={lang}
+        />
       </Wrapper>
     </>
   );

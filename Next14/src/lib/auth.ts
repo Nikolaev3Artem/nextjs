@@ -63,12 +63,34 @@ export async function getUser() {
         },
       },
     );
-    return data.results[0].user.email;
+
+    return data.results[0].user;
   } catch (error) {
     console.log(error);
   }
 }
 
+export async function getUserInfo() {
+  const session = cookies().get('session')?.value;
+  if (!session) return null;
+  try {
+    const access = JSON.parse(session).access;
+
+    const { data } = await axios.get<CustomerProps>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access,
+        },
+      },
+    );
+
+    return data.results[0];
+  } catch (error) {
+    console.log(error);
+  }
+}
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get('session')?.value;
 

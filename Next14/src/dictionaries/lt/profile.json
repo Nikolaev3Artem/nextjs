@@ -1,0 +1,21 @@
+{
+  "title": "Профіль",
+  "form": {
+    "name": "Імя",
+    "surname": "Фамілія",
+    "patronymic": "По батькові",
+    "phone": "Телефон",
+    "email": "E-mail",
+    "birthday": "Дата народження",
+    "login": "Логін",
+    "password": "Пароль"
+  },
+  "button": {
+    "save": {
+      "title": "Зберегти"
+    },
+    "edit": {
+      "title": "Edit"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Profilis",
+  "form": {
+    "name": "Vardas",
+    "surname": "Pavardė",
+    "patronymic": "Tėvo vardas",
+    "phone": "Telefonas",
+    "email": "El. paštas",
+    "birthday": "Gimimo data",
+    "login": "Prisijungimo vardas",
+    "password": "Slaptažodis"
+  },
+  "button": {
+    "save": {
+      "title": "Išsaugoti"
+    },
+    "edit": {
+      "title": "Redaguoti"
+    }
+  }
+}

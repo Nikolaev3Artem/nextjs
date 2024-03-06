@@ -19,6 +19,11 @@ import { FaViber } from 'react-icons/fa';
 import { TbBrandTelegram } from 'react-icons/tb';
 import { FaWhatsapp } from 'react-icons/fa';
 import { contactStaticDataProp } from '@/interface/IStaticData';
+import { Locale } from '@/i18n.config';
+import UkSvg from '../.../../../../public/icons/uk.svg';
+import EnSvg from '../.../../../../public/icons/en.svg';
+import LtSvg from '../.../../../../public/icons/lt.svg';
+import PtSvg from '../.../../../../public/icons/pt.svg';
 
 interface FlagSVGProps {
   width: number;
@@ -33,17 +38,26 @@ type FlagSVGComponent =
 export const Contact = ({
   contact,
   staticData,
+  lang,
 }: {
   contact: IContactText;
   staticData: contactStaticDataProp;
+  lang: Locale;
 }) => {
-  const FlagSVG: FlagSVGComponent = dynamic(
-    () => import(`../../../public/icons/${contact.icon}.svg`),
-    {
-      ssr: true,
-    },
-  );
-
+  const getFlag = (lang: Locale) => {
+    switch (lang) {
+      case 'uk':
+        return <UkSvg width={32} height={20} />;
+      case 'en':
+        return <EnSvg width={32} height={20} />;
+      case 'pt':
+        return <PtSvg width={32} height={20} />;
+      case 'lt':
+        return <LtSvg width={32} height={20} />;
+      default:
+        return null;
+    }
+  };
   return (
     <Container
       className={cn(Style.content, Style.content__wrapper)}
@@ -75,8 +89,7 @@ export const Contact = ({
               <Typography component={'h3'} variant={'h4'}>
                 {contact.title ? contact.title : staticData.title}
               </Typography>
-
-              <FlagSVG width={32} height={20} />
+              {getFlag(lang)}
             </Box>
 
             <Grid

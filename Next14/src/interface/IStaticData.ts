@@ -149,3 +149,25 @@ export interface dashBoardNavStaticData {
   path: string;
   title: string;
 }
+
+export interface profileStaticData {
+  title: string;
+  form: {
+    name: string;
+    surname: string;
+    patronymic: string;
+    phone: string;
+    email: string;
+    birthday: string;
+    login: string;
+    password: string;
+  };
+  button: {
+    save: {
+      title: string;
+    };
+    edit: {
+      title: string;
+    };
+  };
+}

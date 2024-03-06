@@ -150,7 +150,6 @@ export function Login({
           }}
           className={Style.login__content}
         >
-          <div></div>
           <Link href={`/${lang}`}>
             <Avatar
               sx={{

@@ -1,6 +1,6 @@
 'use client';
 
-import { ListItemButton, Typography, useMediaQuery } from '@mui/material';
+import { ListItemButton, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,12 +13,11 @@ import { styled } from '@mui/material/styles';
 import MenuItem from '@mui/material/MenuItem';
 import Grid from '@mui/material/Grid';
 
-import Image from 'next/image';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import { AiFillHome, AiOutlineSearch } from 'react-icons/ai';
 import Accordion from '@mui/material/Accordion';
@@ -132,9 +131,11 @@ export function DashboardNavBar({
   onClose,
   userEmail,
   contacts,
+  is_superuser = false,
 }: {
   staticData: { dashboard: dashBoardStaticData; header: headerStaticDataProp };
   lang: Locale;
+  is_superuser: boolean | null | undefined;
   open: boolean;
   onClose: () => void;
   contacts: PhoneType[];
@@ -145,16 +146,13 @@ export function DashboardNavBar({
   //   );
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const md = useMediaQuery(theme.breakpoints.down('md'));
+
   const pathname = usePathname();
   const router = useRouter();
-  const is_superuser = false;
+  // const is_superuser = false;
   const handleLogout = () => {
     logout();
     router.push(`/${lang}`);
