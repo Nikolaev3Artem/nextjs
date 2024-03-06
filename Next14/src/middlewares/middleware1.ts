@@ -5,7 +5,16 @@ import { CustomMiddleware } from './chain';
 import { getSession, updateSession } from '@/lib/auth';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 
-const protectedPaths = ['/dashboard', '/profile', '/order'];
+const protectedPaths = [
+  '/dashboard',
+  '/profile',
+  '/order',
+  '/dashboard/bus',
+  '/dashboard/city',
+  '/dashboard/flights',
+  '/dashboard/rout',
+  '/dashboard/tickets',
+];
 
 function getProtectedRoutes(protectedPaths: string[], locales: Locale[]) {
   let protectedPathsWithLocale = [...protectedPaths];

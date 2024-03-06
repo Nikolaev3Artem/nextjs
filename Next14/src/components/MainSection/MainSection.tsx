@@ -88,7 +88,7 @@ export const MainSection = async ({
         </Grid>
 
         <Grid item lg={3} xl={3}>
-          <DataPicker staticData={staticData} lang={lang} />
+          <DataPicker staticData={staticData.date_input} lang={lang} />
         </Grid>
         <Grid item lg={2} xl={2}>
           <Button

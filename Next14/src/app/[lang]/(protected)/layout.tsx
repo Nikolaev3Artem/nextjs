@@ -40,11 +40,12 @@ export default async function RootLayout({
     <>
       <NavBarAdmin
         lang={lang}
-        user={user}
+        userEmail={user?.email}
         staticData={staticData}
         contacts={contacts}
+        is_superuser={user?.is_superuser}
       />
-      {children}
+      <main>{children}</main>
     </>
   );
 }

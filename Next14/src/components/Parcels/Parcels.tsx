@@ -50,7 +50,7 @@ export const Parcels = ({ parcels }: { parcels: IEditorText }) => {
                       className={Style.parcels__title}
                       variant={'h4'}
                     >
-                      {parcels.title}
+                      {parcels.title1}
                     </Typography>
                   </Box>
                 </Grid>
@@ -60,7 +60,7 @@ export const Parcels = ({ parcels }: { parcels: IEditorText }) => {
                   fontSize={16}
                   color={'darkslategray'}
                   dangerouslySetInnerHTML={{
-                    __html: parcels.text || '',
+                    __html: parcels.text1 || '',
                   }}
                 />
               </Grid>

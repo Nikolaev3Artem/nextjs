@@ -22,38 +22,37 @@ import { useEffect, useState } from 'react';
 export function DataPicker({
   staticData,
   lang,
+  minOff,
 }: {
-  staticData: MainStaticDataProps;
+  staticData: string;
   lang: Locale;
+  minOff?: boolean;
 }) {
   const [datePickerValue, setDatePickerValue] = React.useState<Dayjs | null>(
     dayjs(),
   );
   const [open, setOpen] = useState<boolean>(false);
 
-  // const active: boolean | undefined = useAppSelector(
-  //   state => state.popular.active,
-  // );
-
-  // useEffect(() => {
-  //   if (active === true) {
-  //     setTimeout(() => {
-  //       setOpen(true);
-  //     }, 500);
-  //   }
-  // }, [active]);
   const today = dayjs();
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
-      <Box mx={2}>
+      <Box
+        mx={minOff ? 0 : 2}
+        width={minOff ? '100%' : 'initial'}
+        sx={{
+          '& .MuiFormControl-root': {
+            width: '100%',
+          },
+        }}
+      >
         <DatePicker
           open={open}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
-          label={staticData.date_input}
-          minDate={today}
+          label={staticData}
+          minDate={minOff ? null : today}
           autoFocus={false}
-          value={datePickerValue}
+          value={minOff ? null : datePickerValue}
           onChange={newValue => {
             setDatePickerValue(newValue);
           }}

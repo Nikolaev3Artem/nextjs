@@ -1,0 +1,21 @@
+{
+  "title": "Profile",
+  "form": {
+    "name": "Name",
+    "surname": "Last Name",
+    "patronymic": "",
+    "phone": "Phone",
+    "email": "E-mail",
+    "birthday": "Birthday",
+    "login": "Login",
+    "password": "PAssword"
+  },
+  "button": {
+    "save": {
+      "title": "Save"
+    },
+    "edit": {
+      "title": "Edit"
+    }
+  }
+}
