@@ -5,5 +5,49 @@
   "search_title": "Пошук квитків на автобуси онлайн",
   "to": "Куди",
   "title": "Міжнародні перевезення в Португалію та Литву",
-  "description": "Замовляйте кращі квитки на кращі рейси"
+  "description": "Замовляйте кращі квитки на кращі рейси",
+  "search_results": "Результати пошуку:",
+  "routs_card": {
+    "number": "Номер:",
+    "conveniences": "Зручності:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "conditioning",
+        "aria": "air conditioning"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "wc",
+        "aria": "wc"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "seats",
+        "aria": "seats"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "socket",
+        "aria": "socket"
+      }
+    },
+    "price": "Ціна:",
+    "routs": "Маршрут:",
+    "baggage": "Багаж:",
+    "cancellation": "Умови скасування квитка",
+    "cancellation_info": "Інформація про скасування квитка",
+    "booking_btn": {
+      "title": "Бронювати",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Детальніше"
+    }
+  }
 }

@@ -8,14 +8,14 @@ import axios from 'axios';
 import * as React from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-// import DatePicker from '../component/Order/Datapicker/Datapicker';
-
 import Style from './page.module.css';
-import { Input } from '../Order/Input';
+import { Input } from '@/components/Order/Input';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { DataPicker } from '../Order/DataPicker';
+import { DataPicker } from '@/components/Order/DataPicker';
 import { IPopular } from '@/interface/IPopular';
+
+import { SearchRoutForm } from '@/components/SearchRoutForm';
 
 const getPopularRouts = async (lang: Locale): Promise<IPopular[]> => {
   try {
@@ -64,49 +64,25 @@ export const MainSection = async ({
   ].slice(0, 4);
 
   return (
-    <Container maxWidth={false} className={Style.main}>
-      <Box>
+    <Container maxWidth={false} className={Style.main} disableGutters>
+      <Box mb={2}>
         <Typography
-          mb={2}
-          className={Style.title}
           color={'primary'}
           variant={'h2'}
+          fontWeight={'700'}
+          sx={{ fontSize: { xs: '19px', md: '24px', xl: '32px' } }}
         >
           {staticData.search_title}
         </Typography>
       </Box>
-      <Grid flexDirection={'row'} display={'flex'} container>
-        <Grid item lg={7} xl={7}>
-          <Input
-            staticData={staticData}
-            lang={lang}
-            popularRoutsFrom={popularRoutsFrom}
-            popularRoutsTo={popularRoutsTo}
-            routsFrom={routsFrom}
-            routsTo={routsTo}
-          />
-        </Grid>
-
-        <Grid item lg={3} xl={3}>
-          <DataPicker staticData={staticData.date_input} lang={lang} />
-        </Grid>
-        <Grid item lg={2} xl={2}>
-          <Button
-            sx={{
-              height: '54px',
-              fontWeight: '400',
-              textTransform: 'none',
-              fontSize: '16px',
-            }}
-            startIcon={<AiOutlineSearch />}
-            fullWidth
-            variant={'contained'}
-            color={'secondary'}
-          >
-            {staticData.search_btn}
-          </Button>
-        </Grid>
-      </Grid>
+      <SearchRoutForm
+        staticData={staticData}
+        lang={lang}
+        popularRoutsFrom={popularRoutsFrom}
+        popularRoutsTo={popularRoutsTo}
+        routsFrom={routsFrom}
+        routsTo={routsTo}
+      />
     </Container>
   );
 };

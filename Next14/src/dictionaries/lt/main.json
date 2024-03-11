@@ -5,5 +5,49 @@
   "search_title": "Autobuso bilietų ieškokite internete",
   "to": "Kur",
   "title": "Tarptautiniai vežimai į Portugaliją ir Lietuvą",
-  "description": "Užsisakykite geriausius bilietus į geriausius skrydžius"
+  "description": "Užsisakykite geriausius bilietus į geriausius skrydžius",
+  "search_results": "Paieškos rezultatai:",
+  "routs_card": {
+    "number": "Numeris:",
+    "conveniences": "Patogumai:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "oro kondicionierius",
+        "aria": "oro kondicionierius"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "tualeto kabinas",
+        "aria": "tualeto kabinas"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "Vietos",
+        "aria": "Vietos"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "Lizdas",
+        "aria": "Lizdas"
+      }
+    },
+    "price": "Kaina:",
+    "routs": "Maršrutas:",
+    "baggage": "Bagažas:",
+    "cancellation": "Bilieto atšaukimo sąlygos",
+    "cancellation_info": "Bilieto atšaukimo informacija",
+    "booking_btn": {
+      "title": "Rezervuoti",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Skaityti daugiau"
+    }
+  }
 }

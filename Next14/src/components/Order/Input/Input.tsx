@@ -18,6 +18,12 @@ import { useRoutsContext } from '@/app/context';
 // import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
 // import { removePopular, setPopular } from '../../../store/popular/popularSlice';
 
+interface State {
+  to: string;
+  from: string;
+  date: string;
+}
+
 export function Input({
   staticData,
   lang,
@@ -25,13 +31,17 @@ export function Input({
   popularRoutsTo,
   routsFrom,
   routsTo,
+  setValues,
+  values,
 }: {
   staticData: MainStaticDataProps;
   lang: Locale;
-  popularRoutsFrom: any;
-  popularRoutsTo: any;
-  routsFrom: any;
-  routsTo: any;
+  popularRoutsFrom: string[];
+  popularRoutsTo: string[];
+  routsFrom: string[];
+  routsTo: string[];
+  setValues: any;
+  values: any;
 }) {
   const [value1, setValue1] = useState<any>('');
   const [value2, setValue2] = useState<any>('');
@@ -64,16 +74,18 @@ export function Input({
 
   const handlePopRoutToClick = (el: string) => {
     setValue1(el);
+    setValues({ ...values, ['from']: el });
   };
 
   const handlePopRoutFromClick = (el: string) => {
     setValue2(el);
+    setValues({ ...values, ['to']: el });
   };
 
   return (
     <Box>
-      <Stack direction="row" gap={2}>
-        <Grid container direction={'column'} gap={2} width={'100%'}>
+      <Stack gap={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
+        <Grid container direction={'column'} gap={2}>
           <Grid item>
             <Autocomplete
               value={value1}
@@ -85,6 +97,7 @@ export function Input({
               )}
               onInputChange={(event, newInputValue, reason) => {
                 setValue1(newInputValue);
+                setValues({ ...values, ['from']: newInputValue });
               }}
             />
           </Grid>
@@ -122,6 +135,7 @@ export function Input({
               )}
               onInputChange={(event, newInputValue) => {
                 setValue2(newInputValue);
+                setValues({ ...values, ['to']: newInputValue });
               }}
             />
           </Grid>

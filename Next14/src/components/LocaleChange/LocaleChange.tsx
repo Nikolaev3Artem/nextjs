@@ -51,7 +51,7 @@ const cache = createCache({
 
 export function LocaleChange({ color, weight, lang }: IColor) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(1);
+
   // useEffect(() => {
   //     function getlocale() {
   //         if (Cookies.get("id")) {
@@ -107,7 +107,6 @@ export function LocaleChange({ color, weight, lang }: IColor) {
     id: number,
     lang?: string,
   ) => {
-    setSelectedIndex(id);
     setAnchorEl(null);
     // Cookies.set("locale", locale)
     // Cookies.set("id", index.toString())

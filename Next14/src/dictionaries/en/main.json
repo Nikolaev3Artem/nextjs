@@ -5,5 +5,49 @@
   "search_title": "Search for bus tickets online",
   "to": "To",
   "title": "International transportation to Portugal and Lithuania",
-  "description": "Order the best tickets for the best flights."
+  "description": "Order the best tickets for the best flights.",
+  "search_results": "Search results:",
+  "routs_card": {
+    "number": "Number:",
+    "conveniences": "Conveniences:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "conditioning",
+        "aria": "air conditioning"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "wc",
+        "aria": "wc"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "seats",
+        "aria": "seats"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "socket",
+        "aria": "socket"
+      }
+    },
+    "price": "Price:",
+    "routs": "Route:",
+    "baggage": "Baggage:",
+    "cancellation": "Ticket cancellation terms",
+    "cancellation_info": "Ticket cancellation information",
+    "booking_btn": {
+      "title": "Book",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Read more"
+    }
+  }
 }

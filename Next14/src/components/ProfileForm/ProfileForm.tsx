@@ -216,6 +216,8 @@ export const ProfileForm = ({
           <DataPicker
             staticData={staticData.form.birthday}
             lang={lang}
+            setValues={setValues}
+            values={values}
             minOff
           />
         </Grid>

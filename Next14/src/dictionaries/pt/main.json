@@ -5,5 +5,50 @@
   "search_title": "Pesquise passagens de ônibus online",
   "to": "Onde",
   "title": "Transportes internacionais para Portugal e Lituânia",
-  "description": "Encomende os melhores bilhetes para os melhores voos."
+  "description": "Encomende os melhores bilhetes para os melhores voos.",
+
+  "search_results": "Resultados da pesquisa:",
+  "routs_card": {
+    "number": "Número:",
+    "conveniences": "Comodidades:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "conditioning",
+        "aria": "ar condicionado"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "wc",
+        "aria": "wc"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "seats",
+        "aria": "assentos"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "socket",
+        "aria": "tomada"
+      }
+    },
+    "price": "Preço:",
+    "routs": "Rota:",
+    "baggage": "Bagagem:",
+    "cancellation": "Condições de cancelamento do bilhete",
+    "cancellation_info": "Informações sobre o cancelamento do bilhete",
+    "booking_btn": {
+      "title": "Reservar",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Ler mais"
+    }
+  }
 }

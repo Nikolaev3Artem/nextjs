@@ -118,7 +118,14 @@ export function Login({
       const result = await login(values);
 
       if (result === 200) {
-        router.back();
+        const currentPath = window.location.pathname;
+        const previousPath = document.referrer;
+
+        if (currentPath === previousPath) {
+          router.replace('/');
+        } else {
+          router.back();
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
