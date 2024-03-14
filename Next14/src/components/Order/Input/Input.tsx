@@ -18,15 +18,8 @@ import { useRoutsContext } from '@/app/context';
 // import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
 // import { removePopular, setPopular } from '../../../store/popular/popularSlice';
 
-interface State {
-  to: string;
-  from: string;
-  date: string;
-}
-
 export function Input({
   staticData,
-  lang,
   popularRoutsFrom,
   popularRoutsTo,
   routsFrom,
@@ -56,8 +49,6 @@ export function Input({
   //   state => state.popular.active,
   // );
   let active = true;
-
-  const router = useRouter();
 
   useEffect(() => {
     if ((active = true)) {

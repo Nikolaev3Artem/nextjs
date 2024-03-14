@@ -8,6 +8,7 @@
   "description": "Encomende os melhores bilhetes para os melhores voos.",
 
   "search_results": "Resultados da pesquisa:",
+  "no_results": "Esta rota não existe.",
   "routs_card": {
     "number": "Número:",
     "conveniences": "Comodidades:",
@@ -40,9 +41,19 @@
     },
     "price": "Preço:",
     "routs": "Rota:",
-    "baggage": "Bagagem:",
+
+    "baggage": {
+      "title": "Bagagem:",
+
+      "light_luggage": "Bagagem - gratuita para um passageiro: 1 peça de bagagem de mão (máx. dimensões de 15x25x35 cm)",
+      "heavy_luggage": "Bagagem - 1 peça de bagagem até 30 kg com dimensões até 30x60x80 cm no compartimento de bagagem"
+    },
     "cancellation": "Condições de cancelamento do bilhete",
-    "cancellation_info": "Informações sobre o cancelamento do bilhete",
+    "cancellation_info": {
+      "title": "Informações sobre o cancelamento do bilhete",
+      "text": "Até 48 horas antes da partida: 90% De 48 a 24 horas antes da partida: 80% Menos de 24 horas antes da partida: o bilhete não é reembolsável",
+      "href": "/"
+    },
     "booking_btn": {
       "title": "Reservar",
       "href": "#"

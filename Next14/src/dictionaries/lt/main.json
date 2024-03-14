@@ -7,6 +7,7 @@
   "title": "Tarptautiniai vežimai į Portugaliją ir Lietuvą",
   "description": "Užsisakykite geriausius bilietus į geriausius skrydžius",
   "search_results": "Paieškos rezultatai:",
+  "no_results": "Toks maršrutas neegzistuoja.",
   "routs_card": {
     "number": "Numeris:",
     "conveniences": "Patogumai:",
@@ -39,9 +40,20 @@
     },
     "price": "Kaina:",
     "routs": "Maršrutas:",
-    "baggage": "Bagažas:",
+
+    "baggage": {
+      "title": "Bagažas:",
+
+      "light_luggage": "Lengvas bagažas - nemokamas vienam keleiviui: 1 rankinis bagažas (maks. dydis 15x25x35 cm)",
+      "heavy_luggage": "Sunkus bagažas - 1 bagažo vienetas iki 30 kg, dydis iki 30x60x80 cm bagažinėje"
+    },
     "cancellation": "Bilieto atšaukimo sąlygos",
-    "cancellation_info": "Bilieto atšaukimo informacija",
+
+    "cancellation_info": {
+      "title": "Bilieto atšaukimo informacija",
+      "text": "Iki 48 valandų prieš išvyką: 90% Nuo 48 iki 24 valandų prieš išvyką: 80% Mažiau nei 24 valandos iki išvykimo: bilietas negrąžinamas",
+      "href": "/"
+    },
     "booking_btn": {
       "title": "Rezervuoti",
       "href": "#"

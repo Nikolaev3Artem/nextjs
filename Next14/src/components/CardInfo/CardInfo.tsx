@@ -130,8 +130,8 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
     const caption =
       `🇺🇦<b>${staticData.caption.title}</b>‼️\n` +
       `🚍 ${staticData.caption.model}   ${sendTelegram.name}\n` +
-      `💺 ${staticData.first_floor}  ${sendTelegram.first_floor_seats}\n` +
-      `🪜 ${staticData.second_floor}  ${sendTelegram.second_floor_seats}\n` +
+      `💺 ${staticData.first_floor}  ${sendTelegram.first_floor_seats ? sendTelegram.first_floor_seats?.length + 1 : ''}\n` +
+      `🪜 ${staticData.second_floor}  ${sendTelegram.second_floor_seats ? sendTelegram.second_floor_seats?.length + 1 : ''}\n` +
       `☎️ ${staticData.caption.tel}  ${data.phone}\n`;
 
     const response = await axios.post(
@@ -252,6 +252,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                           }}
                           height={sm ? 200 : 350}
                           className="keen-slider__slide"
+                          position={'static'}
                         >
                           <Image
                             style={{
@@ -464,7 +465,9 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.first_floor_seats}
+                            {data.first_floor_seats
+                              ? data.first_floor_seats.length + 1
+                              : ''}
                           </Typography>
                         </Stack>
                         <Stack
@@ -495,7 +498,9 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.second_floor_seats}
+                            {data.second_floor_seats
+                              ? data.second_floor_seats.length + 1
+                              : ''}
                           </Typography>
                         </Stack>
                       </Grid>

@@ -1,7 +1,6 @@
 .main .content {
   display: flex;
 
-  height: 350px;
   width: 100%;
   justify-content: center;
 }

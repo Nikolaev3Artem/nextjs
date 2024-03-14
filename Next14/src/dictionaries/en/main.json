@@ -7,6 +7,7 @@
   "title": "International transportation to Portugal and Lithuania",
   "description": "Order the best tickets for the best flights.",
   "search_results": "Search results:",
+  "no_results": "The route does not exist.",
   "routs_card": {
     "number": "Number:",
     "conveniences": "Conveniences:",
@@ -39,9 +40,17 @@
     },
     "price": "Price:",
     "routs": "Route:",
-    "baggage": "Baggage:",
+    "baggage": {
+      "title": "Baggage:",
+      "light_luggage": "Light luggage - free for one passenger: 1 piece of hand luggage (max. size 15x25x35 cm)",
+      "heavy_luggage": "Heavy luggage - 1 piece of luggage up to 30 kg, size up to 30x60x80 cm in the luggage compartment"
+    },
     "cancellation": "Ticket cancellation terms",
-    "cancellation_info": "Ticket cancellation information",
+    "cancellation_info": {
+      "title": "Ticket cancellation information",
+      "text": "Up to 48 hours before departure: 90% From 48 to 24 hours before departure: 80% Less than 24 hours before departure: ticket is non-refundable",
+      "href": "/"
+    },
     "booking_btn": {
       "title": "Book",
       "href": "#"

@@ -47,6 +47,7 @@ export interface MainStaticDataProps {
   title: string;
   description: string;
   search_results: string;
+  no_results: string;
   routs_card: {
     number: string;
     conveniences: string;
@@ -59,9 +60,9 @@ export interface MainStaticDataProps {
     };
     price: string;
     routs: string;
-    baggage: string;
+    baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;
-    cancellation_info: string;
+    cancellation_info: { title: string; href: string; text: string };
     booking_btn: {
       title: string;
       href: string;

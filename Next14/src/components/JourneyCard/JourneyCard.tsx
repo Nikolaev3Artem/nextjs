@@ -1,46 +1,34 @@
+import * as React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import theme from '@/theme';
+import { Locale } from '@/i18n.config';
+
+import { styled } from '@mui/material/styles';
+import Collapse from '@mui/material/Collapse';
+import { IconButtonProps } from '@mui/material/IconButton';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { IJourney } from '@/interface/IJourney';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  Container,
   Grid,
   IconButton,
-  List,
-  Stack,
   Typography,
 } from '@mui/material';
 import Style from './JourneyCard.module.css';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { MdExpandMore } from 'react-icons/md';
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
 
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import { IconButtonProps } from '@mui/material/IconButton';
-
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Image from 'next/image';
-import theme from '@/theme';
 import MapIcon from '../../../public/icons/map-marker.svg';
-
 import FromSvg from '../../../public/icons/journey_from.svg';
 import ToSvg from '../../../public/icons/journey_to.svg';
 import FromCircleSvg from '../../../public/icons/journey_from_circle.svg';
+import BagPersonalSvg from '../../../public/icons/bag-personal.svg';
+import BagSuitcaseSvg from '../../../public/icons/bag-suitcase.svg';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -61,17 +49,18 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export const JourneyCard = ({
   staticData,
   data,
+  lang,
 }: {
   staticData: MainStaticDataProps;
   data: IJourney;
+  lang: Locale;
 }) => {
   const [expanded, setExpanded] = React.useState(false);
-  console.log('s', data);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  console.log(data);
   const icons = ['wifi', 'conditioning', 'wc', 'seats', 'socket'];
 
   interface ConveniencesIconProp {
@@ -92,25 +81,10 @@ export const JourneyCard = ({
     return null;
   }
 
-  const Booking = async () => {
-    console.log(data);
-    // try {
-    //   const response = await axios.get(
-    //     `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}`,
-    //   );
-
-    //   if (response.status === 200) {
-    //     setSearchJourney(response.data.results);
-    //   } else return [];
-    // } catch (error) {
-    //   console.log(error);
-    // }
-  };
-
   return (
     <Grid item className={Style.wrapper} sx={{ flexDirection: 'column' }}>
       <Card>
-        <CardContent sx={{ p: 3, minHeight: '210px' }}>
+        <CardContent sx={{ p: 3, minHeight: '250px' }}>
           <Grid
             container
             columnSpacing={{ xs: 1, sm: 2, md: 2 }}
@@ -284,7 +258,8 @@ export const JourneyCard = ({
                   fullWidth
                   variant={'contained'}
                   color={'success'}
-                  onClick={Booking}
+                  LinkComponent={Link}
+                  href={`/${lang}/profile`}
                 >
                   {staticData.routs_card.booking_btn.title}
                 </Button>
@@ -347,6 +322,7 @@ export const JourneyCard = ({
             alignItems={'center'}
             columnGap={1}
             sx={{
+              cursor: 'pointer',
               ml: { sm: 'auto' },
             }}
           >
@@ -369,9 +345,9 @@ export const JourneyCard = ({
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent className={Style.collapse} sx={{ p: 3 }}>
-            <Grid container>
-              <Grid item>
-                <Box display={'flex'}>
+            <Grid container rowSpacing={4}>
+              <Grid item sm={5} md={4} lg={3}>
+                <Box display={'flex'} mb={1}>
                   <Typography
                     sx={{
                       mr: 1,
@@ -394,60 +370,175 @@ export const JourneyCard = ({
                     {data.routes[0].to_place}
                   </Typography>
                 </Box>
-                <Box
-                  component={'ul'}
-                  display={'flex'}
-                  rowGap={1}
-                  flexDirection={'column'}
-                >
+                <Box display={'flex'} columnGap={2}>
                   <Box
-                    component={'li'}
+                    component={'ul'}
                     display={'flex'}
-                    columnGap={1}
-                    alignItems={'center'}
+                    flexDirection={'column'}
+                    justifyContent={'center'}
                   >
                     <Box width={'12px'} height={'13px'} display={'flex'}>
-                      <FromCircleSvg
-                        width={'12px'}
-                        height={'13px'}
-                        display={'flex'}
-                      />
+                      <FromCircleSvg width={12} height={13} />
                     </Box>
 
-                    <Typography>{data.routes[0].from_place}</Typography>
-                  </Box>
-                  {data.routes[0].stops &&
-                    data.routes[0].stops.map(stop => {
-                      return (
-                        <Box
-                          component={'li'}
-                          display={'flex'}
-                          columnGap={1}
-                          alignItems={'center'}
-                        >
-                          <Box width={'12px'} height={'32px'} display={'flex'}>
-                            <ToSvg />
+                    {data.routes[0].stops &&
+                      data.routes[0].stops.map(stop => {
+                        return (
+                          <Box
+                            component={'li'}
+                            display={'flex'}
+                            columnGap={1}
+                            alignItems={'center'}
+                          >
+                            <Box
+                              width={'12px'}
+                              height={'32px'}
+                              display={'flex'}
+                            >
+                              <ToSvg width={12} height={32} />
+                            </Box>
                           </Box>
-
-                          <Typography>{stop.city}</Typography>
-                        </Box>
-                      );
-                    })}
-                  <Box
-                    component={'li'}
-                    display={'flex'}
-                    columnGap={1}
-                    alignItems={'center'}
-                  >
+                        );
+                      })}
                     <Box width={'12px'} height={'31px'} display={'flex'}>
                       <ToSvg />
                     </Box>
-
-                    <Typography>{data.routes[0].to_place}</Typography>
+                  </Box>
+                  <Box
+                    component={'ul'}
+                    display={'flex'}
+                    rowGap={'12px'}
+                    flexDirection={'column'}
+                    sx={{ rowGap: { xs: '12px', md: '6px' } }}
+                  >
+                    <Box
+                      component={'li'}
+                      display={'flex'}
+                      columnGap={1}
+                      alignItems={'center'}
+                    >
+                      <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
+                        {data.routes[0].from_place}
+                      </Typography>
+                    </Box>
+                    {data.routes[0].stops &&
+                      data.routes[0].stops.map(stop => {
+                        return (
+                          <Box
+                            component={'li'}
+                            display={'flex'}
+                            columnGap={1}
+                            alignItems={'center'}
+                          >
+                            <Typography
+                              sx={{ fontSize: { xs: '13px', md: '16px' } }}
+                            >
+                              {stop.city}
+                            </Typography>
+                          </Box>
+                        );
+                      })}
+                    <Box
+                      component={'li'}
+                      display={'flex'}
+                      columnGap={1}
+                      alignItems={'center'}
+                    >
+                      <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
+                        {data.routes[0].to_place}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Box>
               </Grid>
-              <Grid item> </Grid>
+              <Grid item sm={7} md={8} lg={9}>
+                <Grid
+                  columnSpacing={10}
+                  container
+                  display={'flex'}
+                  sx={{
+                    flexDirection: { sm: 'column', md: 'row' },
+                    rowGap: 1,
+                  }}
+                >
+                  <Grid item display={'flex'} flexDirection={'column'} md={5}>
+                    <Typography
+                      sx={{
+                        mb: 1,
+                        fontWeight: 700,
+                        fontSize: { xs: '13px', md: '16px' },
+                      }}
+                    >
+                      {staticData.routs_card.baggage.title}
+                    </Typography>
+                    <Box display={'flex'} mb={1}>
+                      <Box width={24} height={24}>
+                        <BagPersonalSvg width={24} height={24} />
+                      </Box>
+
+                      <Typography
+                        sx={{
+                          fontSize: { xs: '13px', md: '16px' },
+                          ml: 1,
+                        }}
+                      >
+                        {staticData.routs_card.baggage.light_luggage}
+                      </Typography>
+                    </Box>
+                    <Box display={'flex'}>
+                      <Box width={24} height={24}>
+                        <BagSuitcaseSvg width={24} height={24} />
+                      </Box>
+
+                      <Typography
+                        sx={{
+                          fontSize: { xs: '13px', md: '16px' },
+                          ml: 1,
+                        }}
+                      >
+                        {staticData.routs_card.baggage.heavy_luggage}
+                      </Typography>
+                    </Box>
+                  </Grid>
+
+                  <Grid item display={'flex'} flexDirection={'column'} md={7}>
+                    <Typography
+                      sx={{
+                        mb: 1,
+                        fontWeight: 700,
+                        fontSize: { xs: '13px', md: '16px' },
+                      }}
+                    >
+                      {staticData.routs_card.cancellation}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '13px', md: '16px' },
+                        mb: 1,
+                      }}
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          staticData.routs_card.cancellation_info.text.replace(
+                            /%(\s|$)/g,
+                            '%<br/>',
+                          ),
+                      }}
+                    />
+                    <Link
+                      href={`/${lang}${staticData.routs_card.cancellation_info.href}`}
+                    >
+                      <Typography
+                        color={theme.palette.secondary.main}
+                        sx={{
+                          fontSize: { xs: '13px', md: '16px' },
+                        }}
+                      >
+                        {staticData.routs_card.cancellation_info.title}
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Grid>
             </Grid>
           </CardContent>
         </Collapse>

@@ -2,7 +2,7 @@
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
+
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
@@ -10,16 +10,13 @@ import axios from 'axios';
 import * as React from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import Style from '@/app/[lang]/(public)/page.module.css';
 import { Input } from '@/components/Order/Input';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { DataPicker } from '@/components/Order/DataPicker';
-import { IPopular } from '@/interface/IPopular';
+
 import { SearchJourney } from '@/components/SearchRout';
 import { IJourney } from '@/interface/IJourney';
-
-const searchRout = [{}];
 
 interface State {
   to: string;
@@ -48,7 +45,7 @@ export const SearchRoutForm = ({
     date: '',
   });
 
-  const [searchJourney, setSearchJourney] = React.useState<IJourney[]>([]);
+  const [searchJourney, setSearchJourney] = React.useState<IJourney[]>();
 
   const Search = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -116,12 +113,18 @@ export const SearchRoutForm = ({
           </Grid>
         </Grid>
       </Box>
-      {searchJourney.length > 0 && (
+      {searchJourney && searchJourney.length > 0 && (
         <SearchJourney
           staticData={staticData}
           searchJourney={searchJourney}
           values={values}
+          lang={lang}
         />
+      )}
+      {searchJourney && searchJourney.length === 0 && (
+        <Box mt={2}>
+          <Typography>{staticData.no_results}</Typography>
+        </Box>
       )}
     </>
   );

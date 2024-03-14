@@ -13,7 +13,6 @@ const getRule = async (lang: Locale) => {
       `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/rule/`,
     );
 
-    console.log(response.data.results[response.data.results.length - 1].img);
     if (response.status === 200) {
       return {
         banner: {

@@ -1,21 +1,17 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import axios from 'axios';
-
 import * as React from 'react';
-import { AiOutlineSearch } from 'react-icons/ai';
-
-import Style from './page.module.css';
-import { Input } from '@/components/Order/Input';
-import { MainStaticDataProps } from '@/interface/IStaticData';
+import axios from 'axios';
 import { Locale } from '@/i18n.config';
-import { DataPicker } from '@/components/Order/DataPicker';
-import { IPopular } from '@/interface/IPopular';
 
 import { SearchRoutForm } from '@/components/SearchRoutForm';
+
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+
+import Style from './page.module.css';
+
+import { MainStaticDataProps } from '@/interface/IStaticData';
+import { IPopular } from '@/interface/IPopular';
 
 const getPopularRouts = async (lang: Locale): Promise<IPopular[]> => {
   try {

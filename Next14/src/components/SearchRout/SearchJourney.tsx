@@ -1,12 +1,13 @@
 import { IJourney } from '@/interface/IJourney';
 import { MainStaticDataProps } from '@/interface/IStaticData';
-import { Stack, Grid, Container, Typography } from '@mui/material';
+import { Stack, Grid, Typography } from '@mui/material';
 import { IoMdArrowForward } from 'react-icons/io';
 import { MdCalendarMonth } from 'react-icons/md';
 import Box from '@mui/material/Box';
 import dayjs from 'dayjs';
 import { JourneyCard } from '../JourneyCard';
 import Style from './SearchJourney.module.css';
+import { Locale } from '@/i18n.config';
 
 interface State {
   to: string;
@@ -18,10 +19,12 @@ export const SearchJourney = ({
   staticData,
   searchJourney,
   values,
+  lang,
 }: {
   staticData: MainStaticDataProps;
   searchJourney: IJourney[];
   values: State;
+  lang: Locale;
 }) => {
   return (
     <Stack gap={2} sx={{ flexDirection: { xs: 'column', md: 'row' } }} mt={4}>
@@ -75,7 +78,12 @@ export const SearchJourney = ({
           >
             {searchJourney.map(el => {
               return (
-                <JourneyCard key={el.id} staticData={staticData} data={el} />
+                <JourneyCard
+                  key={el.id}
+                  staticData={staticData}
+                  data={el}
+                  lang={lang}
+                />
               );
             })}
           </Grid>
