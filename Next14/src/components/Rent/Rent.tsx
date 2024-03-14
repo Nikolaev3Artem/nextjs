@@ -27,7 +27,6 @@ export const Rent = ({
                   id={item.id}
                   name={item.name}
                   images_list={item.images_list}
-                  busIdService={item.busIdService}
                   second_floor_seats={item.second_floor_seats}
                   first_floor_seats={item.first_floor_seats}
                   photo={item.photo}

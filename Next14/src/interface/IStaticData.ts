@@ -46,6 +46,37 @@ export interface MainStaticDataProps {
   to: string;
   title: string;
   description: string;
+  search_results: string;
+  no_results: string;
+  routs_card: {
+    number: string;
+    conveniences: string;
+    conveniences_icon: {
+      wifi: conveniencesIconProp;
+      conditioning: conveniencesIconProp;
+      wc: conveniencesIconProp;
+      seats: conveniencesIconProp;
+      socket: conveniencesIconProp;
+    };
+    price: string;
+    routs: string;
+    baggage: { title: string; light_luggage: string; heavy_luggage: string };
+    cancellation: string;
+    cancellation_info: { title: string; href: string; text: string };
+    booking_btn: {
+      title: string;
+      href: string;
+    };
+    read_more_btn: {
+      title: string;
+    };
+  };
+}
+
+export interface conveniencesIconProp {
+  icon: string;
+  name: string;
+  aria: string;
 }
 
 export interface contactStaticDataProp {

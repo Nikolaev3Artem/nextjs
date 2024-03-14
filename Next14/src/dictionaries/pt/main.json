@@ -5,5 +5,61 @@
   "search_title": "Pesquise passagens de ônibus online",
   "to": "Onde",
   "title": "Transportes internacionais para Portugal e Lituânia",
-  "description": "Encomende os melhores bilhetes para os melhores voos."
+  "description": "Encomende os melhores bilhetes para os melhores voos.",
+
+  "search_results": "Resultados da pesquisa:",
+  "no_results": "Esta rota não existe.",
+  "routs_card": {
+    "number": "Número:",
+    "conveniences": "Comodidades:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "conditioning",
+        "aria": "ar condicionado"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "wc",
+        "aria": "wc"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "seats",
+        "aria": "assentos"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "socket",
+        "aria": "tomada"
+      }
+    },
+    "price": "Preço:",
+    "routs": "Rota:",
+
+    "baggage": {
+      "title": "Bagagem:",
+
+      "light_luggage": "Bagagem - gratuita para um passageiro: 1 peça de bagagem de mão (máx. dimensões de 15x25x35 cm)",
+      "heavy_luggage": "Bagagem - 1 peça de bagagem até 30 kg com dimensões até 30x60x80 cm no compartimento de bagagem"
+    },
+    "cancellation": "Condições de cancelamento do bilhete",
+    "cancellation_info": {
+      "title": "Informações sobre o cancelamento do bilhete",
+      "text": "Até 48 horas antes da partida: 90% De 48 a 24 horas antes da partida: 80% Menos de 24 horas antes da partida: o bilhete não é reembolsável",
+      "href": "/"
+    },
+    "booking_btn": {
+      "title": "Reservar",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Ler mais"
+    }
+  }
 }

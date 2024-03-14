@@ -84,7 +84,7 @@ export const ProfileForm = ({
     try {
       const session = await getSession();
       if (!session) return null;
-      console.log('a', session);
+
       const result = await axios.put(
         `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/update/${userData?.id}`,
         {
@@ -216,6 +216,8 @@ export const ProfileForm = ({
           <DataPicker
             staticData={staticData.form.birthday}
             lang={lang}
+            setValues={setValues}
+            values={values}
             minOff
           />
         </Grid>

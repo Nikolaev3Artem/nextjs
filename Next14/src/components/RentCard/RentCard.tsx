@@ -31,7 +31,7 @@ const colorHeading = grey[900];
 export const RentCard = ({
   id,
   name,
-  busIdService,
+
   images_list,
   photo,
   second_floor_seats,
@@ -132,7 +132,7 @@ export const RentCard = ({
                 }}
                 color={color}
               >
-                {first_floor_seats}
+                {first_floor_seats ? first_floor_seats?.length + 1 : ''}
               </Typography>
             </Stack>
 
@@ -163,7 +163,7 @@ export const RentCard = ({
                   }}
                   color={color}
                 >
-                  {second_floor_seats}
+                  {second_floor_seats.length + 1}
                 </Typography>
               </Stack>
             )}

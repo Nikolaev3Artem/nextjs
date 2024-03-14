@@ -5,5 +5,61 @@
   "search_title": "Autobuso bilietų ieškokite internete",
   "to": "Kur",
   "title": "Tarptautiniai vežimai į Portugaliją ir Lietuvą",
-  "description": "Užsisakykite geriausius bilietus į geriausius skrydžius"
+  "description": "Užsisakykite geriausius bilietus į geriausius skrydžius",
+  "search_results": "Paieškos rezultatai:",
+  "no_results": "Toks maršrutas neegzistuoja.",
+  "routs_card": {
+    "number": "Numeris:",
+    "conveniences": "Patogumai:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "oro kondicionierius",
+        "aria": "oro kondicionierius"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "tualeto kabinas",
+        "aria": "tualeto kabinas"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "Vietos",
+        "aria": "Vietos"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "Lizdas",
+        "aria": "Lizdas"
+      }
+    },
+    "price": "Kaina:",
+    "routs": "Maršrutas:",
+
+    "baggage": {
+      "title": "Bagažas:",
+
+      "light_luggage": "Lengvas bagažas - nemokamas vienam keleiviui: 1 rankinis bagažas (maks. dydis 15x25x35 cm)",
+      "heavy_luggage": "Sunkus bagažas - 1 bagažo vienetas iki 30 kg, dydis iki 30x60x80 cm bagažinėje"
+    },
+    "cancellation": "Bilieto atšaukimo sąlygos",
+
+    "cancellation_info": {
+      "title": "Bilieto atšaukimo informacija",
+      "text": "Iki 48 valandų prieš išvyką: 90% Nuo 48 iki 24 valandų prieš išvyką: 80% Mažiau nei 24 valandos iki išvykimo: bilietas negrąžinamas",
+      "href": "/"
+    },
+    "booking_btn": {
+      "title": "Rezervuoti",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Skaityti daugiau"
+    }
+  }
 }

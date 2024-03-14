@@ -5,5 +5,58 @@
   "search_title": "Пошук квитків на автобуси онлайн",
   "to": "Куди",
   "title": "Міжнародні перевезення в Португалію та Литву",
-  "description": "Замовляйте кращі квитки на кращі рейси"
+  "description": "Замовляйте кращі квитки на кращі рейси",
+  "search_results": "Результати пошуку:",
+  "no_results": "Такого маршруту не існує",
+  "routs_card": {
+    "number": "Номер:",
+    "conveniences": "Зручності:",
+    "conveniences_icon": {
+      "wifi": {
+        "icon": "/wifi.svg",
+        "name": "wifi",
+        "aria": "wifi"
+      },
+      "conditioning": {
+        "icon": "/air-conditioner.svg",
+        "name": "conditioning",
+        "aria": "air conditioning"
+      },
+      "wc": {
+        "icon": "/wc.svg",
+        "name": "wc",
+        "aria": "wc"
+      },
+      "seats": {
+        "icon": "/car-seat.svg",
+        "name": "seats",
+        "aria": "seats"
+      },
+      "socket": {
+        "icon": "/power.svg",
+        "name": "socket",
+        "aria": "socket"
+      }
+    },
+    "price": "Ціна:",
+    "routs": "Маршрут:",
+    "baggage": {
+      "title": "Багаж:",
+      "light_luggage": "Багаж - безкоштовно на одного пасажира: 1 місце ручної поклажі (макс. розміри 15х25х35 см)",
+      "heavy_luggage": "Багаж - 1 місце багажу до 30 кг розміром до 30х60х80 см в багажному відділенні"
+    },
+    "cancellation": "Умови скасування квитка",
+    "cancellation_info": {
+      "title": "Інформація про скасування квитка",
+      "text": "до 48 год. до від'їзду: 90% від 48 год. до 24 год. до від'їзду: 80% менше 24 год. до від'їзду: квиток не повертається",
+      "href": "/"
+    },
+    "booking_btn": {
+      "title": "Бронювати",
+      "href": "#"
+    },
+    "read_more_btn": {
+      "title": "Детальніше"
+    }
+  }
 }
