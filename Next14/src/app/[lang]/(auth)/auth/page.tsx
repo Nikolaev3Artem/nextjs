@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Login } from '@/components/Login';
+import { Login } from '@/components/auth/Login';
 
 import { Locale } from '@/i18n.config';
 import { getLoginDictionaries } from '@/lib/dictionary';
 
-import { AuthWrapper } from '@/components/AuthWrapper';
+import { AuthWrapper } from '@/components/auth/AuthWrapper';
 
 export default async function Auth({
   params,

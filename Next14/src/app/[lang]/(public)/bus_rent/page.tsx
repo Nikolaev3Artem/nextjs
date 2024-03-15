@@ -1,9 +1,9 @@
 import { Locale } from '@/i18n.config';
-import { Hero } from '@/components/Hero';
-import { Wrapper } from '@/components/Wrapper';
+import { Hero } from '@/components/public/Hero';
+import { Wrapper } from '@/components/common/Wrapper';
 import styles from './bus_rent.module.css';
 import axios from 'axios';
-import { Rent } from '@/components/Rent';
+import { Rent } from '@/components/public/Rent';
 import { getBusRentDictionaries } from '@/lib/dictionary';
 
 const getBusRent = async (lang: Locale) => {

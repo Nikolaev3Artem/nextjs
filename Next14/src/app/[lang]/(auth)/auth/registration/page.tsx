@@ -1,6 +1,6 @@
-import { AuthWrapper } from '@/components/AuthWrapper';
+import { AuthWrapper } from '@/components/auth/AuthWrapper';
 
-import Signup from '@/components/Signup/Signup';
+import Signup from '@/components/auth/Signup/Signup';
 import { Locale } from '@/i18n.config';
 import {
   getLoginDictionaries,

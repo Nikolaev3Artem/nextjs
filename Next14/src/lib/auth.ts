@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import axios from 'axios';
-import { IProfile, IToken } from '@/interface/IUser';
+import { IProfile, IToken, IUser } from '@/interface/IUser';
 import { Locale } from '@/i18n.config';
 
 interface LoginProps {
@@ -76,8 +76,8 @@ export async function getUserInfo() {
   try {
     const access = JSON.parse(session).access;
 
-    const { data } = await axios.get<CustomerProps>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
+    const { data } = await axios.get<IUser>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/users/me/`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export async function getUserInfo() {
       },
     );
 
-    return data.results[0];
+    return data;
   } catch (error) {
     console.log(error);
   }

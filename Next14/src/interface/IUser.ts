@@ -1,5 +1,5 @@
 export interface IUser {
-  id: number;
+  id?: number;
   last_login?: any;
   is_superuser: boolean;
   first_name: string;
@@ -14,12 +14,13 @@ export interface IUser {
 
 export interface IProfile {
   id?: number;
-  last_name: string;
+  last_name?: string;
   first_name?: any;
   date?: any;
+  email?: string;
   delivery?: any;
   phone?: any;
-  company: boolean;
+  company?: boolean;
   city?: any;
   logo?: any;
   name_company?: any;
@@ -30,7 +31,7 @@ export interface IProfile {
   phone_accountant?: any;
   bonus?: any;
   discount?: any;
-  user: IUser;
+  user?: IUser;
 }
 
 export interface IToken {

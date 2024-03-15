@@ -1,8 +1,8 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
-import { Hero } from '@/components/Hero';
-import { Wrapper } from '@/components/Wrapper';
-import { Contact } from '@/components/Contact';
+import { Hero } from '@/components/public/Hero';
+import { Wrapper } from '@/components/common/Wrapper';
+import { Contact } from '@/components/common/Contact';
 import { getContactDictionaries } from '@/lib/dictionary';
 
 import { IContactText } from '@/interface/IEditorText';
