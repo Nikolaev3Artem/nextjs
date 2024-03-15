@@ -1,9 +1,9 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
 import { IBanner } from '@/interface/IBanner';
-import { Hero } from '@/components/Hero';
-import { Wrapper } from '@/components/Wrapper';
-import { Parcels } from '@/components/Parcels';
+import { Hero } from '@/components/public/Hero';
+import { Wrapper } from '@/components/common/Wrapper';
+import { Parcels } from '@/components/public/Parcels';
 import { getParcelsDictionaries } from '@/lib/dictionary';
 
 const getParcels = async (lang: Locale) => {

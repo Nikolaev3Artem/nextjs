@@ -20,6 +20,7 @@ const dictionaries = {
     ...(await import(`@/dictionaries/en/parcels.json`)).default,
     ...(await import(`@/dictionaries/en/bus_rent.json`)).default,
     ...(await import(`@/dictionaries/en/profile.json`)).default,
+    ...(await import(`@/dictionaries/en/order.json`)).default,
   }),
 
   uk: async () => ({
@@ -40,6 +41,7 @@ const dictionaries = {
     ...(await import(`@/dictionaries/uk/parcels.json`)).default,
     ...(await import(`@/dictionaries/uk/bus_rent.json`)).default,
     ...(await import(`@/dictionaries/uk/profile.json`)).default,
+    ...(await import(`@/dictionaries/uk/order.json`)).default,
   }),
   lt: async () => ({
     ...(await import(`@/dictionaries/lt/common.json`)).default,
@@ -59,6 +61,7 @@ const dictionaries = {
     ...(await import(`@/dictionaries/lt/parcels.json`)).default,
     ...(await import(`@/dictionaries/lt/bus_rent.json`)).default,
     ...(await import(`@/dictionaries/lt/profile.json`)).default,
+    ...(await import(`@/dictionaries/lt/order.json`)).default,
   }),
   pt: async () => ({
     ...(await import(`@/dictionaries/pt/common.json`)).default,
@@ -78,6 +81,7 @@ const dictionaries = {
     ...(await import(`@/dictionaries/pt/parcels.json`)).default,
     ...(await import(`@/dictionaries/pt/bus_rent.json`)).default,
     ...(await import(`@/dictionaries/pt/profile.json`)).default,
+    ...(await import(`@/dictionaries/pt/order.json`)).default,
   }),
 };
 
@@ -204,6 +208,13 @@ const profileDictionaries = {
   pt: async () => (await import(`@/dictionaries/pt/profile.json`)).default,
 };
 
+const orderDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/order.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/order.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/order.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/order.json`)).default,
+};
+
 export const getDictionary = async (lang: Locale) => dictionaries[lang]();
 
 export const getDashboardDictionaries = async (lang: Locale) =>
@@ -256,3 +267,6 @@ export const getBusRentDictionaries = async (lang: Locale) =>
 
 export const getProfileDictionaries = async (lang: Locale) =>
   profileDictionaries[lang]();
+
+export const getOrderDictionaries = async (lang: Locale) =>
+  orderDictionaries[lang]();

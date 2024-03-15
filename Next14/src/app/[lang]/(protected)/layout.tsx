@@ -1,4 +1,4 @@
-import { NavBarAdmin } from '@/components/NavBarAdmin';
+import { NavBarAdmin } from '@/components/layout/NavBarAdmin';
 import { Locale } from '@/i18n.config';
 import { PhoneType } from '@/interface/IEditorText';
 import { getUser } from '@/lib/auth';

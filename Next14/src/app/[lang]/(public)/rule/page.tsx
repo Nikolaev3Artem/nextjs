@@ -2,9 +2,9 @@ import styles from './rule.module.css';
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
 import { IBanner } from '@/interface/IBanner';
-import { Hero } from '@/components/Hero';
-import { Wrapper } from '@/components/Wrapper';
-import { Rule } from '@/components/Rule';
+import { Hero } from '@/components/public/Hero';
+import { Wrapper } from '@/components/common/Wrapper';
+import { Rule } from '@/components/public/Rule';
 import { getRuleDictionaries } from '@/lib/dictionary';
 
 const getRule = async (lang: Locale) => {

@@ -1,9 +1,9 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
 import { IBanner } from '@/interface/IBanner';
-import { Hero } from '@/components/Hero';
-import { Wrapper } from '@/components/Wrapper';
-import { About } from '@/components/About';
+import { Hero } from '@/components/public/Hero';
+import { Wrapper } from '@/components/common/Wrapper';
+import { About } from '@/components/public/About';
 import { IBa, IGetAbout } from '@/interface/IAbout';
 import { getAboutDictionaries } from '@/lib/dictionary';
 

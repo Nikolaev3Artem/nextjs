@@ -15,7 +15,7 @@ import { Locale } from '@/i18n.config';
 import { getProfileDictionaries } from '@/lib/dictionary';
 import FormControl from '@mui/material/FormControl';
 import { BiSave } from 'react-icons/bi';
-import { ProfileForm } from '@/components/ProfileForm';
+import { ProfileForm } from '@/components/admin/ProfileForm';
 import { getUserInfo } from '@/lib/auth';
 
 export default async function Profile({

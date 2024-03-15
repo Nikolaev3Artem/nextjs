@@ -1,16 +1,16 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
 
-import { Footer } from '@/components/Footer';
+import { Footer } from '@/components/layout/Footer';
 import {
   getFooterDictionaries,
   getHeaderDictionaries,
   getInfobuyDictionaries,
   getPopularDictionaries,
 } from '@/lib/dictionary';
-import { NavBar } from '@/components/NavBar';
-import { InfoBuy } from '@/components/InfoBuy';
-import { Popular } from '@/components/Popular';
+import { NavBar } from '@/components/layout/NavBar';
+import { InfoBuy } from '@/components/layout/InfoBuy';
+import { Popular } from '@/components/layout/Popular';
 import { PhoneType } from '@/interface/IEditorText';
 import { RoutsContextProvider } from '@/app/context';
 import { getUser } from '@/lib/auth';
