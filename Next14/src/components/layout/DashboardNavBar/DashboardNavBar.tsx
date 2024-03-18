@@ -55,7 +55,7 @@ import { Locale } from '@/i18n.config';
 import { logout } from '@/lib/auth';
 import { PhoneType } from '@/interface/IEditorText';
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 const primary = theme.palette.primary.main;
 
 interface IChildren {
@@ -239,7 +239,7 @@ export function DashboardNavBar({
               }
               sx={{
                 paddingX: '32px',
-                width: { xs: '250px', md: '100%' },
+                width: { xs: '180px', md: '100%' },
                 marginX: 'auto',
 
                 minHeight: 'initial',
@@ -324,6 +324,7 @@ export function DashboardNavBar({
                 fontWeight: '400',
                 textTransform: 'none',
                 fontSize: '14px',
+                px: '12px',
               }}
               startIcon={<AiOutlineSearch />}
               color={'secondary'}
@@ -405,7 +406,7 @@ export function DashboardNavBar({
                     />
                   }
                   sx={{
-                    width: { xs: '250px', md: '100%' },
+                    width: { xs: '180px', md: '100%' },
                     marginX: 'auto',
                     marginBottom: 2,
                     minHeight: 'initial',
@@ -506,7 +507,7 @@ export function DashboardNavBar({
                         className={Style.List_hover}
                         sx={{
                           paddingX: 0,
-                          width: { xs: '250px', md: '100%' },
+                          width: { xs: '180px', md: '100%' },
                           marginX: 'auto',
 
                           minHeight: 'initial',

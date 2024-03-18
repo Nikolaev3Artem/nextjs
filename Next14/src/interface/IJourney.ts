@@ -1,3 +1,14 @@
+export interface ITickets {
+  id: number;
+  name: string;
+  surname: string;
+  comment: string;
+  reserved_seat: number;
+  reserved_floor_seat: number;
+  additional_baggage: string;
+  journey: IJourney[];
+}
+
 export interface IJourney {
   id: number;
   routes: IRout[];

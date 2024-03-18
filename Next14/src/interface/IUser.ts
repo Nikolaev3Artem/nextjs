@@ -1,3 +1,5 @@
+import { ITickets } from './IJourney';
+
 export interface IUser {
   id?: number;
   last_login?: any;
@@ -10,6 +12,7 @@ export interface IUser {
   email: string;
   groups: any[];
   user_permissions: any[];
+  tickets?: ITickets[];
 }
 
 export interface IProfile {

@@ -15,7 +15,7 @@ import { Locale } from '@/i18n.config';
 import { getProfileDictionaries } from '@/lib/dictionary';
 import FormControl from '@mui/material/FormControl';
 import { BiSave } from 'react-icons/bi';
-import { ProfileForm } from '@/components/admin/ProfileForm';
+import { ProfileForm } from '@/components/protected/ProfileForm';
 import { getUserInfo } from '@/lib/auth';
 
 export default async function Profile({
@@ -29,7 +29,7 @@ export default async function Profile({
     <Container
       maxWidth={'xl'}
       component={'section'}
-      sx={{ paddingLeft: { md: '240px' }, paddingTop: '64px' }}
+      sx={{ paddingLeft: { md: '180px' }, paddingTop: '64px' }}
       className={Style.profile}
     >
       <Grid container>

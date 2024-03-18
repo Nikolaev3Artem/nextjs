@@ -60,8 +60,14 @@ export interface MainStaticDataProps {
     };
     price: string;
     routs: string;
+    duration: string;
+    seat: string;
     baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;
+    cancellation_btn: {
+      title: string;
+      href: string;
+    };
     cancellation_info: { title: string; href: string; text: string };
     booking_btn: {
       title: string;

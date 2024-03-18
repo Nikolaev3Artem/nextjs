@@ -40,7 +40,8 @@
     },
     "price": "Kaina:",
     "routs": "Maršrutas:",
-
+    "seat": "Vieta",
+    "duration": "Тривалість в дорозі: ",
     "baggage": {
       "title": "Bagažas:",
 
@@ -48,7 +49,10 @@
       "heavy_luggage": "Sunkus bagažas - 1 bagažo vienetas iki 30 kg, dydis iki 30x60x80 cm bagažinėje"
     },
     "cancellation": "Bilieto atšaukimo sąlygos",
-
+    "cancellation_btn": {
+      "title": "Atšaukti",
+      "href": "#"
+    },
     "cancellation_info": {
       "title": "Bilieto atšaukimo informacija",
       "text": "Iki 48 valandų prieš išvyką: 90% Nuo 48 iki 24 valandų prieš išvyką: 80% Mažiau nei 24 valandos iki išvykimo: bilietas negrąžinamas",

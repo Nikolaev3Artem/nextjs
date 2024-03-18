@@ -4,8 +4,8 @@
 }
 
 .navbar .navbar_open {
-  width: calc(100% - 240px);
-  margin-left: 240px;
+  width: calc(100% - 180px);
+  margin-left: 180px;
   transition: all ease-out;
   transition-duration: 0.2s;
 }

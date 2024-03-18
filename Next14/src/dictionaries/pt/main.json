@@ -41,7 +41,8 @@
     },
     "price": "Preço:",
     "routs": "Rota:",
-
+    "seat": "Lugar",
+    "duration": "Тривалість в дорозі: ",
     "baggage": {
       "title": "Bagagem:",
 
@@ -49,6 +50,10 @@
       "heavy_luggage": "Bagagem - 1 peça de bagagem até 30 kg com dimensões até 30x60x80 cm no compartimento de bagagem"
     },
     "cancellation": "Condições de cancelamento do bilhete",
+    "cancellation_btn": {
+      "title": "Cancelar",
+      "href": "#"
+    },
     "cancellation_info": {
       "title": "Informações sobre o cancelamento do bilhete",
       "text": "Até 48 horas antes da partida: 90% De 48 a 24 horas antes da partida: 80% Menos de 24 horas antes da partida: o bilhete não é reembolsável",
