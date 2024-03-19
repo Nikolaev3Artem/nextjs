@@ -24,7 +24,7 @@
       "id": 2,
       "name": "my_tickets",
       "title": "Mano bilietai",
-      "path": "/order"
+      "path": "/my-order"
     }
   ],
 

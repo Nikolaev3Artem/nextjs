@@ -9,6 +9,7 @@
 
   "search_results": "Resultados da pesquisa:",
   "no_results": "Esta rota não existe.",
+
   "routs_card": {
     "number": "Número:",
     "conveniences": "Comodidades:",
@@ -42,7 +43,7 @@
     "price": "Preço:",
     "routs": "Rota:",
     "seat": "Lugar",
-    "duration": "Тривалість в дорозі: ",
+    "duration": "Duração da viagem: ",
     "baggage": {
       "title": "Bagagem:",
 

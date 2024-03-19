@@ -8,6 +8,7 @@
   "description": "Užsisakykite geriausius bilietus į geriausius skrydžius",
   "search_results": "Paieškos rezultatai:",
   "no_results": "Toks maršrutas neegzistuoja.",
+
   "routs_card": {
     "number": "Numeris:",
     "conveniences": "Patogumai:",
@@ -41,7 +42,7 @@
     "price": "Kaina:",
     "routs": "Maršrutas:",
     "seat": "Vieta",
-    "duration": "Тривалість в дорозі: ",
+    "duration": "Kelionės trukmė:  ",
     "baggage": {
       "title": "Bagažas:",
 

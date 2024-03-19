@@ -1,3 +1,36 @@
 {
-  "title": "Мої квитки"
+  "title": "Mano bilietai",
+  "no_tickets": "Jūsų dar neturite bilietų",
+  "passengers": "Keleiviai",
+  "orderForm": {
+    "passenger": "Keleivis ",
+    "seat": "Vieta: ",
+    "name": "Vardas",
+    "surname": "Pavardė",
+    "phone": "Telefonas",
+    "email": "El. paštas",
+    "adult": "Suaugęs",
+    "child": "Vaikas",
+    "comment": "Komentaras",
+    "extra_luggage": "Papildomas bagažas",
+    "base_bag": "Bazinis",
+    "extra_bag": "Papildomas lagaminas",
+    "extra_weight": "30kg",
+    "our_bag": "Mūsų svoris",
+    "price": "Kaina: ",
+    "add_button": {
+      "title": "Pridėti keleivį"
+    },
+    "remove_button": {
+      "title": "Pašalinti"
+    },
+    "bus": "Autobusas: ",
+    "duration": "Trukmė: ",
+    "journey": "Kelionė: ",
+    "total": "Viso: ",
+    "reserve_button": { "title": "Rezervacija" },
+    "payment_button": {
+      "title": "Apmokėjimas internetu"
+    }
+  }
 }

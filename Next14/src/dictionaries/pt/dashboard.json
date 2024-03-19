@@ -20,7 +20,7 @@
     {
       "id": 2,
       "title": " Meus Bilhetes",
-      "path": "/order",
+      "path": "/my-order",
       "name": "my_order"
     }
   ],

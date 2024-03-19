@@ -137,7 +137,7 @@ export interface BusRentStaticDataPageProp {
   first_floor: string;
   second_floor: string;
   see_more_btn: string;
-  order_btn: string;
+  _btn: string;
   close_btn: string;
   character: string;
   photo: string;
@@ -204,6 +204,43 @@ export interface profileStaticData {
       title: string;
     };
     edit: {
+      title: string;
+    };
+  };
+}
+
+export interface orderStaticData {
+  title: string;
+  no_tickets: string;
+  passengers: string;
+  orderForm: {
+    passenger: string;
+    seat: string;
+    name: string;
+    surname: string;
+    phone: string;
+    email: string;
+    adult: string;
+    child: string;
+    comment: string;
+    extra_luggage: string;
+    base_bag: string;
+    extra_bag: string;
+    extra_weight: string;
+    our_bag: string;
+    price: string;
+    add_button: {
+      title: string;
+    };
+    remove_button: {
+      title: string;
+    };
+    bus: string;
+    duration: string;
+    journey: string;
+    total: string;
+    reserve_button: { title: string };
+    payment_button: {
       title: string;
     };
   };

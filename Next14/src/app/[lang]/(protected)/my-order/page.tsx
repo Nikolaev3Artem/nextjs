@@ -67,7 +67,7 @@ export default async function Order({
                   userData.tickets &&
                   userData.tickets?.length < 0 && (
                     <Box>
-                      <Typography>notickets</Typography>
+                      <Typography>{staticData.no_tickets}</Typography>
                     </Box>
                   )}
               </Grid>

@@ -1,3 +1,36 @@
 {
-  "title": "Мої квитки"
+  "title": "Мої квитки",
+  "no_tickets": "У Вас ще не має квитків",
+  "passengers": "Пасажири",
+  "orderForm": {
+    "passenger": "Пасажир ",
+    "seat": "Місце: ",
+    "name": "Ім'я",
+    "surname": "Прізвище",
+    "phone": "Телефон",
+    "email": "E-mail",
+    "adult": "Дорослий",
+    "child": "Дитячий",
+    "comment": "Коментар",
+    "extra_luggage": "Додатковий багаж",
+    "base_bag": "Базовий",
+    "extra_bag": "Додаткова валіза",
+    "extra_weight": "30кг",
+    "our_bag": "Власна вага",
+    "price": "Ціна: ",
+    "add_button": {
+      "title": "Додати пасажира"
+    },
+    "remove_button": {
+      "title": "Видалити"
+    },
+    "bus": "Автобус: ",
+    "duration": "Тривалість: ",
+    "journey": "Маршрут: ",
+    "total": "Загальна сума: ",
+    "reserve_button": { "title": "Бронювання" },
+    "payment_button": {
+      "title": "Оплата онлайн"
+    }
+  }
 }

@@ -1,0 +1,43 @@
+.content {
+  display: flex;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  justify-content: center;
+  background-color: #fff;
+  width: 100% !important;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+.radio_base::after,
+.radio_extra::after,
+.radio_our::after,
+.radio_extra_disable::after,
+.radio_base_disable::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-left: 8px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.radio_base::after {
+  background-image: url('/icons/bag-personal.svg');
+}
+.radio_base_disable::after {
+  background-image: url('/icons/bag-personal-disable.svg');
+}
+
+.radio_extra::after {
+  background-image: url('/icons/bag-suitcase.svg');
+}
+
+.radio_extra_disable::after {
+  background-image: url('/icons/bag-suitcase-disable.svg');
+}

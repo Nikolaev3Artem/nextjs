@@ -1,3 +1,36 @@
 {
-  "title": "Мої квитки"
+  "title": "Os meus bilhetes",
+  "no_tickets": "Ainda não tem bilhetes",
+  "passengers": "Passageiros",
+  "orderForm": {
+    "passenger": "Passageiro ",
+    "seat": "Lugar: ",
+    "name": "Nome",
+    "surname": "Apelido",
+    "phone": "Telefone",
+    "email": "E-mail",
+    "adult": "Adulto",
+    "child": "Criança",
+    "comment": "Comentário",
+    "extra_luggage": "Bagagem Extra",
+    "base_bag": "Base",
+    "extra_bag": "Mala Extra",
+    "extra_weight": "30kg",
+    "our_bag": "Nosso peso",
+    "price": "Preço: ",
+    "add_button": {
+      "title": "Adicionar passageiro"
+    },
+    "remove_button": {
+      "title": "Remover"
+    },
+    "bus": "Autocarro: ",
+    "duration": "Duração: ",
+    "journey": "Percurso: ",
+    "total": "Total: ",
+    "reserve_button": { "title": "Reserva" },
+    "payment_button": {
+      "title": "Pagamento online"
+    }
+  }
 }

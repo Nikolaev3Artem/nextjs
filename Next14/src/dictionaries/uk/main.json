@@ -8,6 +8,7 @@
   "description": "Замовляйте кращі квитки на кращі рейси",
   "search_results": "Результати пошуку:",
   "no_results": "Такого маршруту не існує",
+
   "routs_card": {
     "number": "Номер:",
     "conveniences": "Зручності:",
