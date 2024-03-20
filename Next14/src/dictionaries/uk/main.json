@@ -65,5 +65,22 @@
     "read_more_btn": {
       "title": "Детальніше"
     }
+  },
+
+  "seat_booking": {
+    "title": "Оберіть місце",
+    "seats": [
+      { "name": "available", "title": "Вільні" },
+      { "name": "occupied", "title": "Зайняті" },
+      { "name": "selected", "title": "Обрані" }
+    ],
+    "selected_seats": "Обрані місця: ",
+    "float": "Поверх "
+  },
+  "cancel_btn": {
+    "title": "Скасувати"
+  },
+  "select_btn": {
+    "title": "Вибрати"
   }
 }

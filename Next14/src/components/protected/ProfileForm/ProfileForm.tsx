@@ -21,7 +21,7 @@ import { profileStaticData } from '@/interface/IStaticData';
 import { SyntheticEvent, useState } from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { DataPicker } from '@/components/public/Main/DataPicker';
+import { DataPicker } from '@/components/published/Main/DataPicker';
 import axios from 'axios';
 import Style from '@/app/[lang]/(protected)/profile/profile.module.css';
 import { IProfile, IUser } from '@/interface/IUser';

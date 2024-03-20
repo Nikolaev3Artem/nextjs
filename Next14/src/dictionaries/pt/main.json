@@ -67,5 +67,21 @@
     "read_more_btn": {
       "title": "Ler mais"
     }
+  },
+  "seat_booking": {
+    "title": "Escolha um assento",
+    "seats": [
+      { "name": "available", "title": "Disponíveis" },
+      { "name": "occupied", "title": "Ocupados" },
+      { "name": "selected", "title": "Selecionados" }
+    ],
+    "selected_seats": "Assentos selecionados: ",
+    "float": "Andar "
+  },
+  "cancel_btn": {
+    "title": "Cancelar"
+  },
+  "select_btn": {
+    "title": "Selecionar"
   }
 }

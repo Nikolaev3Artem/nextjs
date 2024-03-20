@@ -10,12 +10,12 @@ import axios from 'axios';
 import * as React from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-import { Input } from '@/components/public/Main/Input';
+import { Input } from '@/components/published/Main/Input';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { DataPicker } from '@/components/public/Main/DataPicker';
+import { DataPicker } from '@/components/published/Main/DataPicker';
 
-import { SearchJourney } from '@/components/public/Main/SearchRout';
+import { SearchJourney } from '@/components/published/Main/SearchRout';
 import { IJourney } from '@/interface/IJourney';
 
 interface State {

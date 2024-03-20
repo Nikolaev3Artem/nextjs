@@ -19,12 +19,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Style from './AddPassengersForm.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChangeEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import Button from '@mui/material/Button';
 import theme from '@/theme';
+import { useSearchParams } from 'next/navigation';
 
 interface UserData {
   email: string;
@@ -60,8 +61,33 @@ export const AddPassengersForm = ({
       luggage: '' || 'base',
     },
   });
+  type SeatsObject = {
+    [floor: string]: number[];
+  };
 
-  const [passengerSeat, setPassengerSeat] = useState([22, 23]);
+  type Seat = { floor: number | null; seat: number | null };
+
+  const searchParams = useSearchParams();
+  const seatsString = searchParams.get('selectedSeats');
+  const seatsObject = seatsString ? JSON.parse(seatsString) : null;
+
+  const transformSeats = (seatsObject: SeatsObject): Seat[] => {
+    const transformedSeats: Seat[] = [];
+    for (const [floor, seats] of Object.entries(seatsObject)) {
+      for (const seat of seats) {
+        transformedSeats.push({ floor: Number(floor), seat });
+      }
+    }
+    return transformedSeats;
+  };
+
+  const [passengerSeat, setPassengerSeat] = useState<Seat[]>([]);
+
+  useEffect(() => {
+    if (seatsObject) {
+      setPassengerSeat(transformSeats(seatsObject));
+    }
+  }, []);
 
   const handleChange =
     (userKey: string) =>
@@ -69,7 +95,7 @@ export const AddPassengersForm = ({
     (
       event:
         | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        | SelectChangeEvent<UserData>,
+        | SelectChangeEvent<string>,
     ) => {
       setValues(prevState => {
         return {
@@ -90,18 +116,16 @@ export const AddPassengersForm = ({
   const Remove = (index: number) => {
     setPassengerSeat(prevSeats => {
       const updatedSeats = [...prevSeats];
-
       updatedSeats.splice(index, 1);
       return updatedSeats;
     });
   };
 
   const Add = () => {
+    const newSeat: Seat = { floor: null, seat: null };
+
     setPassengerSeat(prevSeats => {
-      const updatedSeats = [...prevSeats];
-      const nextSeatNumber = Math.max(...updatedSeats) + 1;
-      updatedSeats.push(nextSeatNumber);
-      return updatedSeats;
+      return [...prevSeats, newSeat];
     });
   };
 
@@ -127,7 +151,10 @@ export const AddPassengersForm = ({
               </Typography>
 
               <Typography>
-                {staticData.orderForm.seat} {passengerSeat[index]}
+                {staticData.orderForm.floor} {passengerSeat[index].floor}
+              </Typography>
+              <Typography>
+                {staticData.orderForm.seat} {passengerSeat[index].seat}
               </Typography>
             </Grid>
             <Grid item xs={6}>

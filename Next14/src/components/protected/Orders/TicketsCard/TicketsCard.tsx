@@ -155,10 +155,10 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0].departure_time}
+                  {data?.journey[0] ? data?.journey[0].departure_time : ''}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0].departure_date}
+                  {data.journey[0] ? data.journey[0].departure_date : ''}
                 </Typography>
               </Box>
               <Box>
@@ -167,10 +167,10 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0].arrival_time}
+                  {data.journey[0] ? data.journey[0].arrival_time : ''}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0].arrival_date}
+                  {data.journey[0] ? data.journey[0].arrival_date : ''}
                 </Typography>
               </Box>
             </Grid>
@@ -210,7 +210,7 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0].routes[0].from_place}
+                  {data.journey[0] ? data.journey[0].routes[0].from_place : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
                   <Typography
@@ -232,7 +232,7 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0].routes[0].to_place}
+                  {data.journey[0] ? data.journey[0].routes[0].to_place : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
                   <Typography

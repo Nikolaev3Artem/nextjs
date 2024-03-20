@@ -4,6 +4,7 @@
   "passengers": "Passageiros",
   "orderForm": {
     "passenger": "Passageiro ",
+    "floor": "Andar: ",
     "seat": "Lugar: ",
     "name": "Nome",
     "surname": "Apelido",

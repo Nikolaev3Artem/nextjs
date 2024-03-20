@@ -4,6 +4,7 @@
   "passengers": "Keleiviai",
   "orderForm": {
     "passenger": "Keleivis ",
+    "floor": "Aukštas: ",
     "seat": "Vieta: ",
     "name": "Vardas",
     "surname": "Pavardė",

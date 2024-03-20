@@ -66,5 +66,21 @@
     "read_more_btn": {
       "title": "Skaityti daugiau"
     }
+  },
+  "seat_booking": {
+    "title": "Pasirinkite vietą",
+    "seats": [
+      { "name": "available", "title": "Laisvos" },
+      { "name": "occupied", "title": "Užimtos" },
+      { "name": "selected", "title": "Pasirinktos" }
+    ],
+    "selected_seats": "Pasirinktos vietos: ",
+    "float": "Aukštas "
+  },
+  "cancel_btn": {
+    "title": "Atšaukti"
+  },
+  "select_btn": {
+    "title": "Pasirinkti"
   }
 }

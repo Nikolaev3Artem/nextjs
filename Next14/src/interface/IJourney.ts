@@ -18,6 +18,15 @@ export interface IJourney {
     telegram: string;
     viber: string;
     whatsup: string;
+    first_floor_seats: any[];
+    first_floor_seats_count: number;
+    images_list: any[];
+    name: string;
+    photo: string;
+    plates_number: string;
+
+    second_floor_seats: any[];
+    second_floor_seats_count: number;
   }[];
   departure_date: string;
   departure_time: string;

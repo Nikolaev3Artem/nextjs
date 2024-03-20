@@ -1,10 +1,10 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
 import { IBanner, IGetBanner } from '@/interface/IBanner';
-import { Hero } from '@/components/public/Hero';
+import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
 import { getMainDictionaries } from '@/lib/dictionary';
-import { MainSection } from '@/components/public/Main/MainSection';
+import { MainSection } from '@/components/published/Main/MainSection';
 
 const getBanner = async (lang: Locale) => {
   try {

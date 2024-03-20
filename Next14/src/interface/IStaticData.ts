@@ -77,6 +77,18 @@ export interface MainStaticDataProps {
       title: string;
     };
   };
+  seat_booking: {
+    title: string;
+    seats: { name: string; title: string }[];
+    selected_seats: string;
+    float: string;
+  };
+  cancel_btn: {
+    title: string;
+  };
+  select_btn: {
+    title: string;
+  };
 }
 
 export interface conveniencesIconProp {
@@ -137,7 +149,7 @@ export interface BusRentStaticDataPageProp {
   first_floor: string;
   second_floor: string;
   see_more_btn: string;
-  _btn: string;
+  order_btn: string;
   close_btn: string;
   character: string;
   photo: string;
@@ -215,6 +227,7 @@ export interface orderStaticData {
   passengers: string;
   orderForm: {
     passenger: string;
+    floor: string;
     seat: string;
     name: string;
     surname: string;

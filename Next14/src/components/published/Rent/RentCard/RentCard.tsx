@@ -21,7 +21,7 @@ import { IRent } from '@/interface/IRent';
 // import { setOpen } from '../../../store/admin/home/homeModalSlice';
 // import { useAppDispatch } from '../../../store/auth/redux';
 import { BusService } from '@/components/common/BusService';
-import CardInfo from '@/components/public/Rent/CardInfo/CardInfo';
+import CardInfo from '@/components/published/Rent/CardInfo/CardInfo';
 // import CardInfoModal from '../Modal/CardInfoModal';
 import Style from './rentcard.module.css';
 
