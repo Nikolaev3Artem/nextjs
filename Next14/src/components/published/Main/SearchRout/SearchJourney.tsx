@@ -5,7 +5,7 @@ import { IoMdArrowForward } from 'react-icons/io';
 import { MdCalendarMonth } from 'react-icons/md';
 import Box from '@mui/material/Box';
 import dayjs from 'dayjs';
-import { JourneyCard } from '@/components/public/Main/JourneyCard';
+import { JourneyCard } from '@/components/published/Main/JourneyCard';
 import Style from './SearchJourney.module.css';
 import { Locale } from '@/i18n.config';
 
@@ -83,6 +83,7 @@ export const SearchJourney = ({
                   staticData={staticData}
                   data={el}
                   lang={lang}
+                  date={values.date}
                 />
               );
             })}

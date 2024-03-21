@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import { Locale } from '@/i18n.config';
 
-import { SearchRoutForm } from '@/components/public/Main/SearchRoutForm';
+import { SearchRoutForm } from '@/components/published/Main/SearchRoutForm';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';

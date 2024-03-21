@@ -34,7 +34,7 @@ import Logo from '../../../../public/logo.svg';
 // import { removeUser, setUser } from '../../store/auth/userSlice';
 
 import theme from '@/theme';
-const drawerWidth = 250;
+const drawerWidth = 180;
 const primary = theme.palette.primary.main;
 import Style from './Navbar.module.css';
 import { Locale } from '@/i18n.config';

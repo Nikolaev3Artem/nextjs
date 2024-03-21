@@ -21,7 +21,7 @@ import { profileStaticData } from '@/interface/IStaticData';
 import { SyntheticEvent, useState } from 'react';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { DataPicker } from '@/components/public/Main/DataPicker';
+import { DataPicker } from '@/components/published/Main/DataPicker';
 import axios from 'axios';
 import Style from '@/app/[lang]/(protected)/profile/profile.module.css';
 import { IProfile, IUser } from '@/interface/IUser';
@@ -49,15 +49,14 @@ export const ProfileForm = ({
   lang: Locale;
   userData: IProfile | null | undefined;
 }) => {
-  console.log('f', userData);
   const [values, setValues] = useState<State>({
     email: userData?.email || '',
     name: userData?.first_name || '',
-    password: userData?.last_name || '',
-    surname: '',
+    password: '',
+    surname: userData?.last_name || '',
     phone: userData?.phone || '',
-    patronymic: '',
-    birthday: '',
+    patronymic: userData?.third_name || '',
+    birthday: userData?.birth_date || '',
     login: '',
     showPassword: false,
   });
@@ -86,24 +85,27 @@ export const ProfileForm = ({
       const session = await getSession();
       if (!session) return null;
 
-      const result = await axios.put(
-        `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/update/${userData?.id}`,
+      const result = await axios.patch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}auth/users/${userData?.id}/`,
+
+        {
+          first_name: values.name || '',
+          last_name: values.surname || '',
+          third_name: values.patronymic || '',
+          email: values.email || '',
+          birth_date: values.birthday || '',
+        },
         {
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'Bearer ' +
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90e…iOjh9.m2x-1ynqSSeoED59wrFAPebu4T1k-F6lCNcnMzrl3_A',
+            Authorization: 'Bearer ' + `${session.access}`,
           },
-
-          first_name: values.name,
         },
       );
 
       // if (result === 200) {
       //   router.back();
       // }
-      console.log(result);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log('error message: ', error.message);
@@ -135,7 +137,6 @@ export const ProfileForm = ({
           onChange={handleChange('name')}
           name="name"
           variant="outlined"
-          autoFocus
         />
         <TextField
           sx={{ my: 1 }}

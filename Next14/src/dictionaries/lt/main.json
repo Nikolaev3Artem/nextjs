@@ -8,6 +8,7 @@
   "description": "Užsisakykite geriausius bilietus į geriausius skrydžius",
   "search_results": "Paieškos rezultatai:",
   "no_results": "Toks maršrutas neegzistuoja.",
+
   "routs_card": {
     "number": "Numeris:",
     "conveniences": "Patogumai:",
@@ -40,7 +41,8 @@
     },
     "price": "Kaina:",
     "routs": "Maršrutas:",
-
+    "seat": "Vieta",
+    "duration": "Kelionės trukmė:  ",
     "baggage": {
       "title": "Bagažas:",
 
@@ -48,7 +50,10 @@
       "heavy_luggage": "Sunkus bagažas - 1 bagažo vienetas iki 30 kg, dydis iki 30x60x80 cm bagažinėje"
     },
     "cancellation": "Bilieto atšaukimo sąlygos",
-
+    "cancellation_btn": {
+      "title": "Atšaukti",
+      "href": "#"
+    },
     "cancellation_info": {
       "title": "Bilieto atšaukimo informacija",
       "text": "Iki 48 valandų prieš išvyką: 90% Nuo 48 iki 24 valandų prieš išvyką: 80% Mažiau nei 24 valandos iki išvykimo: bilietas negrąžinamas",
@@ -61,5 +66,21 @@
     "read_more_btn": {
       "title": "Skaityti daugiau"
     }
+  },
+  "seat_booking": {
+    "title": "Pasirinkite vietą",
+    "seats": [
+      { "name": "available", "title": "Laisvos" },
+      { "name": "occupied", "title": "Užimtos" },
+      { "name": "selected", "title": "Pasirinktos" }
+    ],
+    "selected_seats": "Pasirinktos vietos: ",
+    "float": "Aukštas "
+  },
+  "cancel_btn": {
+    "title": "Atšaukti"
+  },
+  "select_btn": {
+    "title": "Pasirinkti"
   }
 }

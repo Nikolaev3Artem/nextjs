@@ -8,7 +8,7 @@ import { match as matchLocale } from '@formatjs/intl-localematcher';
 const protectedPaths = [
   '/dashboard',
   '/profile',
-  '/order',
+  '/my-order',
   '/dashboard/bus',
   '/dashboard/city',
   '/dashboard/flights',

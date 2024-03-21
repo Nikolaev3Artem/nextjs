@@ -21,7 +21,7 @@
     {
       "id": 2,
       "title": "Mano bilietai",
-      "path": "/order",
+      "path": "/my-order",
       "name": "my_order"
     }
   ],

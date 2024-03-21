@@ -28,7 +28,7 @@ import Manager from '../../../../../public/icons/manager_call.svg';
 import { IRent } from '@/interface/IRent';
 import theme from '@/theme';
 import { BusService } from '@/components/common/BusService';
-import { CardInfoModal } from '@/components/public/Rent/CardInfoModal';
+import { CardInfoModal } from '@/components/published/Rent/CardInfoModal';
 import Style from './cardinfo.module.css';
 import defaultImg from '../../../../../public/images/rent_bus_default.webp';
 import { BusRentStaticDataPageProp } from '@/interface/IStaticData';

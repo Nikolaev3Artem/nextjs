@@ -60,8 +60,14 @@ export interface MainStaticDataProps {
     };
     price: string;
     routs: string;
+    duration: string;
+    seat: string;
     baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;
+    cancellation_btn: {
+      title: string;
+      href: string;
+    };
     cancellation_info: { title: string; href: string; text: string };
     booking_btn: {
       title: string;
@@ -70,6 +76,18 @@ export interface MainStaticDataProps {
     read_more_btn: {
       title: string;
     };
+  };
+  seat_booking: {
+    title: string;
+    seats: { name: string; title: string }[];
+    selected_seats: string;
+    float: string;
+  };
+  cancel_btn: {
+    title: string;
+  };
+  select_btn: {
+    title: string;
   };
 }
 
@@ -198,6 +216,47 @@ export interface profileStaticData {
       title: string;
     };
     edit: {
+      title: string;
+    };
+  };
+}
+
+export interface orderStaticData {
+  title: string;
+  no_tickets: string;
+  passengers: string;
+  orderForm: {
+    passenger: string;
+    floor: string;
+    seat: string;
+    name: string;
+    surname: string;
+    phone: string;
+    email: string;
+    adult: string;
+    child: string;
+    comment: string;
+    extra_luggage: string;
+    base_bag: string;
+    extra_bag: string;
+    extra_weight: string;
+    our_bag: string;
+    price: string;
+    select_button: {
+      title: string;
+    };
+    add_button: {
+      title: string;
+    };
+    remove_button: {
+      title: string;
+    };
+    bus: string;
+    duration: string;
+    journey: string;
+    total: string;
+    reserve_button: { title: string };
+    payment_button: {
       title: string;
     };
   };
