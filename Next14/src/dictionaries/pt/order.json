@@ -22,6 +22,9 @@
     "add_button": {
       "title": "Adicionar passageiro"
     },
+    "select_button": {
+      "title": "Selecionar"
+    },
     "remove_button": {
       "title": "Remover"
     },

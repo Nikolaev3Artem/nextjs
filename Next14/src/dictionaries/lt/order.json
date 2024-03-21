@@ -22,6 +22,10 @@
     "add_button": {
       "title": "Pridėti keleivį"
     },
+
+    "select_button": {
+      "title": "Išrinkti"
+    },
     "remove_button": {
       "title": "Pašalinti"
     },

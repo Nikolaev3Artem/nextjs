@@ -25,6 +25,9 @@
     "remove_button": {
       "title": "Remove"
     },
+    "select_button": {
+      "title": "Select"
+    },
     "bus": "Bus: ",
     "duration": "Duration: ",
     "journey": "Journey: ",

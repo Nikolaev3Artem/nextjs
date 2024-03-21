@@ -242,6 +242,9 @@ export interface orderStaticData {
     extra_weight: string;
     our_bag: string;
     price: string;
+    select_button: {
+      title: string;
+    };
     add_button: {
       title: string;
     };

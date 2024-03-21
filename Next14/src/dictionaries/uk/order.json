@@ -22,6 +22,9 @@
     "add_button": {
       "title": "Додати пасажира"
     },
+    "select_button": {
+      "title": "Вибрати"
+    },
     "remove_button": {
       "title": "Видалити"
     },
