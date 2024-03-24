@@ -7,5 +7,5 @@
         port: 22
     script: |
         cd /
-        cd var/www/nextjs-new 
+        cd var/www/nextjs-new
         git pull origin main
