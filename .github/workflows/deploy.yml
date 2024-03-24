@@ -28,4 +28,4 @@ jobs:
             git pull origin main
             cd Next14
             npm install
-            npm run build
+            npm run start
