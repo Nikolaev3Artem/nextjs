@@ -26,4 +26,6 @@ jobs:
             cd /
             cd var/www/nextjs-new/nextjs
             git pull origin main
+            npm run build
+            npm start
 
