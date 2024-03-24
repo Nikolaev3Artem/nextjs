@@ -16,7 +16,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Deploy using ssh
-        uses: appleboy/ssh-action@v1.0.0
+        uses: actions/cache@v4
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -29,3 +29,9 @@ jobs:
             npm install          
             npm run build
              npm run start
+             mkdir ~/.ssh
+             echo "$SSH_KEY" >> ~/.ssh/github-action
+             chmod 400 ~/.ssh/github-action
+             echo -e "Host vps\n\tUser root\n\tHostname 11.000.000.111\n\tIdentityFile ~/.ssh/github-action\n\tStrictHostKeyChecking No" >> ~/.ssh/config
+             rsync -re ssh ./.next/ vps:/home/root/app-name/.next
+             ssh vps "pm2 restart app-name"
