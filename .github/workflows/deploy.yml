@@ -29,5 +29,3 @@ jobs:
             cd Next14
             npm install
             npm run build
-            npm start
-
