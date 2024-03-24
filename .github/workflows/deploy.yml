@@ -28,6 +28,6 @@ jobs:
             git pull origin main
             cd Next14
             npm install
+            npm i sharp
             npm run build
-            kill -9 `lsof -t -i:80`
-            npm run start & bg
+                      npm run start 
