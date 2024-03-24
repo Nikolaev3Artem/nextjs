@@ -68,7 +68,8 @@ export const AddPassengersForm = ({
   const priceString = searchParams.get('price');
   const price = priceString ? JSON.parse(priceString) : null;
   const routIdString = searchParams.get('routId');
-  const routId = priceString ? JSON.parse(routIdString as string) : null;
+  const routId = routIdString ? JSON.parse(routIdString as string) : null;
+
 
   const transformSeats = (seatsObject: SeatsObject): Seat[] => {
     const transformedSeats: Seat[] = [];

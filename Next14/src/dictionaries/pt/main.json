@@ -71,8 +71,8 @@
   "seat_booking": {
     "title": "Escolha um assento",
     "seats": [
-      { "name": "available", "title": "Disponíveis" },
       { "name": "occupied", "title": "Ocupados" },
+      { "name": "available", "title": "Disponíveis" },      
       { "name": "selected", "title": "Selecionados" }
     ],
     "selected_seats": "Assentos selecionados: ",

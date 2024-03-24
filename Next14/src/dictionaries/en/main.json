@@ -68,8 +68,8 @@
   "seat_booking": {
     "title": "Choose a seat",
     "seats": [
-      { "name": "available", "title": "Available" },
-      { "name": "occupied", "title": "Occupied" },
+       { "name": "occupied", "title": "Occupied" },
+      { "name": "available", "title": "Available" },     
       { "name": "selected", "title": "Selected" }
     ],
     "selected_seats": "Selected seats: ",

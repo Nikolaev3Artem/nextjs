@@ -13,12 +13,14 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+
+import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 
 import { useState } from 'react';
 import theme from '@/theme';
 import Link from 'next/link';
 import { Locale } from '@/i18n.config';
+import { styled } from '@mui/material/styles';
 
 const color_title = grey[800];
 
@@ -40,70 +42,15 @@ export const SeatsBooking = ({
   const getColor = (name: string) => {
     switch (name) {
       case 'available':
-        return '#BFBFBF';
-      case 'occupied':
         return '#7ADB6A';
+      case 'occupied':
+        return '#BFBFBF';
       case 'selected':
         return '#296FCA';
       default:
         return '#BFBFBF';
     }
   };
-  console.log(data);
-
-  const first_floor = [
-    { id: 1, seat: 1, status: 'EMPTY' },
-    { id: 2, seat: 2, status: 'EMPTY' },
-    { id: 3, seat: 3, status: 'EMPTY' },
-    { id: 4, seat: 4, status: 'EMPTY' },
-    { id: 5, seat: 5, status: 'EMPTY' },
-    { id: 6, seat: 6, status: 'ORDERED' },
-    { id: 7, seat: 7, status: 'EMPTY' },
-    { id: 8, seat: 8, status: 'EMPTY' },
-    { id: 9, seat: 9, status: 'EMPTY' },
-    { id: 10, seat: 10, status: 'EMPTY' },
-    { id: 11, seat: 11, status: 'EMPTY' },
-    { id: 12, seat: 12, status: 'ORDERED' },
-    { id: 13, seat: 13, status: 'EMPTY' },
-    { id: 14, seat: 14, status: 'EMPTY' },
-    { id: 15, seat: 15, status: 'EMPTY' },
-    { id: 16, seat: 16, status: 'EMPTY' },
-    { id: 17, seat: 17, status: 'EMPTY' },
-    { id: 18, seat: 18, status: 'EMPTY' },
-    { id: 19, seat: 19, status: 'EMPTY' },
-    { id: 20, seat: 20, status: 'ORDERED' },
-    { id: 21, seat: 21, status: 'EMPTY' },
-    { id: 22, seat: 22, status: 'EMPTY' },
-    { id: 23, seat: 23, status: 'EMPTY' },
-    { id: 24, seat: 24, status: 'EMPTY' },
-  ];
-
-  const second_floor = [
-    { id: 1, seat: 1, status: 'EMPTY' },
-    { id: 2, seat: 2, status: 'EMPTY' },
-    { id: 3, seat: 3, status: 'ORDERED' },
-    { id: 4, seat: 4, status: 'EMPTY' },
-    { id: 5, seat: 5, status: 'EMPTY' },
-    { id: 6, seat: 6, status: 'EMPTY' },
-    { id: 7, seat: 7, status: 'EMPTY' },
-    { id: 8, seat: 8, status: 'EMPTY' },
-    { id: 9, seat: 9, status: 'EMPTY' },
-    { id: 10, seat: 10, status: 'EMPTY' },
-    { id: 11, seat: 11, status: 'EMPTY' },
-    { id: 12, seat: 12, status: 'EMPTY' },
-    { id: 13, seat: 13, status: 'EMPTY' },
-    { id: 14, seat: 14, status: 'ORDERED' },
-    { id: 15, seat: 15, status: 'EMPTY' },
-    { id: 16, seat: 16, status: 'EMPTY' },
-    { id: 17, seat: 17, status: 'EMPTY' },
-    { id: 18, seat: 18, status: 'EMPTY' },
-    { id: 19, seat: 19, status: 'EMPTY' },
-    { id: 20, seat: 20, status: 'EMPTY' },
-    { id: 21, seat: 21, status: 'EMPTY' },
-    { id: 22, seat: 22, status: 'EMPTY' },
-    { id: 23, seat: 23, status: 'EMPTY' },
-    { id: 24, seat: 24, status: 'ORDERED' },
-  ];
 
   interface SelectedSeatsState {
     1: number[];
@@ -170,6 +117,50 @@ export const SeatsBooking = ({
     const pathWithParams = `/${lang}/my-order/new-order?${queryParams}`;
     return pathWithParams;
   };
+
+  const BpIcon = styled('span')(({ theme }) => ({
+    borderRadius: '4px',
+    width: '56px',
+    height: '53px',
+    backgroundColor: theme.palette.success.main,
+    border: '1px #BFBFBF solid',
+
+    '.Mui-focusVisible &': {
+      outline: '2px auto rgba(19,124,189,.6)',
+      outlineOffset: 2,
+    },
+    'input:hover ~ &': {
+      backgroundColor: theme.palette.secondary.main,
+    },
+    'input:disabled ~ &': {
+      backgroundColor: '#BFBFBF',
+    },
+  }));
+
+  const BpCheckedIcon = styled(BpIcon)({
+    backgroundColor: '#137cbd',
+
+    'input:hover ~ &': {
+      backgroundColor: theme.palette.secondary.main,
+    },
+  });
+
+  function BpCheckbox(props: CheckboxProps) {
+    return (
+      <Checkbox
+        sx={{
+          '&:hover': { bgcolor: 'transparent' },
+        }}
+        disableRipple
+        color="default"
+        checkedIcon={<BpCheckedIcon />}
+        icon={<BpIcon />}
+        inputProps={{ 'aria-label': 'Checkbox demo' }}
+        {...props}
+      />
+    );
+  }
+
   return (
     <JourneySeatsBookingModal onClose={onClose} isShowModal={isShowModal}>
       <Box>
@@ -349,13 +340,29 @@ export const SeatsBooking = ({
                       return (
                         <FormControlLabel
                           control={
-                            <Checkbox
+                            <BpCheckbox
                               onChange={() => handleCheck(el.seat, 1)}
                               checked={selectedSeats[1].includes(el.seat)}
                             />
                           }
                           label={`${el.seat}`}
-                          sx={{ width: '60px' }}
+                          sx={{
+                            width: '60px',
+                            position: 'relative',
+                            '& .MuiFormControlLabel-label': {
+                              position: 'absolute',
+                              left: '59%',
+                              top: '50%',
+                              transform: 'translate(-50%, -50%) rotate(-90deg)',
+                              zIndex: 2,
+                              color: '#fff',
+                              fontSize: '10px',
+                            },
+                            '& .Mui-disabled.MuiFormControlLabel-label': {
+                              color: '#fff',
+                              fontSize: '10px',
+                            },
+                          }}
                           disabled={el.status === 'ORDERED'}
                         />
                       );
@@ -370,13 +377,29 @@ export const SeatsBooking = ({
                       return (
                         <FormControlLabel
                           control={
-                            <Checkbox
+                            <BpCheckbox
                               onChange={() => handleCheck(el.seat, 2)}
                               checked={selectedSeats[2].includes(el.seat)}
                             />
                           }
                           label={`${el.seat}`}
-                          sx={{ width: '60px' }}
+                          sx={{
+                            width: '60px',
+                            position: 'relative',
+                            '& .MuiFormControlLabel-label': {
+                              position: 'absolute',
+                              left: '59%',
+                              top: '50%',
+                              transform: 'translate(-50%, -50%) rotate(-90deg)',
+                              zIndex: 2,
+                              color: '#fff',
+                              fontSize: '10px',
+                            },
+                            '& .Mui-disabled.MuiFormControlLabel-label': {
+                              color: '#fff',
+                              fontSize: '10px',
+                            },
+                          }}
                           disabled={el.status === 'ORDERED'}
                         />
                       );
@@ -416,6 +439,9 @@ export const SeatsBooking = ({
               color={'success'}
               LinkComponent={Link}
               href={getLinkHref()}
+              disabled={
+                selectedSeats[1].length === 0 && selectedSeats[2].length === 0
+              }
             >
               {staticData.select_btn.title}
             </Button>

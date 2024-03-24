@@ -70,8 +70,8 @@
   "seat_booking": {
     "title": "Pasirinkite vietą",
     "seats": [
-      { "name": "available", "title": "Laisvos" },
       { "name": "occupied", "title": "Užimtos" },
+      { "name": "available", "title": "Laisvos" },      
       { "name": "selected", "title": "Pasirinktos" }
     ],
     "selected_seats": "Pasirinktos vietos: ",

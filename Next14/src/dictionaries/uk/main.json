@@ -70,8 +70,8 @@
   "seat_booking": {
     "title": "Оберіть місце",
     "seats": [
-      { "name": "available", "title": "Вільні" },
       { "name": "occupied", "title": "Зайняті" },
+      { "name": "available", "title": "Вільні" },      
       { "name": "selected", "title": "Обрані" }
     ],
     "selected_seats": "Обрані місця: ",
