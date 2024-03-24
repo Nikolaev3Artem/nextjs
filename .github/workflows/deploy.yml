@@ -29,4 +29,5 @@ jobs:
             cd Next14
             npm install
             npm run build
-            npm run start
+            kill -9 `lsof -t -i:80`
+            npm run start & bg
