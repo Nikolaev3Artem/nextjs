@@ -24,6 +24,6 @@ jobs:
         port: 22
         script: |
             cd /
-            cd var/www/nextjs-new
+            cd var/www/nextjs-new/nextjs
             git pull origin main
 
