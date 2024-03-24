@@ -27,6 +27,7 @@ jobs:
             cd var/www/nextjs-new/nextjs/
             git pull origin main
             cd Next14
+            npm install
             npm run build
             npm start
 
