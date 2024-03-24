@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "start": "NEXT_SHARP_PATH="/tmp/node_modules/sharp" next start"
     "start": "next start",
     "lint": "next lint"
   },
