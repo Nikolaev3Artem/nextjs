@@ -26,4 +26,6 @@ jobs:
             cd /
             cd var/www/nextjs-lt/
             git pull --rebase --autostash origin main
+            npm intsall
+            npm run build
             npm run start
