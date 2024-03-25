@@ -22,7 +22,6 @@ export default async function Order({
   params: { lang: Locale };
 }>) {
   const staticData = await getOrderDictionaries(params.lang);
-
   const userData = await getUserInfo();
   return (
     <Container
