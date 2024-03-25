@@ -52,7 +52,7 @@ export const SearchRoutForm = ({
 
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}`,
       );
 
       if (response.status === 200) {

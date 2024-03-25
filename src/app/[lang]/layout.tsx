@@ -37,8 +37,8 @@ export default async function RootLayout({
   const lang = params.lang;
 
   return (
-    <html lang={lang}>
-      <body className={inter.className}>
+    <html lang={lang} className={inter.className}>
+      <body>
         <AppRouterCacheProvider options={{ key: 'css' }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />

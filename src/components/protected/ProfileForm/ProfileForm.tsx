@@ -83,7 +83,7 @@ export const ProfileForm = ({
       if (!session) return null;
 
       const result = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}auth/users/${userData?.id}/`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/users/${userData?.id}/`,
 
         {
           first_name: values.name || '',
