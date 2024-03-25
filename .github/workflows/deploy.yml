@@ -24,8 +24,10 @@ jobs:
           port: 22
           script: |
             cd /
-            cd var/www/nextjs-new/nextjs/
+            cd var/www/nextjs-lt/
             git pull --rebase --autostash origin main
-            npm install          
+            npm install
+           pm2 stop
             npm run build
-             npm run start
+            pm2 start
+            npm run start
