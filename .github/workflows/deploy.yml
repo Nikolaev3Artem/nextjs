@@ -27,5 +27,6 @@ jobs:
             cd var/www/nextjs-lt/
             git pull --rebase --autostash origin main
             npm intsall
+            export NEXT_SHARP_PATH=/tmp/node_modules/sharp
             npm run build
             npm run start
