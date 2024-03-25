@@ -13,7 +13,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { useRouter } from 'next/router';
+
 import React from 'react';
 
 import Style from './CurrencySelect.module.css';
@@ -58,12 +58,7 @@ export const CurrencySelect = () => {
   const cache = createCache({
     key: 'css',
   });
-  // const getCurrencyid = () => {
-  //     const data = currency.filter((item) => item.id === selectedIndex)
-  //     const id = data[0].id
-  //
-  //     return id
-  // }
+
   return (
     <CacheProvider value={cache}>
       <Box sx={{ display: 'flex' }}>

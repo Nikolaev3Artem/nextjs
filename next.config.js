@@ -19,7 +19,6 @@ const nextConfig = {
   //   ],
   // },
   images: {
-    loader: 'imgix',
     remotePatterns: [
       {
         protocol: 'http',

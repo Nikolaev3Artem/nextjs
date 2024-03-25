@@ -118,7 +118,7 @@ export const SeatsBooking = ({
     return pathWithParams;
   };
 
-  const BpIcon = styled('span')(({ theme }) => ({
+  const BpIcon = styled('span')(({ theme }: { theme: any }) => ({
     borderRadius: '4px',
     width: '56px',
     height: '53px',

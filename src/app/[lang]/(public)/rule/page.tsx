@@ -1,7 +1,6 @@
-import styles from './rule.module.css';
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
-import { IBanner } from '@/interface/IBanner';
+
 import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
 import { Rule } from '@/components/published/Rule';

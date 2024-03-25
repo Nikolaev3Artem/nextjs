@@ -16,27 +16,19 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
 
 import { grey } from '@mui/material/colors';
-import { styled } from '@mui/system';
-import cn from 'clsx';
-// import Cookies from 'js-cookie';
+
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 
-// import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useState } from 'react';
 
 import Logo from '../../../../public/logobleck.svg';
-import { IProfile, IToken } from '@/interface/IUser';
-// import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
-// import { removToken } from '../../../store/auth/tokenSlice';
-// import {
-//   useGetTokenMutation,
-//   useGetUserQuery,
-// } from '../../../store/auth/user.api';
+import { IProfile } from '@/interface/IUser';
+
 import Style from './Login.module.css';
 import { Locale } from '@/i18n.config';
 import { loginStaticDataProp } from '@/interface/IStaticData';
@@ -50,11 +42,6 @@ interface State {
   showPassword: boolean;
 }
 
-interface IAuth {
-  access_token: string;
-  id_token: string;
-}
-
 export function Login({
   staticData,
   lang,
@@ -62,24 +49,6 @@ export function Login({
   staticData: loginStaticDataProp;
   lang: Locale;
 }) {
-  // const { data: session } = useSession()
-
-  // useEffect(() => {
-  //     const getTokenFromServer = async () => {
-  //         // TODO: handle error when the access token expires
-  //         const response = await axios.post(
-  //             // DRF backend endpoint, api/social/google/ for example
-  //             // this returns accessToken and refresh_token in the form of HTTPOnly cookies
-  //             BASE_URL,
-  //
-  //             {}
-  //         )
-  //     }
-  //     if (session) {
-  //         getTokenFromServer()
-  //     }
-  // }, [session])
-
   const router = useRouter();
   const [values, setValues] = React.useState<State>({
     email: '',
@@ -108,10 +77,6 @@ export function Login({
     event.preventDefault();
   };
 
-  let val = {
-    email: values.email,
-    password: values.password,
-  };
   const SignIn = async (event: SyntheticEvent) => {
     event.preventDefault();
     try {
@@ -195,7 +160,6 @@ export function Login({
               </InputLabel>
 
               <OutlinedInput
-                // size={"small"}
                 id="outlined-adornment-password"
                 type={values.showPassword ? 'text' : 'password'}
                 value={values.password}

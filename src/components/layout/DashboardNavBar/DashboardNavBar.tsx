@@ -58,11 +58,7 @@ import { PhoneType } from '@/interface/IEditorText';
 const drawerWidth = 180;
 const primary = theme.palette.primary.main;
 
-interface IChildren {
-  children: React.ReactNode;
-}
-
-export const DrawerHeader = styled('div')(({ theme }) => {
+export const DrawerHeader = styled('div')(({ theme }: { theme: any }) => {
   return {
     alignItems: 'center',
     display: 'flex',
@@ -141,9 +137,6 @@ export function DashboardNavBar({
   contacts: PhoneType[];
   userEmail: string | undefined | null;
 }) {
-  //   const is_superuser: boolean = useAppSelector(
-  //     state => state.user.user[0]?.user.is_superuser,
-  //   );
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleCloseUserMenu = () => {

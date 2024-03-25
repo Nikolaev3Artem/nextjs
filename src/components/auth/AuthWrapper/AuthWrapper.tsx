@@ -42,8 +42,6 @@ export const AuthWrapper = (props: IContentProps) => {
           </Link>
         ))}
       </Stack>
-
-      {/*	/!*{new Date().getFullYear()}*!/*/}
     </Stack>
   );
 };

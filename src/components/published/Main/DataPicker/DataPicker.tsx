@@ -1,7 +1,7 @@
 'use client';
 
 import { Locale } from '@/i18n.config';
-import { MainStaticDataProps } from '@/interface/IStaticData';
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -12,12 +12,9 @@ import 'dayjs/locale/en';
 import 'dayjs/locale/lt';
 import 'dayjs/locale/pt';
 import 'dayjs/locale/uk';
-// import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/navigation';
-import * as React from 'react';
-import { useEffect, useState } from 'react';
 
-// import { useAppSelector } from '../../../store/auth/redux';
+import * as React from 'react';
+import { useState } from 'react';
 
 export function DataPicker({
   staticData,

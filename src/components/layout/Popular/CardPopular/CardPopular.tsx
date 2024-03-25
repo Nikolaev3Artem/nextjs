@@ -5,17 +5,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import React, {
-  MouseEvent,
-  MouseEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 
 import Popular_svg from '../../../../../public/icons/popular_svg.svg';
-// import { useAppDispatch } from '../../store/auth/redux';
-// import { removePopular, setPopular } from '../../store/popular/popularSlice';
+
 import Style from './Card.module.css';
 import { Locale } from '@/i18n.config';
 import { useRoutsContext } from '@/app/context';
@@ -28,11 +21,10 @@ interface IProps {
 const CardPopular = (props: IProps) => {
   const [val1, setVal1] = useState<string>('');
   const [val2, setVal2] = useState<string>('');
-  const [active, setActive] = useState<boolean>(true);
+
   const {
-    selectRoutsTo,
     setSelectRoutsTo,
-    selectRoutsFrom,
+
     setSelectRoutsFrom,
   } = useRoutsContext();
   const router = useRouter();
@@ -44,7 +36,6 @@ const CardPopular = (props: IProps) => {
     setVal2(props.name2);
   });
 
-  //   const dispatch = useAppDispatch();
   const PopularPush = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 

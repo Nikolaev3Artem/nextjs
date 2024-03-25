@@ -24,7 +24,7 @@ import { ChangeEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import Button from '@mui/material/Button';
-import theme from '@/theme';
+
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { getSession } from '@/lib/auth';
@@ -69,7 +69,6 @@ export const AddPassengersForm = ({
   const price = priceString ? JSON.parse(priceString) : null;
   const routIdString = searchParams.get('routId');
   const routId = routIdString ? JSON.parse(routIdString as string) : null;
-
 
   const transformSeats = (seatsObject: SeatsObject): Seat[] => {
     const transformedSeats: Seat[] = [];

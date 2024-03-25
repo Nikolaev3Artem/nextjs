@@ -22,13 +22,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-import { IProfile } from '@/interface/IUser';
 import { FaUser } from 'react-icons/fa';
 import Logo from '../../../../public/logo33.svg';
-// import { setDrawer } from '../../../store/admin/drawerSlice';
-// import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
-// import { useGetUserQuery, userApi } from '../../../store/auth/user.api';
-// import { removeUser, setUser } from '../../../store/auth/userSlice';
+
 import { CurrencySelect } from '@/components/common/CurrencySelect';
 import { LocaleChange } from '@/components/common/LocaleChange';
 import Style from './NavbarAdmin.module.css';
@@ -87,7 +83,7 @@ export const NavBarAdmin = ({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  //   const dispatch = useAppDispatch();
+
   const router = useRouter();
 
   const handleLogout = () => {
@@ -95,17 +91,6 @@ export const NavBarAdmin = ({
     logout();
     router.push(`/${lang}/auth`);
   };
-
-  // const token = useAppSelector((state) => state.token.access)
-  //   const user: IProfile[] = useAppSelector(state => state.user.user);
-
-  //   const { data, isLoading, isSuccess } = useGetUserQuery('');
-
-  //   useEffect(() => {
-  //     if (data) {
-  //       dispatch(setUser(data));
-  //     }
-  //   }, [data]);
 
   const drawerOpen = cn({
     [Style.navbar_open]: open,

@@ -1,38 +1,31 @@
 import { Locale } from '@/i18n.config';
 import { headerStaticDataProp } from '@/interface/IStaticData';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import Logout from '@mui/icons-material/Logout';
-import MenuIcon from '@mui/icons-material/Menu';
+
 import CloseIcon from '@mui/icons-material/Close';
-import { CssBaseline, Drawer, Fade, Stack, useMediaQuery } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
+import { Fade, Stack, useMediaQuery } from '@mui/material';
+
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
+
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Menu from '@mui/material/Menu';
+
 import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
+
 import Typography from '@mui/material/Typography';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import SupportSvg from '../../../../../public/icons/support.svg';
 
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
-// import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Style from './MobileNavMenu.module.css';
 import { FaUser } from 'react-icons/fa';
 import { useState } from 'react';
 import { PhoneType } from '@/interface/IEditorText';
-import { CurrencySelect } from '@/components/common/CurrencySelect';
-import { LocaleChange } from '@/components/common/LocaleChange';
+
 import theme from '@/theme';
 
 export const MobileNavMenu = ({

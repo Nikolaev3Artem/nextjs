@@ -18,21 +18,6 @@ interface IModalProps {
 }
 
 export const CardInfoModal = ({ isOpen, onClose, children }: IModalProps) => {
-  // const xlUp = useMediaQuery(theme.breakpoints.up("xl"))
-  // const xl = useMediaQuery(theme.breakpoints.down("xl"))
-  // const lg = useMediaQuery(theme.breakpoints.down("lg"))
-  // const md = useMediaQuery(theme.breakpoints.down("md"))
-  // const sm = useMediaQuery(theme.breakpoints.down("sm"))
-  //
-  // const [breakpoint, setBreakpoint] = useState<string>("")
-  //
-  // useEffect(() => {
-  // 	if (xlUp) setBreakpoint("md")
-  // 	if (xl) setBreakpoint("md")
-  // 	if (lg) setBreakpoint("sm")
-  // 	if (md) setBreakpoint("xs")
-  // }, [breakpoint, isOpen])
-
   return (
     <Modal
       style={{ margin: 16 }}

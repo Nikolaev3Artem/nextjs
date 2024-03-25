@@ -1,20 +1,17 @@
 'use client';
 
 import {
-  Box,
   Button,
-  Container,
   Grid,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
   TextField,
-  Typography,
 } from '@mui/material';
-// import Style from './profile.module.css';
+
 import { Locale } from '@/i18n.config';
-import { getProfileDictionaries } from '@/lib/dictionary';
+
 import FormControl from '@mui/material/FormControl';
 import { BiSave } from 'react-icons/bi';
 import { profileStaticData } from '@/interface/IStaticData';
@@ -25,7 +22,7 @@ import { DataPicker } from '@/components/published/Main/DataPicker';
 import axios from 'axios';
 import Style from '@/app/[lang]/(protected)/profile/profile.module.css';
 import { IProfile, IUser } from '@/interface/IUser';
-import { cookies } from 'next/headers';
+
 import { getSession } from '@/lib/auth';
 
 interface State {
@@ -102,10 +99,6 @@ export const ProfileForm = ({
           },
         },
       );
-
-      // if (result === 200) {
-      //   router.back();
-      // }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log('error message: ', error.message);

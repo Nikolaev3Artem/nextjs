@@ -1,4 +1,3 @@
-import { getUser } from '@/lib/auth';
 import styles from './dashboard.module.css';
 
 export default async function Dashboard() {

@@ -12,7 +12,7 @@ import { IContactText } from '@/interface/IEditorText';
 
 import Style from './Contact.module.css';
 import cn from 'clsx';
-import dynamic from 'next/dynamic';
+
 import Link from 'next/link';
 
 import { FaViber } from 'react-icons/fa';
@@ -30,10 +30,6 @@ interface FlagSVGProps {
   height: number;
   className?: string;
 }
-
-type FlagSVGComponent =
-  | React.FC<FlagSVGProps>
-  | React.ComponentClass<FlagSVGProps>;
 
 export const Contact = ({
   contact,

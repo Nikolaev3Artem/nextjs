@@ -5,18 +5,14 @@ import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Grid, Stack } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+
 import TextField from '@mui/material/TextField';
 
-import { useRouter } from 'next/navigation';
 import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Style from './Input.module.css';
 import { useRoutsContext } from '@/app/context';
-
-// import { useAppDispatch, useAppSelector } from '../../../store/auth/redux';
-// import { removePopular, setPopular } from '../../../store/popular/popularSlice';
 
 export function Input({
   staticData,
@@ -44,7 +40,6 @@ export function Input({
     selectRoutsFrom,
     setSelectRoutsFrom,
   } = useRoutsContext();
-  const ref1 = useRef(null);
 
   //   state => state.popular.active,
   // );

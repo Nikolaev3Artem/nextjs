@@ -9,11 +9,6 @@ import {
 
 import React from 'react';
 
-// import Signup from '../../component/Auth/Signup/Signup';
-// import LayoutLogin from '../../component/Layout/Auth/LayoutLogin';
-// import { LocaleChange } from '../../component/Locale/LocaleChange';
-// import { wrapper } from '../../store/store';
-
 export default async function Registration({
   params,
 }: Readonly<{

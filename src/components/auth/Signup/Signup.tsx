@@ -13,22 +13,21 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
-import { styled } from '@mui/system';
+
 import axios from 'axios';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
 
 import Logo from '../../../../public/logobleck.svg';
 
-// import { useCreateUserMutation } from "../../../store/auth/user.api"
 import Style from './signup.module.css';
 import { Locale } from '@/i18n.config';
 import { registrationStaticDataProp } from '@/interface/IStaticData';
 import { login } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
+
 interface State {
   email: string;
   password: string;
@@ -54,9 +53,6 @@ export default function Signup({
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setData({ ...data, [prop]: event.target.value });
     };
-  const handleChangePhone = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(event.target.value);
-  };
 
   const handleClickShowPassword = () => {
     setData({
@@ -70,15 +66,11 @@ export default function Signup({
   ) => {
     event.preventDefault();
   };
-  //   const [createUser, {}] = useCreateUserMutation();
+
   let formData = {
     email: data.email,
     password: data.password,
   };
-  //   const signup = async (event: any) => {
-  //     event.preventDefault();
-  //     // await createUser(formData);
-  //   };
 
   const signup = async (event: any) => {
     event.preventDefault();
@@ -103,10 +95,6 @@ export default function Signup({
     } catch (error) {
       console.log(error);
     }
-  };
-  const SignInPhone = (event: any) => {
-    event.preventDefault();
-    console.log(phone);
   };
 
   return (

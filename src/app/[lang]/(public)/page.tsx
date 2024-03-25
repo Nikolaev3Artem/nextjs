@@ -1,6 +1,6 @@
 import { Locale } from '@/i18n.config';
 import axios from 'axios';
-import { IBanner, IGetBanner } from '@/interface/IBanner';
+import { IGetBanner } from '@/interface/IBanner';
 import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
 import { getMainDictionaries } from '@/lib/dictionary';

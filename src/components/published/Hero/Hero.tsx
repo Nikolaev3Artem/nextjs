@@ -4,8 +4,7 @@ import Container from '@mui/material/Container';
 import Style from './Hero.module.css';
 import Banner from '@/components/common/Banner/Banner';
 
-import { IBanner, IGetBanner } from '@/interface/IBanner';
-import { MainStaticDataProps } from '@/interface/IStaticData';
+import { IBanner } from '@/interface/IBanner';
 
 export const Hero = ({
   banner,

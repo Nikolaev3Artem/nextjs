@@ -1,7 +1,6 @@
 import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { RentCard } from './RentCard';
 import { IRent } from '@/interface/IRent';
 import { Locale } from '@/i18n.config';

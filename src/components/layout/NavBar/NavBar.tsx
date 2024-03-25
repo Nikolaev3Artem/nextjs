@@ -3,7 +3,7 @@
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Logout from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import { CssBaseline, Drawer, Fade, Stack } from '@mui/material';
+import { Drawer, Fade, Stack } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -17,34 +17,28 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { FaUser } from 'react-icons/fa';
-// import Cookies from 'js-cookie';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { usePathname } from 'next/navigation';
+
 import * as React from 'react';
 import { useEffect } from 'react';
 import { headerStaticDataProp } from '@/interface/IStaticData';
 
 import Logo from '../../../../public/logo.svg';
-// import { IProfile } from '../../interface/IUser';
-// import { setDrawer } from '../../store/admin/drawerSlice';
-// import { useAppDispatch, useAppSelector } from '../../store/auth/redux';
-// import { useGetUserQuery, userApi } from '../../store/auth/user.api';
-// import { removeUser, setUser } from '../../store/auth/userSlice';
 
-import theme from '@/theme';
-const drawerWidth = 180;
-const primary = theme.palette.primary.main;
 import Style from './Navbar.module.css';
 import { Locale } from '@/i18n.config';
 import { CurrencySelect } from '@/components/common/CurrencySelect';
 import { LocaleChange } from '@/components/common/LocaleChange';
-import { IProfile } from '@/interface/IUser';
+
 import { MobileNavMenu } from './MobileNavMenu';
-import axios from 'axios';
+
 import { PhoneType } from '@/interface/IEditorText';
 import { logout } from '@/lib/auth';
+
+import theme from '@/theme';
+const drawerWidth = 180;
+const primary = theme.palette.primary.main;
 
 export const NavBar = ({
   staticData,
@@ -78,27 +72,10 @@ export const NavBar = ({
     setOpen(newOpen);
   };
 
-  // const handleCloseNavMenu = () => {
-  //   setAnchorElNav(false);
-  // };
-
-  // const dispatch = useAppDispatch();
   const handleLogout = () => {
     toggleDrawer(false);
     logout();
   };
-  // const token = useAppSelector((state) => state.token.access)
-  // const user: IProfile[] = useAppSelector(state => state.user.user);
-
-  // const { data, isLoading, isSuccess } = useGetUserQuery('');
-
-  // const isSuccess = true;
-
-  // useEffect(() => {
-  //   if (data) {
-  //     dispatch(setUser(data));
-  //   }
-  // }, [data]);
 
   return (
     <AppBar color={'primary'} className={Style.navbar} position="fixed">

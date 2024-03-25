@@ -1,7 +1,7 @@
 import { Locale } from '@/i18n.config';
 import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
-import styles from './bus_rent.module.css';
+
 import axios from 'axios';
 import { Rent } from '@/components/published/Rent';
 import { getBusRentDictionaries } from '@/lib/dictionary';

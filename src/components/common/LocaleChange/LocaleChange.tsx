@@ -2,23 +2,19 @@
 
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
-// import { active, arrow } from "./locale.Drawer.module.scss"
+
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { ListItemButton, Stack } from '@mui/material';
-import dynamic from 'next/dynamic';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import clsx from 'clsx';
-// import Cookies from 'js-cookie';
+
 import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import React, { useEffect } from 'react';
+
+import { usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
 import { i18n } from '@/i18n.config';
 
 import Style from './locale.module.css';
@@ -52,19 +48,6 @@ const cache = createCache({
 export function LocaleChange({ color, weight, lang }: IColor) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  // useEffect(() => {
-  //     function getlocale() {
-  //         if (Cookies.get("id")) {
-  //             const land_id: any = Cookies.get("id")
-  //             setSelectedIndex(parseInt(land_id))
-  //         } else {
-  //             setSelectedIndex(1)
-  //         }
-  //     }
-  //
-  //     getlocale()
-  //     return () => {}
-  // }, [selectedIndex])
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -99,8 +82,6 @@ export function LocaleChange({ color, weight, lang }: IColor) {
   };
 
   const searchParams = useSearchParams();
-  const search = searchParams.get('search');
-  //   const {query, asPath } = router;
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -108,8 +89,6 @@ export function LocaleChange({ color, weight, lang }: IColor) {
     lang?: string,
   ) => {
     setAnchorEl(null);
-    // Cookies.set("locale", locale)
-    // Cookies.set("id", index.toString())
   };
 
   const handleClose = () => {
