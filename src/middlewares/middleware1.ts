@@ -9,6 +9,7 @@ const protectedPaths = [
   '/dashboard',
   '/profile',
   '/my-order',
+  '/my-order/new-order',
   '/dashboard/bus',
   '/dashboard/city',
   '/dashboard/flights',

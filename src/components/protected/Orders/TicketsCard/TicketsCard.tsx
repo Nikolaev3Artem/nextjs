@@ -284,13 +284,14 @@ export const TicketsCard = ({
                     {staticData.routs_card.conveniences}
                   </Typography>
                   <Box display={'flex'} alignItems={'center'} columnGap={1}>
-                    {icons.map(el => {
+                    {icons.map((el, ind) => {
                       const icon = getIconByName(
                         el,
                         staticData.routs_card.conveniences_icon,
                       );
                       return (
                         <Image
+                          key={ind}
                           alt={icon?.aria || ''}
                           src={`/icons/${icon?.icon}` || ''}
                           width={16}
@@ -436,13 +437,14 @@ export const TicketsCard = ({
                     </Box>
 
                     {data.journey[0].routes[0].stops &&
-                      data.journey[0].routes[0].stops.map(() => {
+                      data.journey[0].routes[0].stops.map((el, ind) => {
                         return (
                           <Box
                             component={'li'}
                             display={'flex'}
                             columnGap={1}
                             alignItems={'center'}
+                            key={ind}
                           >
                             <Box
                               width={'12px'}
@@ -484,6 +486,7 @@ export const TicketsCard = ({
                               display={'flex'}
                               columnGap={1}
                               alignItems={'center'}
+                              key={stop.id}
                             >
                               <Typography
                                 sx={{ fontSize: { xs: '13px', md: '16px' } }}
@@ -598,6 +601,7 @@ export const TicketsCard = ({
                                 src={`/icons/${icon?.icon}` || ''}
                                 width={16}
                                 height={16}
+                                key={icon?.name}
                               />
                             );
                           })}

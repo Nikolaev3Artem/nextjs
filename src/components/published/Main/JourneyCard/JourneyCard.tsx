@@ -329,6 +329,7 @@ export const JourneyCard = ({
                       src={`/icons/${icon?.icon}` || ''}
                       width={16}
                       height={16}
+                      key={icon?.name}
                     />
                   );
                 })}
@@ -400,9 +401,10 @@ export const JourneyCard = ({
                       </Box>
 
                       {data.routes[0].stops &&
-                        data.routes[0].stops.map(() => {
+                        data.routes[0].stops.map((el, ind) => {
                           return (
                             <Box
+                              key={ind}
                               component={'li'}
                               display={'flex'}
                               columnGap={1}
@@ -445,6 +447,7 @@ export const JourneyCard = ({
                         data.routes[0].stops.map(stop => {
                           return (
                             <Box
+                              key={stop.id}
                               component={'li'}
                               display={'flex'}
                               columnGap={1}
