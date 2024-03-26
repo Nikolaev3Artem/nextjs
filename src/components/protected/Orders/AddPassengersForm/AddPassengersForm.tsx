@@ -28,6 +28,8 @@ import Button from '@mui/material/Button';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { getSession } from '@/lib/auth';
+import { JourneyInfo } from '../JourneyInfo';
+import { getRoutInfo } from '../JourneyInfo/getInfo';
 
 interface UserData {
   email: string;
@@ -113,6 +115,22 @@ export const AddPassengersForm = ({
       });
     }
   }, [passengerSeat, userData]);
+
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getRoutInfo(routId, lang);
+
+        setData(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange =
     (userKey: string) =>
@@ -466,37 +484,43 @@ export const AddPassengersForm = ({
         );
       })}
 
-      <Grid item xs={12} lg={2} xl={2}>
-        <Button
-          sx={{
-            height: '54px',
-            fontWeight: '400',
-            textTransform: 'none',
-            fontSize: '16px',
-          }}
-          fullWidth
-          variant={'contained'}
-          color={'success'}
-          onClick={Add}
-        >
-          {staticData.orderForm.add_button.title}
-        </Button>
-      </Grid>
-      <Grid item md={2} lg={2} xl={2}>
-        <Button
-          sx={{
-            height: '54px',
-            fontWeight: '400',
-            textTransform: 'none',
-            fontSize: '16px',
-          }}
-          fullWidth
-          variant={'contained'}
-          color={'secondary'}
-          onClick={Reserve}
-        >
-          {staticData.orderForm.reserve_button.title}
-        </Button>
+      <Grid item p={4} bgcolor={'white'} className={Style.content}>
+        <Grid container>
+          {data && <JourneyInfo routId={routId} lang={lang} data={data} />}
+
+          <Grid item xs={12} lg={2} xl={2}>
+            <Button
+              sx={{
+                height: '54px',
+                fontWeight: '400',
+                textTransform: 'none',
+                fontSize: '16px',
+              }}
+              fullWidth
+              variant={'contained'}
+              color={'success'}
+              onClick={Add}
+            >
+              {staticData.orderForm.add_button.title}
+            </Button>
+          </Grid>
+          <Grid item md={2} lg={2} xl={2}>
+            <Button
+              sx={{
+                height: '54px',
+                fontWeight: '400',
+                textTransform: 'none',
+                fontSize: '16px',
+              }}
+              fullWidth
+              variant={'contained'}
+              color={'secondary'}
+              onClick={Reserve}
+            >
+              {staticData.orderForm.reserve_button.title}
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
