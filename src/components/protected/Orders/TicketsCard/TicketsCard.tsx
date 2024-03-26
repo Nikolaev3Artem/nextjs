@@ -479,14 +479,14 @@ export const TicketsCard = ({
                     </Box>
                     {data.journey[0].routes[0].stops &&
                       data.journey[0].routes[0].stops.map(
-                        (stop: StopsProps) => {
+                        (stop: StopsProps, ind) => {
                           return (
                             <Box
                               component={'li'}
                               display={'flex'}
                               columnGap={1}
                               alignItems={'center'}
-                              key={stop.id}
+                              key={ind}
                             >
                               <Typography
                                 sx={{ fontSize: { xs: '13px', md: '16px' } }}

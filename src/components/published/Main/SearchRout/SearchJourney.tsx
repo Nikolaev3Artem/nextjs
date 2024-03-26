@@ -2,7 +2,7 @@ import { IJourney } from '@/interface/IJourney';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Stack, Grid, Typography } from '@mui/material';
 import { IoMdArrowForward } from 'react-icons/io';
-import { MdCalendarMonth } from 'react-icons/md';
+import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 import Box from '@mui/material/Box';
 import dayjs from 'dayjs';
 import { JourneyCard } from '@/components/published/Main/JourneyCard';
@@ -58,7 +58,7 @@ export const SearchJourney = ({
             >
               {values.to}
             </Typography>
-            <MdCalendarMonth width={'24px'} height={'24px'} />
+            <CalendarIcon width={'24px'} height={'24px'} />
             <Typography
               color={'primary'}
               sx={{ fontSize: { xs: '13px', md: '20px' } }}

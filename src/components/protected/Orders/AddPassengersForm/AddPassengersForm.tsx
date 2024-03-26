@@ -19,17 +19,20 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Style from './AddPassengersForm.module.css';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChangeEvent } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import Button from '@mui/material/Button';
+import LockIcon from '@mui/icons-material/Lock';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { getSession } from '@/lib/auth';
 import { JourneyInfo } from '../JourneyInfo';
 import { getRoutInfo } from '../JourneyInfo/getInfo';
+
+const discount = 20;
 
 interface UserData {
   email: string;
@@ -48,6 +51,20 @@ type State = {
   [key: string]: UserData;
 };
 
+type SeatsObject = {
+  [floor: string]: number[];
+};
+
+type Seat = { floor: number | null; seat: number | null };
+
+const debounce = (func: Function, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return function (this: any, ...args: any[]) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => func.apply(this, args), delay);
+  };
+};
 export const AddPassengersForm = ({
   staticData,
   lang,
@@ -57,12 +74,6 @@ export const AddPassengersForm = ({
   lang: Locale;
   userData: IProfile | null | undefined;
 }) => {
-  const [values, setValues] = useState<State>({});
-  type SeatsObject = {
-    [floor: string]: number[];
-  };
-
-  type Seat = { floor: number | null; seat: number | null };
   const router = useRouter();
   const searchParams = useSearchParams();
   const seatsString = searchParams.get('selectedSeats');
@@ -71,6 +82,24 @@ export const AddPassengersForm = ({
   const price = priceString ? JSON.parse(priceString) : null;
   const routIdString = searchParams.get('routId');
   const routId = routIdString ? JSON.parse(routIdString as string) : null;
+
+  const [values, setValues] = useState<State>({});
+  const [passengerSeat, setPassengerSeat] = useState<Seat[]>([]);
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getRoutInfo(routId, lang);
+        console.log('df');
+        setData(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const transformSeats = (seatsObject: SeatsObject): Seat[] => {
     const transformedSeats: Seat[] = [];
@@ -82,8 +111,6 @@ export const AddPassengersForm = ({
     return transformedSeats;
   };
 
-  const [passengerSeat, setPassengerSeat] = useState<Seat[]>([]);
-  const discount = 20;
   useEffect(() => {
     if (seatsObject) {
       setPassengerSeat(transformSeats(seatsObject));
@@ -114,42 +141,26 @@ export const AddPassengersForm = ({
         return updatedValues;
       });
     }
-  }, [passengerSeat, userData]);
+  }, [passengerSeat, userData, price]);
 
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getRoutInfo(routId, lang);
-
-        setData(response);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handleChange =
-    (userKey: string) =>
-    (prop: keyof UserData) =>
-    (
-      event:
-        | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-        | SelectChangeEvent<string>,
-    ) => {
-      setValues(prevState => {
-        return {
+  const handleChange = (userKey: string) => (prop: keyof UserData) => {
+    return debounce(
+      (
+        event:
+          | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          | SelectChangeEvent<string>,
+      ) => {
+        setValues(prevState => ({
           ...prevState,
           [userKey]: {
             ...prevState[userKey],
             [prop]: event.target.value,
           },
-        };
-      });
-    };
+        }));
+      },
+      600,
+    );
+  };
 
   const Reserve = async (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -218,7 +229,7 @@ export const AddPassengersForm = ({
   };
 
   return (
-    <Grid component="form" container bgcolor={'transparent'}>
+    <Grid component="form" container bgcolor={'transparent'} rowGap={2}>
       {Object.keys(values).map((key, index) => {
         const value = values[key];
         return (
@@ -228,11 +239,13 @@ export const AddPassengersForm = ({
             p={4}
             bgcolor={'white'}
             className={Style.content}
+            xl={6}
           >
             <Grid container spacing={2} bgcolor={'white'}>
               <Grid
                 item
                 xs={12}
+                xl={6}
                 display={'flex'}
                 justifyContent={'space-between'}
                 alignContent={'center'}
@@ -289,7 +302,7 @@ export const AddPassengersForm = ({
                   </Box>
                 )}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   sx={{ my: 1 }}
                   required
@@ -304,7 +317,7 @@ export const AddPassengersForm = ({
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   sx={{ my: 1 }}
                   required
@@ -319,7 +332,7 @@ export const AddPassengersForm = ({
                 />
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   sx={{ my: 1 }}
                   required
@@ -333,7 +346,7 @@ export const AddPassengersForm = ({
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   sx={{ my: 1 }}
                   required
@@ -483,11 +496,76 @@ export const AddPassengersForm = ({
           </Grid>
         );
       })}
-
+      <Grid item xs={12} lg={2} xl={2}>
+        <Button
+          sx={{
+            height: '54px',
+            fontWeight: '400',
+            textTransform: 'none',
+            fontSize: '16px',
+          }}
+          fullWidth
+          variant={'contained'}
+          color={'success'}
+          onClick={Add}
+        >
+          {staticData.orderForm.add_button.title}
+        </Button>
+      </Grid>
       <Grid item p={4} bgcolor={'white'} className={Style.content}>
-        <Grid container>
-          {data && <JourneyInfo routId={routId} lang={lang} data={data} />}
+        <Grid container display={'flex'} rowGap={2} width={'100%'}>
+          {data && (
+            <JourneyInfo
+              routId={routId}
+              lang={lang}
+              data={data}
+              staticData={staticData}
+            />
+          )}
+          <Grid item xs={12}>
+            <Typography
+              color={'primary'}
+              sx={{ fontSize: { xs: '20px', md: '20px' } }}
+              display={'inline-flex'}
+              alignItems={'baseline'}
+              columnGap={1}
+            >
+              {staticData.orderForm.total}
+              <Typography
+                component={'span'}
+                color={'primary'}
+                fontWeight={700}
+                sx={{ fontSize: { xs: '24px', md: '20px' } }}
+              >
+                {/* {data?.bus ? data.bus[0].name : ''} */} 200
+              </Typography>
+              <Typography
+                component={'span'}
+                color={'primary'}
+                sx={{ fontSize: { xs: '12px', md: '20px' } }}
+              >
+                {/* {data?.bus ? data.bus[0].name : ''} */} UAH
+              </Typography>
+            </Typography>
+          </Grid>
 
+          <Grid item xs={12} xl={2}>
+            <Button
+              sx={{
+                height: '54px',
+                fontWeight: '400',
+                textTransform: 'none',
+                fontSize: '16px',
+              }}
+              fullWidth
+              variant={'contained'}
+              color={'secondary'}
+              startIcon={<LockIcon />}
+              onClick={Reserve}
+            >
+              {staticData.orderForm.reserve_button.title}
+            </Button>
+          </Grid>
           <Grid item xs={12} lg={2} xl={2}>
             <Button
               sx={{
@@ -501,23 +579,7 @@ export const AddPassengersForm = ({
               color={'success'}
               onClick={Add}
             >
-              {staticData.orderForm.add_button.title}
-            </Button>
-          </Grid>
-          <Grid item md={2} lg={2} xl={2}>
-            <Button
-              sx={{
-                height: '54px',
-                fontWeight: '400',
-                textTransform: 'none',
-                fontSize: '16px',
-              }}
-              fullWidth
-              variant={'contained'}
-              color={'secondary'}
-              onClick={Reserve}
-            >
-              {staticData.orderForm.reserve_button.title}
+              {staticData.orderForm.payment_button.title}
             </Button>
           </Grid>
         </Grid>

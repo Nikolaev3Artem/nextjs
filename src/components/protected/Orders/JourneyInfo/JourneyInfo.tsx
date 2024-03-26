@@ -23,19 +23,23 @@ import ClockSvg from '../../../../../public/icons/clock.svg';
 import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
-import { MdCalendarMonth } from 'react-icons/md';
+import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { getRoutInfo } from './getInfo';
+import { orderStaticData } from '@/interface/IStaticData';
+import { IJourney } from '@/interface/IJourney';
 
 export const JourneyInfo = ({
   routId,
   lang,
   data,
+  staticData,
 }: {
   routId: string;
   lang: Locale;
-  data: any;
+  data: IJourney;
+  staticData: orderStaticData;
 }) => {
   console.log(data);
   return (
@@ -44,7 +48,7 @@ export const JourneyInfo = ({
         container
         columnSpacing={{ xs: 1, sm: 2, md: 2 }}
         sx={{
-          rowGap: { xs: 2, sm: 'initial' },
+          rowGap: { xs: 2 },
         }}
         height={'100%'}
       >
@@ -53,10 +57,11 @@ export const JourneyInfo = ({
           item
           flexDirection={'column'}
           justifyContent={'flex-start'}
-          alignItems={'center'}
+          alignItems={'flex-start'}
           xs={2}
-          md={1.5}
+          sm={1}
           xl={1}
+          maxWidth={'30px'}
         >
           <Box width={'24px'} height={'24px'} display={'flex'}>
             <FromCircleSvg width={24} height={24} />
@@ -70,8 +75,7 @@ export const JourneyInfo = ({
           justifyContent={'space-between'}
           rowGap={1}
           xs={10}
-          sm={2}
-          md={1.5}
+          sm={11}
           xl={1}
           minWidth={7}
         >
@@ -83,7 +87,7 @@ export const JourneyInfo = ({
             >
               {data?.routes[0]?.from_place}
             </Typography>
-            <Box display={'flex'} columnGap={1}>
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
               <Typography
                 sx={{
                   fontSize: { xs: '10px', md: '12px' },
@@ -105,7 +109,7 @@ export const JourneyInfo = ({
             >
               {data?.routes[0].to_place}
             </Typography>
-            <Box display={'flex'} columnGap={1}>
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
               <Typography
                 sx={{
                   fontSize: { xs: '10px', md: '12px' },
@@ -120,9 +124,9 @@ export const JourneyInfo = ({
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} display={'flex'}>
+        <Grid item xs={12} display={'flex'} alignItems={'center'} columnGap={1}>
           <Box width={'24px'} height={'24px'} display={'flex'}>
-            <MdCalendarMonth width={24} height={24} />
+            <CalendarIcon width={24} height={24} />
           </Box>
           <Typography
             color={'primary'}
@@ -147,18 +151,142 @@ export const JourneyInfo = ({
         <Grid item xs={12} display={'flex'}>
           <Typography
             color={'primary'}
-            sx={{ fontSize: { xs: '20px', md: '20px' } }}
+            fontWeight={700}
+            sx={{ fontSize: { xs: '16px', md: '20px' } }}
           >
-            Автобус:
+            {staticData.orderForm.bus}
             <Typography
               component={'span'}
               color={'primary'}
-              sx={{ fontSize: { xs: '20px', md: '20px' } }}
+              sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {data.bus ? data.bus[0].name : ''}
+              {data?.bus ? data.bus[0].name : ''}
             </Typography>
           </Typography>
         </Grid>
+
+        <Grid item xs={12} display={'flex'}>
+          <Typography
+            color={'primary'}
+            fontWeight={700}
+            sx={{ fontSize: { xs: '16px', md: '20px' } }}
+          >
+            {staticData.orderForm.duration}
+            <Typography
+              component={'span'}
+              color={'primary'}
+              sx={{ fontSize: { xs: '16px', md: '20px' } }}
+            >
+              {/* {data?.bus ? data.bus[0].name : ''} */} 10 годин
+            </Typography>
+          </Typography>
+        </Grid>
+        <Grid item xs={12} display={'flex'}>
+          <Typography
+            color={'primary'}
+            fontWeight={700}
+            sx={{ fontSize: { xs: '16px', md: '20px' } }}
+            display={'inline-flex'}
+            columnGap={1}
+          >
+            {staticData.orderForm.journey}
+            <Typography
+              component={'span'}
+              color={'primary'}
+              sx={{ fontSize: { xs: '16px', md: '20px' } }}
+            >
+              {data?.routes ? data.routes[0].from_place : ''}
+            </Typography>
+            <Typography
+              component={'span'}
+              color={'primary'}
+              sx={{ fontSize: { xs: '16px', md: '20px' } }}
+            >
+              {data?.routes ? data.routes[0].to_place : ''}
+            </Typography>
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <Box display={'flex'} columnGap={2}>
+            <Box
+              component={'ul'}
+              display={'flex'}
+              flexDirection={'column'}
+              justifyContent={'center'}
+            >
+              <Box width={'12px'} height={'13px'} display={'flex'}>
+                <FromCircleSvg width={12} height={13} />
+              </Box>
+
+              {data.routes[0].stops &&
+                data.routes[0].stops.map((el, ind) => {
+                  return (
+                    <Box
+                      key={ind}
+                      component={'li'}
+                      display={'flex'}
+                      columnGap={1}
+                      alignItems={'center'}
+                    >
+                      <Box width={'12px'} height={'32px'} display={'flex'}>
+                        <ToSvg width={12} height={32} />
+                      </Box>
+                    </Box>
+                  );
+                })}
+              <Box width={'12px'} height={'31px'} display={'flex'}>
+                <ToSvg />
+              </Box>
+            </Box>
+            <Box
+              component={'ul'}
+              display={'flex'}
+              rowGap={'12px'}
+              flexDirection={'column'}
+              sx={{ rowGap: { xs: '8px', md: '6px' } }}
+            >
+              <Box
+                component={'li'}
+                display={'flex'}
+                columnGap={1}
+                alignItems={'center'}
+              >
+                <Typography sx={{ fontSize: { xs: '16px', md: '16px' } }}>
+                  {data.routes[0].from_place}
+                </Typography>
+              </Box>
+              {data.routes[0].stops &&
+                data.routes[0].stops.map(stop => {
+                  return (
+                    <Box
+                      key={stop.id}
+                      component={'li'}
+                      display={'flex'}
+                      columnGap={1}
+                      alignItems={'center'}
+                    >
+                      <Typography sx={{ fontSize: { xs: '16px', md: '16px' } }}>
+                        {stop.city}
+                      </Typography>
+                    </Box>
+                  );
+                })}
+              <Box
+                component={'li'}
+                display={'flex'}
+                columnGap={1}
+                alignItems={'center'}
+              >
+                <Typography sx={{ fontSize: { xs: '16px', md: '16px' } }}>
+                  {data.routes[0].to_place}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Grid>
+        <Box width={'100%'}>
+          <Divider color={'#BFBFBF'} flexItem />
+        </Box>
       </Grid>
     </Grid>
   );
