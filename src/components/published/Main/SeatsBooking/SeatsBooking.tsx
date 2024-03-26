@@ -211,9 +211,10 @@ export const SeatsBooking = ({
                 columnGap: 1,
               }}
             >
-              {staticData.seat_booking.seats.map(el => {
+              {staticData.seat_booking.seats.map((el, ind) => {
                 return (
                   <Box
+                    key={ind}
                     display={'flex'}
                     alignItems={'center'}
                     sx={{
@@ -336,7 +337,7 @@ export const SeatsBooking = ({
               <CustomTabPanel value={value} index={0}>
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-                    {data.bus[0].first_floor_seats.map(el => {
+                    {data.bus[0].first_floor_seats.map((el, ind) => {
                       return (
                         <FormControlLabel
                           control={
@@ -345,6 +346,7 @@ export const SeatsBooking = ({
                               checked={selectedSeats[1].includes(el.seat)}
                             />
                           }
+                          key={ind}
                           label={`${el.seat}`}
                           sx={{
                             width: '60px',
@@ -373,7 +375,7 @@ export const SeatsBooking = ({
               <CustomTabPanel value={value} index={1}>
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-                    {data.bus[0].second_floor_seats.map(el => {
+                    {data.bus[0].second_floor_seats.map((el, ind) => {
                       return (
                         <FormControlLabel
                           control={
@@ -382,6 +384,7 @@ export const SeatsBooking = ({
                               checked={selectedSeats[2].includes(el.seat)}
                             />
                           }
+                          key={ind}
                           label={`${el.seat}`}
                           sx={{
                             width: '60px',
