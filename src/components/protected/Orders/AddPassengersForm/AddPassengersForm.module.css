@@ -1,12 +1,10 @@
 .content {
   display: flex;
-  position: absolute;
-  display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: relative;
-  justify-content: center;
+  justify-content: space-between;
+
   background-color: #fff;
-  width: 100% !important;
   height: auto;
   border-radius: 4px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
@@ -25,6 +23,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
+  padding: 0 !important;
 }
 
 .radio_base::after {

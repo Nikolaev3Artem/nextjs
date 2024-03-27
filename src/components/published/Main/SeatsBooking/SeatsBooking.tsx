@@ -7,7 +7,8 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { MdOutlineClose } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
 import { IoMdArrowForward } from 'react-icons/io';
-import { MdCalendarMonth } from 'react-icons/md';
+
+import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 import dayjs from 'dayjs';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -113,7 +114,6 @@ export const SeatsBooking = ({
     const queryParams = new URLSearchParams();
     queryParams.set('selectedSeats', JSON.stringify(nonEmptySeats));
     queryParams.set('routId', `${data.id}`);
-    queryParams.set('price', `${data.routes[0].price}`);
     const pathWithParams = `/${lang}/my-order/new-order?${queryParams}`;
     return pathWithParams;
   };
@@ -275,7 +275,7 @@ export const SeatsBooking = ({
                 {data.routes[0].to_place}
               </Typography>
 
-              <MdCalendarMonth width={'24px'} height={'24px'} />
+              <CalendarIcon width={'24px'} height={'24px'} />
 
               <Typography
                 color={'primary'}

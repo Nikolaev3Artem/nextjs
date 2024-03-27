@@ -88,8 +88,8 @@ export function Input({
             />
           </Grid>
           <Grid container component={'ul'} wrap="wrap" gap={2}>
-            {popularRoutsTo &&
-              popularRoutsTo.map((el: string) => {
+            {popularRoutsFrom &&
+              popularRoutsFrom.map((el: string) => {
                 return (
                   <Grid
                     key={el}
@@ -126,8 +126,8 @@ export function Input({
             />
           </Grid>
           <Grid container component={'ul'} wrap="wrap" gap={2}>
-            {popularRoutsFrom &&
-              popularRoutsFrom.map((el: string) => {
+            {popularRoutsTo &&
+              popularRoutsTo.map((el: string) => {
                 return (
                   <Grid
                     item
