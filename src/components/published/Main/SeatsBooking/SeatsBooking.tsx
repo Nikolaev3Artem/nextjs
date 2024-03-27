@@ -114,7 +114,6 @@ export const SeatsBooking = ({
     const queryParams = new URLSearchParams();
     queryParams.set('selectedSeats', JSON.stringify(nonEmptySeats));
     queryParams.set('routId', `${data.id}`);
-    queryParams.set('price', `${data.routes[0].price}`);
     const pathWithParams = `/${lang}/my-order/new-order?${queryParams}`;
     return pathWithParams;
   };

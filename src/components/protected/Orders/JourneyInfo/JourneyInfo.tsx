@@ -1,43 +1,22 @@
 import { Locale } from '@/i18n.config';
 
-import axios from 'axios';
-import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import Style from './JourneyCard.module.css';
+import { Box, Divider, Grid, Typography } from '@mui/material';
 
 import MapIcon from '../../../../../public/icons/map-marker.svg';
-import FromSvg from '../../../../../public/icons/journey_from.svg';
+
 import ToSvg from '../../../../../public/icons/journey_to.svg';
 import FromCircleSvg from '../../../../../public/icons/journey_from_circle.svg';
 import ClockSvg from '../../../../../public/icons/clock.svg';
 
-import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
-import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
-import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
-import { getRoutInfo } from './getInfo';
+
 import { orderStaticData } from '@/interface/IStaticData';
 import { IJourney } from '@/interface/IJourney';
 
 export const JourneyInfo = ({
-  routId,
-  lang,
   data,
   staticData,
 }: {
-  routId: string;
-  lang: Locale;
   data: IJourney;
   staticData: orderStaticData;
 }) => {
@@ -60,7 +39,7 @@ export const JourneyInfo = ({
           alignItems={'flex-start'}
           xs={2}
           sm={1}
-          xl={1}
+          md={1.5}
           maxWidth={'30px'}
         >
           <Box width={'24px'} height={'24px'} display={'flex'}>
@@ -76,7 +55,7 @@ export const JourneyInfo = ({
           rowGap={1}
           xs={10}
           sm={11}
-          xl={1}
+          md={10.5}
           minWidth={7}
         >
           <Box>
