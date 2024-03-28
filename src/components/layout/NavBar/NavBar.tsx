@@ -44,12 +44,16 @@ export const NavBar = ({
   staticData,
   lang,
   contacts,
-  user,
+  user_email,
+  is_staff,
+  is_superuser,
 }: {
   staticData: headerStaticDataProp;
   lang: Locale;
   contacts: PhoneType[];
-  user: string | undefined | null;
+  user_email: string | undefined | null;
+  is_staff?: boolean;
+  is_superuser?: boolean;
 }) => {
   const [userMail, setUserMail] = React.useState('');
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
@@ -57,8 +61,8 @@ export const NavBar = ({
   );
 
   useEffect(() => {
-    user ? setUserMail(user) : setUserMail('');
-  }, [user]);
+    user_email ? setUserMail(user_email) : setUserMail('');
+  }, [user_email]);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -237,6 +241,16 @@ export const NavBar = ({
                           </Link>
                         </MenuItem>
                       ))}
+                      {(is_superuser || is_staff) && (
+                        <MenuItem onClick={handleCloseUserMenu}>
+                          <Link href={`/${lang}/dashboard`}>
+                            <Typography component={'span'} textAlign="center">
+                              {staticData.dashboard}
+                            </Typography>
+                          </Link>
+                        </MenuItem>
+                      )}
+
                       <MenuItem onClick={handleLogout}>
                         <Typography
                           component={'span'}

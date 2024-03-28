@@ -232,7 +232,7 @@ export function DashboardNavBar({
               }
               sx={{
                 paddingX: '32px',
-                width: { xs: '180px', md: '100%' },
+                width: { xs: '200px', md: '100%' },
                 marginX: 'auto',
 
                 minHeight: 'initial',
@@ -399,7 +399,7 @@ export function DashboardNavBar({
                     />
                   }
                   sx={{
-                    width: { xs: '180px', md: '100%' },
+                    width: { xs: '200px', md: '100%' },
                     marginX: 'auto',
                     marginBottom: 2,
                     minHeight: 'initial',
@@ -500,7 +500,7 @@ export function DashboardNavBar({
                         className={Style.List_hover}
                         sx={{
                           paddingX: 0,
-                          width: { xs: '180px', md: '100%' },
+                          width: { xs: '200px', md: '100%' },
                           marginX: 'auto',
 
                           minHeight: 'initial',

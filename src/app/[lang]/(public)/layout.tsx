@@ -59,6 +59,7 @@ export default async function PublicLayout({
 
   const contacts = await getContact(lang);
   const user = await getUser();
+  console.log(user);
 
   return (
     <RoutsContextProvider>
@@ -66,7 +67,9 @@ export default async function PublicLayout({
         staticData={header}
         lang={lang}
         contacts={contacts}
-        user={user?.email}
+        user_email={user?.email}
+        is_staff={user?.is_staff}
+        is_superuser={user?.is_superuser}
       />
       <main>
         {children}

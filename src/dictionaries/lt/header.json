@@ -27,7 +27,7 @@
       "path": "/my-order"
     }
   ],
-
+  "dashboard": "Valdymas",
   "registration": "Registruotis",
   "sign_in": "Prisijungti",
   "sign_out": "Išeiti",

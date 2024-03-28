@@ -28,7 +28,7 @@ export default async function Order({
     <Container
       maxWidth={'xl'}
       component={'section'}
-      sx={{ paddingLeft: { md: '180px' }, paddingTop: '64px' }}
+      sx={{ paddingLeft: { md: '200px' }, paddingTop: '64px' }}
       className={Style.order}
     >
       <Grid container>

@@ -3,6 +3,7 @@ export interface headerStaticDataProp {
   pages: HeaderStaticLinksProp[];
   settings: HeaderStaticLinksProp[];
   registration: string;
+  dashboard: string;
   sign_in: string;
   sign_out: string;
   avatar: { alt: string };
