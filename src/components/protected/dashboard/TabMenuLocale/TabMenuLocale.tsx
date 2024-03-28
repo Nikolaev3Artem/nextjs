@@ -15,25 +15,12 @@ import LT from '../../../../../public/icons/lt.svg';
 import PT from '../../../../../public/icons/pt.svg';
 import UK from '../../../../../public/icons/uk.svg';
 import Style from '../TabMenuLocale/tabmenu.module.css';
+import { dashboardAboutStaticData, TabProps } from '@/interface/IStaticData';
+import { useLangContext } from '@/app/context';
 
-const tab = [
-  { id: 0, lang: 'uk', name: 'Українська', icon: <UK /> },
-  { id: 1, lang: 'en', name: 'Англійська', icon: <EN /> },
-  { id: 2, lang: 'pt', name: 'Португальська', icon: <PT /> },
-  { id: 3, lang: 'lt', name: 'Литовська', icon: <LT /> },
-];
-
-interface ITab {
-  id: number;
-  lang: string;
-  name?: string;
-  icon?: JSX.Element;
-}
-// interface IBannerProps {
-// 	res?: IBanner[]
-// }
 interface ITabMenuLocaleProps {
   children: React.ReactNode;
+  staticData: dashboardAboutStaticData;
 }
 
 interface TabPanelProps {
@@ -42,9 +29,27 @@ interface TabPanelProps {
   value: number;
 }
 
-export const TabMenuLocale = ({ children }: ITabMenuLocaleProps) => {
-  const [value, setValue] = React.useState<number>(0);
+const getIcon = (icon: string) => {
+  switch (icon) {
+    case 'UK':
+      return <UK width={24} height={24} />;
+    case 'EN':
+      return <EN width={24} height={24} />;
+    case 'PT':
+      return <PT width={24} height={24} />;
+    case 'LT':
+      return <LT width={24} height={24} />;
+    default:
+      return <UK width={24} height={24} />;
+  }
+};
 
+export const TabMenuLocale = ({
+  children,
+  staticData,
+}: ITabMenuLocaleProps) => {
+  const [value, setValue] = React.useState<number>(0);
+  const { setSelectLang } = useLangContext();
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -72,10 +77,8 @@ export const TabMenuLocale = ({ children }: ITabMenuLocaleProps) => {
   }
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-    const lang = tab.find(item => item.id === newValue);
-    // if (lang) {
-    //   dispatch(setLocales(lang.lang));
-    // }
+    const lang = staticData.tab.find(item => item.id === newValue)?.lang;
+    lang ? setSelectLang(lang) : setSelectLang('uk');
   };
 
   return (
@@ -88,8 +91,8 @@ export const TabMenuLocale = ({ children }: ITabMenuLocaleProps) => {
       >
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value} onChange={handleChange}>
-            {tab &&
-              tab.map((item: ITab) => (
+            {staticData.tab &&
+              staticData.tab.map((item: TabProps) => (
                 <Tab
                   key={item.id}
                   {...a11yProps(item.id)}
@@ -103,14 +106,14 @@ export const TabMenuLocale = ({ children }: ITabMenuLocaleProps) => {
                     lineHeight: '150%',
                   }}
                   iconPosition={'start'}
-                  icon={item.icon}
+                  icon={getIcon(item.icon)}
                   label={item.name}
                 />
               ))}
           </Tabs>
         </Box>
-        {tab &&
-          tab.map((item: ITab) => (
+        {staticData.tab &&
+          staticData.tab.map((item: TabProps) => (
             <TabPanel key={item.id} value={value} index={item.id}>
               {children}
             </TabPanel>

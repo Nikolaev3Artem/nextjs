@@ -7,30 +7,31 @@ import React, { useEffect, useState } from 'react';
 
 import Style from './contentdashboard.module.css';
 import Button from '@mui/material/Button';
-import { BiArrowBack } from 'react-icons/bi';
-// import { useRoute } from '@react-buddy/ide-toolbox/dist/routing/routing';
-import { useRouter } from 'next/navigation';
+
+import { usePathname, useRouter } from 'next/navigation';
 import { Stack } from '@mui/material';
 import { IoIosArrowBack } from 'react-icons/io';
 
 interface IContentDashboardProps {
   children: React.ReactNode;
   title: string;
+  back: string;
 }
 
 export const ContentDashboard = ({
   title,
   children,
+  back,
 }: IContentDashboardProps) => {
   const [path, setPath] = useState('');
-  //   const { t } = useTranslation('dashboard');
 
-  const rout = useRouter();
+  const pathname = usePathname();
+  const router = useRouter();
   const handleBack = () => {
-    rout.back();
+    router.back();
   };
   useEffect(() => {
-    setPath(rout.pathname);
+    setPath(pathname);
   }, []);
 
   return (
@@ -65,7 +66,7 @@ export const ContentDashboard = ({
                     textTransform: 'none',
                   }}
                 >
-                  Назад
+                  {back}
                 </Typography>
               </Button>
             </Box>
@@ -84,7 +85,7 @@ export const ContentDashboard = ({
             }}
             mb={2}
           >
-            {/* {t(`${title}`)} */}titlw
+            {title}
           </Typography>
         </Stack>
 

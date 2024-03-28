@@ -8,7 +8,13 @@ type RoutsContextType = {
   setSelectRoutsFrom: (value: string) => void;
 };
 
+type LangContextType = {
+  selectLang: string;
+  setSelectLang: (value: string) => void;
+};
+
 const RoutsContext = createContext<RoutsContextType | undefined>(undefined);
+const LangContext = createContext<LangContextType | undefined>(undefined);
 
 export const RoutsContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -30,8 +36,32 @@ export const RoutsContextProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+export const LangContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [selectLang, setSelectLang] = useState('');
+
+  return (
+    <LangContext.Provider
+      value={{
+        selectLang,
+        setSelectLang,
+      }}
+    >
+      {children}
+    </LangContext.Provider>
+  );
+};
 export const useRoutsContext = () => {
   const context = useContext(RoutsContext);
+  if (context === undefined) {
+    throw new Error('error');
+  }
+  return context;
+};
+
+export const useLangContext = () => {
+  const context = useContext(LangContext);
   if (context === undefined) {
     throw new Error('error');
   }

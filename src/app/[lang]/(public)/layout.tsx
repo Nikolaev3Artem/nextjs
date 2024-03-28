@@ -59,7 +59,6 @@ export default async function PublicLayout({
 
   const contacts = await getContact(lang);
   const user = await getUser();
-  console.log(user);
 
   return (
     <RoutsContextProvider>

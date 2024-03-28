@@ -1,7 +1,7 @@
 'use client';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-// import InputAdornment from '@material-ui/core/InputAdornment';
+import { InputAdornment } from '@mui/material';
 import { CircularProgress, Fade, Skeleton, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -12,7 +12,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
 import { filesize } from 'filesize';
 import Image from 'next/image';
 import { useSnackbar } from 'notistack';
@@ -22,16 +21,15 @@ import { BiSave } from 'react-icons/bi';
 import { FaTrashAlt } from 'react-icons/fa';
 import * as yup from 'yup';
 
-import { IBanner } from '../../../../interface/IBanner';
-import theme from '../../../../theme';
+import { IBanner, IGetBanner } from '@/interface/IBanner';
+import theme from '@/theme';
 import Style from './fomrhomedashboard.module.css';
 import { Locale } from '@/i18n.config';
+import { getSession } from '@/lib/auth';
+import { dashboardAboutStaticData } from '@/interface/IStaticData';
+import { useLangContext } from '@/app/context';
 
 const color_title = grey[800];
-interface IBannerProps {
-  res?: IBanner[];
-  // lang: string
-}
 
 interface IFormInput {
   h1: string | undefined;
@@ -40,24 +38,34 @@ interface IFormInput {
   file: any;
 }
 
-const UploadFileSchema = yup.object().shape({
-  file: yup
-    .mixed()
-    .test(
-      'FileSize',
-      'Файл не має бути не більшим ніж (5 MB)',
-      (value: any) => {
+export const Form = ({
+  lang,
+  staticData,
+}: {
+  lang: Locale;
+  staticData: dashboardAboutStaticData;
+}) => {
+  const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
+  const { enqueueSnackbar } = useSnackbar();
+  const { selectLang } = useLangContext();
+  const [size, setSize] = useState<any>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [res, setRes] = useState<IBanner[]>([]);
+
+  const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
+
+  const UploadFileSchema = yup.object().shape({
+    file: yup
+      .mixed()
+      .test(`${staticData.form.errors.size}`, (value: any) => {
         if (value.length) {
           return value && value[0]?.size <= 5242880;
         } else {
           return {};
         }
-      },
-    )
-    .test(
-      'Type',
-      'Підтримуються лише такі формати: .jpeg, .jpg, .png, .webp',
-      (value: any) => {
+      })
+      .test('Type', `${staticData.form.errors.formats}`, (value: any) => {
         if (value.length) {
           return (
             value &&
@@ -69,26 +77,11 @@ const UploadFileSchema = yup.object().shape({
         } else {
           return {};
         }
-      },
-    ),
-  h1: yup.string().max(60, 'Заголовок не має містити більше ніж 60 символів'),
-  description: yup
-    .string()
-    .max(60, 'Текст не має містити більше ніж 60 символів'),
-  alt: yup.string().max(30, 'ALT не має містити більше ніж 30 символів'),
-});
-
-export const Form = ({ lang }: { lang: Locale }) => {
-  console.log('ff', lang);
-  const BASE_URL: string | undefined = process.env.REACT_APP_URL;
-  const { enqueueSnackbar } = useSnackbar();
-
-  const [size, setSize] = useState<any>(0);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [res, setRes] = useState<IBanner[]>([]);
-
-  const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
+      }),
+    h1: yup.string().max(60, `${staticData.form.errors.title_more60}`),
+    description: yup.string().max(60, `${staticData.form.errors.title_more60}`),
+    alt: yup.string().max(30, `${staticData.form.errors.alt_more30}`),
+  });
 
   const {
     register,
@@ -99,31 +92,31 @@ export const Form = ({ lang }: { lang: Locale }) => {
     formState: { errors, isDirty, isValid },
   } = useForm<IFormInput>({
     defaultValues: { h1: '', description: '', alt: '', file: {} },
+    // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async data => {
     if (!res) return;
+    const session = await getSession();
 
-    // let lang = localStorage.getItem("lang")
     setIsLoading(true);
     const formData = new FormData();
     formData.append('h1', data.h1 || '');
     formData.append('alt', data.alt || '');
-    formData.append('is_active', 'true');
 
     data.file.length && formData.append('img', data.file[0] || null);
 
     formData.append('description', data.description || '');
+    console.log(res);
     const response = await axios.put(
-      `${BASE_URL}/${lang}/api/main/update/${res[0].id}`,
+      `${BASE_URL}/${selectLang}/api/admin/main/update/${res[0].id}`,
       formData,
       {
         headers: {
-          Authorization: 'Bearer ' + getCookie('access'),
-          'Content-Type':
-            'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          Authorization: 'Bearer ' + session.access,
+          'Content-Type': 'multipart/form-data',
         },
       },
     );
@@ -132,7 +125,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
     if (response.status === 200) {
       setTimeout(() => {
         setIsLoading(false);
-        enqueueSnackbar('Ваші зміни збережені', { variant: 'success' });
+        enqueueSnackbar(`${staticData.snackBar}`, { variant: 'success' });
       }, 1500);
     }
   };
@@ -159,10 +152,11 @@ export const Form = ({ lang }: { lang: Locale }) => {
 
   const getBanner = useCallback(async () => {
     try {
-      const { data } = await axios.get<IBanner[]>(
-        `${BASE_URL}/${lang}/api/main`,
+      const response = await axios.get<IGetBanner>(
+        `${BASE_URL}/${selectLang}/api/main`,
       );
-      setRes(data);
+      console.log('bb', response.data.results);
+      setRes(response.data.results);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);
@@ -196,7 +190,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
             color: color_title,
           }}
         >
-          Попередній перегляд
+          {staticData.preview}
         </Typography>
 
         <Container
@@ -267,6 +261,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
         </Container>
       </Box>
       <Stack sx={{ width: '100%' }} direction={'column'} spacing={4}>
+        {/* @ts-ignore */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container direction={'row'} spacing={8}>
             <Grid item md={6}>
@@ -282,7 +277,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                   }}
                   mb={2}
                 >
-                  Заголовок першого рівня H1
+                  {staticData.form.text.h1}
                 </Typography>
                 <Box
                   sx={{ width: '100%', minHeight: 64 }}
@@ -303,7 +298,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                         },
                       }}
                       fullWidth
-                      label="Введіть текст"
+                      label={staticData.form.text.label}
                       size={'small'}
                       variant={'outlined'}
                       FormHelperTextProps={{
@@ -315,32 +310,32 @@ export const Form = ({ lang }: { lang: Locale }) => {
                       defaultValue={null}
                       InputProps={{
                         color: 'secondary',
-                        // endAdornment: (
-                        //   <InputAdornment position="end">
-                        //     {h1 && h1.length ? (
-                        //       <>
-                        //         <Typography
-                        //           sx={{ fontSize: 11 }}
-                        //           mr={1}
-                        //           color={'#999'}
-                        //         >
-                        //           ({h1?.length}/60)
-                        //         </Typography>
-                        //         <IconButton
-                        //           className={Style.home_form_icon}
-                        //           size={'small'}
-                        //           onClick={() => {
-                        //             resetField('h1');
-                        //           }}
-                        //         >
-                        //           <FaTrashAlt />
-                        //         </IconButton>
-                        //       </>
-                        //     ) : (
-                        //       <></>
-                        //     )}
-                        //   </InputAdornment>
-                        // ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            {h1 && h1.length ? (
+                              <>
+                                <Typography
+                                  sx={{ fontSize: 11 }}
+                                  mr={1}
+                                  color={'#999'}
+                                >
+                                  ({h1?.length}/60)
+                                </Typography>
+                                <IconButton
+                                  className={Style.home_form_icon}
+                                  size={'small'}
+                                  onClick={() => {
+                                    resetField('h1');
+                                  }}
+                                >
+                                  <FaTrashAlt />
+                                </IconButton>
+                              </>
+                            ) : (
+                              <></>
+                            )}
+                          </InputAdornment>
+                        ),
                       }}
                     />
                   </>
@@ -358,7 +353,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     color: color_title,
                   }}
                 >
-                  Заголовок додатковий текст
+                  {staticData.form.text.description}
                 </Typography>
                 <Box sx={{ width: '100%', minHeight: 64 }}>
                   <TextField
@@ -368,32 +363,32 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     }}
                     InputProps={{
                       color: 'secondary',
-                      //   endAdornment: (
-                      //     // <InputAdornment position="end">
-                      //     //   {description && description.length ? (
-                      //     //     <>
-                      //     //       <Typography
-                      //     //         sx={{ fontSize: 11 }}
-                      //     //         mr={1}
-                      //     //         color={'#999'}
-                      //     //       >
-                      //     //         ({description?.length}/60)
-                      //     //       </Typography>
-                      //     //       <IconButton
-                      //     //         className={Style.home_form_icon}
-                      //     //         size={'small'}
-                      //     //         onClick={() => {
-                      //     //           resetField('description');
-                      //     //         }}
-                      //     //       >
-                      //     //         <FaTrashAlt />
-                      //     //       </IconButton>
-                      //     //     </>
-                      //     //   ) : (
-                      //     //     <></>
-                      //     //   )}
-                      //     // </InputAdornment>
-                      //   ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {description && description.length ? (
+                            <>
+                              <Typography
+                                sx={{ fontSize: 11 }}
+                                mr={1}
+                                color={'#999'}
+                              >
+                                ({description?.length}/60)
+                              </Typography>
+                              <IconButton
+                                className={Style.home_form_icon}
+                                size={'small'}
+                                onClick={() => {
+                                  resetField('description');
+                                }}
+                              >
+                                <FaTrashAlt />
+                              </IconButton>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </InputAdornment>
+                      ),
                     }}
                     sx={{
                       '& label': {
@@ -402,7 +397,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                       },
                     }}
                     fullWidth
-                    label="Введіть текст"
+                    label={staticData.form.text.label}
                     size={'small'}
                     variant={'outlined'}
                     defaultValue={''}
@@ -425,7 +420,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     color: color_title,
                   }}
                 >
-                  Додатковий текст (alt)
+                  {staticData.form.text.alt}
                 </Typography>
                 <Box sx={{ width: '100%', minHeight: 64 }}>
                   <TextField
@@ -435,32 +430,32 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     }}
                     InputProps={{
                       color: 'secondary',
-                      //   endAdornment: (
-                      //     <InputAdornment position="end">
-                      //       {alt && alt.length ? (
-                      //         <InputAdornment>
-                      //           <Typography
-                      //             sx={{ fontSize: 11 }}
-                      //             mr={1}
-                      //             color={'#999'}
-                      //           >
-                      //             ({alt?.length}/30)
-                      //           </Typography>
-                      //           <IconButton
-                      //             className={Style.home_form_icon}
-                      //             size={'small'}
-                      //             onClick={() => {
-                      //               resetField('alt');
-                      //             }}
-                      //           >
-                      //             <FaTrashAlt />
-                      //           </IconButton>
-                      //         </>
-                      //       ) : (
-                      //         <></>
-                      //       )}
-                      //     </InputAdornment>
-                      //   ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {alt && alt.length ? (
+                            <>
+                              <Typography
+                                sx={{ fontSize: 11 }}
+                                mr={1}
+                                color={'#999'}
+                              >
+                                ({alt?.length}/30)
+                              </Typography>
+                              <IconButton
+                                className={Style.home_form_icon}
+                                size={'small'}
+                                onClick={() => {
+                                  resetField('alt');
+                                }}
+                              >
+                                <FaTrashAlt />
+                              </IconButton>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                        </InputAdornment>
+                      ),
                     }}
                     sx={{
                       '& label': {
@@ -469,7 +464,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                       },
                     }}
                     fullWidth
-                    label="Введіть текст"
+                    label={staticData.form.text.label}
                     size={'small'}
                     variant={'outlined'}
                     helperText={errors?.alt?.message}
@@ -489,7 +484,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     color: color_title,
                   }}
                 >
-                  Банер заднього плану
+                  {staticData.form.text.banner}
                 </Typography>
 
                 <Box sx={{ width: '100%', minHeight: 64 }}>
@@ -511,32 +506,32 @@ export const Form = ({ lang }: { lang: Locale }) => {
                     }}
                     InputProps={{
                       color: 'secondary',
-                      //   endAdornment: (
-                      //     <InputAdornment position="end">
-                      //       {file && file.length ? (
-                      //         <Typography
-                      //           sx={{ fontSize: 11 }}
-                      //           mr={1}
-                      //           color={'#999'}
-                      //         >
-                      //           ({size})
-                      //         </Typography>
-                      //       ) : (
-                      //         <></>
-                      //       )}
-                      //       {file && file.length ? (
-                      //         <IconButton
-                      //           className={Style.home_form_icon}
-                      //           size={'small'}
-                      //           onClick={clearable}
-                      //         >
-                      //           <FaTrashAlt />
-                      //         </IconButton>
-                      //       ) : (
-                      //         <></>
-                      //       )}
-                      //     </InputAdornment>
-                      //   ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {file && file.length ? (
+                            <Typography
+                              sx={{ fontSize: 11 }}
+                              mr={1}
+                              color={'#999'}
+                            >
+                              ({size})
+                            </Typography>
+                          ) : (
+                            <></>
+                          )}
+                          {file && file.length ? (
+                            <IconButton
+                              className={Style.home_form_icon}
+                              size={'small'}
+                              onClick={clearable}
+                            >
+                              <FaTrashAlt />
+                            </IconButton>
+                          ) : (
+                            <></>
+                          )}
+                        </InputAdornment>
+                      ),
                     }}
                     sx={{
                       '& input': {
@@ -579,7 +574,7 @@ export const Form = ({ lang }: { lang: Locale }) => {
               color={'secondary'}
               variant={'contained'}
             >
-              Зберегти
+              {staticData.form.save_btn.text}
             </Button>
           </Box>
         </form>

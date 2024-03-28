@@ -1,1 +1,34 @@
-{"about":"Apie mus","home":"Pagrindinis"}
+{
+  "about": "Apie mus",
+  "home": "Pagrindinis",
+  "back": "Atgal",
+  "tab": [
+    { "id": 0, "lang": "uk", "name": "Ukrainiečių", "icon": "UK" },
+    { "id": 1, "lang": "en", "name": "Anglų", "icon": "EN" },
+    { "id": 2, "lang": "pt", "name": "Portugalų", "icon": "PT" },
+    { "id": 3, "lang": "lt", "name": "Lietuvių", "icon": "LT" }
+  ],
+  "form": {
+    "errors": {
+      "size": "Failas neturi viršyti (5 MB)",
+      "formats": "Palaikomi tik šie formatai: .jpeg, .jpg, .png, .webp",
+      "title_more60": "Pavadinimas negali būti ilgesnis nei 60 simbolių",
+      "text_more60": "Tekstas negali būti ilgesnis nei 60 simbolių",
+      "alt_more30": "ALT negali būti ilgesnis nei 30 simbolių"
+    },
+    "text": {
+      "h1": "Pirmos lygio antraštė H1",
+      "label": "Įveskite tekstą",
+      "description": "Papildomas teksto aprašymas",
+      "alt": "Papildomas tekstas (ALT)",
+      "banner": "Fono baneris"
+    },
+    "save_btn": {
+      "text": "Išsaugoti"
+    }
+  },
+  "snackBar": {
+    "success": "Jūsų pakeitimai įrašyti"
+  },
+  "preview": "Peržiūra"
+}

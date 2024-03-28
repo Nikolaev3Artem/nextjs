@@ -1,3 +1,4 @@
+import { LangContextProvider } from '@/app/context';
 import { Locale } from '@/i18n.config';
 
 import { getUser, logout } from '@/lib/auth';
@@ -22,9 +23,5 @@ export default async function RootLayout({
   ) {
     permanentRedirect(`/${lang}/auth`);
   }
-  return (
-    <>
-      <main>{children}</main>
-    </>
-  );
+  return <LangContextProvider>{children}</LangContextProvider>;
 }

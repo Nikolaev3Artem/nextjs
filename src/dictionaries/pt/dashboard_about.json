@@ -1,1 +1,34 @@
-{"about":"Sobre nós","home":"Principal"}
+{
+  "about": "Sobre nós",
+  "home": "Principal",
+  "back": "Voltar",
+  "tab": [
+    { "id": 0, "lang": "uk", "name": "Ucraniano", "icon": "UK" },
+    { "id": 1, "lang": "en", "name": "Inglês", "icon": "EN" },
+    { "id": 2, "lang": "pt", "name": "Português", "icon": "PT" },
+    { "id": 3, "lang": "lt", "name": "Lituano", "icon": "LT" }
+  ],
+  "form": {
+    "errors": {
+      "size": "O arquivo não deve exceder (5 MB)",
+      "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+      "title_more60": "O título não pode ter mais de 60 caracteres",
+      "text_more60": "O texto não pode ter mais de 60 caracteres",
+      "alt_more30": "ALT não pode ter mais de 30 caracteres"
+    },
+    "text": {
+      "h1": "Título H1 de nível superior",
+      "label": "Digite o texto",
+      "description": "Descrição de texto adicional",
+      "alt": "Texto adicional (ALT)",
+      "banner": "Banner de fundo"
+    },
+    "save_btn": {
+      "text": "Salvar"
+    }
+  },
+  "snackBar": {
+    "success": "Suas alterações foram salvas"
+  },
+  "preview": "Visualização"
+}

@@ -55,7 +55,7 @@ import { Locale } from '@/i18n.config';
 import { logout } from '@/lib/auth';
 import { PhoneType } from '@/interface/IEditorText';
 
-const drawerWidth = 180;
+const drawerWidth = 200;
 const primary = theme.palette.primary.main;
 
 export const DrawerHeader = styled('div')(({ theme }: { theme: any }) => {

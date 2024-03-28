@@ -1,1 +1,34 @@
-{"about":"About us","home":"Main"}
+{
+  "about": "About us",
+  "home": "Main",
+  "back": "Back",
+  "tab": [
+    { "id": 0, "lang": "uk", "name": "Ukrainian", "icon": "UK" },
+    { "id": 1, "lang": "en", "name": "English", "icon": "EN" },
+    { "id": 2, "lang": "pt", "name": "Portuguese", "icon": "PT" },
+    { "id": 3, "lang": "lt", "name": "Lithuanian", "icon": "LT" }
+  ],
+  "form": {
+    "errors": {
+      "size": "The file must not exceed (5 MB)",
+      "formats": "Only the following formats are supported: .jpeg, .jpg, .png, .webp",
+      "title_more60": "The title must not contain more than 60 characters",
+      "text_more60": "The text must not contain more than 60 characters",
+      "alt_more30": "ALT must not contain more than 30 characters"
+    },
+    "text": {
+      "h1": "Heading level 1 (H1)",
+      "label": "Enter text",
+      "description": "Additional text description",
+      "alt": "Additional text (ALT)",
+      "banner": "Background banner"
+    },
+    "save_btn": {
+      "text": "Save"
+    }
+  },
+  "snackBar": {
+    "success": "Your changes have been saved"
+  },
+  "preview": "Preview"
+}
