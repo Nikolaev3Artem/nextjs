@@ -27,7 +27,7 @@
       "path": "/my-order"
     }
   ],
-
+  "dashboard": "Dashboard",
   "registration": "Cadastro",
   "sign_in": "Entrar",
   "sign_out": "Saia",

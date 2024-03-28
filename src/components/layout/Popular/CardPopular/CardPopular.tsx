@@ -22,11 +22,7 @@ const CardPopular = (props: IProps) => {
   const [val1, setVal1] = useState<string>('');
   const [val2, setVal2] = useState<string>('');
 
-  const {
-    setSelectRoutsTo,
-
-    setSelectRoutsFrom,
-  } = useRoutsContext();
+  const { setSelectRoutsTo, setSelectRoutsFrom } = useRoutsContext();
   const router = useRouter();
   const params = useParams<{ lang: string }>();
   const pathname = usePathname();

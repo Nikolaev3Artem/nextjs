@@ -29,11 +29,11 @@ export default async function Profile({
     <Container
       maxWidth={'xl'}
       component={'section'}
-      sx={{ paddingLeft: { md: '180px' }, paddingTop: '64px' }}
+      sx={{ paddingLeft: { md: '200px' }, paddingTop: '64px' }}
       className={Style.profile}
     >
       <Grid container>
-        <Grid item>
+        <Grid item width={'100%'}>
           <Box py={4} sx={{ pl: { md: '24px' } }}>
             <Box>
               <Typography

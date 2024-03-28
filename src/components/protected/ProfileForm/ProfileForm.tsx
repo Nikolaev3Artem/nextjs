@@ -113,7 +113,7 @@ export const ProfileForm = ({
   return (
     <Grid
       component="form"
-      sx={{ mt: 1, p: 0, pr: 2, pb: 2 }}
+      sx={{ mt: 1, p: 0, pr: 2, pb: 2, ml: 0 }}
       container
       spacing={2}
       bgcolor={'white'}

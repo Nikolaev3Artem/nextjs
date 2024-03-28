@@ -3,6 +3,7 @@ export interface headerStaticDataProp {
   pages: HeaderStaticLinksProp[];
   settings: HeaderStaticLinksProp[];
   registration: string;
+  dashboard: string;
   sign_in: string;
   sign_out: string;
   avatar: { alt: string };
@@ -260,4 +261,41 @@ export interface orderStaticData {
       title: string;
     };
   };
+}
+
+export interface dashboardAboutStaticData {
+  about: string;
+  home: string;
+  back: string;
+  tab: TabProps[];
+  form: {
+    errors: {
+      size: string;
+      formats: string;
+      title_more60: string;
+      text_more60: string;
+      alt_more30: string;
+    };
+    text: {
+      h1: string;
+      label: string;
+      description: string;
+      alt: string;
+      banner: string;
+    };
+    save_btn: {
+      text: string;
+    };
+  };
+  snackBar: {
+    success: string;
+  };
+  preview: string;
+}
+
+export interface TabProps {
+  id: number;
+  lang: string;
+  name: string;
+  icon: string;
 }

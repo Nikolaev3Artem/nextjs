@@ -27,6 +27,7 @@
       "path": "/my-order"
     }
   ],
+  "dashboard": "Панель",
 
   "registration": "Реєстрація",
   "sign_in": "Увійти",

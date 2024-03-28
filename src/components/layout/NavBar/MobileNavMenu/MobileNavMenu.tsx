@@ -60,7 +60,7 @@ export const MobileNavMenu = ({
     <Box
       sx={{
         height: '100vh',
-        width: { xs: '100vw', md: '180px' },
+        width: { xs: '100vw', md: '200px' },
         marginX: 'auto',
       }}
       role="presentation"
@@ -136,7 +136,7 @@ export const MobileNavMenu = ({
                     }
                     sx={{
                       paddingX: '32px',
-                      width: { xs: '180px', md: '100%' },
+                      width: { xs: '200px', md: '100%' },
                       marginX: 'auto',
                       marginBottom: 2,
                       minHeight: 'initial',
@@ -312,7 +312,7 @@ export const MobileNavMenu = ({
             className={Style.List_hover}
             sx={{
               paddingX: '32px',
-              width: { xs: '180px', md: '100%' },
+              width: { xs: '200px', md: '100%' },
               marginX: 'auto',
               marginY: 1,
               minHeight: 'initial',
