@@ -25,5 +25,5 @@ jobs:
           script: |
             cd /
             cd var/www/nextjs-lt/
-            git pull --rebase --autostash origin main
-           
+            git init
+            git pull --rebase --autostash origin main     
