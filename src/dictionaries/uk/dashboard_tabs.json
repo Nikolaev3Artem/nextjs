@@ -1,0 +1,8 @@
+{
+  "tab": [
+    { "id": 0, "lang": "uk", "name": "Українська", "icon": "UK" },
+    { "id": 1, "lang": "en", "name": "Англійська", "icon": "EN" },
+    { "id": 2, "lang": "pt", "name": "Португальська", "icon": "PT" },
+    { "id": 3, "lang": "lt", "name": "Литовська", "icon": "LT" }
+  ]
+}

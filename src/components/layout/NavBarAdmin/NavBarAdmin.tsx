@@ -45,10 +45,12 @@ export const NavBarAdmin = ({
   staticData,
   contacts,
   is_superuser = false,
+  is_staff = false,
 }: {
   lang: Locale;
   userEmail: string | null | undefined;
   is_superuser: boolean | null | undefined;
+  is_staff: boolean | null | undefined;
   staticData: { dashboard: dashBoardStaticData; header: headerStaticDataProp };
   contacts: PhoneType[];
 }) => {
@@ -245,6 +247,7 @@ export const NavBarAdmin = ({
         onClose={handleCloseNavMenu}
         contacts={contacts}
         is_superuser={is_superuser}
+        is_staff={is_staff}
       />
     </AppBar>
   );

@@ -64,22 +64,66 @@
       "title": "Contacts"
     }
   ],
-  "navAdmin": [
+  "navDashboard": [
     {
       "id": 1,
-      "name": "dashboard",
-      "path": "/dashboard",
-      "title": "Dashboard"
+      "name": "main",
+      "path": "/dashboard/content",
+      "title": "Main"
     },
     {
       "id": 2,
+      "name": "about_us",
+      "path": "/dashboard/content/about_us",
+      "title": "About Us"
+    },
+    {
+      "id": 3,
+      "name": "direction",
+      "path": "/dashboard/content/direction",
+      "title": "Direction"
+    },
+    {
+      "id": 4,
+      "name": "ruler",
+      "path": "/dashboard/content/ruler",
+      "title": "Ruler"
+    },
+    {
+      "id": 5,
+      "name": "parcels",
+      "path": "/dashboard/content/parcels",
+      "title": "Parcels"
+    },
+
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "path": "/dashboard/content/bus_rent",
+      "title": "Bus rent"
+    },
+    {
+      "id": 7,
+      "name": "contacts",
+      "path": "/dashboard/content/contacts",
+      "title": "Contacts"
+    }
+  ],
+  "navAdmin": [
+    {
+      "id": 2,
       "name": "tickets",
-      "path": "/#",
+      "path": "/dashboard/tickets",
       "title": "Ticket Search"
     },
-    { "id": 3, "name": "bus", "path": "/#", "title": "Buses" },
-    { "id": 4, "name": "city", "path": "/#", "title": "Cities" },
-    { "id": 5, "name": "rout", "path": "/#", "title": "Routes" },
-    { "id": 6, "name": "flights", "path": "/#", "title": "Trips" }
+    { "id": 3, "name": "bus", "path": "/dashboard/bus", "title": "Buses" },
+    { "id": 4, "name": "city", "path": "/dashboard/city", "title": "Cities" },
+    { "id": 5, "name": "rout", "path": "/dashboard/rout", "title": "Routes" },
+    {
+      "id": 6,
+      "name": "flights",
+      "path": "/dashboard/flights",
+      "title": "Trips"
+    }
   ]
 }

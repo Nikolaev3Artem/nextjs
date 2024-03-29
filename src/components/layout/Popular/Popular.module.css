@@ -32,7 +32,7 @@
 @media (min-device-pixel-ratio: 2),
   (min-resolution: 192dpi),
   (min-resolution: 2dppx) {
-  .content {
+  .popular .content {
     background-image: linear-gradient(
         to bottom,
         rgba(250, 186, 23, 0.65),
@@ -51,7 +51,7 @@
     ),
   url('/images/map-sm-1x.webp')
 ) {
-  .content {
+  .popular .content {
     background-image: linear-gradient(
         to bottom,
         rgba(250, 186, 23, 0.65),
@@ -66,7 +66,7 @@
   @media (min-device-pixel-ratio: 2),
     (min-resolution: 192dpi),
     (min-resolution: 2dppx) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -78,7 +78,7 @@
 }
 
 @media screen and (min-width: 600px) {
-  .content {
+  .popular .content {
     background-size: cover;
     background-image: linear-gradient(
         to bottom,
@@ -90,7 +90,7 @@
   @media (min-device-pixel-ratio: 2),
     (min-resolution: 192dpi),
     (min-resolution: 2dppx) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -109,7 +109,7 @@
       ),
     url('/images/map-md-1x.webp')
   ) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -120,7 +120,7 @@
     @media (min-device-pixel-ratio: 2),
       (min-resolution: 192dpi),
       (min-resolution: 2dppx) {
-      .content {
+      .popular .content {
         background-image: linear-gradient(
             to bottom,
             rgba(250, 186, 23, 0.65),
@@ -133,7 +133,7 @@
 }
 
 @media screen and (min-width: 900px) {
-  .content {
+  .popular .content {
     background-image: linear-gradient(
         to bottom,
         rgba(250, 186, 23, 0.65),
@@ -144,7 +144,7 @@
   @media (min-device-pixel-ratio: 2),
     (min-resolution: 192dpi),
     (min-resolution: 2dppx) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -162,7 +162,7 @@
       ),
     url('/images/map-lg-1x.webp')
   ) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -173,7 +173,7 @@
     @media (min-device-pixel-ratio: 2),
       (min-resolution: 192dpi),
       (min-resolution: 2dppx) {
-      .content {
+      .popular .content {
         background-image: linear-gradient(
             to bottom,
             rgba(250, 186, 23, 0.65),
@@ -186,7 +186,7 @@
 }
 
 @media screen and (min-width: 1200px) {
-  .content {
+  .popular .content {
     background-image: linear-gradient(
         to bottom,
         rgba(250, 186, 23, 0.65),
@@ -197,7 +197,7 @@
   @media (min-device-pixel-ratio: 2),
     (min-resolution: 192dpi),
     (min-resolution: 2dppx) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -215,7 +215,7 @@
       ),
     url('/images/map-xl-1x.webp')
   ) {
-    .content {
+    .popular .content {
       background-image: linear-gradient(
           to bottom,
           rgba(250, 186, 23, 0.65),
@@ -226,7 +226,7 @@
     @media (min-device-pixel-ratio: 2),
       (min-resolution: 192dpi),
       (min-resolution: 2dppx) {
-      .content {
+      .popular .content {
         background-image: linear-gradient(
             to bottom,
             rgba(250, 186, 23, 0.65),

@@ -2,12 +2,7 @@
   "about": "Sobre nós",
   "home": "Principal",
   "back": "Voltar",
-  "tab": [
-    { "id": 0, "lang": "uk", "name": "Ucraniano", "icon": "UK" },
-    { "id": 1, "lang": "en", "name": "Inglês", "icon": "EN" },
-    { "id": 2, "lang": "pt", "name": "Português", "icon": "PT" },
-    { "id": 3, "lang": "lt", "name": "Lituano", "icon": "LT" }
-  ],
+
   "form": {
     "errors": {
       "size": "O arquivo não deve exceder (5 MB)",

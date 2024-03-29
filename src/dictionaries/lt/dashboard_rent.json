@@ -1,0 +1,24 @@
+{
+  "rent": "Nuomoti autobusą",
+  "new_rent": "Naujas nuoma",
+
+  "back": "Atgal",
+  "searchForm": {
+    "label": "Paieška...",
+    "rent_button_form": {
+      "text": "Nuoma"
+    }
+  },
+  "rentTable": {
+    "name": "Pavadinimas",
+    "photo": "Nuotrauka",
+    "services": "Paslaugos",
+    "seats": "Vietos",
+    "floor": "Aukštai",
+    "status": "Būsena",
+    "snackBar": {
+      "remove_success": "Kortelė ištrinta",
+      "remove_error": "Ištrynimo klaida"
+    }
+  }
+}

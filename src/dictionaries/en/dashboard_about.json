@@ -2,12 +2,6 @@
   "about": "About us",
   "home": "Main",
   "back": "Back",
-  "tab": [
-    { "id": 0, "lang": "uk", "name": "Ukrainian", "icon": "UK" },
-    { "id": 1, "lang": "en", "name": "English", "icon": "EN" },
-    { "id": 2, "lang": "pt", "name": "Portuguese", "icon": "PT" },
-    { "id": 3, "lang": "lt", "name": "Lithuanian", "icon": "LT" }
-  ],
   "form": {
     "errors": {
       "size": "The file must not exceed (5 MB)",

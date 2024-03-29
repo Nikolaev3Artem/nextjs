@@ -32,7 +32,8 @@ export const MobileNavMenu = ({
   staticData,
   toggleDrawer,
   handleLogout,
-
+  is_superuser,
+  is_staff,
   user,
   lang,
   contacts,
@@ -46,6 +47,8 @@ export const MobileNavMenu = ({
   anchorElUser: any;
   handleCloseUserMenu: any;
   contacts: PhoneType[];
+  is_staff?: boolean;
+  is_superuser?: boolean;
 }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -195,6 +198,21 @@ export const MobileNavMenu = ({
                         </Link>
                       </MenuItem>
                     ))}
+                    {(is_superuser || is_staff) && (
+                      <MenuItem
+                        onClick={handleCloseUserMenu}
+                        disableGutters
+                        sx={{
+                          justifyContent: { xs: 'center', md: 'flex-start' },
+                        }}
+                      >
+                        <Link href={`/${lang}/dashboard/content`}>
+                          <Typography component={'span'} textAlign="center">
+                            {staticData.dashboard}
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    )}
                     <MenuItem
                       onClick={handleLogout}
                       disableGutters

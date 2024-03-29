@@ -1,0 +1,24 @@
+{
+  "rent": "Оренда автобуса",
+  "new_rent": "Нова ореда",
+
+  "back": "Назад",
+  "searchForm": {
+    "label": "Пошук...",
+    "rent_button_form": {
+      "text": "Оренда"
+    }
+  },
+  "rentTable": {
+    "name": "Назва",
+    "photo": "Фото",
+    "services": "Зручності",
+    "seats": "Місця",
+    "floor": "Поверхи",
+    "status": "Статус",
+    "snackBar": {
+      "remove_success": "Карточка видалена",
+      "remove_error": "Помилка видалення"
+    }
+  }
+}

@@ -94,9 +94,6 @@ const getIcon = (name: string) => {
     case 'profile':
       return <FaUser />;
 
-    case 'dashboard':
-      return <MdDashboard />;
-
     case 'tickets':
       return <HiTicket />;
 
@@ -128,10 +125,12 @@ export function DashboardNavBar({
   userEmail,
   contacts,
   is_superuser = false,
+  is_staff = false,
 }: {
   staticData: { dashboard: dashBoardStaticData; header: headerStaticDataProp };
   lang: Locale;
   is_superuser: boolean | null | undefined;
+  is_staff: boolean | null | undefined;
   open: boolean;
   onClose: () => void;
   contacts: PhoneType[];
@@ -145,7 +144,7 @@ export function DashboardNavBar({
 
   const pathname = usePathname();
   const router = useRouter();
-  // const is_superuser = false;
+
   const handleLogout = () => {
     logout();
     router.push(`/${lang}`);
@@ -327,7 +326,176 @@ export function DashboardNavBar({
             </Button>
           </Link>
         </Box>
-        {!is_superuser ? (
+        {is_superuser || is_staff ? (
+          <List>
+            <ListItemButton
+              sx={{
+                marginX: { xs: 'auto', md: 'initial' },
+                width: { xs: 'fit-content', md: '100%' },
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: '40px',
+                  color: '#BFBFBF',
+                  fontSize: '18px',
+                }}
+              >
+                <MdTune />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={{
+                  color: '#BFBFBF',
+                  fontWeight: 600,
+                  fontSize: '14px',
+                }}
+                primary={staticData.dashboard.settings.toUpperCase()}
+              />
+            </ListItemButton>
+            <Accordion
+              disableGutters
+              square
+              sx={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                color: 'white',
+
+                margin: 0,
+                minHeight: 'initial',
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <KeyboardArrowDownIcon
+                    sx={{
+                      fontSize: 22,
+                      color: 'white',
+                    }}
+                    className={anchorElUser ? Style.active : Style.arrow}
+                  />
+                }
+                sx={{
+                  width: { xs: '200px', md: '100%' },
+                  marginX: 'auto',
+
+                  minHeight: 'initial',
+                }}
+                aria-controls="panel3-content"
+                id="panel3-header"
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: '40px',
+                    color: theme.palette.background.paper,
+                    fontSize: '18px',
+                  }}
+                >
+                  <MdDashboard />
+                </ListItemIcon>
+                <Typography
+                  sx={{
+                    mr: 0.5,
+                    textTransform: 'none',
+                    color: '#fff',
+
+                    fontFamily: 'Inter',
+                    fontWeight: 300,
+                  }}
+                  className={Style.navbar__text}
+                  component={'a'}
+                  color={'white'}
+                >
+                  {staticData.dashboard.dashboard}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  backgroundColor: '#091E39',
+                  margin: 0,
+                  minHeight: 'initial',
+                }}
+              >
+                {staticData.dashboard.navDashboard.map(text => (
+                  <Link key={text.id} href={`/${lang}${text.path}`}>
+                    <ListItemButton
+                      disableGutters
+                      sx={{
+                        width: { xs: 'fit-content', md: 'initial' },
+                        marginX: { xs: 'auto', md: 'initial' },
+                        '&.Mui-selected': {
+                          backgroundColor: theme.palette.primary.dark,
+                          span: {
+                            color: color_active,
+                          },
+                          svg: {
+                            color: color_active,
+                          },
+                        },
+                        '&.MuiListItemButton-root': {
+                          '&:hover': {
+                            backgroundColor: theme.palette.primary.dark,
+                          },
+                        },
+                      }}
+                    >
+                      <ListItemText
+                        primaryTypographyProps={{
+                          color: theme.palette.background.paper,
+                          fontWeight: 400,
+                        }}
+                        primary={text.title}
+                      />
+                    </ListItemButton>
+                  </Link>
+                ))}
+              </AccordionDetails>
+            </Accordion>
+
+            {staticData.dashboard.navAdmin.map(text => (
+              <Link key={text.id} href={`/${lang}${text.path}`}>
+                <ListItemButton
+                  selected={pathname === `/${lang}${text.path}`}
+                  sx={{
+                    marginX: { xs: 'auto', md: 'initial' },
+                    width: { xs: 'fit-content', md: '100%' },
+                    '&.Mui-selected': {
+                      backgroundColor: theme.palette.primary.dark,
+                      span: {
+                        color: color_active,
+                      },
+                      svg: {
+                        color: color_active,
+                      },
+                    },
+                    '&.MuiListItemButton-root': {
+                      '&:hover': {
+                        backgroundColor: theme.palette.primary.dark,
+                      },
+                    },
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: '40px',
+                      color: theme.palette.background.paper,
+                      fontSize: '18px',
+                    }}
+                  >
+                    {getIcon(text.name)}
+                  </ListItemIcon>
+                  <ListItemText
+                    primaryTypographyProps={{
+                      color: theme.palette.background.paper,
+                      fontWeight: 400,
+                      fontSize: '14px',
+                    }}
+                    primary={text.title}
+                  />
+                </ListItemButton>
+              </Link>
+            ))}
+          </List>
+        ) : (
           <>
             <List>
               {staticData.dashboard.navUser.map(text => (
@@ -560,76 +728,6 @@ export function DashboardNavBar({
               </Accordion>
             </Box>
           </>
-        ) : (
-          <List>
-            <ListItemButton
-              sx={{
-                marginX: { xs: 'auto', md: 'initial' },
-                width: { xs: 'fit-content', md: '100%' },
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: '40px',
-                  color: '#BFBFBF',
-                  fontSize: '18px',
-                }}
-              >
-                <MdTune />
-              </ListItemIcon>
-              <ListItemText
-                primaryTypographyProps={{
-                  color: '#BFBFBF',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                }}
-                primary={staticData.dashboard.settings.toUpperCase()}
-              />
-            </ListItemButton>
-            {staticData.dashboard.navAdmin.map(text => (
-              <Link key={text.id} href={`/${lang}${text.path}`}>
-                <ListItemButton
-                  selected={pathname === `/${lang}${text.path}`}
-                  sx={{
-                    marginX: { xs: 'auto', md: 'initial' },
-                    width: { xs: 'fit-content', md: '100%' },
-                    '&.Mui-selected': {
-                      backgroundColor: theme.palette.primary.dark,
-                      span: {
-                        color: color_active,
-                      },
-                      svg: {
-                        color: color_active,
-                      },
-                    },
-                    '&.MuiListItemButton-root': {
-                      '&:hover': {
-                        backgroundColor: theme.palette.primary.dark,
-                      },
-                    },
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: '40px',
-                      color: theme.palette.background.paper,
-                      fontSize: '18px',
-                    }}
-                  >
-                    {getIcon(text.name)}
-                  </ListItemIcon>
-                  <ListItemText
-                    primaryTypographyProps={{
-                      color: theme.palette.background.paper,
-                      fontWeight: 400,
-                      fontSize: '14px',
-                    }}
-                    primary={text.title}
-                  />
-                </ListItemButton>
-              </Link>
-            ))}
-          </List>
         )}
       </Drawer>
     </Box>

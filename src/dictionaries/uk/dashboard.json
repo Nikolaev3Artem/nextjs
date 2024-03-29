@@ -63,13 +63,53 @@
       "title": "Контакти"
     }
   ],
-  "navAdmin": [
+
+  "navDashboard": [
     {
       "id": 1,
-      "name": "dashboard",
-      "path": "/dashboard",
-      "title": "Панель"
+      "name": "main",
+      "path": "/dashboard/content",
+      "title": "Головна"
     },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/dashboard/content/about_us",
+      "title": "Про нас"
+    },
+    {
+      "id": 3,
+      "name": "direction",
+      "path": "/dashboard/content/direction",
+      "title": "Напрямки"
+    },
+    {
+      "id": 4,
+      "name": "ruler",
+      "path": "/dashboard/content/ruler",
+      "title": "Правила"
+    },
+    {
+      "id": 5,
+      "name": "parcels",
+      "path": "/dashboard/content/parcels",
+      "title": "Посилки"
+    },
+
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "path": "/dashboard/content/bus_rent",
+      "title": "Оренда автобусів"
+    },
+    {
+      "id": 7,
+      "name": "contacts",
+      "path": "/dashboard/content/contacts",
+      "title": "Контакти"
+    }
+  ],
+  "navAdmin": [
     {
       "id": 2,
       "name": "tickets",

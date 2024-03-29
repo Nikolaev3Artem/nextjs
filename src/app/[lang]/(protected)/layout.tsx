@@ -2,6 +2,7 @@ import { NavBarAdmin } from '@/components/layout/NavBarAdmin';
 import { Locale } from '@/i18n.config';
 import { PhoneType } from '@/interface/IEditorText';
 import { getUser } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 import {
   getDashboardDictionaries,
   getHeaderDictionaries,
@@ -33,7 +34,10 @@ export default async function RootLayout({
   const header = await getHeaderDictionaries(lang);
   const dashboard = await getDashboardDictionaries(lang);
   const user = await getUser();
-
+  console.log('user', user);
+  if (!user) {
+    redirect('/auth');
+  }
   const contacts = await getContact(lang);
   const staticData = { dashboard, header };
   return (
@@ -44,6 +48,7 @@ export default async function RootLayout({
         staticData={staticData}
         contacts={contacts}
         is_superuser={user?.is_superuser}
+        is_staff={user?.is_staff}
       />
       <main>{children}</main>
     </>

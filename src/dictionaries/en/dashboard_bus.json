@@ -1,0 +1,35 @@
+{
+  "bus": "Bus",
+  "new_bus": "New bus",
+
+  "back": "Back",
+  "searchForm": {
+    "label": "Search...",
+    "new_button_form": {
+      "text": "New bus"
+    }
+  },
+  "busTable": {
+    "number": "Number",
+    "name": "Title",
+    "services": "Services",
+    "all": "All",
+    "rows": "Rows per page",
+    "reduce": "Reduce",
+    "plate": "License plate",
+    "seats_first_floor": "Seats",
+    "wc": "WC",
+    "seats_second_floor": "Seats on 2th floor",
+    "poster": "Poster",
+    "images": "Images",
+    "active": "Active",
+    "alt": "bus Photo",
+    "features": "Features",
+    "save": "Save",
+
+    "snackBar": {
+      "remove_success": "Card deleted",
+      "remove_error": "Deletion error"
+    }
+  }
+}

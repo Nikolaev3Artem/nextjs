@@ -1,0 +1,23 @@
+{
+  "rent": "Rent bus",
+  "new_rent": "New rent",
+  "back": "Back",
+  "searchForm": {
+    "label": "Search...",
+    "rent_button_form": {
+      "text": "Rent"
+    }
+  },
+  "rentTable": {
+    "name": "Title",
+    "photo": "Photo",
+    "services": "Services",
+    "seats": "Seats",
+    "floor": "Floor",
+    "status": "Status",
+    "snackBar": {
+      "remove_success": "Card deleted",
+      "remove_error": "Deletion error"
+    }
+  }
+}
