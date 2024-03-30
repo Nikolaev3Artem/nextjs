@@ -106,7 +106,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       first_floor_seats: bus?.first_floor_seats?.length.toString() || '',
       second_floor_seats: bus?.second_floor_seats?.length.toString() || '',
       busIdService: [],
-      photo: bus?.photo || '',
+      photo: bus?.photo || null,
       is_active: bus?.is_active || false,
       uploaded_images: {},
     },
@@ -114,6 +114,9 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   });
   const { selectLang } = useLangContext();
   const files = watch('uploaded_images');
+  const name = watch('name');
+  const first_floor_seats = watch('first_floor_seats');
+  const second_floor_seats = watch('second_floor_seats');
   const photo = watch('photo');
   const rout = useRouter();
 
@@ -171,7 +174,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   };
 
   const clearable = () => {
-    // setImagePreviewUrl(res[0].img);
+    setImagePreviewUrl(photo);
     resetField('photo');
   };
 
@@ -595,7 +598,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus.name}
+                                  {name}
                                 </Typography>
                               </Stack>
                               <Stack
@@ -645,7 +648,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus?.first_floor_seats?.length}
+                                  {first_floor_seats}
                                 </Typography>
                               </Stack>
                               <Stack
@@ -676,7 +679,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus?.second_floor_seats?.length}
+                                  {second_floor_seats}
                                 </Typography>
                               </Stack>
                             </Stack>

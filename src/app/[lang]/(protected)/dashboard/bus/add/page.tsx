@@ -16,6 +16,7 @@ import {
 } from '@/lib/dictionary';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
 import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCard';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 
 const getBus = async (lang: Locale) => {
   try {
@@ -70,7 +71,9 @@ export default async function Add({
             title={staticData.new_rent}
             back={staticData.back}
           >
-            <AddBusCard serviceBus={bus?.serviceBus} />
+            <TabMenuLocale staticData={tabs}>
+              <AddBusCard serviceBus={bus?.serviceBus} />
+            </TabMenuLocale>
           </ContentDashboard>
         </Box>
       </Fade>
