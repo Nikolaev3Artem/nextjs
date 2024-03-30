@@ -12,7 +12,7 @@ export interface IRent {
   }[];
 
   is_active?: any;
-  rentable: boolean;
+  rentable?: boolean;
   busIdService?: [] | any;
   uploaded_images?: any;
   first_floor_seats?: string;
