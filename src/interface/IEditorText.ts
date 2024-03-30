@@ -4,6 +4,9 @@ export interface IEditorText {
   title2?: string;
   text1?: string;
   text2?: string;
+  main_title?: string;
+  main_desc?: string;
+  img?: any;
 }
 
 export interface IContactText {

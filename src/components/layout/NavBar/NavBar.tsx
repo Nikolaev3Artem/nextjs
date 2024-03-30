@@ -243,7 +243,7 @@ export const NavBar = ({
                       ))}
                       {(is_superuser || is_staff) && (
                         <MenuItem onClick={handleCloseUserMenu}>
-                          <Link href={`/${lang}/dashboard`}>
+                          <Link href={`/${lang}/dashboard/content`}>
                             <Typography component={'span'} textAlign="center">
                               {staticData.dashboard}
                             </Typography>
@@ -350,6 +350,8 @@ export const NavBar = ({
                   anchorElUser={anchorElUser}
                   handleCloseUserMenu={handleCloseUserMenu}
                   contacts={contacts}
+                  is_staff={is_staff}
+                  is_superuser={is_superuser}
                 />
               </Drawer>
             </Box>

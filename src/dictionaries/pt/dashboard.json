@@ -63,13 +63,52 @@
       "title": "Contatos"
     }
   ],
-  "navAdmin": [
+  "navDashboard": [
     {
       "id": 1,
-      "name": "dashboard",
-      "path": "/dashboard",
-      "title": "Painel de controle"
+      "name": "main",
+      "path": "/dashboard/content",
+      "title": "Principal"
     },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/dashboard/content/about_us",
+      "title": "Sobre nós"
+    },
+    {
+      "id": 3,
+      "name": "direction",
+      "path": "/dashboard/content/direction",
+      "title": "Direções"
+    },
+    {
+      "id": 4,
+      "name": "ruler",
+      "path": "/dashboard/content/ruler",
+      "title": "Regras"
+    },
+    {
+      "id": 5,
+      "name": "parcels",
+      "path": "/dashboard/content/parcels",
+      "title": "Pacotes"
+    },
+
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "path": "/dashboard/content/bus_rent",
+      "title": "Aluguel de ônibus"
+    },
+    {
+      "id": 7,
+      "name": "contacts",
+      "path": "/dashboard/content/contacts",
+      "title": "Contatos"
+    }
+  ],
+  "navAdmin": [
     {
       "id": 2,
       "name": "tickets",

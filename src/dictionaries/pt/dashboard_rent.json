@@ -1,0 +1,24 @@
+{
+  "rent": "Alugar ônibus",
+  "new_rent": "Novo aluguel",
+
+  "back": "Voltar",
+  "searchForm": {
+    "label": "Pesquisar...",
+    "rent_button_form": {
+      "text": "Aluguel"
+    }
+  },
+  "rentTable": {
+    "name": "Nome",
+    "photo": "Foto",
+    "services": "Serviços",
+    "seats": "Assentos",
+    "floor": "Andares",
+    "status": "Status",
+    "snackBar": {
+      "remove_success": "Cartão removido",
+      "remove_error": "Erro ao remover"
+    }
+  }
+}

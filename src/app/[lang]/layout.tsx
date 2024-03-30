@@ -42,6 +42,7 @@ export default async function RootLayout({
         <AppRouterCacheProvider options={{ key: 'css' }}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
+
             <Suspense fallback={<Loading />}>{children}</Suspense>
           </ThemeProvider>
         </AppRouterCacheProvider>

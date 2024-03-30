@@ -20,7 +20,7 @@ import { useLangContext } from '@/app/context';
 
 interface ITabMenuLocaleProps {
   children: React.ReactNode;
-  staticData: dashboardAboutStaticData;
+  staticData: { tab: TabProps[] };
 }
 
 interface TabPanelProps {
@@ -61,11 +61,7 @@ export const TabMenuLocale = ({
         aria-labelledby={`simple-tab-${index}`}
         {...other}
       >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography component={'span'}>{children}</Typography>
-          </Box>
-        )}
+        {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
       </div>
     );
   }
@@ -82,43 +78,41 @@ export const TabMenuLocale = ({
   };
 
   return (
-    <>
-      <Box
-        pt={4}
-        px={4}
-        sx={{ backgroundColor: theme.palette.background.default }}
-        className={Style.content_dashboard}
-      >
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange}>
-            {staticData.tab &&
-              staticData.tab.map((item: TabProps) => (
-                <Tab
-                  key={item.id}
-                  {...a11yProps(item.id)}
-                  sx={{
-                    minHeight: 48,
-                    fontFamily: 'Inter',
-                    fontStyle: 'normal',
-                    textTransform: 'none',
-                    fontWeight: 500,
-                    fontSize: '16px',
-                    lineHeight: '150%',
-                  }}
-                  iconPosition={'start'}
-                  icon={getIcon(item.icon)}
-                  label={item.name}
-                />
-              ))}
-          </Tabs>
-        </Box>
-        {staticData.tab &&
-          staticData.tab.map((item: TabProps) => (
-            <TabPanel key={item.id} value={value} index={item.id}>
-              {children}
-            </TabPanel>
-          ))}
+    <Box
+      pt={4}
+      px={4}
+      sx={{ backgroundColor: theme.palette.background.default }}
+      className={Style.content_dashboard}
+    >
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange}>
+          {staticData.tab &&
+            staticData.tab.map((item: TabProps) => (
+              <Tab
+                key={item.id}
+                {...a11yProps(item.id)}
+                sx={{
+                  minHeight: 48,
+                  fontFamily: 'Inter',
+                  fontStyle: 'normal',
+                  textTransform: 'none',
+                  fontWeight: 500,
+                  fontSize: '16px',
+                  lineHeight: '150%',
+                }}
+                iconPosition={'start'}
+                icon={getIcon(item.icon)}
+                label={item.name}
+              />
+            ))}
+        </Tabs>
       </Box>
-    </>
+      {staticData.tab &&
+        staticData.tab.map((item: TabProps) => (
+          <TabPanel key={item.id} value={value} index={item.id}>
+            {children}
+          </TabPanel>
+        ))}
+    </Box>
   );
 };

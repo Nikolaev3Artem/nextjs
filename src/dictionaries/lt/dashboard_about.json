@@ -2,12 +2,7 @@
   "about": "Apie mus",
   "home": "Pagrindinis",
   "back": "Atgal",
-  "tab": [
-    { "id": 0, "lang": "uk", "name": "Ukrainiečių", "icon": "UK" },
-    { "id": 1, "lang": "en", "name": "Anglų", "icon": "EN" },
-    { "id": 2, "lang": "pt", "name": "Portugalų", "icon": "PT" },
-    { "id": 3, "lang": "lt", "name": "Lietuvių", "icon": "LT" }
-  ],
+
   "form": {
     "errors": {
       "size": "Failas neturi viršyti (5 MB)",

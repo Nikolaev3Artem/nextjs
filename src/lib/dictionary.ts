@@ -6,6 +6,10 @@ import type { Locale } from '@/i18n.config';
 //     ...(await import(`@/dictionaries/en/common.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_about.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_rule.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_tabs.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_rent.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_bus.json`)).default,
 //     ...(await import(`@/dictionaries/en/footer.json`)).default,
 //     ...(await import(`@/dictionaries/en/header.json`)).default,
 //     ...(await import(`@/dictionaries/en/infobuy.json`)).default,
@@ -27,6 +31,10 @@ import type { Locale } from '@/i18n.config';
 //     ...(await import(`@/dictionaries/uk/common.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_about.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_rule.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_tabs.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_rent.json`)).default,
 //     ...(await import(`@/dictionaries/uk/footer.json`)).default,
 //     ...(await import(`@/dictionaries/uk/header.json`)).default,
 //     ...(await import(`@/dictionaries/uk/infobuy.json`)).default,
@@ -47,6 +55,10 @@ import type { Locale } from '@/i18n.config';
 //     ...(await import(`@/dictionaries/lt/common.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_about.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_rule.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_tabs.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_rent.json`)).default,
 //     ...(await import(`@/dictionaries/lt/footer.json`)).default,
 //     ...(await import(`@/dictionaries/lt/header.json`)).default,
 //     ...(await import(`@/dictionaries/lt/infobuy.json`)).default,
@@ -67,6 +79,10 @@ import type { Locale } from '@/i18n.config';
 //     ...(await import(`@/dictionaries/pt/common.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_about.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_rule.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_tabs.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_rent.json`)).default,
 //     ...(await import(`@/dictionaries/pt/footer.json`)).default,
 //     ...(await import(`@/dictionaries/pt/header.json`)).default,
 //     ...(await import(`@/dictionaries/pt/infobuy.json`)).default,
@@ -115,6 +131,16 @@ const dashboardAboutDictionaries = {
     (await import(`@/dictionaries/lt/dashboard_about.json`)).default,
   pt: async () =>
     (await import(`@/dictionaries/pt/dashboard_about.json`)).default,
+};
+const dashboardRuleDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_rule.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_rule.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_rule.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_rule.json`)).default,
 };
 
 const footerDictionaries = {
@@ -215,6 +241,39 @@ const orderDictionaries = {
   pt: async () => (await import(`@/dictionaries/pt/order.json`)).default,
 };
 
+const dashboardTubsDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_tabs.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_tabs.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_tabs.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_tabs.json`)).default,
+};
+
+const dashboardRentDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_rent.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_rent.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_rent.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_rent.json`)).default,
+};
+
+const dashboardBusDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_bus.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_bus.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_bus.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_bus.json`)).default,
+};
+
 // export const getDictionary = async (lang: Locale) => dictionaries[lang]();
 
 export const getDashboardDictionaries = async (lang: Locale) =>
@@ -222,6 +281,8 @@ export const getDashboardDictionaries = async (lang: Locale) =>
 
 export const getDashboardAboutDictionaries = async (lang: Locale) =>
   dashboardAboutDictionaries[lang]();
+export const getDashboardRuleDictionaries = async (lang: Locale) =>
+  dashboardRuleDictionaries[lang]();
 
 export const getFooterDictionaries = async (lang: Locale) =>
   footerDictionaries[lang]();
@@ -270,3 +331,12 @@ export const getProfileDictionaries = async (lang: Locale) =>
 
 export const getOrderDictionaries = async (lang: Locale) =>
   orderDictionaries[lang]();
+
+export const getDashboardTubsDictionaries = async (lang: Locale) =>
+  dashboardTubsDictionaries[lang]();
+
+export const getDashboardRentsDictionaries = async (lang: Locale) =>
+  dashboardRentDictionaries[lang]();
+
+export const getDashboardBusDictionaries = async (lang: Locale) =>
+  dashboardBusDictionaries[lang]();

@@ -191,6 +191,7 @@ export interface dashBoardStaticData {
   navUser: dashBoardNavStaticData[];
   navAdminMain: dashBoardNavStaticData[];
   navAdmin: dashBoardNavStaticData[];
+  navDashboard: dashBoardNavStaticData[];
 }
 
 export interface dashBoardNavStaticData {
@@ -267,6 +268,35 @@ export interface dashboardAboutStaticData {
   about: string;
   home: string;
   back: string;
+
+  form: {
+    errors: {
+      size: string;
+      formats: string;
+      title_more60: string;
+      text_more60: string;
+      alt_more30: string;
+    };
+    text: {
+      h1: string;
+      label: string;
+      description: string;
+      alt: string;
+      banner: string;
+    };
+    save_btn: {
+      text: string;
+    };
+  };
+  snackBar: {
+    success: string;
+  };
+  preview: string;
+}
+
+export interface dashboardRuleStaticData {
+  rule: string;
+
   tab: TabProps[];
   form: {
     errors: {
@@ -298,4 +328,63 @@ export interface TabProps {
   lang: string;
   name: string;
   icon: string;
+}
+
+export interface dashboardRentStaticData {
+  rent: string;
+  new_rent: string;
+  back: string;
+  searchForm: {
+    label: string;
+    rent_button_form: {
+      text: string;
+    };
+  };
+  rentTable: {
+    name: string;
+    photo: string;
+    services: string;
+    seats: string;
+    floor: string;
+    status: string;
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+    };
+  };
+}
+
+export interface dashboardBusStaticData {
+  bus: string;
+  new_bus: string;
+  back: string;
+  searchForm: {
+    label: string;
+    new_button_form: {
+      text: string;
+    };
+  };
+  busTable: {
+    name: string;
+    number: string;
+    services: string;
+    plate: string;
+    all: string;
+    rows: string;
+    reduce: string;
+    seats_first_floor: string;
+    wc: string;
+    seats_second_floor: string;
+    poster: string;
+    images: string;
+    active: string;
+    alt: string;
+    features: string;
+    save: string;
+
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+    };
+  };
 }

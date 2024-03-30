@@ -39,7 +39,7 @@ export const RoutsContextProvider: React.FC<{ children: React.ReactNode }> = ({
 export const LangContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [selectLang, setSelectLang] = useState('');
+  const [selectLang, setSelectLang] = useState('uk');
 
   return (
     <LangContext.Provider

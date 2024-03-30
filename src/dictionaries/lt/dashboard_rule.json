@@ -1,0 +1,28 @@
+{
+  "rule": "Taisyklės",
+  "back": "Atgal",
+
+  "form": {
+    "errors": {
+      "size": "Failas neturi viršyti (5 MB)",
+      "formats": "Palaikomi tik šie formatai: .jpeg, .jpg, .png, .webp",
+      "title_more60": "Pavadinimas negali būti ilgesnis nei 60 simbolių",
+      "text_more60": "Tekstas negali būti ilgesnis nei 60 simbolių",
+      "alt_more30": "ALT negali būti ilgesnis nei 30 simbolių"
+    },
+    "text": {
+      "h1": "Pirmos lygio antraštė H1",
+      "label": "Įveskite tekstą",
+      "description": "Papildomas teksto aprašymas",
+      "alt": "Papildomas tekstas (ALT)",
+      "banner": "Fono baneris"
+    },
+    "save_btn": {
+      "text": "Išsaugoti"
+    }
+  },
+  "snackBar": {
+    "success": "Jūsų pakeitimai įrašyti"
+  },
+  "preview": "Peržiūra"
+}

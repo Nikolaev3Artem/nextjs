@@ -12,6 +12,7 @@ export interface IRent {
   }[];
 
   is_active?: any;
+  rentable?: boolean;
   busIdService?: [] | any;
   uploaded_images?: any;
   first_floor_seats?: string;
@@ -19,4 +20,6 @@ export interface IRent {
   lang?: Locale;
   staticData: BusRentStaticDataPageProp;
   plates_number: string;
+  first_floor_seats_count?: number;
+  second_floor_seats_count?: number;
 }

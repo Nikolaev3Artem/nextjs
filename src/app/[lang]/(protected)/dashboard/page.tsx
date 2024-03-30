@@ -22,11 +22,12 @@ export default async function Dashboard({
     >
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ContentDashboard title={staticData.home} back={staticData.back}>
+          Admin panel here
+          {/* <ContentDashboard title={staticData.home} back={staticData.back}>
             <TabMenuLocale staticData={staticData}>
               <Form lang={params.lang} staticData={staticData} />
             </TabMenuLocale>
-          </ContentDashboard>
+          </ContentDashboard> */}
         </Box>
       </Fade>
     </Container>

@@ -1,0 +1,35 @@
+{
+  "bus": "Автобуси",
+  "new_bus": "Новий автобус",
+
+  "back": "Назад",
+  "searchForm": {
+    "label": "Пошук...",
+    "new_button_form": {
+      "text": "Новий автобус"
+    }
+  },
+  "busTable": {
+    "number": "Номер",
+    "name": "Назва",
+    "services": "Зручності",
+    "all": "Всі",
+    "rows": "Рядків на сторінці",
+    "reduce": "Зменшити",
+    "plate": "Номерний знак",
+    "seats_first_floor": "Місця",
+    "wc": "WC",
+    "seats_second_floor": "Місця 2 поверх",
+    "poster": "Постер",
+    "images": "Фотографії",
+    "active": "Активний",
+    "alt": "Фотографія автобуса",
+    "features": "Характеристики",
+    "save": "Зберегти",
+
+    "snackBar": {
+      "remove_success": "Карточка видалена",
+      "remove_error": "Помилка видалення"
+    }
+  }
+}

@@ -64,13 +64,52 @@
       "title": "Kontaktai"
     }
   ],
-  "navAdmin": [
+  "navDashboard": [
     {
       "id": 1,
-      "name": "dashboard",
-      "path": "/dashboard",
-      "title": "Suvestinėe"
+      "name": "main",
+      "path": "/dashboard/content",
+      "title": "Pagrindinis"
     },
+    {
+      "id": 2,
+      "name": "about_us",
+      "path": "/dashboard/content/about_us",
+      "title": "Apie mus"
+    },
+    {
+      "id": 3,
+      "name": "direction",
+      "path": "/dashboard/content/direction",
+      "title": "Kryptys"
+    },
+    {
+      "id": 4,
+      "name": "ruler",
+      "path": "/dashboard/content/ruler",
+      "title": "Taisyklės"
+    },
+    {
+      "id": 5,
+      "name": "parcels",
+      "path": "/dashboard/content/parcels",
+      "title": "Siuntos"
+    },
+
+    {
+      "id": 6,
+      "name": "bus_rent",
+      "path": "/dashboard/content/bus_rent",
+      "title": "Autobusų nuoma"
+    },
+    {
+      "id": 7,
+      "name": "contacts",
+      "path": "/dashboard/content/contacts",
+      "title": "Kontaktai"
+    }
+  ],
+  "navAdmin": [
     {
       "id": 2,
       "name": "tickets",
