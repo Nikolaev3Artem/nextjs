@@ -35,12 +35,11 @@ export const BusWrapper = ({
 
   function AddCard(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     event.stopPropagation();
-    router.push(`/${lang}/bus/add`);
+    router.push(`/${lang}/dashboard/bus/add`);
   }
 
   return (
     <>
-      <SnackbarProvider />
       <Stack
         mb={3}
         sx={{ width: '100%' }}

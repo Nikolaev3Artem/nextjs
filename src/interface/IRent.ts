@@ -12,7 +12,7 @@ export interface IRent {
   }[];
 
   is_active?: any;
-  rentable?: boolean;
+  rentable?: any;
   busIdService?: [] | any;
   uploaded_images?: any;
   first_floor_seats?: string;
@@ -22,4 +22,5 @@ export interface IRent {
   plates_number: string;
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
+  is_Wc_Work?: any;
 }

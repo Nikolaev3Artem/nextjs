@@ -1,35 +1,51 @@
 {
-  "bus": "Автобуси",
-  "new_bus": "Новий автобус",
+  "bus": "Autobusai",
+  "new_bus": "Naujas autobusas",
 
-  "back": "Назад",
+  "back": "Atgal",
   "searchForm": {
-    "label": "Пошук...",
+    "label": "Paieška...",
     "new_button_form": {
-      "text": "Новий автобус"
+      "text": "Naujas autobusas"
     }
   },
   "busTable": {
-    "number": "Номер",
-    "name": "Назва",
-    "services": "Зручності",
-    "all": "Всі",
-    "rows": "Рядків на сторінці",
-    "reduce": "Зменшити",
-    "plate": "Номерний знак",
-    "seats_first_floor": "Місця",
+    "number": "Numeris",
+    "name": "Pavadinimas",
+    "services": "Paslaugos",
+    "all": "Visi",
+    "rows": "Eilės puslapyje",
+    "reduce": "Mažinti",
+    "plate": "Numeris",
+    "seats_first_floor": "Sėdimos vietos pirmame aukšte",
     "wc": "WC",
-    "seats_second_floor": "Місця 2 поверх",
-    "poster": "Постер",
-    "images": "Фотографії",
-    "active": "Активний",
-    "alt": "Фотографія автобуса",
-    "features": "Характеристики",
-    "save": "Зберегти",
+    "seats_second_floor": "Sėdimos vietos antrame aukšte",
+    "poster": "Plakatas",
+    "images": "Nuotraukos",
+    "active": "Aktyvus",
+    "alt": "Alt",
+    "features": "Savybės",
+    "save": "Išsaugoti",
+    "fill_form": "Užpildykite formą",
+    "working": "Veikia",
+    "not_working": "Nedirba",
+    "float": "Aukštas",
+    "choose": "Pasirinkite failą",
 
     "snackBar": {
-      "remove_success": "Карточка видалена",
-      "remove_error": "Помилка видалення"
+      "remove_success": "Kortelė sėkmingai pašalinta",
+      "remove_error": "Klaida pašalinant",
+      "update_success": "Jūsų pakeitimai sėkmingai išsaugoti",
+      "add_success": "Jūsų kortelė sėkmingai pridėta",
+      "add_error": "Klaida pridedant"
     }
+  },
+  "errors": {
+    "size": "O tamanho do arquivo não deve exceder (5 MB)",
+    "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+    "name_more30": "O nome não deve ter mais de 60 caracteres",
+    "plates_number10": "O número não deve ter mais de 10 caracteres",
+    "error_number": "Apenas números são permitidos",
+    "error_text": "Formato de texto inválido"
   }
 }

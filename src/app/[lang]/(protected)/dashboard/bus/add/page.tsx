@@ -11,9 +11,13 @@ import { IRent } from '@/interface/IRent';
 import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
 import AddRentCard from '@/components/protected/dashboard/Rent/Form/AddRentCard';
 import {
+  getDashboardBusDictionaries,
   getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCard';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 
 const getBus = async (lang: Locale) => {
   try {
@@ -50,7 +54,7 @@ export default async function Add({
   params: { lang: Locale };
 }>) {
   const tabs = await getDashboardTubsDictionaries(params.lang);
-  const staticData = await getDashboardRentsDictionaries(params.lang);
+  const staticData = await getDashboardBusDictionaries(params.lang);
 
   const bus = await getBus(params.lang);
 
@@ -59,23 +63,20 @@ export default async function Add({
   // }
 
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ContentDashboard
-            // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-
-            title={staticData.new_rent}
-            back={staticData.back}
-          >
-            <AddRentCard serviceBus={bus?.serviceBus} />
+          <ContentDashboard title={staticData.new_bus} back={staticData.back}>
+            <TabMenuLocale staticData={tabs}>
+              <AddBusCard
+                serviceBus={bus?.serviceBus}
+                staticData={staticData}
+                lang={params.lang}
+              />
+            </TabMenuLocale>
           </ContentDashboard>
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }

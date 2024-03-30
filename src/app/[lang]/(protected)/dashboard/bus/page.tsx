@@ -25,6 +25,7 @@ import {
 } from '@/lib/dictionary';
 import { RentWrapper } from '@/components/protected/dashboard/Rent/RentWrapper';
 import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
 export interface IRentProps {
   errorCode: any;
@@ -62,11 +63,7 @@ export default async function Bus({
   const staticData = await getDashboardBusDictionaries(params.lang);
 
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.bus} back={staticData.back}>
@@ -79,6 +76,6 @@ export default async function Bus({
           </ContentDashboard>
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }

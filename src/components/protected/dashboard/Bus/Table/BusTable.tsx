@@ -249,7 +249,7 @@ const BusTable = ({
                     </TableCell>
 
                     <TableCell align="left">
-                      {item.first_floor_seats_count}
+                      {item?.first_floor_seats?.length}
                     </TableCell>
                     <TableCell align="left">
                       {item.rentable ? (
@@ -259,7 +259,7 @@ const BusTable = ({
                       )}
                     </TableCell>
                     <TableCell align="left">
-                      {item.second_floor_seats_count}
+                      {item?.second_floor_seats?.length}
                     </TableCell>
 
                     <TableCell align="right">

@@ -16,6 +16,9 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import cn from 'clsx';
 import { getCookie } from 'cookies-next';
@@ -25,7 +28,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
@@ -35,6 +37,7 @@ import Style from '@/components/published/Rent/CardInfo/cardinfo.module.css';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import { useLangContext } from '@/app/context';
 import { getSession } from '@/lib/auth';
+import { Locale } from '@/i18n.config';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -42,14 +45,17 @@ const colorHeading = grey[900];
 interface IInfoCardProps {
   bus: IRent;
   staticData: dashboardBusStaticData;
+  lang: Locale;
   //   serviceBus?: readonly IServiceBus[];
 }
 
-const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
+const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     loop: true,
@@ -85,6 +91,45 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
       </svg>
     );
   }
+  const nameRegex = /^[^\s@&^%]+$/;
+  const UploadFileSchema = yup.object().shape({
+    // file: yup
+    //   .mixed()
+    //   .test(`${staticData.errors.size}`, (value: any) => {
+    //     if (value?.length) {
+    //       return value && value[0]?.size <= 5242880;
+    //     } else {
+    //       return {};
+    //     }
+    //   })
+    //   .test('Type', `${staticData.errors.formats}`, (value: any) => {
+    //     if (value.length) {
+    //       return (
+    //         value &&
+    //         (value[0]?.type === 'image/jpeg' ||
+    //           value[0]?.type === 'image/jpg' ||
+    //           value[0]?.type === 'image/png' ||
+    //           value[0]?.type === 'image/webp')
+    //       );
+    //     } else {
+    //       return {};
+    //     }
+    //   }),
+    name: yup
+      .string()
+      .max(30, `${staticData.errors.name_more30}`)
+      .matches(nameRegex, `${staticData.errors.error_text}`),
+    first_floor_seats_count: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
+    second_floor_seats_count: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
+
+    plates_number: yup.string().max(10, `${staticData.errors.plates_number10}`),
+  });
 
   const {
     register,
@@ -98,24 +143,34 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
     formState: { errors, isDirty, isValid },
   } = useForm<IRent>({
     defaultValues: {
-      name: '',
-      first_floor_seats: '',
-      second_floor_seats: '',
+      name: bus.name || '',
+      first_floor_seats_count: bus?.first_floor_seats?.length || 0,
+      second_floor_seats_count: bus?.second_floor_seats?.length || 0,
       busIdService: [],
-      photo: '',
-      is_active: '',
+      photo: bus?.photo || null,
+      is_active: bus?.is_active || true,
       uploaded_images: {},
+      plates_number: bus?.plates_number || '',
     },
+    // @ts-ignore
+    resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
   const files = watch('uploaded_images');
+  const name = watch('name');
+  const first_floor_seats_count = watch('first_floor_seats_count');
+  const second_floor_seats_count = watch('second_floor_seats_count');
+  const plates_number = watch('plates_number');
+  const photo = watch('photo');
+  const rout = useRouter();
 
   const onSubmitForm = async (data: IRent) => {
     if (!bus) return;
     try {
       const session = await getSession();
       const formData = new FormData();
+
       if (data.uploaded_images) {
         Object.values(data.uploaded_images).forEach((file: any) => {
           formData.append('images_list', file);
@@ -127,10 +182,19 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
         });
       }
       formData.append('name', data.name || '');
-      formData.append('first_floor_seats', data.first_floor_seats || '');
-      formData.append('second_floor_seats', data.second_floor_seats || '');
+      formData.append(
+        'first_floor_seats_count',
+        data?.first_floor_seats_count?.toString() || '',
+      );
+      formData.append(
+        'second_floor_seats_count',
+        data?.second_floor_seats_count?.toString() || '',
+      );
       formData.append('is_active', data.is_active);
+      formData.append('plates_number', data.plates_number);
+
       data.photo?.length && formData.append('photo', data.photo[0] || null);
+      console.log('a', formData.get('images_list'));
 
       const response = await axios.patch(
         `${BASE_URL}/${selectLang}/api/admin/service/bus/${bus.id}/update/`,
@@ -143,31 +207,37 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
         },
       );
       if (response.status === 200) {
-        enqueueSnackbar('Ваші зміни збережені', { variant: 'success' });
-        rout.push('/dashboard/bus/');
+        enqueueSnackbar(`${staticData.busTable.snackBar.update_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/bus/`);
       }
       if (response.status === 201) {
-        enqueueSnackbar('Ваша карточка добавлена', { variant: 'success' });
+        enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/bus/`);
       }
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('Помилка збереження змін', { variant: 'error' });
+      enqueueSnackbar(`${staticData.busTable.snackBar.add_error}`, {
+        variant: 'error',
+      });
     }
   };
 
-  const rout = useRouter();
-
-  const handleBack = () => {
-    rout.back();
+  const clearable = () => {
+    // setImagePreviewUrl(res[0].img);
+    resetField('photo');
   };
 
   return (
     <>
-      <SnackbarProvider />
       <Box height={'100%'} width={'100%'}>
+        {/* @ts-ignore */}
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <Grid container direction={'row'} spacing={2}>
-            <Grid item lg={7} height={'100%'}>
+            <Grid item xs={6} height={'100%'}>
               <Paper>
                 <Box p={4} display={'flex'} width={'100%'}>
                   <Container disableGutters>
@@ -182,7 +252,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                       }}
                       mb={4}
                     >
-                      Заповніть форму
+                      {staticData.busTable.fill_form}
                     </Typography>
                     <Stack spacing={2}>
                       <Stack spacing={2} direction={'column'}>
@@ -198,9 +268,40 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                         >
                           {staticData.busTable.name}
                         </Typography>
-                        <TextField {...register('name')} size={'small'} />
+                        <TextField
+                          {...register('name')}
+                          size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.name?.message}
+                          error={!!errors?.name}
+                        />
                       </Stack>
 
+                      <Stack spacing={2} direction={'column'}>
+                        <Typography
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+                            fontWeight: 700,
+                            fontSize: '16px',
+                            lineHeight: '140%',
+                            color: color_title,
+                          }}
+                        >
+                          {staticData.busTable.plate}
+                        </Typography>
+                        <TextField
+                          {...register('plates_number')}
+                          size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.plates_number?.message}
+                          error={!!errors?.plates_number}
+                        />
+                      </Stack>
                       <Stack spacing={2} direction={'column'}>
                         <Typography
                           sx={{
@@ -245,8 +346,13 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           {staticData.busTable.seats_first_floor}
                         </Typography>
                         <TextField
-                          {...register('first_floor_seats')}
+                          {...register('first_floor_seats_count')}
                           size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.first_floor_seats_count?.message}
+                          error={!!errors?.first_floor_seats_count}
                         />
                       </Stack>
 
@@ -264,8 +370,13 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           {staticData.busTable.seats_second_floor}
                         </Typography>
                         <TextField
-                          {...register('second_floor_seats')}
+                          {...register('second_floor_seats_count')}
                           size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.second_floor_seats_count?.message}
+                          error={!!errors?.second_floor_seats_count}
                         />
                       </Stack>
 
@@ -283,9 +394,25 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           {staticData.busTable.poster}
                         </Typography>
                         <TextField
-                          {...register('photo')}
+                          {...register('photo', {
+                            onChange: event => {
+                              // fileSizeFile(event);
+                              if (event.target?.files[0] !== undefined) {
+                                setImagePreviewUrl(
+                                  window.URL.createObjectURL(
+                                    event.target?.files[0],
+                                  ),
+                                );
+                              } else {
+                                clearable();
+                              }
+                            },
+                          })}
                           size={'small'}
                           type={'file'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
                         />
                       </Stack>
 
@@ -312,9 +439,9 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                         />
 
                         {files &&
-                          Object.values(files).map((item: any) => (
+                          Object.values(files).map((item: any, ind) => (
                             <Typography
-                              key={item.id}
+                              key={item.id || ind}
                               sx={{
                                 fontFamily: 'Inter',
                                 fontStyle: 'normal',
@@ -355,7 +482,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item lg={5} height={'100%'}>
+            <Grid item xs={6} height={'100%'}>
               <Container disableGutters maxWidth={'md'}>
                 <Paper>
                   <Box width={'100%'} height={732} px={3} py={3}>
@@ -364,6 +491,12 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                       display={'flex'}
                       direction={'column'}
                       container
+                      sx={{
+                        display:
+                          bus?.images_list && bus?.images_list?.length > 0
+                            ? 'flex'
+                            : 'block',
+                      }}
                     >
                       <Grid
                         sm={6}
@@ -377,43 +510,91 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           }}
                           className={Style.navigation_wrapper}
                         >
-                          <Box
-                            style={{
-                              borderRadius: '4px',
-                            }}
-                            ref={sliderRef}
-                            className="keen-slider"
-                          >
-                            {bus?.images_list && bus?.images_list.length < 1 ? (
-                              <Skeleton />
-                            ) : (
-                              bus.images_list &&
-                              bus.images_list.map((image, index) => (
-                                <Box
-                                  key={index}
-                                  style={{
-                                    borderRadius: '4px',
-                                  }}
-                                  height={sm ? 200 : 350}
-                                  className="keen-slider__slide"
-                                >
-                                  <Image
+                          {bus?.images_list && bus?.images_list?.length > 0 ? (
+                            <Box
+                              style={{
+                                borderRadius: '4px',
+                              }}
+                              ref={sliderRef}
+                              className="keen-slider"
+                            >
+                              {bus?.images_list &&
+                              bus?.images_list.length < 1 ? (
+                                <Skeleton />
+                              ) : (
+                                bus.images_list &&
+                                bus.images_list.map((image, index) => (
+                                  <Box
+                                    key={index}
                                     style={{
                                       borderRadius: '4px',
-                                      objectFit: 'fill',
                                     }}
-                                    src={image.image || ''}
-                                    // width={852}
-                                    // height={400}
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    fill
-                                    quality={100}
-                                    alt={`${staticData.busTable.alt}`}
-                                  />
-                                </Box>
-                              ))
-                            )}
-                          </Box>
+                                    height={sm ? 200 : 350}
+                                    className="keen-slider__slide"
+                                  >
+                                    <Image
+                                      style={{
+                                        borderRadius: '4px',
+                                        objectFit: 'fill',
+                                      }}
+                                      src={image.image || ''}
+                                      // width={852}
+                                      // height={400}
+                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                      fill
+                                      quality={100}
+                                      alt={`${staticData.busTable.alt}`}
+                                    />
+                                  </Box>
+                                ))
+                              )}
+                            </Box>
+                          ) : (
+                            <Box
+                              style={{
+                                borderRadius: '4px',
+                              }}
+                              height={sm ? 200 : 350}
+                              // height={'150px'}
+                              position={'relative'}
+                            >
+                              {imagePreviewUrl ? (
+                                <Image
+                                  style={{
+                                    borderRadius: '4px',
+                                    objectFit: 'cover',
+                                  }}
+                                  src={imagePreviewUrl}
+                                  // width={852}
+                                  // height={400}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  fill
+                                  quality={100}
+                                  alt={`${staticData.busTable.alt}`}
+                                />
+                              ) : bus.photo ? (
+                                <Image
+                                  style={{
+                                    borderRadius: '4px',
+                                    objectFit: 'cover',
+                                  }}
+                                  src={
+                                    bus.photo
+                                      ? `http://api.lehendatrans.com${bus.photo}`
+                                      : ''
+                                  }
+                                  // width={852}
+                                  // height={400}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  fill
+                                  quality={100}
+                                  alt={`${staticData.busTable.alt}`}
+                                />
+                              ) : (
+                                <Skeleton height={sm ? 200 : 350} />
+                              )}
+                            </Box>
+                          )}
                           {loaded && instanceRef.current && (
                             <>
                               <Arrow
@@ -533,7 +714,38 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus.name}
+                                  {name}
+                                </Typography>
+                              </Stack>
+                              <Stack
+                                spacing={1}
+                                alignItems={'center'}
+                                direction={'row'}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                >
+                                  {staticData.busTable.plate}
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {plates_number}
                                 </Typography>
                               </Stack>
                               <Stack
@@ -583,7 +795,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus?.first_floor_seats?.length}
+                                  {first_floor_seats_count}
                                 </Typography>
                               </Stack>
                               <Stack
@@ -614,7 +826,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {bus?.second_floor_seats?.length}
+                                  {second_floor_seats_count}
                                 </Typography>
                               </Stack>
                             </Stack>
@@ -627,6 +839,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                               variant={'contained'}
                               fullWidth
                               type={'submit'}
+                              disabled={!isDirty || !isValid}
                             >
                               {staticData.busTable.save}
                             </Button>
