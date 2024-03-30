@@ -39,5 +39,13 @@
       "add_success": "Jūsų kortelė sėkmingai pridėta",
       "add_error": "Klaida pridedant"
     }
+  },
+  "errors": {
+    "size": "O tamanho do arquivo não deve exceder (5 MB)",
+    "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+    "name_more30": "O nome não deve ter mais de 60 caracteres",
+    "plates_number10": "O número não deve ter mais de 10 caracteres",
+    "error_number": "Apenas números são permitidos",
+    "error_text": "Formato de texto inválido"
   }
 }

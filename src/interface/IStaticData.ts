@@ -118,6 +118,10 @@ export interface loginStaticDataProp {
   registration: string;
   sign_in: string;
   sign_out: string;
+  snack_bar: {
+    error: string;
+    success: string;
+  };
 }
 
 export interface loginStaticDataPageProp {
@@ -393,5 +397,13 @@ export interface dashboardBusStaticData {
       add_success: string;
       add_error: string;
     };
+  };
+  errors: {
+    size: string;
+    formats: string;
+    name_more30: string;
+    plates_number10: string;
+    error_number: string;
+    error_text: string;
   };
 }

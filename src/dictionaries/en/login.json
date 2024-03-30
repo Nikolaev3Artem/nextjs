@@ -14,5 +14,10 @@
   ],
   "registration": "Sign up",
   "sign_in": "Sign in",
-  "sign_out": "Sign out"
+  "sign_out": "Sign out",
+
+  "snack_bar": {
+    "error": "Incorrect password or username",
+    "success": "Login successful"
+  }
 }

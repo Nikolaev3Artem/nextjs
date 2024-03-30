@@ -39,5 +39,13 @@
       "add_success": "Jūsų kortelė sėkmingai pridėta",
       "add_error": "Klaida pridedant"
     }
+  },
+  "errors": {
+    "size": "Failo dydis neturi viršyti (5 MB)",
+    "formats": "Palaikomi tik šie formatai: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Pavadinimas neturi būti ilgesnis nei 60 simbolių",
+    "plates_number10": "Numeris neturi būti ilgesnis nei 10 simbolių",
+    "error_number": "Leidžiami tik skaitmenys",
+    "error_text": "Netinkamas teksto formatas"
   }
 }

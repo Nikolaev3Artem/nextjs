@@ -791,6 +791,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                               color={'success'}
                               size={'large'}
                               variant={'contained'}
+                              disabled={!isDirty || !isValid}
                               fullWidth
                               type={'submit'}
                               startIcon={<BiSave />}

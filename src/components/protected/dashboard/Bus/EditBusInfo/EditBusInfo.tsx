@@ -16,6 +16,9 @@ import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import axios from 'axios';
 import cn from 'clsx';
 import { getCookie } from 'cookies-next';
@@ -25,7 +28,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
@@ -89,6 +91,45 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       </svg>
     );
   }
+  const nameRegex = /^[^\s@&^%]+$/;
+  const UploadFileSchema = yup.object().shape({
+    // file: yup
+    //   .mixed()
+    //   .test(`${staticData.errors.size}`, (value: any) => {
+    //     if (value?.length) {
+    //       return value && value[0]?.size <= 5242880;
+    //     } else {
+    //       return {};
+    //     }
+    //   })
+    //   .test('Type', `${staticData.errors.formats}`, (value: any) => {
+    //     if (value.length) {
+    //       return (
+    //         value &&
+    //         (value[0]?.type === 'image/jpeg' ||
+    //           value[0]?.type === 'image/jpg' ||
+    //           value[0]?.type === 'image/png' ||
+    //           value[0]?.type === 'image/webp')
+    //       );
+    //     } else {
+    //       return {};
+    //     }
+    //   }),
+    name: yup
+      .string()
+      .max(30, `${staticData.errors.name_more30}`)
+      .matches(nameRegex, `${staticData.errors.error_text}`),
+    first_floor_seats_count: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
+    second_floor_seats_count: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
+
+    plates_number: yup.string().max(10, `${staticData.errors.plates_number10}`),
+  });
 
   const {
     register,
@@ -107,10 +148,12 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       second_floor_seats_count: bus?.second_floor_seats?.length || 0,
       busIdService: [],
       photo: bus?.photo || null,
-      is_active: bus?.is_active || false,
+      is_active: bus?.is_active || true,
       uploaded_images: {},
       plates_number: bus?.plates_number || '',
     },
+    // @ts-ignore
+    resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
@@ -191,6 +234,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   return (
     <>
       <Box height={'100%'} width={'100%'}>
+        {/* @ts-ignore */}
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <Grid container direction={'row'} spacing={2}>
             <Grid item xs={6} height={'100%'}>
@@ -224,7 +268,15 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         >
                           {staticData.busTable.name}
                         </Typography>
-                        <TextField {...register('name')} size={'small'} />
+                        <TextField
+                          {...register('name')}
+                          size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.name?.message}
+                          error={!!errors?.name}
+                        />
                       </Stack>
 
                       <Stack spacing={2} direction={'column'}>
@@ -243,6 +295,11 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         <TextField
                           {...register('plates_number')}
                           size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.plates_number?.message}
+                          error={!!errors?.plates_number}
                         />
                       </Stack>
                       <Stack spacing={2} direction={'column'}>
@@ -289,8 +346,13 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                           {staticData.busTable.seats_first_floor}
                         </Typography>
                         <TextField
-                          {...register('first_floor_seats')}
+                          {...register('first_floor_seats_count')}
                           size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.first_floor_seats_count?.message}
+                          error={!!errors?.first_floor_seats_count}
                         />
                       </Stack>
 
@@ -308,8 +370,13 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                           {staticData.busTable.seats_second_floor}
                         </Typography>
                         <TextField
-                          {...register('second_floor_seats')}
+                          {...register('second_floor_seats_count')}
                           size={'small'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.second_floor_seats_count?.message}
+                          error={!!errors?.second_floor_seats_count}
                         />
                       </Stack>
 
@@ -343,6 +410,9 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                           })}
                           size={'small'}
                           type={'file'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
                         />
                       </Stack>
 
@@ -769,6 +839,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                               variant={'contained'}
                               fullWidth
                               type={'submit'}
+                              disabled={!isDirty || !isValid}
                             >
                               {staticData.busTable.save}
                             </Button>

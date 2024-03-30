@@ -35,6 +35,7 @@ import { loginStaticDataProp } from '@/interface/IStaticData';
 import axios from 'axios';
 import { cookies } from 'next/headers';
 import { getSession, login } from '@/lib/auth';
+import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 
 interface State {
   email: string;
@@ -58,6 +59,7 @@ export function Login({
 
   const [user, setUser] = useState<IProfile[]>([]);
   const [phone, setPhone] = useState('');
+  const [isLoading, setIsloading] = useState(false);
 
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,11 +80,15 @@ export function Login({
   };
 
   const SignIn = async (event: SyntheticEvent) => {
+    setIsloading(true);
     event.preventDefault();
     try {
       const result = await login(values);
 
       if (result === 200) {
+        enqueueSnackbar(`${staticData.snack_bar.success}`, {
+          variant: 'success',
+        });
         const currentPath = window.location.pathname;
         const previousPath = document.referrer;
 
@@ -92,14 +98,27 @@ export function Login({
           router.back();
         }
       }
+      if (result !== 200) {
+        enqueueSnackbar(`${staticData.snack_bar.error}`, {
+          variant: 'error',
+        });
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
+        enqueueSnackbar(`${staticData.snack_bar.error}`, {
+          variant: 'error',
+        });
         console.log('error message: ', error.message);
         return error.message;
       } else {
+        enqueueSnackbar(`${staticData.snack_bar.error}`, {
+          variant: 'error',
+        });
         console.log('unexpected error: ');
         return 'An unexpected error occurred';
       }
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -112,101 +131,109 @@ export function Login({
     console.log(phone);
   };
   return (
-    <Fade in>
-      <Container maxWidth="xs" disableGutters>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-          className={Style.login__content}
-        >
-          <Link href={`/${lang}`}>
-            <Avatar
-              sx={{
-                m: 1,
-                bgcolor: 'transparent',
-                width: '100px',
-                height: '100px',
-              }}
-            >
-              <Logo width={100} height={100} />
-            </Avatar>
-          </Link>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
-            <Typography
-              sx={{ color: grey[700], fontSize: 16 }}
-              my={2}
-              className={Style.login__text}
-            >
-              {staticData.login_email}
-            </Typography>
-            <TextField
-              sx={{ my: 1 }}
-              required
-              fullWidth
-              id="email"
-              label={staticData.email}
-              value={values.email}
-              onChange={handleChange('email')}
-              name="email"
-              variant="outlined"
-              autoFocus
-            />
-            <FormControl sx={{ my: 1, width: '100%' }} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                {staticData.pass}
-              </InputLabel>
-
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={values.showPassword ? 'text' : 'password'}
-                value={values.password}
-                onChange={handleChange('password')}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label={staticData.pass}
+    <>
+      <SnackbarProvider />
+      <Fade in>
+        <Container maxWidth="xs" disableGutters>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+            className={Style.login__content}
+          >
+            <Link href={`/${lang}`}>
+              <Avatar
+                sx={{
+                  m: 1,
+                  bgcolor: 'transparent',
+                  width: '100px',
+                  height: '100px',
+                }}
+              >
+                <Logo width={100} height={100} />
+              </Avatar>
+            </Link>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
+              <Typography
+                sx={{ color: grey[700], fontSize: 16 }}
+                my={2}
+                className={Style.login__text}
+              >
+                {staticData.login_email}
+              </Typography>
+              <TextField
+                sx={{ my: 1 }}
+                required
+                fullWidth
+                id="email"
+                label={staticData.email}
+                value={values.email}
+                onChange={handleChange('email')}
+                name="email"
+                variant="outlined"
+                autoFocus
               />
-            </FormControl>
-            <Button
-              color={'secondary'}
-              sx={{
-                my: 1,
-                mb: 1,
-                height: '50px',
-                textTransform: 'none',
-              }}
-              size="large"
-              variant="contained"
-              onClick={SignIn}
-              fullWidth
-            >
-              {staticData.sign_in}
-            </Button>
-            <Box className={Style.login__forgot}>
-              <Link href="#">{staticData.forgot_pass}</Link>
-            </Box>
-            <Divider />
+              <FormControl sx={{ my: 1, width: '100%' }} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                  {staticData.pass}
+                </InputLabel>
 
-            <div className={Style.login__registration}>
-              <Link href={`/${lang}/auth/registration`}>
-                {staticData.reg_link}
-              </Link>
-            </div>
+                <OutlinedInput
+                  id="outlined-adornment-password"
+                  type={values.showPassword ? 'text' : 'password'}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  label={staticData.pass}
+                />
+              </FormControl>
+              <Button
+                color={'secondary'}
+                sx={{
+                  my: 1,
+                  mb: 1,
+                  height: '50px',
+                  textTransform: 'none',
+                }}
+                size="large"
+                variant="contained"
+                onClick={SignIn}
+                fullWidth
+                disabled={isLoading}
+              >
+                {staticData.sign_in}
+              </Button>
+              <Box className={Style.login__forgot}>
+                <Link href="#">{staticData.forgot_pass}</Link>
+              </Box>
+              <Divider />
+
+              <div className={Style.login__registration}>
+                <Link href={`/${lang}/auth/registration`}>
+                  {staticData.reg_link}
+                </Link>
+              </div>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </Fade>
+        </Container>
+      </Fade>
+    </>
   );
 }
