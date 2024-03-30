@@ -103,20 +103,22 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   } = useForm<IRent>({
     defaultValues: {
       name: bus.name || '',
-      first_floor_seats: bus?.first_floor_seats?.length.toString() || '',
-      second_floor_seats: bus?.second_floor_seats?.length.toString() || '',
+      first_floor_seats_count: bus?.first_floor_seats?.length || 0,
+      second_floor_seats_count: bus?.second_floor_seats?.length || 0,
       busIdService: [],
       photo: bus?.photo || null,
       is_active: bus?.is_active || false,
       uploaded_images: {},
+      plates_number: bus?.plates_number || '',
     },
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
   const files = watch('uploaded_images');
   const name = watch('name');
-  const first_floor_seats = watch('first_floor_seats');
-  const second_floor_seats = watch('second_floor_seats');
+  const first_floor_seats_count = watch('first_floor_seats_count');
+  const second_floor_seats_count = watch('second_floor_seats_count');
+  const plates_number = watch('plates_number');
   const photo = watch('photo');
   const rout = useRouter();
 
@@ -137,9 +139,17 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         });
       }
       formData.append('name', data.name || '');
-      formData.append('first_floor_seats', data.first_floor_seats || '');
-      formData.append('second_floor_seats', data.second_floor_seats || '');
+      formData.append(
+        'first_floor_seats_count',
+        data.first_floor_seats_count || 0,
+      );
+      formData.append(
+        'second_floor_seats_count',
+        data.second_floor_seats_count || 0,
+      );
       formData.append('is_active', data.is_active);
+      formData.append('plates_number', data.plates_number);
+
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       console.log('a', formData.get('images_list'));
 
@@ -174,7 +184,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   };
 
   const clearable = () => {
-    setImagePreviewUrl(photo);
+    // setImagePreviewUrl(res[0].img);
     resetField('photo');
   };
 
@@ -217,6 +227,24 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         <TextField {...register('name')} size={'small'} />
                       </Stack>
 
+                      <Stack spacing={2} direction={'column'}>
+                        <Typography
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+                            fontWeight: 700,
+                            fontSize: '16px',
+                            lineHeight: '140%',
+                            color: color_title,
+                          }}
+                        >
+                          {staticData.busTable.plate}
+                        </Typography>
+                        <TextField
+                          {...register('plates_number')}
+                          size={'small'}
+                        />
+                      </Stack>
                       <Stack spacing={2} direction={'column'}>
                         <Typography
                           sx={{
@@ -456,27 +484,45 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                               style={{
                                 borderRadius: '4px',
                               }}
-                              height={sm ? 200 : 250}
+                              height={sm ? 200 : 350}
                               // height={'150px'}
                               position={'relative'}
                             >
-                              <Image
-                                style={{
-                                  borderRadius: '4px',
-                                  objectFit: 'cover',
-                                }}
-                                src={
-                                  imagePreviewUrl ||
-                                  `http://api.lehendatrans.com${bus.photo}` ||
-                                  ''
-                                }
-                                // width={852}
-                                // height={400}
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                fill
-                                quality={100}
-                                alt={`${staticData.busTable.alt}`}
-                              />
+                              {imagePreviewUrl ? (
+                                <Image
+                                  style={{
+                                    borderRadius: '4px',
+                                    objectFit: 'cover',
+                                  }}
+                                  src={imagePreviewUrl}
+                                  // width={852}
+                                  // height={400}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  fill
+                                  quality={100}
+                                  alt={`${staticData.busTable.alt}`}
+                                />
+                              ) : bus.photo ? (
+                                <Image
+                                  style={{
+                                    borderRadius: '4px',
+                                    objectFit: 'cover',
+                                  }}
+                                  src={
+                                    bus.photo
+                                      ? `http://api.lehendatrans.com${bus.photo}`
+                                      : ''
+                                  }
+                                  // width={852}
+                                  // height={400}
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                  fill
+                                  quality={100}
+                                  alt={`${staticData.busTable.alt}`}
+                                />
+                              ) : (
+                                <Skeleton height={sm ? 200 : 350} />
+                              )}
                             </Box>
                           )}
                           {loaded && instanceRef.current && (
@@ -616,6 +662,37 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                     color: color_title,
                                   }}
                                 >
+                                  {staticData.busTable.plate}
+                                </Typography>
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {plates_number}
+                                </Typography>
+                              </Stack>
+                              <Stack
+                                spacing={1}
+                                alignItems={'center'}
+                                direction={'row'}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '16px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                >
                                   {staticData.busTable.services}
                                 </Typography>
                                 {/* <BusService busIdService={rent.busIdService} /> */}
@@ -648,7 +725,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {first_floor_seats}
+                                  {first_floor_seats_count}
                                 </Typography>
                               </Stack>
                               <Stack
@@ -679,7 +756,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {second_floor_seats}
+                                  {second_floor_seats_count}
                                 </Typography>
                               </Stack>
                             </Stack>
