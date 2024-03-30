@@ -24,7 +24,7 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'api.lehendatrans.com',
         port: '',
-        pathname: '/media/**',
+        pathname: '/media/**/**/**',
       },
     ],
   },

@@ -21,6 +21,7 @@ import {
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
 const getBus = async (lang: Locale, id: number) => {
   try {
@@ -61,11 +62,7 @@ export default async function BusInfo({
   const tabs = await getDashboardTubsDictionaries(params.lang);
 
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
@@ -78,12 +75,16 @@ export default async function BusInfo({
           >
             {bus && (
               <TabMenuLocale staticData={tabs}>
-                <EditBusInfo bus={bus} staticData={staticData} />
+                <EditBusInfo
+                  bus={bus}
+                  staticData={staticData}
+                  lang={params.lang}
+                />
               </TabMenuLocale>
             )}
           </ContentDashboard>
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }

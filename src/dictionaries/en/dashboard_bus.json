@@ -26,10 +26,14 @@
     "alt": "bus Photo",
     "features": "Features",
     "save": "Save",
+    "fill_form": "Fill form",
 
     "snackBar": {
       "remove_success": "Card deleted",
-      "remove_error": "Deletion error"
+      "remove_error": "Deletion error",
+      "update_success": "Your changes have been saved",
+      "add_success": "Your card has been added",
+      "add_error": "Error saving changes"
     }
   }
 }

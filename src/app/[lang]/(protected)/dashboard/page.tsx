@@ -5,6 +5,7 @@ import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 import { Locale } from '@/i18n.config';
 import { Form } from '@/components/protected/dashboard/Form/Form';
 import { getDashboardAboutDictionaries } from '@/lib/dictionary';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
 export default async function Dashboard({
   params,
@@ -14,12 +15,7 @@ export default async function Dashboard({
   const staticData = await getDashboardAboutDictionaries(params.lang);
 
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      className={styles.main}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           Admin panel here
@@ -30,6 +26,6 @@ export default async function Dashboard({
           </ContentDashboard> */}
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }

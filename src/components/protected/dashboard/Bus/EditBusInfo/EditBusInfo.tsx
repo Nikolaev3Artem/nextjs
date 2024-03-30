@@ -35,6 +35,7 @@ import Style from '@/components/published/Rent/CardInfo/cardinfo.module.css';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import { useLangContext } from '@/app/context';
 import { getSession } from '@/lib/auth';
+import { Locale } from '@/i18n.config';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -42,14 +43,17 @@ const colorHeading = grey[900];
 interface IInfoCardProps {
   bus: IRent;
   staticData: dashboardBusStaticData;
+  lang: Locale;
   //   serviceBus?: readonly IServiceBus[];
 }
 
-const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
+const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
+
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     loop: true,
@@ -98,24 +102,27 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
     formState: { errors, isDirty, isValid },
   } = useForm<IRent>({
     defaultValues: {
-      name: '',
-      first_floor_seats: '',
-      second_floor_seats: '',
+      name: bus.name || '',
+      first_floor_seats: bus?.first_floor_seats?.length.toString() || '',
+      second_floor_seats: bus?.second_floor_seats?.length.toString() || '',
       busIdService: [],
-      photo: '',
-      is_active: '',
+      photo: bus?.photo || '',
+      is_active: bus?.is_active || false,
       uploaded_images: {},
     },
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
   const files = watch('uploaded_images');
+  const photo = watch('photo');
+  const rout = useRouter();
 
   const onSubmitForm = async (data: IRent) => {
     if (!bus) return;
     try {
       const session = await getSession();
       const formData = new FormData();
+
       if (data.uploaded_images) {
         Object.values(data.uploaded_images).forEach((file: any) => {
           formData.append('images_list', file);
@@ -131,6 +138,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
       formData.append('second_floor_seats', data.second_floor_seats || '');
       formData.append('is_active', data.is_active);
       data.photo?.length && formData.append('photo', data.photo[0] || null);
+      console.log('a', formData.get('images_list'));
 
       const response = await axios.patch(
         `${BASE_URL}/${selectLang}/api/admin/service/bus/${bus.id}/update/`,
@@ -143,31 +151,36 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
         },
       );
       if (response.status === 200) {
-        enqueueSnackbar('Ваші зміни збережені', { variant: 'success' });
-        rout.push('/dashboard/bus/');
+        enqueueSnackbar(`${staticData.busTable.snackBar.update_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/bus/`);
       }
       if (response.status === 201) {
-        enqueueSnackbar('Ваша карточка добавлена', { variant: 'success' });
+        enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/bus/`);
       }
     } catch (error) {
       console.error(error);
-      enqueueSnackbar('Помилка збереження змін', { variant: 'error' });
+      enqueueSnackbar(`${staticData.busTable.snackBar.add_error}`, {
+        variant: 'error',
+      });
     }
   };
 
-  const rout = useRouter();
-
-  const handleBack = () => {
-    rout.back();
+  const clearable = () => {
+    // setImagePreviewUrl(res[0].img);
+    resetField('photo');
   };
 
   return (
     <>
-      <SnackbarProvider />
       <Box height={'100%'} width={'100%'}>
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <Grid container direction={'row'} spacing={2}>
-            <Grid item lg={7} height={'100%'}>
+            <Grid item xs={6} height={'100%'}>
               <Paper>
                 <Box p={4} display={'flex'} width={'100%'}>
                   <Container disableGutters>
@@ -182,7 +195,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                       }}
                       mb={4}
                     >
-                      Заповніть форму
+                      {staticData.busTable.fill_form}
                     </Typography>
                     <Stack spacing={2}>
                       <Stack spacing={2} direction={'column'}>
@@ -283,7 +296,20 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           {staticData.busTable.poster}
                         </Typography>
                         <TextField
-                          {...register('photo')}
+                          {...register('photo', {
+                            onChange: event => {
+                              // fileSizeFile(event);
+                              if (event.target?.files[0] !== undefined) {
+                                setImagePreviewUrl(
+                                  window.URL.createObjectURL(
+                                    event.target?.files[0],
+                                  ),
+                                );
+                              } else {
+                                clearable();
+                              }
+                            },
+                          })}
                           size={'small'}
                           type={'file'}
                         />
@@ -312,9 +338,9 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                         />
 
                         {files &&
-                          Object.values(files).map((item: any) => (
+                          Object.values(files).map((item: any, ind) => (
                             <Typography
-                              key={item.id}
+                              key={item.id || ind}
                               sx={{
                                 fontFamily: 'Inter',
                                 fontStyle: 'normal',
@@ -355,7 +381,7 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item lg={5} height={'100%'}>
+            <Grid item xs={6} height={'100%'}>
               <Container disableGutters maxWidth={'md'}>
                 <Paper>
                   <Box width={'100%'} height={732} px={3} py={3}>
@@ -364,6 +390,12 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                       display={'flex'}
                       direction={'column'}
                       container
+                      sx={{
+                        display:
+                          bus?.images_list && bus?.images_list?.length > 0
+                            ? 'flex'
+                            : 'block',
+                      }}
                     >
                       <Grid
                         sm={6}
@@ -377,43 +409,73 @@ const EditBusInfo = ({ bus, staticData }: IInfoCardProps) => {
                           }}
                           className={Style.navigation_wrapper}
                         >
-                          <Box
-                            style={{
-                              borderRadius: '4px',
-                            }}
-                            ref={sliderRef}
-                            className="keen-slider"
-                          >
-                            {bus?.images_list && bus?.images_list.length < 1 ? (
-                              <Skeleton />
-                            ) : (
-                              bus.images_list &&
-                              bus.images_list.map((image, index) => (
-                                <Box
-                                  key={index}
-                                  style={{
-                                    borderRadius: '4px',
-                                  }}
-                                  height={sm ? 200 : 350}
-                                  className="keen-slider__slide"
-                                >
-                                  <Image
+                          {bus?.images_list && bus?.images_list?.length > 0 ? (
+                            <Box
+                              style={{
+                                borderRadius: '4px',
+                              }}
+                              ref={sliderRef}
+                              className="keen-slider"
+                            >
+                              {bus?.images_list &&
+                              bus?.images_list.length < 1 ? (
+                                <Skeleton />
+                              ) : (
+                                bus.images_list &&
+                                bus.images_list.map((image, index) => (
+                                  <Box
+                                    key={index}
                                     style={{
                                       borderRadius: '4px',
-                                      objectFit: 'fill',
                                     }}
-                                    src={image.image || ''}
-                                    // width={852}
-                                    // height={400}
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    fill
-                                    quality={100}
-                                    alt={`${staticData.busTable.alt}`}
-                                  />
-                                </Box>
-                              ))
-                            )}
-                          </Box>
+                                    height={sm ? 200 : 350}
+                                    className="keen-slider__slide"
+                                  >
+                                    <Image
+                                      style={{
+                                        borderRadius: '4px',
+                                        objectFit: 'fill',
+                                      }}
+                                      src={image.image || ''}
+                                      // width={852}
+                                      // height={400}
+                                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                      fill
+                                      quality={100}
+                                      alt={`${staticData.busTable.alt}`}
+                                    />
+                                  </Box>
+                                ))
+                              )}
+                            </Box>
+                          ) : (
+                            <Box
+                              style={{
+                                borderRadius: '4px',
+                              }}
+                              height={sm ? 200 : 250}
+                              // height={'150px'}
+                              position={'relative'}
+                            >
+                              <Image
+                                style={{
+                                  borderRadius: '4px',
+                                  objectFit: 'cover',
+                                }}
+                                src={
+                                  imagePreviewUrl ||
+                                  `http://api.lehendatrans.com${bus.photo}` ||
+                                  ''
+                                }
+                                // width={852}
+                                // height={400}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                fill
+                                quality={100}
+                                alt={`${staticData.busTable.alt}`}
+                              />
+                            </Box>
+                          )}
                           {loaded && instanceRef.current && (
                             <>
                               <Arrow

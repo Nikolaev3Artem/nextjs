@@ -381,10 +381,13 @@ export interface dashboardBusStaticData {
     alt: string;
     features: string;
     save: string;
-
+    fill_form: string;
     snackBar: {
       remove_success: string;
       remove_error: string;
+      update_success: string;
+      add_success: string;
+      add_error: string;
     };
   };
 }

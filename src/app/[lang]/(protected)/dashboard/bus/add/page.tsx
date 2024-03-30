@@ -14,6 +14,8 @@ import {
   getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCard';
 
 const getBus = async (lang: Locale) => {
   try {
@@ -59,11 +61,7 @@ export default async function Add({
   // }
 
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
@@ -72,10 +70,10 @@ export default async function Add({
             title={staticData.new_rent}
             back={staticData.back}
           >
-            <AddRentCard serviceBus={bus?.serviceBus} />
+            <AddBusCard serviceBus={bus?.serviceBus} />
           </ContentDashboard>
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }

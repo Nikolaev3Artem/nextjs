@@ -11,6 +11,7 @@ import {
   getRuleDictionaries,
 } from '@/lib/dictionary';
 import { RuleForm } from '@/components/protected/dashboard/RuleForm';
+import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
 export default async function Content({
   params,
@@ -20,12 +21,7 @@ export default async function Content({
   const staticData = await getDashboardRuleDictionaries(params.lang);
   const tabs = await getDashboardTubsDictionaries(params.lang);
   return (
-    <Container
-      maxWidth={'xl'}
-      component={'section'}
-      className={styles.main}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
-    >
+    <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.rule} back={staticData.back}>
@@ -35,6 +31,6 @@ export default async function Content({
           </ContentDashboard>
         </Box>
       </Fade>
-    </Container>
+    </DashboardContainer>
   );
 }
