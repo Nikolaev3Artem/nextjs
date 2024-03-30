@@ -11,6 +11,7 @@ import { IRent } from '@/interface/IRent';
 import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
 import AddRentCard from '@/components/protected/dashboard/Rent/Form/AddRentCard';
 import {
+  getDashboardBusDictionaries,
   getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
@@ -53,7 +54,7 @@ export default async function Add({
   params: { lang: Locale };
 }>) {
   const tabs = await getDashboardTubsDictionaries(params.lang);
-  const staticData = await getDashboardRentsDictionaries(params.lang);
+  const staticData = await getDashboardBusDictionaries(params.lang);
 
   const bus = await getBus(params.lang);
 
@@ -65,14 +66,13 @@ export default async function Add({
     <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ContentDashboard
-            // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-
-            title={staticData.new_rent}
-            back={staticData.back}
-          >
+          <ContentDashboard title={staticData.new_bus} back={staticData.back}>
             <TabMenuLocale staticData={tabs}>
-              <AddBusCard serviceBus={bus?.serviceBus} />
+              <AddBusCard
+                serviceBus={bus?.serviceBus}
+                staticData={staticData}
+                lang={params.lang}
+              />
             </TabMenuLocale>
           </ContentDashboard>
         </Box>

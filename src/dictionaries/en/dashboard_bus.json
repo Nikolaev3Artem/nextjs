@@ -27,6 +27,10 @@
     "features": "Features",
     "save": "Save",
     "fill_form": "Fill form",
+    "working": "Working",
+    "not_working": "Not working",
+    "float": "Float",
+    "choose": "Choose file",
 
     "snackBar": {
       "remove_success": "Card deleted",

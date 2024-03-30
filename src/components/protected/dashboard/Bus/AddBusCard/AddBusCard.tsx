@@ -9,12 +9,19 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { grey } from '@mui/material/colors';
+import { grey, red } from '@mui/material/colors';
+import { BiSave } from 'react-icons/bi';
+
 import axios from 'axios';
 import cn from 'clsx';
 import { getCookie } from 'cookies-next';
@@ -32,15 +39,20 @@ import theme from '@/theme';
 import { BusService } from '@/components/common/BusService';
 import Style from '../../../../published/Rent/CardInfo/cardinfo.module.css';
 import { useLangContext } from '@/app/context';
+import { dashboardBusStaticData } from '@/interface/IStaticData';
+import { Locale } from '@/i18n.config';
+import { getSession } from '@/lib/auth';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
 
 interface IAddRenCardProps {
   serviceBus?: readonly IServiceBus[];
+  staticData: dashboardBusStaticData;
+  lang: Locale;
 }
 
-const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
+const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
   const [dataIDService, setDataIDService] = useState<number[]>([]);
@@ -56,6 +68,17 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
       setLoaded(true);
     },
   });
+  const [float, setFloat] = useState(0);
+  function a11yProps(index: number) {
+    return {
+      id: `tab-${index}`,
+      'aria-controls': `tabpanel-${index}`,
+    };
+  }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setFloat(newValue);
+  };
 
   // const clearable = () => {
   // 	setImagePreviewUrl(res[0].img)
@@ -100,62 +123,81 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
   } = useForm<IRent>({
     defaultValues: {
       name: '',
-      first_floor_seats: '',
-      second_floor_seats: '',
+      first_floor_seats_count: undefined,
+      second_floor_seats_count: undefined,
       busIdService: [],
       photo: '',
-      is_active: true,
+      is_active: false,
       uploaded_images: {},
       rentable: false,
+      plates_number: '',
+      is_Wc_Work: false,
     },
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
   const name = watch('name');
-  const first_floor_seats = watch('first_floor_seats');
-  const second_floor_seats = watch('second_floor_seats');
+  const first_floor_seats_count = watch('first_floor_seats_count');
+  const second_floor_seats_count = watch('second_floor_seats_count');
+  const plates_number = watch('plates_number');
   // const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
+  const is_Wc_Work = watch('is_Wc_Work');
   const files = watch('uploaded_images');
 
   async function onSubmitForm(data: IRent) {
-    // try {
-    //   const formData = new FormData();
-    //   if (data.uploaded_images) {
-    //     Object.values(data.uploaded_images).forEach((file: any) => {
-    //       formData.append('uploaded_images', file);
-    //     });
-    //   }
-    //   if (data.busIdService) {
-    //     Object.values(data.busIdService).forEach((item: any) => {
-    //       formData.append('busIdService', item.id || []);
-    //     });
-    //   }
-    //   formData.append('name', data.name || '');
-    //   formData.append('places', data.places || '');
-    //   formData.append('floor', data.floor || '');
-    //   formData.append('is_active', data.is_active || 'false');
-    //   data.poster?.length && formData.append('poster', data.poster[0] || null);
-    //   const response = await axios.post(
-    //     `${BASE_URL}${rout.locale}/api/rent/admin/create/`,
-    //     formData,
-    //     {
-    //       headers: {
-    //         Authorization: 'Bearer ' + getCookie('access'),
-    //         'Content-Type':
-    //           'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-    //       },
-    //     },
-    //   );
-    //   if (response.status === 201) {
-    //     enqueueSnackbar('Ваша карточка добавлена', { variant: 'success' });
-    //     rout.push('/dashboard/rent/');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   enqueueSnackbar('Помилка збереження змін', { variant: 'error' });
-    // }
+    try {
+      const session = await getSession();
+      if (!session) return null;
+      const formData = new FormData();
+      // if (data.uploaded_images) {
+      //   Object.values(data.uploaded_images).forEach((file: any) => {
+      //     formData.append('uploaded_images', file);
+      //   });
+      // }
+      if (data.busIdService) {
+        Object.values(data.busIdService).forEach((item: any) => {
+          formData.append('busIdService', item.id || []);
+        });
+      }
+      formData.append('name', data.name || '');
+      formData.append('rentable', data.rentable || 'false');
+
+      formData.append('plates_number', data.plates_number || '');
+      formData.append(
+        'first_floor_seats_count',
+        data?.first_floor_seats_count?.toString() || '',
+      );
+      formData.append(
+        'second_floor_seats_count',
+        data?.second_floor_seats_count?.toString() || '',
+      );
+      formData.append('is_active', data.is_active || 'false');
+      data.photo?.length && formData.append('photo', data.photo[0] || null);
+      const response = await axios.post(
+        `${BASE_URL}${selectLang}/api/admin/service/bus/create/`,
+        formData,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
+      if (response.status === 201) {
+        enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/bus/`);
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(`${staticData.busTable.snackBar.add_error}`, {
+        variant: 'error',
+      });
+    }
   }
 
   const rout = useRouter();
@@ -163,6 +205,27 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
   const handleBack = () => {
     rout.back();
   };
+  interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+  }
+
+  function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box>{children}</Box>}
+      </div>
+    );
+  }
 
   return (
     <Box height={'100%'} width={'100%'}>
@@ -172,48 +235,70 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
             <Paper>
               <Box p={4} display={'flex'} width={'100%'}>
                 <Container disableGutters>
-                  <Typography
-                    sx={{
-                      fontFamily: 'Inter',
-                      fontStyle: 'normal',
-                      fontWeight: 700,
-                      fontSize: '20px',
-                      lineHeight: '140%',
-                      color: color_title,
-                    }}
-                    mb={4}
-                  >
-                    Заповніть форму
-                  </Typography>
                   <Stack spacing={2}>
                     <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 700,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
+                      <TextField
+                        {...register('name')}
+                        size={'small'}
+                        label={staticData.busTable.name}
+                        InputLabelProps={{
+                          style: { color: '#808080' },
                         }}
-                      >
-                        Модель
-                      </Typography>
-                      <TextField {...register('name')} size={'small'} />
+                      />
                     </Stack>
+                    <Stack spacing={2} direction={'column'}>
+                      <TextField
+                        {...register('photo')}
+                        size={'small'}
+                        type={'file'}
+                        InputLabelProps={{
+                          style: { color: '#808080' },
+                        }}
+                        // label={staticData.busTable.poster}
+                      />
+                    </Stack>
+                    <Stack spacing={2} direction={'column'}>
+                      <TextField
+                        {...register('uploaded_images')}
+                        size={'small'}
+                        type={'file'}
+                        // label={staticData.busTable.images}
+                        inputProps={{
+                          multiple: true,
 
+                          style: { color: '#808080' },
+                        }}
+                      />
+                      {files &&
+                        Object.values(files).map((item: any, ind) => (
+                          <Box key={item.id | ind}>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 300,
+                                fontSize: '11px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                            >
+                              {item.name}
+                            </Typography>
+                          </Box>
+                        ))}
+                    </Stack>
                     <Stack spacing={2} direction={'column'}>
                       <Typography
                         sx={{
                           fontFamily: 'Inter',
                           fontStyle: 'normal',
-                          fontWeight: 700,
+
                           fontSize: '16px',
                           lineHeight: '140%',
                           color: color_title,
                         }}
                       >
-                        Зручності
+                        {staticData.busTable.services}
                       </Typography>
                       {/* <Autocomplete
                         {...register('busIdService')}
@@ -233,125 +318,133 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                         renderInput={params => <TextField {...params} />}
                       /> */}
                     </Stack>
-
                     <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 700,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        Місць
-                      </Typography>
                       <TextField
-                        {...register('first_floor_seats')}
+                        {...register('plates_number')}
                         size={'small'}
+                        label={staticData.busTable.plate}
+                        InputLabelProps={{
+                          style: { color: '#808080' },
+                        }}
+                      />
+                    </Stack>
+                    <Stack spacing={2} direction={'column'}>
+                      <TextField
+                        {...register('first_floor_seats_count')}
+                        size={'small'}
+                        label={staticData.busTable.seats_first_floor}
+                        InputLabelProps={{
+                          style: { color: '#808080' },
+                        }}
                       />
                     </Stack>
 
                     <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 700,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        Поверх
-                      </Typography>
                       <TextField
-                        {...register('second_floor_seats')}
+                        {...register('second_floor_seats_count')}
                         size={'small'}
-                      />
-                    </Stack>
-
-                    <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 700,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        Постер
-                      </Typography>
-                      <TextField
-                        {...register('photo')}
-                        size={'small'}
-                        type={'file'}
-                      />
-                    </Stack>
-
-                    <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-                          fontWeight: 700,
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        Фотографії
-                      </Typography>
-                      <TextField
-                        {...register('uploaded_images')}
-                        size={'small'}
-                        type={'file'}
-                        inputProps={{
-                          multiple: true,
+                        label={staticData.busTable.seats_second_floor}
+                        InputLabelProps={{
+                          style: { color: '#808080' },
                         }}
                       />
-                      {files &&
-                        Object.values(files).map((item: any) => (
-                          <Box key={item.id}>
-                            <Typography
-                              sx={{
-                                fontFamily: 'Inter',
-                                fontStyle: 'normal',
-                                fontWeight: 300,
-                                fontSize: '11px',
-                                lineHeight: '140%',
-                                color: color_title,
-                              }}
-                            >
-                              {item.name}
-                            </Typography>
-                          </Box>
-                        ))}
                     </Stack>
 
                     <Stack
                       direction={'row'}
-                      spacing={2}
+                      spacing={1}
                       justifyItems={'center'}
                       alignItems={'center'}
                       display={'flex'}
                     >
+                      <Checkbox
+                        {...register('is_Wc_Work')}
+                        color="success"
+                        sx={{ padding: 0, color: '#808080' }}
+                      />
                       <Typography
                         sx={{
                           fontFamily: 'Inter',
                           fontStyle: 'normal',
-                          fontWeight: 700,
+
                           fontSize: '16px',
                           lineHeight: '140%',
-                          color: color_title,
+                          color: '#808080',
                         }}
                       >
-                        Активний
+                        {staticData.busTable.wc}
                       </Typography>
-                      <Checkbox {...register('is_active')} />
+                    </Stack>
+                    <Stack
+                      direction={'row'}
+                      spacing={1}
+                      justifyItems={'center'}
+                      alignItems={'center'}
+                      display={'flex'}
+                    >
+                      <Checkbox
+                        {...register('is_active')}
+                        color="success"
+                        sx={{ padding: 0, color: '#808080' }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: '#808080',
+                        }}
+                      >
+                        {staticData.busTable.active}
+                      </Typography>
+                    </Stack>
+
+                    <Stack width={'100%'}>
+                      <Box>
+                        <Tabs
+                          value={float}
+                          onChange={handleChange}
+                          aria-label={staticData.busTable.float}
+                          sx={{
+                            minHeight: 'auto',
+                            mb: 2,
+                            '& .MuiTabs-indicator': {
+                              display: 'none',
+                            },
+
+                            '& .Mui-selected': {
+                              backgroundColor: `${theme.palette.info.main}`,
+                            },
+                            '& .MuiTab-root': {
+                              px: 1,
+                              py: 0.5,
+                              fontSize: '10px',
+                              minHeight: '22px',
+                              minWidth: '60px',
+                              borderRadius: '4px',
+                              textTransform: 'none',
+                            },
+                          }}
+                        >
+                          <Tab
+                            label={`${staticData.busTable.float} 1`}
+                            {...a11yProps(0)}
+                          />
+
+                          <Tab
+                            label={`${staticData.busTable.float} 2`}
+                            {...a11yProps(1)}
+                          />
+                        </Tabs>
+                        <CustomTabPanel value={float} index={0}>
+                          <Box>1</Box>
+                        </CustomTabPanel>
+                        <CustomTabPanel value={float} index={1}>
+                          <Box>2</Box>
+                        </CustomTabPanel>
+                      </Box>
                     </Stack>
                   </Stack>
                 </Container>
@@ -362,8 +455,18 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
             <Container disableGutters maxWidth={'md'}>
               <Paper>
                 <Box width={'100%'} height={732} px={3} py={3}>
-                  <Grid height={'100%'} display={'flex'} direction={'column'}>
-                    <Grid sm={6} display={'flex'} direction={'column'} item>
+                  <Grid
+                    height={'100%'}
+                    display={'flex'}
+                    flexDirection={'column'}
+                    // container
+                  >
+                    <Grid
+                      sm={12}
+                      display={'flex'}
+                      flexDirection={'column'}
+                      item
+                    >
                       {files.length ? (
                         <Box>
                           <Box
@@ -466,7 +569,13 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                         />
                       )}
                     </Grid>
-                    <Grid item sm={6} display={'flex'} direction={'column'}>
+                    <Grid
+                      item
+                      sm={12}
+                      display={'flex'}
+                      direction={'column'}
+                      container
+                    >
                       <Stack
                         spacing={2}
                         display={'flex'}
@@ -479,18 +588,6 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                           height={'100%'}
                           direction={'column'}
                         >
-                          <Typography
-                            sx={{
-                              fontFamily: 'Inter',
-                              fontStyle: 'normal',
-                              fontWeight: 700,
-                              fontSize: '16px',
-                              lineHeight: '140%',
-                              color: color_title,
-                            }}
-                          >
-                            Характеристики
-                          </Typography>
                           <Stack
                             spacing={1}
                             direction={'column'}
@@ -517,7 +614,7 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                   color: color_title,
                                 }}
                               >
-                                Модель:
+                                {staticData.busTable.name}:
                               </Typography>
                               <Typography
                                 sx={{
@@ -548,7 +645,7 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                   color: color_title,
                                 }}
                               >
-                                Зручності:
+                                {staticData.busTable.services}:
                               </Typography>
                               {/* <BusService busIdService={busDataService} /> */}
                             </Stack>
@@ -567,7 +664,7 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                   color: color_title,
                                 }}
                               >
-                                Місць:
+                                {staticData.busTable.wc}:
                               </Typography>
                               <Typography
                                 sx={{
@@ -580,7 +677,9 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {first_floor_seats?.length}
+                                {is_Wc_Work
+                                  ? staticData.busTable.working
+                                  : staticData.busTable.not_working}
                               </Typography>
                             </Stack>
                             <Stack
@@ -598,7 +697,7 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                   color: color_title,
                                 }}
                               >
-                                Поверх:
+                                {staticData.busTable.plate}:
                               </Typography>
                               <Typography
                                 sx={{
@@ -611,7 +710,69 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {second_floor_seats?.length}
+                                {plates_number}
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              spacing={1}
+                              alignItems={'center'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                              >
+                                {staticData.busTable.seats_first_floor}:
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {first_floor_seats_count}
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              spacing={1}
+                              alignItems={'center'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                              >
+                                {staticData.busTable.seats_second_floor}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {second_floor_seats_count}
                               </Typography>
                             </Stack>
                           </Stack>
@@ -626,33 +787,15 @@ const AddBusCard = ({ serviceBus }: IAddRenCardProps) => {
                                 fontSize: '16px',
                                 lineHeight: '150%',
                                 textTransform: 'none',
-
-                                color: color_title,
-                              }}
-                              onClick={handleBack}
-                              color={'primary'}
-                              size={'large'}
-                              variant={'outlined'}
-                              fullWidth
-                            >
-                              Скасувати
-                            </Button>
-                            <Button
-                              sx={{
-                                fontFamily: 'Inter',
-                                fontStyle: 'normal',
-                                fontWeight: 400,
-                                fontSize: '16px',
-                                lineHeight: '150%',
-                                textTransform: 'none',
                               }}
                               color={'success'}
                               size={'large'}
                               variant={'contained'}
                               fullWidth
                               type={'submit'}
+                              startIcon={<BiSave />}
                             >
-                              Додати
+                              {staticData.busTable.save}
                             </Button>
                           </Stack>
                         </Box>

@@ -10,7 +10,7 @@ export const DashboardContainer = ({ children }: { children: ReactNode }) => {
     <Container
       maxWidth={'xl'}
       component={'section'}
-      sx={{ paddingLeft: { md: '224px' }, paddingTop: '64px' }}
+      sx={{ paddingLeft: { md: '224px' }, paddingTop: '80px' }}
     >
       <SnackbarProvider />
       {children}

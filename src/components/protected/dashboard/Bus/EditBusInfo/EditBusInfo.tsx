@@ -141,11 +141,11 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       formData.append('name', data.name || '');
       formData.append(
         'first_floor_seats_count',
-        data.first_floor_seats_count || 0,
+        data?.first_floor_seats_count?.toString() || '',
       );
       formData.append(
         'second_floor_seats_count',
-        data.second_floor_seats_count || 0,
+        data?.second_floor_seats_count?.toString() || '',
       );
       formData.append('is_active', data.is_active);
       formData.append('plates_number', data.plates_number);

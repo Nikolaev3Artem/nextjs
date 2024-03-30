@@ -17,9 +17,9 @@
     "rows": "Рядків на сторінці",
     "reduce": "Зменшити",
     "plate": "Номерний знак",
-    "seats_first_floor": "Місця",
+    "seats_first_floor": "Місць",
     "wc": "WC",
-    "seats_second_floor": "Місця 2 поверх",
+    "seats_second_floor": "Місць на 2 поверсі",
     "poster": "Постер",
     "images": "Фотографії",
     "active": "Активний",
@@ -27,6 +27,10 @@
     "features": "Характеристики",
     "save": "Зберегти",
     "fill_form": "Заповніть форму",
+    "working": "Працює",
+    "not_working": "Не працює",
+    "float": "Поверх",
+    "choose": "Виберіть файл",
 
     "snackBar": {
       "remove_success": "Карточка видалена",

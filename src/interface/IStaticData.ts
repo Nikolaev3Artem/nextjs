@@ -382,6 +382,10 @@ export interface dashboardBusStaticData {
     features: string;
     save: string;
     fill_form: string;
+    working: string;
+    not_working: string;
+    float: string;
+    choose: string;
     snackBar: {
       remove_success: string;
       remove_error: string;
