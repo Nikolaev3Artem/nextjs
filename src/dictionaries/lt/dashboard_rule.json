@@ -15,14 +15,20 @@
       "label": "Įveskite tekstą",
       "description": "Papildomas teksto aprašymas",
       "alt": "Papildomas tekstas (ALT)",
-      "banner": "Fono baneris"
+      "banner": "Fono baneris",
+
+      "title1": "Pirmo bloko pavadinimas",
+      "text1": "Pirmo bloko tekstas",
+      "title2": "Antro bloko pavadinimas",
+      "text2": "Antro bloko tekstas"
     },
     "save_btn": {
       "text": "Išsaugoti"
     }
   },
   "snackBar": {
-    "success": "Jūsų pakeitimai įrašyti"
+    "success": "Jūsų pakeitimai įrašyti",
+    "error": "Klaida įrašant"
   },
   "preview": "Peržiūra"
 }

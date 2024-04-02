@@ -1,0 +1,43 @@
+{
+  "tickets": "Квитки",
+
+  "back": "Назад",
+  "searchForm": {
+    "label": "Search...",
+    "date": "Дата",
+    "new_button_form": {
+      "text": "Новий квиток"
+    },
+    "status": "Cтатус",
+    "options": ["Заброньований", "Новий", "Сплачений"]
+  },
+  "ticketsTable": {
+    "number": "Номер",
+    "name": "П.І.Б.",
+    "rout": "Рейс",
+    "start": "Відправлення",
+    "price": "Ціна",
+    "status": "Статус",
+    "create": "Створено",
+    "reduce": "Зменшити",
+    "all": "Всі",
+    "rows": "Рядків на сторінці",
+    "print_label": "Роздрукувати",
+
+    "snackBar": {
+      "remove_success": "Карточка видалена",
+      "remove_error": "Помилка видалення",
+      "update_success": "Ваші зміни збережені",
+      "add_success": "Ваша карточка добавлена",
+      "add_error": "Помилка збереження змін"
+    }
+  },
+  "errors": {
+    "size": "File size should not exceed (5 MB)",
+    "formats": "Only the following formats are supported: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Name should not exceed 60 characters",
+    "plates_number10": "Number should not exceed 10 characters",
+    "error_number": "Only digits are allowed",
+    "error_text": "Invalid text format"
+  }
+}

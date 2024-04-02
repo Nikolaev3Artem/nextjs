@@ -1,0 +1,16 @@
+.wrapper {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  background-color: #fff;
+  height: auto;
+  border-radius: 0;
+  margin-top: -118px;
+  box-shadow: none;
+}
+
+.wrapper .collapse {
+  border-top: 1px solid #bfbfbf;
+}

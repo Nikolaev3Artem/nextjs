@@ -34,7 +34,7 @@ export const SeatsBooking = ({
   lang,
 }: {
   data: IJourney;
-  date: string;
+  date?: string;
   onClose: () => void;
   isShowModal: boolean;
   staticData: MainStaticDataProps;

@@ -22,12 +22,16 @@ export function DataPicker({
   minOff,
   setValues,
   values,
+  isWhite,
+  small,
 }: {
   staticData: string;
   lang: Locale;
   minOff?: boolean;
   setValues: any;
   values: any;
+  isWhite?: boolean;
+  small?: boolean;
 }) {
   const [datePickerValue, setDatePickerValue] = React.useState<Dayjs | null>(
     dayjs(),
@@ -35,6 +39,7 @@ export function DataPicker({
   const [open, setOpen] = useState<boolean>(false);
 
   const today = dayjs();
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
       <Box
@@ -42,6 +47,7 @@ export function DataPicker({
         sx={{
           '& .MuiFormControl-root': {
             width: '100%',
+            backgroundColor: isWhite ? 'white' : 'transparent',
           },
         }}
       >
@@ -53,6 +59,7 @@ export function DataPicker({
           minDate={minOff ? null : today}
           autoFocus={false}
           value={minOff ? null : datePickerValue}
+          slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
           onChange={newValue => {
             setDatePickerValue(newValue);
             setValues({ ...values, date: newValue?.toISOString() });

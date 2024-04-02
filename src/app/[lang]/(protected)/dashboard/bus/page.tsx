@@ -1,29 +1,20 @@
 import styles from './bus.module.css';
-import { Container, Fade, Stack } from '@mui/material';
+import { Fade } from '@mui/material';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
+
 import axios from 'axios';
 
-import Error from 'next/error';
-
 import React from 'react';
-import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
-import RentTable from '@/components/protected/dashboard/Rent/Table/RentTable';
 import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 import { IBanner } from '@/interface/IBanner';
 import { IRent } from '@/interface/IRent';
 
 import { Locale } from '@/i18n.config';
 import {
   getDashboardBusDictionaries,
-  getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { RentWrapper } from '@/components/protected/dashboard/Rent/RentWrapper';
 import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
