@@ -17,6 +17,7 @@ import {
 } from '@/lib/dictionary';
 import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { getSession } from '@/lib/auth';
 
 export interface IRentProps {
   errorCode: any;
@@ -26,8 +27,17 @@ export interface IRentProps {
 
 const getBus = async (lang: Locale) => {
   try {
+    const session = await getSession();
+    if (!session) return null;
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + session.access,
+          'Content-Type':
+            'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+        },
+      },
     );
 
     if (response.status === 200) {

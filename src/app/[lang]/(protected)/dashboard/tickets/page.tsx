@@ -65,7 +65,6 @@ export default async function Tickets({
   const staticData = await getDashboardTicketsDictionaries(params.lang);
   const journeyStaticData = await getMainDictionaries(params.lang);
 
-  console.log('t', tickets);
   return (
     <DashboardContainer>
       <Fade in={true} timeout={600}>

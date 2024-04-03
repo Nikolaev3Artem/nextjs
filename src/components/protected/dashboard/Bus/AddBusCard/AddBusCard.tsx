@@ -24,7 +24,6 @@ import { BiSave } from 'react-icons/bi';
 
 import axios from 'axios';
 import cn from 'clsx';
-import { getCookie } from 'cookies-next';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
@@ -131,7 +130,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       uploaded_images: {},
       rentable: false,
       plates_number: '',
-      is_Wc_Work: false,
+      wc: false,
     },
     mode: 'onChange',
   });
@@ -143,7 +142,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   // const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
-  const is_Wc_Work = watch('is_Wc_Work');
+  const is_Wc_Work = watch('wc');
   const files = watch('uploaded_images');
 
   async function onSubmitForm(data: IRent) {
@@ -358,7 +357,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                       display={'flex'}
                     >
                       <Checkbox
-                        {...register('is_Wc_Work')}
+                        {...register('wc')}
                         color="success"
                         sx={{ padding: 0, color: '#808080' }}
                       />
@@ -505,7 +504,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                       fill
                                       quality={100}
-                                      alt={'Bus photo'}
+                                      alt={`${staticData.busTable.alt}`}
                                     />
                                   </Box>
                                 ),
@@ -546,7 +545,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 ).keys(),
                               ].map(idx => {
                                 return (
-                                  <button
+                                  <div
                                     key={idx}
                                     onClick={() => {
                                       instanceRef.current?.moveToIdx(idx);
@@ -555,7 +554,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                       [Style.dot],
                                       currentSlide === idx ? Style.active : '',
                                     )}
-                                  ></button>
+                                  ></div>
                                 );
                               })}
                             </div>

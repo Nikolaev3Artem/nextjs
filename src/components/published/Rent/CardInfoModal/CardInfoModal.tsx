@@ -25,6 +25,7 @@ export const CardInfoModal = ({ isOpen, onClose, children }: IModalProps) => {
       onClose={onClose}
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
+      disableScrollLock={true}
     >
       <Fade in={isOpen}>
         <Container maxWidth={'sm'} disableGutters sx={style}>

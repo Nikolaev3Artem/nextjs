@@ -14,7 +14,7 @@ export default async function RootLayout({
 }>) {
   const lang = params.lang;
   const user = await getUser();
-  console.log(user);
+
   if (
     !user ||
     (!(user.is_superuser || user.is_staff) &&

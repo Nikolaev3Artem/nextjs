@@ -20,7 +20,6 @@ export const JourneyInfo = ({
   data: IJourney;
   staticData: orderStaticData;
 }) => {
-  console.log(data);
   return (
     <Grid item width={'100%'}>
       <Grid

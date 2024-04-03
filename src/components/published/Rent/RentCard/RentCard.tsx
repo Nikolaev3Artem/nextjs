@@ -14,7 +14,7 @@ import {
 import Button from '@mui/material/Button';
 import { grey } from '@mui/material/colors';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+
 import React, { useState } from 'react';
 
 import { IRent } from '@/interface/IRent';
@@ -32,8 +32,8 @@ export const RentCard = ({
 
   images_list,
   photo,
-  second_floor_seats,
-  first_floor_seats,
+  first_floor_seats_count,
+  second_floor_seats_count,
   plates_number,
   lang,
   staticData,
@@ -62,7 +62,7 @@ export const RentCard = ({
               component="img"
               height="195"
               image={photo}
-              alt="Paella dish"
+              alt={staticData.name}
             />
           ) : (
             <Skeleton variant={'rectangular'} />
@@ -130,11 +130,11 @@ export const RentCard = ({
                 }}
                 color={color}
               >
-                {first_floor_seats ? first_floor_seats?.length + 1 : ''}
+                {first_floor_seats_count ? first_floor_seats_count : null}
               </Typography>
             </Stack>
 
-            {second_floor_seats && (
+            {second_floor_seats_count && (
               <Stack alignItems={'center'} spacing={1} direction={'row'}>
                 <Typography
                   sx={{
@@ -161,7 +161,7 @@ export const RentCard = ({
                   }}
                   color={color}
                 >
-                  {second_floor_seats.length + 1}
+                  {second_floor_seats_count}
                 </Typography>
               </Stack>
             )}

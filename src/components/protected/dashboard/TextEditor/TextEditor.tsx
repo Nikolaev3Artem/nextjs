@@ -27,8 +27,9 @@ import { IEditorText } from '@/interface/IEditorText';
 // import { useAppDispatch } from "../../store/auth/redux"
 import { Replacements } from './Replacements';
 import Style from './Texteditor.module.css';
-import uk from './uk';
+
 import { useLangContext } from '@/app/context';
+import { Locale } from '@/i18n.config';
 
 const color_title = grey[700];
 interface IEditorNumProps {
@@ -36,7 +37,7 @@ interface IEditorNumProps {
   titleOne?: string;
   titleTwo?: string;
   res: IEditorText[];
-
+  lang: Locale;
   setEditorData: Dispatch<SetStateAction<string>>;
 }
 
@@ -53,6 +54,7 @@ function TextEditor({
   titleTwo,
   res,
   setEditorData,
+  lang,
 }: IEditorNumProps) {
   const [focus, setFocus] = useState<boolean>(false);
   const [textRaw, setTextRaw] = useState();
@@ -96,7 +98,6 @@ function TextEditor({
       data && data === 2 ? setEditorState(text2) : null;
     }
   }, []);
-  // console.log("State", editorState)
 
   const html = () => {
     if (rawContentState.blocks.length) {
@@ -206,8 +207,8 @@ function TextEditor({
           },
         }}
         localization={{
-          locale: selectLang,
-          translations: selectLang === 'uk' ? uk : selectLang,
+          locale: lang,
+          translations: lang,
         }}
         // toolbarCustomButtons={[<Replacements editorState={editorState} />]}
         placeholder=" Введіть текст..."

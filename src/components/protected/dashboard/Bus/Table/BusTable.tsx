@@ -249,17 +249,17 @@ const BusTable = ({
                     </TableCell>
 
                     <TableCell align="left">
-                      {item?.first_floor_seats?.length}
+                      {item?.first_floor_seats_count}
                     </TableCell>
                     <TableCell align="left">
-                      {item.rentable ? (
+                      {item.wc ? (
                         <AiOutlineCheckCircle size={16} color={'green'} />
                       ) : (
                         <MdOutlineCancel size={16} color={'red'} />
                       )}
                     </TableCell>
                     <TableCell align="left">
-                      {item?.second_floor_seats?.length}
+                      {item?.second_floor_seats_count}
                     </TableCell>
 
                     <TableCell align="right">

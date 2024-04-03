@@ -155,7 +155,7 @@ export const Form = ({
       const response = await axios.get<IGetBanner>(
         `${BASE_URL}/${selectLang}/api/main`,
       );
-      console.log('bb', response.data.results);
+
       setRes(response.data.results);
     } catch (error) {
       if (axios.isAxiosError(error)) {

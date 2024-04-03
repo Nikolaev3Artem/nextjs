@@ -7,8 +7,8 @@ export interface IRent {
   photo?: any;
   images_list?: {
     id?: number;
-    rent_bus?: number;
-    image?: string;
+
+    photo?: string;
   }[];
 
   is_active?: any;
@@ -22,5 +22,5 @@ export interface IRent {
   plates_number: string;
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
-  is_Wc_Work?: any;
+  wc?: any;
 }

@@ -20,7 +20,7 @@ const getBus = async (lang: Locale) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus/`,
     );
-    console.log('bus', response.data);
+
     if (response.status === 200) {
       return response.data.results;
     }

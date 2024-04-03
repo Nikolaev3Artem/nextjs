@@ -128,7 +128,6 @@ export function Login({
 
   const SignInPhone = (event: any) => {
     event.preventDefault();
-    console.log(phone);
   };
   return (
     <>

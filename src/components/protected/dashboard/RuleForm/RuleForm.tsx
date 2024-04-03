@@ -712,6 +712,7 @@ export const RuleForm = ({
                                   titleOne={staticData.form.text.text1}
                                   res={res}
                                   setEditorData={setEditorData1}
+                                  lang={lang}
                                 />
                               </Grid>
                               <Grid
@@ -802,6 +803,7 @@ export const RuleForm = ({
                                   titleTwo={staticData.form.text.text2}
                                   res={res}
                                   setEditorData={setEditorData2}
+                                  lang={lang}
                                 />
                               </Grid>
                             </Grid>

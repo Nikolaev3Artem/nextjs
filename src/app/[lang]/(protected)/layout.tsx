@@ -34,7 +34,7 @@ export default async function RootLayout({
   const header = await getHeaderDictionaries(lang);
   const dashboard = await getDashboardDictionaries(lang);
   const user = await getUser();
-  console.log('user', user);
+
   if (!user) {
     redirect('/auth');
   }
