@@ -300,8 +300,8 @@ export interface dashboardAboutStaticData {
 
 export interface dashboardRuleStaticData {
   rule: string;
+  back: string;
 
-  tab: TabProps[];
   form: {
     errors: {
       size: string;
@@ -316,6 +316,10 @@ export interface dashboardRuleStaticData {
       description: string;
       alt: string;
       banner: string;
+      text1: string;
+      text2: string;
+      title1: string;
+      title2: string;
     };
     save_btn: {
       text: string;
@@ -323,6 +327,7 @@ export interface dashboardRuleStaticData {
   };
   snackBar: {
     success: string;
+    error: string;
   };
   preview: string;
 }
@@ -390,6 +395,49 @@ export interface dashboardBusStaticData {
     not_working: string;
     float: string;
     choose: string;
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+      update_success: string;
+      add_success: string;
+      add_error: string;
+    };
+  };
+  errors: {
+    size: string;
+    formats: string;
+    name_more30: string;
+    plates_number10: string;
+    error_number: string;
+    error_text: string;
+  };
+}
+
+export interface dashboardTicketsStaticData {
+  tickets: string;
+
+  back: string;
+  searchForm: {
+    label: string;
+    date: string;
+    new_button_form: {
+      text: string;
+    };
+    status: string;
+    options: string[];
+  };
+  ticketsTable: {
+    name: string;
+    number: string;
+    rout: string;
+    start: string;
+    price: string;
+    status: string;
+    create: string;
+    reduce: string;
+    all: string;
+    rows: string;
+    print_label: string;
     snackBar: {
       remove_success: string;
       remove_error: string;

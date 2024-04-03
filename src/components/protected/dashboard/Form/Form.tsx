@@ -109,7 +109,7 @@ export const Form = ({
     data.file.length && formData.append('img', data.file[0] || null);
 
     formData.append('description', data.description || '');
-    console.log(res);
+
     const response = await axios.put(
       `${BASE_URL}/${selectLang}/api/admin/main/update/${res[0].id}`,
       formData,
@@ -155,7 +155,7 @@ export const Form = ({
       const response = await axios.get<IGetBanner>(
         `${BASE_URL}/${selectLang}/api/main`,
       );
-      console.log('bb', response.data.results);
+
       setRes(response.data.results);
     } catch (error) {
       if (axios.isAxiosError(error)) {

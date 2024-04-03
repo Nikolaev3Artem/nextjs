@@ -15,14 +15,19 @@
       "label": "Digite o texto",
       "description": "Descrição de texto adicional",
       "alt": "Texto adicional (ALT)",
-      "banner": "Banner de fundo"
+      "banner": "Banner de fundo",
+      "title1": "Título do primeiro bloco",
+      "text1": "Texto do primeiro bloco",
+      "title2": "Título do segundo bloco",
+      "text2": "Texto do segundo bloco"
     },
     "save_btn": {
       "text": "Salvar"
     }
   },
   "snackBar": {
-    "success": "Suas alterações foram salvas"
+    "success": "Suas alterações foram salvas",
+    "error": "Erro ao salvar"
   },
   "preview": "Visualização"
 }

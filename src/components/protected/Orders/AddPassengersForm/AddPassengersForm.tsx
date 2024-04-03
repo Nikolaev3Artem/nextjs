@@ -102,7 +102,7 @@ export const AddPassengersForm = ({
     const fetchData = async () => {
       try {
         const response = await getRoutInfo(routId, lang);
-        console.log('df');
+
         setData(response);
       } catch (error) {
         console.error('Error fetching data:', error);

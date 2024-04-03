@@ -6,12 +6,14 @@ import { grey } from '@mui/material/colors';
 import debounce from '@mui/utils/debounce';
 import clsx from 'clsx';
 import cn from 'clsx';
+import { Dispatch, SetStateAction } from 'react';
 import {
   ContentState,
   EditorState,
   convertFromHTML,
   convertToRaw,
 } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import draftToHtml from 'draftjs-to-html';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -24,9 +26,10 @@ import { IEditorText } from '@/interface/IEditorText';
 // } from "../../store/admin/about/EditorSlice"
 // import { useAppDispatch } from "../../store/auth/redux"
 import { Replacements } from './Replacements';
-import Style from './texteditor.module.css';
-import uk from './uk';
+import Style from './Texteditor.module.css';
+
 import { useLangContext } from '@/app/context';
+import { Locale } from '@/i18n.config';
 
 const color_title = grey[700];
 interface IEditorNumProps {
@@ -34,6 +37,8 @@ interface IEditorNumProps {
   titleOne?: string;
   titleTwo?: string;
   res: IEditorText[];
+  lang: Locale;
+  setEditorData: Dispatch<SetStateAction<string>>;
 }
 
 const Editor = dynamic(
@@ -43,7 +48,14 @@ const Editor = dynamic(
   },
 );
 
-function TextEditor({ data, titleOne, titleTwo, res }: IEditorNumProps) {
+function TextEditor({
+  data,
+  titleOne,
+  titleTwo,
+  res,
+  setEditorData,
+  lang,
+}: IEditorNumProps) {
   const [focus, setFocus] = useState<boolean>(false);
   const [textRaw, setTextRaw] = useState();
   const [editorState, setEditorState] = useState(() =>
@@ -57,37 +69,35 @@ function TextEditor({ data, titleOne, titleTwo, res }: IEditorNumProps) {
   //   const { locale } = useRouter();
   const { selectLang } = useLangContext();
   const rawContentState = convertToRaw(editorState.getCurrentContent());
-  //   const debounced = debounce(html => {
-  //     data && data === 1 ? dispatch(setEditorData(html)) : null;
-  //     data && data === 2 ? dispatch(setEditorDataTwo(html)) : null;
-  //   }, 1000);
-  //   const verify = useCallback((html: string) => {
-  //     debounced(html);
-  //   }, []);
-
-  //   useEffect(() => {
-  //     if (editorState !== undefined) {
-  //       verify(html());
-  //     }
-  //   }, [editorState]);
+  const debounced = debounce(html => {
+    data ? setEditorData(html) : null;
+  }, 600);
+  const verify = useCallback((html: string) => {
+    debounced(html);
+  }, []);
 
   useEffect(() => {
     if (editorState !== undefined) {
-      const blocksFromHTML = convertFromHTML((res && res[0]?.text1) || '');
+      verify(html());
+    }
+  }, [editorState]);
+
+  useEffect(() => {
+    if (editorState !== undefined) {
+      const blocksFromHTML1 = convertFromHTML((res && res[0]?.text1) || '');
       const blocksFromHTML2 = convertFromHTML((res && res[0]?.text2) || '');
-      const contentState = ContentState.createFromBlockArray(
-        blocksFromHTML.contentBlocks,
+      const contentState1 = ContentState.createFromBlockArray(
+        blocksFromHTML1.contentBlocks,
       );
       const contentState2 = ContentState.createFromBlockArray(
         blocksFromHTML2.contentBlocks,
       );
-      const text = EditorState.createWithContent(contentState);
+      const text1 = EditorState.createWithContent(contentState1);
       const text2 = EditorState.createWithContent(contentState2);
-      data && data === 1 ? setEditorState(text) : null;
+      data && data === 1 ? setEditorState(text1) : null;
       data && data === 2 ? setEditorState(text2) : null;
     }
   }, []);
-  // console.log("State", editorState)
 
   const html = () => {
     if (rawContentState.blocks.length) {
@@ -197,8 +207,8 @@ function TextEditor({ data, titleOne, titleTwo, res }: IEditorNumProps) {
           },
         }}
         localization={{
-          locale: selectLang,
-          translations: selectLang === 'uk' ? uk : selectLang,
+          locale: lang,
+          translations: lang,
         }}
         // toolbarCustomButtons={[<Replacements editorState={editorState} />]}
         placeholder=" Введіть текст..."

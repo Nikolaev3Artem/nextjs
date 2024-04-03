@@ -58,7 +58,7 @@ export const JourneyCard = ({
   staticData: MainStaticDataProps;
   data: IJourney;
   lang: Locale;
-  date: string;
+  date?: string;
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [isShowModal, setIsShowModal] = React.useState(false);

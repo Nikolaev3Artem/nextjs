@@ -26,7 +26,7 @@ export default async function Content({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.rule} back={staticData.back}>
             <TabMenuLocale staticData={tabs}>
-              <RuleForm staticData={staticData} />
+              <RuleForm staticData={staticData} lang={params.lang} />
             </TabMenuLocale>
           </ContentDashboard>
         </Box>

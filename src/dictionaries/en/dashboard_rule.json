@@ -15,14 +15,19 @@
       "label": "Enter text",
       "description": "Additional text description",
       "alt": "Additional text (ALT)",
-      "banner": "Background banner"
+      "banner": "Background banner",
+      "title1": "Title of the first block",
+      "text1": "Text of the first block",
+      "title2": "Title of the second block",
+      "text2": "Text of the second block"
     },
     "save_btn": {
       "text": "Save"
     }
   },
   "snackBar": {
-    "success": "Your changes have been saved"
+    "success": "Your changes have been saved",
+    "error": "Save error"
   },
   "preview": "Preview"
 }

@@ -1,37 +1,28 @@
 {
-  "bus": "Bus",
-  "new_bus": "New bus",
+  "tickets": "Tickets",
 
   "back": "Back",
   "searchForm": {
     "label": "Search...",
+    "date": "Date",
     "new_button_form": {
-      "text": "New bus"
-    }
+      "text": "New tickets"
+    },
+    "status": "Status",
+    "options": ["Booked", "New", "Payed"]
   },
-  "busTable": {
+  "ticketsTable": {
     "number": "Number",
-    "name": "Title",
-    "services": "Services",
+    "name": "Full Name",
+    "rout": "Rout",
     "all": "All",
     "rows": "Rows per page",
     "reduce": "Reduce",
-    "plate": "License plate",
-    "seats_first_floor": "Seats",
-    "wc": "WC",
-    "seats_second_floor": "Seats on 2th floor",
-    "poster": "Poster",
-    "images": "Images",
-    "active": "Active",
-
-    "alt": "bus Photo",
-    "features": "Features",
-    "save": "Save",
-    "fill_form": "Fill form",
-    "working": "Working",
-    "not_working": "Not working",
-    "float": "Float",
-    "choose": "Choose file",
+    "start": "Start",
+    "price": "Price",
+    "status": "Status",
+    "create": "Create",
+    "print_label": "Print",
 
     "snackBar": {
       "remove_success": "Card deleted",

@@ -17,7 +17,7 @@ import { IRent } from '@/interface/IRent';
 import { SnackbarProvider } from 'notistack';
 import { dashboardBusStaticData, TabProps } from '@/interface/IStaticData';
 import { useRouter } from 'next/navigation';
-import BusTable from '../Table/BusTable';
+import BusTable from '@/components/protected/dashboard/Bus/Table/BusTable';
 import { Locale } from '@/i18n.config';
 
 export const BusWrapper = ({

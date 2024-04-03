@@ -259,11 +259,11 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                               borderRadius: '4px',
                               objectFit: 'fill',
                             }}
-                            src={image.image || ''}
+                            src={image.photo || ''}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             fill
                             quality={100}
-                            alt={'Bus photo'}
+                            alt={staticData.name}
                           />
                         </Box>
                       ))}
@@ -298,7 +298,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                         ).keys(),
                       ].map(idx => {
                         return (
-                          <button
+                          <div
                             key={idx}
                             onClick={() => {
                               instanceRef.current?.moveToIdx(idx);
@@ -307,7 +307,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                               [Style.dot],
                               currentSlide === idx ? Style.active : '',
                             )}
-                          ></button>
+                          ></div>
                         );
                       })}
                     </div>
@@ -339,7 +339,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           fill
                           quality={100}
-                          alt={'Bus photo'}
+                          alt={staticData.name}
                         />
                       </Box>
                     </Box>
@@ -407,7 +407,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.plates_number}
+                            {data.name}
                           </Typography>
                         </Stack>
                         <Stack
@@ -465,9 +465,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.first_floor_seats
-                              ? data.first_floor_seats.length + 1
-                              : ''}
+                            {data.first_floor_seats_count || null}
                           </Typography>
                         </Stack>
                         <Stack
@@ -498,9 +496,7 @@ const CardInfo = ({ data, isOpen, onClose, staticData }: ICardInfoProps) => {
                             }}
                             color={colorHeading}
                           >
-                            {data.second_floor_seats
-                              ? data.second_floor_seats.length + 1
-                              : ''}
+                            {data?.second_floor_seats_count || null}
                           </Typography>
                         </Stack>
                       </Grid>

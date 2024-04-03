@@ -34,7 +34,7 @@ const getRents = async (lang: Locale) => {
     const response = await axios.get(
       `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/rent/`,
     );
-    console.log('da', response.data);
+
     if (response.status === 200) {
       return response.data.results;
     }
