@@ -1,0 +1,32 @@
+.bus_layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bus_row {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 10px; /* Відступ між стовпцями */
+}
+
+.bus_seat {
+  width: 20px; /* Ширина сидіння */
+  height: 20px; /* Висота сидіння */
+  margin-bottom: 10px; /* Відступ між сидіннями */
+  background-color: #9ed7ff; /* Колір сидіння */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #000;
+}
+
+.bus_seat.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.bus_seat.enter,
+.bus_seat.wc {
+  background-color: rgb(197, 201, 200); /* Колір заблокованого сидіння */
+}

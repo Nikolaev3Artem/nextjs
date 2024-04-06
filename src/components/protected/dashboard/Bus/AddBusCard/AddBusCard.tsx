@@ -41,6 +41,7 @@ import { useLangContext } from '@/app/context';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { getSession } from '@/lib/auth';
+import BusConstructor from '../BusConstructor/BusConstructor';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -131,6 +132,12 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       rentable: false,
       plates_number: '',
       wc: false,
+      rows_1: undefined,
+      rows_2: undefined,
+      rows_3: undefined,
+      enter_1: true,
+      enter_2: false,
+      is_wc: false,
     },
     mode: 'onChange',
   });
@@ -144,6 +151,12 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const is_active = watch('is_active');
   const is_Wc_Work = watch('wc');
   const files = watch('uploaded_images');
+  const rows_1 = watch('rows_1');
+  const rows_2 = watch('rows_2');
+  const rows_3 = watch('rows_3');
+  const enter_1 = watch('enter_1');
+  const enter_2 = watch('enter_2');
+  const is_wc = watch('is_wc');
 
   async function onSubmitForm(data: IRent) {
     try {
@@ -438,10 +451,69 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                           />
                         </Tabs>
                         <CustomTabPanel value={float} index={0}>
-                          <Box>1</Box>
+                          <Grid container>
+                            <Grid item xs={2}>
+                              <Stack>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_1}
+                                  {...register('rows_1')}
+                                  size={'small'}
+                                  label={staticData.busTable.row}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                  }}
+                                />
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack>
+                                <Typography>
+                                  {staticData.busTable.enter} {enter_1}
+                                </Typography>
+                                <Checkbox
+                                  {...register('enter_1')}
+                                  color="success"
+                                  sx={{ padding: 0, color: '#808080' }}
+                                />
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_2}
+                                  {...register('rows_2')}
+                                  size={'small'}
+                                  label={staticData.busTable.row}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                  }}
+                                />
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack>
+                                <Typography>
+                                  {staticData.busTable.enter}
+                                </Typography>
+                                {/* <Checkbox
+                                  {...register('enter2')}
+                                  color="success"
+                                  sx={{ padding: 0, color: '#808080' }}
+                                /> */}
+                              </Stack>
+                            </Grid>
+                          </Grid>
+
+                          <BusConstructor />
                         </CustomTabPanel>
                         <CustomTabPanel value={float} index={1}>
-                          <Box>2</Box>
+                          <BusConstructor />
                         </CustomTabPanel>
                       </Box>
                     </Stack>

@@ -31,6 +31,8 @@
     "not_working": "Nedirba",
     "float": "Aukštas",
     "choose": "Pasirinkite failą",
+    "row": "Eilės",
+    "enter": "Įėjimas",
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

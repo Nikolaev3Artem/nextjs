@@ -31,6 +31,8 @@
     "not_working": "Не працює",
     "float": "Поверх",
     "choose": "Виберіть файл",
+    "row": "Ряди",
+    "enter": "Вхід",
 
     "snackBar": {
       "remove_success": "Карточка видалена",

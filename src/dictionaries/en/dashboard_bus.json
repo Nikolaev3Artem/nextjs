@@ -32,6 +32,8 @@
     "not_working": "Not working",
     "float": "Float",
     "choose": "Choose file",
+    "row": "Row",
+    "enter": "Enter",
 
     "snackBar": {
       "remove_success": "Card deleted",

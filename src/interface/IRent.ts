@@ -23,4 +23,10 @@ export interface IRent {
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
   wc?: any;
+  is_wc?: any;
+  rows_1?: number;
+  rows_2?: number;
+  rows_3?: number;
+  enter_1?: boolean;
+  enter_2?: boolean;
 }
