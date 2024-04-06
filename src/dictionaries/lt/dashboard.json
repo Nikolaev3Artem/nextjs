@@ -113,12 +113,22 @@
     {
       "id": 2,
       "name": "tickets",
-      "path": "/#",
+      "path": "/dashboard/tickets",
       "title": "Bilio paieška"
     },
-    { "id": 3, "name": "bus", "path": "/#", "title": "Autobusai" },
-    { "id": 4, "name": "city", "path": "/#", "title": "Miestai" },
-    { "id": 5, "name": "rout", "path": "/#", "title": "Maršrutai" },
-    { "id": 6, "name": "flights", "path": "/#", "title": "Skrydžiai" }
+    { "id": 3, "name": "bus", "path": "/dashboard/bus", "title": "Autobusai" },
+    { "id": 4, "name": "city", "path": "/dashboard/city", "title": "Miestai" },
+    {
+      "id": 5,
+      "name": "rout",
+      "path": "/dashboard/rout",
+      "title": "Maršrutai"
+    },
+    {
+      "id": 6,
+      "name": "flights",
+      "path": "/dashboard/flights",
+      "title": "Skrydžiai"
+    }
   ]
 }

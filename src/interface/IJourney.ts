@@ -37,15 +37,16 @@ export interface IJourney {
 
 export interface StopsProps {
   city: string;
-  id: number;
-  price: number;
+  id: number | undefined;
+  price: number | undefined;
 }
 
 export interface IRout {
-  from_place: string;
+  from_place: StopsProps;
   id: string;
   isPopular: boolean;
   price: number;
   stops: StopsProps[];
-  to_place: string;
+  to_place: StopsProps;
+  is_stop?: boolean;
 }

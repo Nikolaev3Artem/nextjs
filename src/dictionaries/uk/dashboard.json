@@ -119,6 +119,11 @@
     { "id": 3, "name": "bus", "path": "/dashboard/bus", "title": "Автобуси" },
     { "id": 4, "name": "city", "path": "/dashboard/city", "title": "Міста" },
     { "id": 5, "name": "rout", "path": "/dashboard/rout", "title": "Маршрути" },
-    { "id": 6, "name": "flights", "path": "/#", "title": "Рейси" }
+    {
+      "id": 6,
+      "name": "flights",
+      "path": "/dashboard/flights",
+      "title": "Рейси"
+    }
   ]
 }
