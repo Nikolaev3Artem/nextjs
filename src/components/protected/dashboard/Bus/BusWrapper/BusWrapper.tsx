@@ -23,12 +23,12 @@ import Link from 'next/link';
 
 export const BusWrapper = ({
   buses,
-  tabs,
+
   staticData,
   lang,
 }: {
   buses: IRent[];
-  tabs: { tab: TabProps[] };
+
   staticData: dashboardBusStaticData;
   lang: Locale;
 }) => {
@@ -70,9 +70,8 @@ export const BusWrapper = ({
           {staticData.searchForm.new_button_form.text}
         </Button>
       </Stack>
-      <TabMenuLocale staticData={tabs}>
-        <BusTable buses={buses} staticData={staticData} lang={lang} />
-      </TabMenuLocale>
+
+      <BusTable buses={buses} staticData={staticData} lang={lang} />
     </>
   );
 };

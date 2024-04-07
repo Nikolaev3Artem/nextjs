@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import Style from './Сonstructor.module.css';
 import { useEffect, useState } from 'react';
 import { generateKeyPair } from 'crypto';
@@ -13,7 +13,18 @@ export interface BusSeatsProps {
   empty?: boolean;
 }
 
-const BusConstructor = () => {
+export interface BusConstructorProps {
+  rows_1?: number | undefined;
+  rows_2?: number;
+  rows_3?: number;
+  is_wc?: string;
+  enter_2?: boolean;
+  enter_1?: boolean;
+  setSeatsCount?: any;
+}
+
+const BusConstructor = (props: BusConstructorProps) => {
+  const row = 2;
   function BusSeat({
     id,
     enter1,
@@ -23,12 +34,20 @@ const BusConstructor = () => {
     wc,
   }: BusSeatsProps) {
     return (
-      <div
+      <Box
         id={id}
         className={`${Style.bus_seat} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''}`}
       >
-        {enter1 || enter2 ? '-' : empty ? '' : wc ? 'wc' : seatNumber}
-      </div>
+        <Typography
+          sx={{
+            fontSize: '10px',
+            color: '#bfbfbf',
+            transform: 'rotate(-90deg)',
+          }}
+        >
+          {enter1 || enter2 || empty || wc ? '' : seatNumber}
+        </Typography>
+      </Box>
     );
   }
 
@@ -64,13 +83,23 @@ const BusConstructor = () => {
       },
     ],
   ]);
-  const [seatsCount, setSeatsCount] = useState<number>();
+  // const [seatsCount, setSeatsCount] = useState<number>();
 
   useEffect(() => {
-    const busSeats = generateBusSeats(3, true, 2, 4, true, 2, true, 2, 4);
-    console.log('u', busSeats.busSeats[0]);
+    const busSeats = generateBusSeats(
+      props?.rows_1,
+      props?.enter_1,
+      row,
+      props?.rows_2,
+      props?.is_wc,
+      row,
+      props?.enter_2,
+      row,
+      props?.rows_3,
+    );
+
     setBusSeats(busSeats.busSeats);
-    setSeatsCount(busSeats.seatNumber);
+    props?.setSeatsCount(busSeats.seatNumber - 1);
   }, []);
 
   return (

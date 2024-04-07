@@ -59,7 +59,6 @@ export default async function BusInfo({
 }>) {
   const bus = await getBus(params.lang, params.id);
   const staticData = await getDashboardBusDictionaries(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
 
   return (
     <DashboardContainer>
@@ -74,13 +73,11 @@ export default async function BusInfo({
             back={staticData.back}
           >
             {bus && (
-              <TabMenuLocale staticData={tabs}>
-                <EditBusInfo
-                  bus={bus}
-                  staticData={staticData}
-                  lang={params.lang}
-                />
-              </TabMenuLocale>
+              <EditBusInfo
+                bus={bus}
+                staticData={staticData}
+                lang={params.lang}
+              />
             )}
           </ContentDashboard>
         </Box>

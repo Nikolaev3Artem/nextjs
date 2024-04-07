@@ -397,6 +397,9 @@ export interface dashboardBusStaticData {
     choose: string;
     row: string;
     enter: string;
+    kitchen: string;
+    no: string;
+    yes: string;
     snackBar: {
       remove_success: string;
       remove_error: string;

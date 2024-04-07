@@ -70,7 +70,6 @@ export default async function Bus({
           <ContentDashboard title={staticData.bus} back={staticData.back}>
             <BusWrapper
               buses={buses}
-              tabs={tabs}
               staticData={staticData}
               lang={params.lang}
             />

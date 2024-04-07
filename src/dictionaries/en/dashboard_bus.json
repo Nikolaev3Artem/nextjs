@@ -34,6 +34,9 @@
     "choose": "Choose file",
     "row": "Row",
     "enter": "Enter",
+    "kitchen": "Kitchen",
+    "no": "No",
+    "yes": "Yes",
 
     "snackBar": {
       "remove_success": "Card deleted",

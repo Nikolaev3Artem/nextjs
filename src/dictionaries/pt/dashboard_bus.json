@@ -33,6 +33,9 @@
     "choose": "Pasirinkite failą",
     "row": "Eilės",
     "enter": "Įėjimas",
+    "kitchen": "Cozinha",
+    "no": "Nem",
+    "yes": "Sim",
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

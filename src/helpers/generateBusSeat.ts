@@ -1,13 +1,13 @@
 export function generateBusSeats(
-  a: number,
-  b: boolean,
-  c: number,
-  d: number,
-  f: boolean,
-  g: number,
-  h: boolean,
-  k: number,
-  l: number,
+  a?: number,
+  b?: boolean,
+  c?: number,
+  d?: number,
+  f?: string,
+  g?: number,
+  h?: boolean,
+  k?: number,
+  l?: number,
 ) {
   let busSeats = [];
   console.log('h', h);
@@ -32,7 +32,7 @@ export function generateBusSeats(
     }
   }
 
-  if (b) {
+  if (b && c) {
     for (let i = 0; i < 1; i++) {
       let row = [];
       for (let j = 0; j < 5; j++) {
@@ -41,7 +41,9 @@ export function generateBusSeats(
           c--;
         } else {
           if (c < 0) {
-            row.push({ id: generateId(colCount, j), enter1: true });
+            j === 3
+              ? row.push({ id: generateId(colCount, j), empty: true })
+              : row.push({ id: generateId(colCount, j), enter1: true });
           } else {
             row.push({ id: generateId(colCount, j), seatNumber });
             seatNumber++;
@@ -68,7 +70,7 @@ export function generateBusSeats(
       busSeats.push(row);
     }
   }
-  if (f) {
+  if (f === 'yes' && g) {
     for (let i = 0; i < 1; i++) {
       let row = [];
       for (let j = 0; j < 5; j++) {
@@ -77,7 +79,9 @@ export function generateBusSeats(
           g--;
         } else {
           if (g < 0) {
-            row.push({ id: generateId(colCount, j), wc: true });
+            j === 3
+              ? row.push({ id: generateId(colCount, j), empty: true })
+              : row.push({ id: generateId(colCount, j), wc: true });
           } else {
             row.push({ id: generateId(colCount, j), seatNumber });
             seatNumber++;
@@ -89,7 +93,7 @@ export function generateBusSeats(
       busSeats.push(row);
     }
   }
-  if (h) {
+  if (h && k) {
     for (let i = 0; i < 1; i++) {
       let row = [];
       for (let z = 0; z < 5; z++) {
@@ -98,7 +102,9 @@ export function generateBusSeats(
           k--;
         } else {
           if (k < 0) {
-            row.push({ id: generateId(colCount, z), enter2: true });
+            z === 3
+              ? row.push({ id: generateId(colCount, z), empty: true })
+              : row.push({ id: generateId(colCount, z), enter2: true });
           } else {
             row.push({ id: generateId(colCount, z), seatNumber });
             seatNumber++;
@@ -128,15 +134,16 @@ export function generateBusSeats(
     }
   }
 
-  for (let i = 0; i < 1; i++) {
-    let row = [];
-    for (let j = 0; j < 5; j++) {
-      row.push({ id: generateId(colCount, j), seatNumber });
-      seatNumber++;
+  if (a && a > 0) {
+    for (let i = 0; i < 1; i++) {
+      let row = [];
+      for (let j = 0; j < 5; j++) {
+        row.push({ id: generateId(colCount, j), seatNumber });
+        seatNumber++;
+      }
+      colCount++;
+      busSeats.push(row);
     }
-    colCount++;
-    busSeats.push(row);
   }
-
   return { busSeats, seatNumber };
 }
