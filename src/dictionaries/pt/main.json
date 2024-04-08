@@ -43,6 +43,7 @@
     "price": "Preço:",
     "routs": "Rota:",
     "seat": "Lugar",
+    "hour": "horas",
     "duration": "Duração da viagem: ",
     "baggage": {
       "title": "Bagagem:",
@@ -72,7 +73,7 @@
     "title": "Escolha um assento",
     "seats": [
       { "name": "occupied", "title": "Ocupados" },
-      { "name": "available", "title": "Disponíveis" },      
+      { "name": "available", "title": "Disponíveis" },
       { "name": "selected", "title": "Selecionados" }
     ],
     "selected_seats": "Assentos selecionados: ",

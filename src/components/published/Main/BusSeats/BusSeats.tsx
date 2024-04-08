@@ -1,8 +1,9 @@
-import { Box, Typography } from '@mui/material';
-import Style from './Сonstructor.module.css';
+import { Box, Button, Typography } from '@mui/material';
+import Style from './Constructor.module.css';
 import { useEffect, useState } from 'react';
 import { generateKeyPair } from 'crypto';
 import { generateBusSeats } from '@/helpers/generateBusSeat';
+import { ISeat } from '@/interface/IRent';
 
 export interface BusSeatsProps {
   id: string;
@@ -11,6 +12,7 @@ export interface BusSeatsProps {
   seatNumber?: number;
   wc?: boolean;
   empty?: boolean;
+  status?: string;
 }
 
 export interface BusConstructorProps {
@@ -21,11 +23,42 @@ export interface BusConstructorProps {
   enter_2?: boolean;
   enter_1?: boolean;
   setSeatsCount?: any;
+  status?: string;
+  seats?: ISeat[];
   seats_start: number;
+  handleCheck: (arg: number, ar: number) => void;
+  floor: number;
 }
 
-const BusConstructor = (props: BusConstructorProps) => {
+const BusSeats = (props: BusConstructorProps) => {
   const row = 2;
+  const [seats, setSeats] = useState<ISeat[]>();
+
+  useEffect(() => {
+    setSeats(props.seats);
+  }, []);
+
+  const handleClick = (seatNumber: number, floor: number) => {
+    if (seats) {
+      const updatedSeats = seats.map(seat => {
+        if (seat.seat === seatNumber) {
+          return { ...seat, status: 'Ordered' };
+        }
+        return seat;
+      });
+      setSeats(updatedSeats);
+    }
+    if (seatNumber) {
+      props.handleCheck(seatNumber, floor);
+    }
+  };
+
+  const checkStatus = (id: number | null | undefined): string | undefined => {
+    const seat = seats?.find(seat => seat.seat === id);
+
+    return seat ? seat.status : '';
+  };
+
   function BusSeat({
     id,
     enter1,
@@ -33,22 +66,28 @@ const BusConstructor = (props: BusConstructorProps) => {
     empty,
     seatNumber,
     wc,
+    status,
   }: BusSeatsProps) {
+    console.log(seatNumber, status);
     return (
-      <Box
+      <button
         id={id}
-        className={`${Style.bus_seat} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''}`}
+        onClick={() =>
+          seatNumber ? handleClick(seatNumber, props?.floor) : null
+        }
+        disabled={empty || enter1 || enter2}
+        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'new' ? Style.new : status?.toLocaleLowerCase() === 'orderd' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''}`}
       >
         <Typography
           sx={{
-            fontSize: '10px',
-            color: '#bfbfbf',
+            fontSize: 'inherit',
+            color: 'inherit',
             transform: 'rotate(-90deg)',
           }}
         >
           {enter1 || enter2 || empty || wc ? '' : seatNumber}
         </Typography>
-      </Box>
+      </button>
     );
   }
 
@@ -64,6 +103,7 @@ const BusConstructor = (props: BusConstructorProps) => {
             empty={seat.empty}
             seatNumber={seat.seatNumber}
             wc={seat.wc}
+            status={checkStatus(seat?.seatNumber)}
           />
         ))}
       </div>
@@ -97,11 +137,10 @@ const BusConstructor = (props: BusConstructorProps) => {
       props?.enter_2,
       row,
       props?.rows_3,
-      props?.seats_start,
+      props.seats_start,
     );
 
     setBusSeats(busSeats.busSeats);
-    props?.setSeatsCount(busSeats.seatNumber - props?.seats_start);
   }, []);
 
   return (
@@ -113,4 +152,4 @@ const BusConstructor = (props: BusConstructorProps) => {
   );
 };
 
-export default BusConstructor;
+export default BusSeats;

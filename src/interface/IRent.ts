@@ -15,8 +15,8 @@ export interface IRent {
   rentable?: any;
   busIdService?: [] | any;
   uploaded_images?: any;
-  first_floor_seats?: string;
-  second_floor_seats?: string;
+  first_floor_seats?: ISeat[];
+  second_floor_seats?: ISeat[];
   lang?: Locale;
   staticData: BusRentStaticDataPageProp;
   plates_number: string;
@@ -32,4 +32,11 @@ export interface IRent {
   enter_1?: boolean;
   enter_2?: boolean;
   enter_3?: boolean;
+}
+
+export interface ISeat {
+  id: number;
+  seat: number;
+  status: string;
+  checked?: boolean;
 }

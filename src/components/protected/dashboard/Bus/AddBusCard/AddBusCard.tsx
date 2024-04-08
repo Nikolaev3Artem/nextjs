@@ -570,6 +570,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                             enter_2={enter_2}
                             enter_1={enter_1}
                             setSeatsCount={setFirstFloorSeatsCount}
+                            seats_start={1}
                           />
                         </CustomTabPanel>
                         <CustomTabPanel value={float} index={1}>
@@ -644,6 +645,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                             rows_2={rows_5}
                             enter_1={enter_3}
                             setSeatsCount={setSecondFloorSeatsCount}
+                            seats_start={firstFloorSeatsCount + 1}
                           />
                         </CustomTabPanel>
                       </Box>

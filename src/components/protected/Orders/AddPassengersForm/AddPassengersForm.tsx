@@ -573,7 +573,9 @@ export const AddPassengersForm = ({
           sx={{ height: { lg: 'max-content' } }}
         >
           <Grid container display={'flex'} rowGap={2} width={'100%'}>
-            {data && <JourneyInfo data={data} staticData={staticData} />}
+            {data && (
+              <JourneyInfo data={data} staticData={staticData} lang={lang} />
+            )}
             <Grid item xs={12}>
               <Typography
                 color={'primary'}

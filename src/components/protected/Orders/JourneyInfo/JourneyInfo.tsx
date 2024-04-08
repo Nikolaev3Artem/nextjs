@@ -12,13 +12,16 @@ import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 
 import { orderStaticData } from '@/interface/IStaticData';
 import { IJourney } from '@/interface/IJourney';
+import dayjs from 'dayjs';
 
 export const JourneyInfo = ({
   data,
   staticData,
+  lang,
 }: {
   data: IJourney;
   staticData: orderStaticData;
+  lang: Locale;
 }) => {
   return (
     <Grid item width={'100%'}>
@@ -110,7 +113,9 @@ export const JourneyInfo = ({
             color={'primary'}
             sx={{ fontSize: { xs: '20px', md: '20px' } }}
           >
-            {data?.arrival_date ? data.arrival_date : ''}
+            {data?.arrival_date
+              ? dayjs(data.arrival_date).format('DD.MM.YYYY')
+              : ''}
           </Typography>
           <Box width={'24px'} height={'24px'} display={'flex'}>
             <ClockSvg width={24} height={24} />
@@ -119,7 +124,9 @@ export const JourneyInfo = ({
             color={'primary'}
             sx={{ fontSize: { xs: '20px', md: '20px' } }}
           >
-            {data?.departure_time ? data.departure_time : ''}
+            {data?.departure_date
+              ? dayjs(data.departure_date).format('HH:mm')
+              : ''}
           </Typography>
         </Grid>
         <Box width={'100%'}>
@@ -155,7 +162,11 @@ export const JourneyInfo = ({
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {/* {data?.bus ? data.bus[0].name : ''} */} 10 годин
+              {dayjs(
+                dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
+              )
+                .locale(`${lang}`)
+                .format('HH:mm')}
             </Typography>
           </Typography>
         </Grid>

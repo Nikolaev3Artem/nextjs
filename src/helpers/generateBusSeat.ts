@@ -8,14 +8,15 @@ export function generateBusSeats(
   h?: boolean,
   k?: number,
   l?: number,
+  seats_start?: number,
 ) {
   let busSeats = [];
-  console.log('h', h);
+
   let colCount = 0;
 
   const generateId = (row: number, column: number) => `seat-${row}-${column}`;
 
-  let seatNumber = 1;
+  let seatNumber = seats_start || 1;
   if (a) {
     for (let i = 0; i < a; i++) {
       let row = [];

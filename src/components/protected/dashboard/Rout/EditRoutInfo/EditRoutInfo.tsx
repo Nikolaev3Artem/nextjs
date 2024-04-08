@@ -318,8 +318,8 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                           FormHelperTextProps={{
                             color: '#256223',
                           }}
-                          helperText={errors?.from_place?.message}
-                          error={!!errors?.from_place}
+                          // helperText={errors?.from_place?.message}
+                          // error={!!errors?.from_place}
                         />
                       </Stack>
 
@@ -342,8 +342,8 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                           FormHelperTextProps={{
                             color: '#256223',
                           }}
-                          helperText={errors?.to_place?.message}
-                          error={!!errors?.to_place}
+                          // helperText={errors?.to_place?.message}
+                          // error={!!errors?.to_place}
                         />
                       </Stack>
                     </Stack>

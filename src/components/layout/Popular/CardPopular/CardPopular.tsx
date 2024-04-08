@@ -30,18 +30,18 @@ const CardPopular = (props: IProps) => {
   useEffect(() => {
     setVal1(props.name1);
     setVal2(props.name2);
-  });
+  }, [props.name1, props.name2]);
 
   const PopularPush = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
     if (pathname !== `/${params.lang}`) {
+      setSelectRoutsTo(val2);
+      setSelectRoutsFrom(val1);
       router.push(`/${params.lang}`);
-      setSelectRoutsTo(val1);
-      setSelectRoutsFrom(val2);
     } else {
-      setSelectRoutsTo(val1);
-      setSelectRoutsFrom(val2);
+      setSelectRoutsTo(val2);
+      setSelectRoutsFrom(val1);
     }
   };
   return (

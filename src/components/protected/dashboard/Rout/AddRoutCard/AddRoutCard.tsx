@@ -298,8 +298,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               FormHelperTextProps={{
                                 color: '#256223',
                               }}
-                              helperText={errors?.from_place?.message}
-                              error={!!errors?.from_place}
+                              // helperText={errors?.from_place?.message}
+                              // onError={!!errors?.from_place}
                             />
                           )}
                           onChange={(event, newValue) => {
@@ -342,8 +342,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               FormHelperTextProps={{
                                 color: '#256223',
                               }}
-                              helperText={errors?.to_place?.message}
-                              error={!!errors?.to_place}
+                              // helperText={errors?.to_place?.message}
+                              // onError={!!errors?.to_place}
                             />
                           )}
                           onChange={(event, newValue) => {

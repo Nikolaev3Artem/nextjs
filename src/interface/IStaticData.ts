@@ -62,6 +62,7 @@ export interface MainStaticDataProps {
     price: string;
     routs: string;
     duration: string;
+    hour: string;
     seat: string;
     baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;

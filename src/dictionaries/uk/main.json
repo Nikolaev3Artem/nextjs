@@ -43,6 +43,7 @@
     "routs": "Маршрут:",
     "seat": "Місце",
     "duration": "Тривалість в дорозі: ",
+    "hour": "годин",
     "baggage": {
       "title": "Багаж:",
       "light_luggage": "Багаж - безкоштовно на одного пасажира: 1 місце ручної поклажі (макс. розміри 15х25х35 см)",
@@ -71,7 +72,7 @@
     "title": "Оберіть місце",
     "seats": [
       { "name": "occupied", "title": "Зайняті" },
-      { "name": "available", "title": "Вільні" },      
+      { "name": "available", "title": "Вільні" },
       { "name": "selected", "title": "Обрані" }
     ],
     "selected_seats": "Обрані місця: ",
