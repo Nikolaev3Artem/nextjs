@@ -20,7 +20,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { BiSave } from 'react-icons/bi';
 import * as yup from 'yup';
 import { filesize } from 'filesize';
-import { IEditorText } from '@/interface/IEditorText';
+import { IContactText, IEditorText } from '@/interface/IEditorText';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FaTrashAlt } from 'react-icons/fa';
@@ -45,19 +45,15 @@ const color_title = grey[800];
 export const ContactsForm = ({
   staticData,
   lang,
-  rout,
 }: {
   staticData: dashboardRuleStaticData;
   lang: Locale;
-  rout: string;
 }) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
-  const [res, setRes] = useState<IEditorText[]>([]);
+  const [res, setRes] = useState<IContactText>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { selectLang } = useLangContext();
   const [size, setSize] = useState<any>(0);
-  const [editorData1, setEditorData1] = useState('');
-  const [editorData2, setEditorData2] = useState('');
 
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
 
@@ -66,60 +62,65 @@ export const ContactsForm = ({
   }, []);
   // onSubmitForm({ res, lang, data, dataTwo })
   const onSubmit = async () => {
-    try {
-      const session = await getSession();
-      if (!session) return null;
-      if (!res) return;
-
-      setIsLoading(true);
-
-      const formData = new FormData();
-      formData.append('text1', editorData1 || '');
-      formData.append('text2', editorData2 || '');
-      formData.append('title1', title1 || '');
-      formData.append('title2', title2 || '');
-      formData.append('main_title', main_title || '');
-      formData.append('main_desc', main_desc || '');
-
-      file.length && formData.append('img', file[0] || null);
-
-      const response = await axios.put(
-        `${BASE_URL}/${lang}/api/admin/rule/update/${res[0].id}/`,
-        formData,
-        {
-          headers: {
-            Authorization: 'Bearer ' + session.access,
-            'Content-Type':
-              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-          },
-        },
-      );
-      reset();
-      await getData();
-      if (response.status === 200) {
-        setTimeout(() => {
-          enqueueSnackbar('Ваші зміни збережені', { variant: 'success' });
-        }, 1500);
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar(`${staticData.snackBar.error}`, {
-        variant: 'error',
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   const session = await getSession();
+    //   if (!session) return null;
+    //   if (!res) return;
+    //   setIsLoading(true);
+    //   const formData = new FormData();
+    //   formData.append('title1', title1 || '');
+    //   formData.append('title2', title2 || '');
+    //   formData.append('main_title', main_title || '');
+    //   formData.append('main_desc', main_desc || '');
+    //   file.length && formData.append('img', file[0] || null);
+    //   const response = await axios.put(
+    //     `${BASE_URL}/${lang}/api/admin/rule/update/${res[0].id}/`,
+    //     formData,
+    //     {
+    //       headers: {
+    //         Authorization: 'Bearer ' + session.access,
+    //         'Content-Type':
+    //           'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+    //       },
+    //     },
+    //   );
+    //   reset();
+    //   await getData();
+    //   if (response.status === 200) {
+    //     setTimeout(() => {
+    //       enqueueSnackbar('Ваші зміни збережені', { variant: 'success' });
+    //     }, 1500);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   enqueueSnackbar(`${staticData.snackBar.error}`, {
+    //     variant: 'error',
+    //   });
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   interface IFormInput {
     main_title: string | undefined;
     main_desc: string | undefined;
-    title1: string | undefined;
-    title2: string | undefined;
-    text1: string | undefined;
-    text2: string | undefined;
+
     alt: string | undefined;
     file: any;
+    contacts: {
+      id: number;
+      phone_number: string;
+      telegram: string;
+      viber: string;
+      whatsup: string;
+    };
+    address: string;
+    email: string;
+    lunch_time: string;
+    weekdays_time: string;
+    weekdays_work: string;
+    weekends: string;
+    title: string;
   }
 
   const UploadFileSchema = yup.object().shape({
@@ -157,10 +158,10 @@ export const ContactsForm = ({
   const getData = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${BASE_URL}/${selectLang}/api/${rout}/`,
+        `${BASE_URL}/${selectLang}/api/contacts/`,
       );
       console.log(data[0]);
-      setRes(data);
+      setRes(data[0]);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);
@@ -185,13 +186,24 @@ export const ContactsForm = ({
     formState: { errors, isDirty, isValid },
   } = useForm<IFormInput>({
     defaultValues: {
-      main_title: res[0]?.main_title || '',
-      main_desc: res[0]?.main_desc || '',
-      title1: res[0]?.title1 || '',
-      title2: res[0]?.title2 || '',
-      text1: res[0]?.text1 || '',
-      text2: res[0]?.text2 || '',
+      main_title: res?.main_title || '',
+      main_desc: res?.main_desc || '',
+      alt: res?.alt || '',
+      title: res?.title || '',
       file: {},
+      //contacts: {
+      //[id: res?.contacts?.id,
+      //phone_number: res?.contacts.phone_number,
+      //telegram: res?.contacts.telegram,
+      //viber: res?.contacts.viber,
+      //whatsup: res?.contacts.whatsup]?
+      // },
+      address: res?.address,
+      email: res?.email,
+      lunch_time: res?.lunch_time,
+      weekdays_time: res?.weekdays_time,
+      weekdays_work: res?.weekdays_work,
+      weekends: res?.weekends,
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -200,12 +212,25 @@ export const ContactsForm = ({
 
   const main_title = watch('main_title');
   const main_desc = watch('main_desc');
-  const title1 = watch('title1');
-  const title2 = watch('title2');
-  const text1 = watch('text1');
-  const text2 = watch('text2');
+
+  const title = watch('title');
   const alt = watch('alt');
   const file = watch('file');
+  // contacts: {
+  //id: number;
+  //phone_number: string;
+  //telegram: string;
+  //viber: string;
+  // whatsup: string;
+  //}
+
+  const address = watch('address');
+
+  const email = watch('email');
+  const lunch_time = watch('lunch_time');
+  const weekdays_time = watch('weekdays_time');
+  const weekdays_work = watch('weekdays_work');
+  const weekends = watch('weekends');
 
   const fileSizeFile = (event: any) => {
     if (event.target?.files[0] !== undefined) {
@@ -221,7 +246,7 @@ export const ContactsForm = ({
   };
 
   const clearable = () => {
-    setImagePreviewUrl(res[0].img);
+    setImagePreviewUrl(res.img);
     resetField('file');
   };
   return (
@@ -256,14 +281,15 @@ export const ContactsForm = ({
               }}
             >
               <Fade in={true} timeout={1000}>
-                {imagePreviewUrl || res[0] ? (
+                {imagePreviewUrl || res ? (
                   <Image
                     style={{
                       objectFit: 'cover',
                       borderRadius: 4,
                     }}
-                    src={imagePreviewUrl || res[0]?.img}
-                    alt={alt || res[0]?.main_title || ''}
+                    src={''}
+                    //src={imagePreviewUrl || res?.img}
+                    alt={alt || res?.main_title || ''}
                     fill
                     priority={true}
                     quality={10}
@@ -291,10 +317,10 @@ export const ContactsForm = ({
           <Box className={Style.home_form_content_position}>
             <Box className={Style.home_form_content_title}>
               <Typography className={Style.home_form_title}>
-                {main_title || (res && res[0]?.main_title)}
+                {main_title || (res && res?.main_title)}
               </Typography>
               <Typography className={Style.home_form_subtitle}>
-                {main_desc || (res && res[0]?.main_desc)}
+                {main_desc || (res && res?.main_desc)}
               </Typography>
 
               <Grid
@@ -311,16 +337,8 @@ export const ContactsForm = ({
                     fontWeight={'700'}
                     variant="body1"
                   >
-                    {title1 || (res && res[0]?.title1)}
+                    {title || (res && res?.title)}
                   </Typography>
-                  <Box
-                    className={Style.rule_text_content}
-                    fontSize={16}
-                    color={'darkslategray'}
-                    dangerouslySetInnerHTML={{
-                      __html: editorData1 || text1 || res[0]?.text1 || '',
-                    }}
-                  />
                 </Grid>
                 <Grid item xs={8}>
                   <Typography
@@ -328,16 +346,8 @@ export const ContactsForm = ({
                     fontWeight={'700'}
                     variant="body1"
                   >
-                    {title2 || (res && res[0]?.title2)}
+                    {/* {title2 || (res && res[0]?.title2)} */}
                   </Typography>
-                  <Box
-                    className={Style.rule_text_content}
-                    fontSize={16}
-                    color={'darkslategray'}
-                    dangerouslySetInnerHTML={{
-                      __html: editorData2 || text2 || res[0]?.text2 || '',
-                    }}
-                  />
                 </Grid>
               </Grid>
             </Box>
@@ -378,7 +388,7 @@ export const ContactsForm = ({
                 }}
               >
                 <Fade in={true} timeout={1000}>
-                  {res && res[0] ? (
+                  {res ? (
                     <>
                       <Grid container spacing={2}>
                         <Grid item width={'100%'} pr={{ md: 0, xl: 2 }} xl={6}>
@@ -652,7 +662,7 @@ export const ContactsForm = ({
                                 >
                                   <>
                                     <TextField
-                                      {...register('title1')}
+                                      {...register('title')}
                                       InputLabelProps={{
                                         color: 'secondary',
                                       }}
@@ -669,22 +679,22 @@ export const ContactsForm = ({
                                       FormHelperTextProps={{
                                         color: '#256223',
                                       }}
-                                      helperText={errors?.title1?.message}
-                                      error={!!errors?.title1}
+                                      helperText={errors?.title?.message}
+                                      error={!!errors?.title}
                                       defaultChecked={false}
                                       defaultValue={null}
                                       InputProps={{
                                         color: 'secondary',
                                         endAdornment: (
                                           <InputAdornment position="end">
-                                            {title1 && title1?.length ? (
+                                            {title && title?.length ? (
                                               <>
                                                 <Typography
                                                   sx={{ fontSize: 11 }}
                                                   mr={1}
                                                   color={'#999'}
                                                 >
-                                                  ({title1?.length}/60)
+                                                  ({title?.length}/60)
                                                 </Typography>
                                                 <IconButton
                                                   className={
@@ -692,7 +702,7 @@ export const ContactsForm = ({
                                                   }
                                                   size={'small'}
                                                   onClick={() => {
-                                                    resetField('title1');
+                                                    resetField('title');
                                                   }}
                                                 >
                                                   <FaTrashAlt />
@@ -707,13 +717,6 @@ export const ContactsForm = ({
                                     />
                                   </>
                                 </Box>
-                                <TextEditor
-                                  data={1}
-                                  titleOne={staticData.form.text.text1}
-                                  res={res}
-                                  setEditorData={setEditorData1}
-                                  lang={lang}
-                                />
                               </Grid>
                               <Grid
                                 item
@@ -743,7 +746,7 @@ export const ContactsForm = ({
                                 >
                                   <>
                                     <TextField
-                                      {...register('title2')}
+                                      {...register('email')}
                                       InputLabelProps={{
                                         color: 'secondary',
                                       }}
@@ -760,22 +763,22 @@ export const ContactsForm = ({
                                       FormHelperTextProps={{
                                         color: '#256223',
                                       }}
-                                      helperText={errors?.title2?.message}
-                                      error={!!errors?.title2}
+                                      helperText={errors?.email?.message}
+                                      error={!!errors?.email}
                                       defaultChecked={false}
                                       defaultValue={null}
                                       InputProps={{
                                         color: 'secondary',
                                         endAdornment: (
                                           <InputAdornment position="end">
-                                            {title2 && title2?.length ? (
+                                            {email && email?.length ? (
                                               <>
                                                 <Typography
                                                   sx={{ fontSize: 11 }}
                                                   mr={1}
                                                   color={'#999'}
                                                 >
-                                                  ({title2?.length}/60)
+                                                  ({email?.length}/60)
                                                 </Typography>
                                                 <IconButton
                                                   className={
@@ -783,7 +786,7 @@ export const ContactsForm = ({
                                                   }
                                                   size={'small'}
                                                   onClick={() => {
-                                                    resetField('title2');
+                                                    resetField('email');
                                                   }}
                                                 >
                                                   <FaTrashAlt />
@@ -798,13 +801,6 @@ export const ContactsForm = ({
                                     />
                                   </>
                                 </Box>
-                                <TextEditor
-                                  data={2}
-                                  titleTwo={staticData.form.text.text2}
-                                  res={res}
-                                  setEditorData={setEditorData2}
-                                  lang={lang}
-                                />
                               </Grid>
                             </Grid>
                           </Box>

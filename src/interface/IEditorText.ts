@@ -25,6 +25,7 @@ export interface IContactText {
   text?: string;
   img?: string;
   main_desc?: string;
+  alt?: string;
 }
 
 export interface PhoneType {

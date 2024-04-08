@@ -23,11 +23,7 @@ export default async function Contacts({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={content.home} back={content.back}>
             <TabMenuLocale staticData={tabs}>
-              <ContactsForm
-                lang={params.lang}
-                staticData={content}
-                rout="contacts"
-              />
+              <ContactsForm lang={params.lang} staticData={content} />
             </TabMenuLocale>
           </ContentDashboard>
         </Box>
