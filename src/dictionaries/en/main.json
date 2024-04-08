@@ -42,6 +42,7 @@
     "routs": "Route:",
     "seat": "Seat",
     "duration": "Duration on the way: ",
+    "hour": "hours",
     "baggage": {
       "title": "Baggage:",
       "light_luggage": "Light luggage - free for one passenger: 1 piece of hand luggage (max. size 15x25x35 cm)",
@@ -68,8 +69,8 @@
   "seat_booking": {
     "title": "Choose a seat",
     "seats": [
-       { "name": "occupied", "title": "Occupied" },
-      { "name": "available", "title": "Available" },     
+      { "name": "occupied", "title": "Occupied" },
+      { "name": "available", "title": "Available" },
       { "name": "selected", "title": "Selected" }
     ],
     "selected_seats": "Selected seats: ",

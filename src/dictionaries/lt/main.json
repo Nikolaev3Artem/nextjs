@@ -43,6 +43,7 @@
     "routs": "Maršrutas:",
     "seat": "Vieta",
     "duration": "Kelionės trukmė:  ",
+    "hour": "valandos",
     "baggage": {
       "title": "Bagažas:",
 
@@ -71,7 +72,7 @@
     "title": "Pasirinkite vietą",
     "seats": [
       { "name": "occupied", "title": "Užimtos" },
-      { "name": "available", "title": "Laisvos" },      
+      { "name": "available", "title": "Laisvos" },
       { "name": "selected", "title": "Pasirinktos" }
     ],
     "selected_seats": "Pasirinktos vietos: ",

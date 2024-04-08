@@ -7,6 +7,12 @@ export interface ITickets {
   reserved_floor_seat: number;
   additional_baggage: string;
   journey: IJourney[];
+
+  passanger_type: string;
+  status: string;
+  created_at: string;
+  departure_date: string;
+  arrival_date: string;
 }
 
 export interface IJourney {
@@ -37,15 +43,16 @@ export interface IJourney {
 
 export interface StopsProps {
   city: string;
-  id: number;
-  price: number;
+  id: number | undefined;
+  price: number | undefined;
 }
 
 export interface IRout {
-  from_place: string;
+  from_place: any;
   id: string;
   isPopular: boolean;
   price: number;
   stops: StopsProps[];
-  to_place: string;
+  to_place: any;
+  is_stop?: boolean;
 }

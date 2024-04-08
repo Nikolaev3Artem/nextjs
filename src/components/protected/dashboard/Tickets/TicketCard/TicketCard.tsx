@@ -33,6 +33,7 @@ import BagPersonalSvg from '../../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../../public/icons/bag-suitcase.svg';
 import BagPersonalSvgDisable from '../../../../../../public/icons/bag-personal-disable.svg';
 import BagSuitcaseSvgDisable from '../../../../../../public/icons/bag-suitcase-disable.svg';
+import dayjs from 'dayjs';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -155,10 +156,16 @@ export const TicketCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data?.journey[0] ? data?.journey[0].departure_time : ''}
+                  {data?.journey[0]
+                    ? dayjs(data?.journey[0].departure_date).format('HH:mm')
+                    : ''}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0] ? data.journey[0].departure_date : ''}
+                  {data.journey[0]
+                    ? dayjs(data.journey[0].departure_date)
+                        .locale(`${lang}`)
+                        .format('DD MMMM')
+                    : ''}
                 </Typography>
               </Box>
               <Box>
@@ -167,10 +174,16 @@ export const TicketCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0] ? data.journey[0].arrival_time : ''}
+                  {data.journey[0]
+                    ? dayjs(data.journey[0].arrival_date).format('HH:mm')
+                    : ''}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0] ? data.journey[0].arrival_date : ''}
+                  {data.journey[0]
+                    ? dayjs(data.journey[0].arrival_date)
+                        .locale(`${lang}`)
+                        .format('DD MMMM')
+                    : ''}
                 </Typography>
               </Box>
             </Grid>
@@ -187,7 +200,11 @@ export const TicketCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {/* {data.arrival_date} */} 10 годин
+                {dayjs(
+                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
+                )
+                  .locale(`${lang}`)
+                  .format('HH:mm')}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>

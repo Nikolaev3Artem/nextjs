@@ -19,24 +19,20 @@ import { dashboardBusStaticData, TabProps } from '@/interface/IStaticData';
 import { useRouter } from 'next/navigation';
 import BusTable from '@/components/protected/dashboard/Bus/Table/BusTable';
 import { Locale } from '@/i18n.config';
+import Link from 'next/link';
 
 export const BusWrapper = ({
   buses,
-  tabs,
+
   staticData,
   lang,
 }: {
   buses: IRent[];
-  tabs: { tab: TabProps[] };
+
   staticData: dashboardBusStaticData;
   lang: Locale;
 }) => {
   const router = useRouter();
-
-  function AddCard(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.stopPropagation();
-    router.push(`/${lang}/dashboard/bus/add`);
-  }
 
   return (
     <>
@@ -67,17 +63,15 @@ export const BusWrapper = ({
         <Button
           color={'secondary'}
           variant={'contained'}
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-            AddCard(event)
-          }
+          LinkComponent={Link}
+          href={`/${lang}/dashboard/bus/add`}
           startIcon={<AiOutlinePlus />}
         >
           {staticData.searchForm.new_button_form.text}
         </Button>
       </Stack>
-      <TabMenuLocale staticData={tabs}>
-        <BusTable buses={buses} staticData={staticData} lang={lang} />
-      </TabMenuLocale>
+
+      <BusTable buses={buses} staticData={staticData} lang={lang} />
     </>
   );
 };

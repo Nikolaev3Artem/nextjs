@@ -1,0 +1,86 @@
+.bus_layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bus_row {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 8px;
+}
+
+.bus_seat {
+  width: 56px;
+  height: 52px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bfbfbf;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #bfbfbf;
+}
+
+.bus_seat:hover {
+  border: 2px solid #bfbfbf;
+  font-size: 19px;
+}
+
+.bus_seat.empty {
+  background-color: white;
+  border: none;
+}
+
+.bus_seat.enter,
+.bus_seat.wc {
+  background-color: transparent;
+  position: relative;
+  border: none;
+}
+.bus_seat.enter::before {
+  content: '';
+  background-image: url('/icons/stairs.svg');
+  background-size: cover;
+  display: block;
+  position: absolute;
+  top: -4px;
+  left: 10px;
+  width: 40px;
+  height: 122px;
+}
+
+.bus_seat.wc::before {
+  content: 'WC';
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 65px;
+  border: 1px solid #bfbfbf;
+  height: 32px;
+  font-size: 10px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bfbfbf;
+}
+
+.bus_seat.new {
+  background-color: #7adb6a;
+  color: white;
+}
+
+.bus_seat.ordered {
+  background-color: #bfbfbf;
+  color: white;
+}
+
+.bus_seat.selected {
+  background-color: #296fca;
+  color: white;
+}

@@ -62,6 +62,7 @@ export interface MainStaticDataProps {
     price: string;
     routs: string;
     duration: string;
+    hour: string;
     seat: string;
     baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;
@@ -395,6 +396,11 @@ export interface dashboardBusStaticData {
     not_working: string;
     float: string;
     choose: string;
+    row: string;
+    enter: string;
+    kitchen: string;
+    no: string;
+    yes: string;
     snackBar: {
       remove_success: string;
       remove_error: string;
@@ -438,6 +444,55 @@ export interface dashboardTicketsStaticData {
     all: string;
     rows: string;
     print_label: string;
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+      update_success: string;
+      add_success: string;
+      add_error: string;
+    };
+  };
+  errors: {
+    size: string;
+    formats: string;
+    name_more30: string;
+    plates_number10: string;
+    error_number: string;
+    error_text: string;
+  };
+}
+
+export interface dashboardRoutStaticData {
+  routs: string;
+  new_routs: string;
+
+  back: string;
+  searchForm: {
+    label: string;
+
+    new_button_form: {
+      text: string;
+    };
+  };
+  routTable: {
+    number: string;
+    from: string;
+    to: string;
+    stops: string;
+    stop: string;
+    all: string;
+    rows: string;
+    reduce: string;
+    add_stop: string;
+    city: string;
+    departure_time: string;
+    order: string;
+    arrival_time: string;
+    price: string;
+    rout: string;
+    save: string;
+    add_btn: string;
+    no_stop: string;
     snackBar: {
       remove_success: string;
       remove_error: string;
