@@ -22,11 +22,19 @@ import {
 } from '@/lib/dictionary';
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { getSession } from '@/lib/auth';
 
 const getBus = async (lang: Locale, id: number) => {
+  const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus/${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/${id}/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + session.access,
+        },
+      },
     );
 
     if (response.status === 200) {

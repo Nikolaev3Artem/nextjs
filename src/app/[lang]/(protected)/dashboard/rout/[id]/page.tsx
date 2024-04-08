@@ -49,7 +49,7 @@ export default async function BusInfo({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
             // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-            title={`${staticData.new_routs} `}
+            title={`${staticData.routs} `}
             back={staticData.back}
           >
             <TabMenuLocale staticData={tabs}>

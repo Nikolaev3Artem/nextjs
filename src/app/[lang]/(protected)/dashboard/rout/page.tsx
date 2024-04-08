@@ -15,7 +15,6 @@ import {
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
 import { getSession } from '@/lib/auth';
 import { RoutWrapper } from '@/components/protected/dashboard/Rout/RoutWrapper';
@@ -32,7 +31,7 @@ const getRouts = async (lang: Locale) => {
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=25`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=199`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,

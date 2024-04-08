@@ -60,7 +60,7 @@ export default async function Bus({
   params: { lang: Locale };
 }>) {
   const buses = await getBus(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
+
   const staticData = await getDashboardBusDictionaries(params.lang);
 
   return (

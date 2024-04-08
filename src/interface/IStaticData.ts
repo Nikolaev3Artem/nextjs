@@ -384,6 +384,7 @@ export interface dashboardBusStaticData {
     reduce: string;
     seats_first_floor: string;
     wc: string;
+    rentable: string;
     seats_second_floor: string;
     poster: string;
     images: string;
