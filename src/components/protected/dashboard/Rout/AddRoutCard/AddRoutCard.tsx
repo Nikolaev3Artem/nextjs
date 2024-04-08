@@ -112,6 +112,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
     resetField,
     watch,
     setValue,
+    getValues,
     formState: { errors, isDirty, isValid },
   } = useForm<IRout>({
     defaultValues: {
@@ -128,6 +129,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       price: 0,
       stops: [],
       is_stop: false,
+      is_popular: false,
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -138,6 +140,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const to_place = watch('to_place');
   const price = watch('price');
   const stops = watch('stops');
+  const is_stop = watch('is_stop');
+  const is_popular = watch('is_popular');
   console.log('f', from_place);
   const router = useRouter();
 
@@ -165,6 +169,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
           from_place: data.from_place.city || '',
           to_place: data.to_place.city || '',
           price: data?.to_place.price?.toString() || '',
+          is_popular: data?.is_popular || false,
+          // stops: {}
         },
         {
           headers: {
@@ -368,6 +374,32 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                             setValue('to_place.price', e.target.value)
                           }
                         />
+
+                        <Stack
+                          justifyContent={'flex-end'}
+                          alignItems={'center'}
+                          display={'flex'}
+                          flexDirection={'row'}
+                          columnGap={1}
+                        >
+                          <Checkbox
+                            {...register('is_popular')}
+                            color="success"
+                            sx={{ padding: 0, color: '#808080' }}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: 'Inter',
+                              fontStyle: 'normal',
+
+                              fontSize: '16px',
+                              lineHeight: '140%',
+                              color: '#808080',
+                            }}
+                          >
+                            {staticData.routTable.is_popular}
+                          </Typography>
+                        </Stack>
                       </Stack>
                     </Stack>
                   </Container>
@@ -423,11 +455,11 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                         />
                       </Stack>
                       <Stack
-                        direction={'row'}
-                        spacing={1}
-                        justifyItems={'center'}
+                        justifyContent={'flex-end'}
                         alignItems={'center'}
                         display={'flex'}
+                        flexDirection={'row'}
+                        columnGap={1}
                       >
                         <Checkbox
                           {...register('is_stop')}
@@ -451,11 +483,23 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                             color={'secondary'}
                             size={'large'}
                             variant={'contained'}
+                            sx={{ textTransform: 'none' }}
                             fullWidth
-                            type={'submit'}
-                            disabled={!isValid}
+                            disabled={!is_stop}
+                            onClick={() => {
+                              const currentStops = getValues('stops');
+
+                              // Додавання нового об'єкту selectedStop до поточного масиву
+                              const updatedStops = [
+                                ...currentStops,
+                                selectedStop,
+                              ];
+
+                              // Оновлення значення поля форми stops
+                              setValue('stops', updatedStops);
+                            }}
                           >
-                            {staticData.routTable.save}
+                            {staticData.routTable.add_btn}
                           </Button>
                         </Box>
                       </Stack>
@@ -568,8 +612,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                             </Stack>
 
                             {stops.length > 0 ? (
-                              stops.map(stop => (
+                              stops.map((stop, ind) => (
                                 <Stack
+                                  key={`${stop.id} ${ind}`}
                                   spacing={1}
                                   direction={'column'}
                                   p={2}
@@ -734,6 +779,33 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 </Stack>
                               </Stack>
                             </Stack>
+                            {is_popular && (
+                              <Box
+                                display={'flex'}
+                                alignItems={'center'}
+                                justifyContent={'start'}
+                              >
+                                <Checkbox
+                                  checked
+                                  color="success"
+                                  sx={{ padding: 0, color: '#808080' }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '12px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {staticData.routTable.is_popular}
+                                </Typography>
+                              </Box>
+                            )}
+
                             <Box display={'flex'}>
                               <Button
                                 sx={{ height: 50 }}

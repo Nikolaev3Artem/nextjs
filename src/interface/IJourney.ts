@@ -55,4 +55,5 @@ export interface IRout {
   stops: StopsProps[];
   to_place: any;
   is_stop?: boolean;
+  is_popular?: boolean;
 }

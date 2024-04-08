@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import React from 'react';
 
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import { IBanner } from '@/interface/IBanner';
 import { IRent } from '@/interface/IRent';
 
@@ -15,7 +15,7 @@ import {
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import { getSession } from '@/lib/auth';
 import { RoutWrapper } from '@/components/protected/dashboard/Rout/RoutWrapper';
 
@@ -63,7 +63,7 @@ export default async function Rout({
   const routs = await getRouts(params.lang);
   const tabs = await getDashboardTubsDictionaries(params.lang);
   const staticData = await getDashboardRoutDictionaries(params.lang);
-  console.log(routs);
+
   return (
     <DashboardContainer>
       <Fade in={true} timeout={600}>

@@ -494,6 +494,7 @@ export interface dashboardRoutStaticData {
     save: string;
     add_btn: string;
     no_stop: string;
+    is_popular: string;
     snackBar: {
       remove_success: string;
       remove_error: string;

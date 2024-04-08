@@ -25,6 +25,7 @@ import { useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import Circle from '../../../../../../public/icons/journey_from_circle.svg';
 import Bus_marker from '../../../../../../public/icons/bus-marker.svg';
+import Checked_icon from '../../../../../../public/icons/checked.svg';
 
 import Style from './busform.module.css';
 import axios from 'axios';
@@ -172,6 +173,19 @@ const RoutTable = ({
               >
                 {staticData.routTable.to}
               </TableCell>
+              <TableCell
+                sx={{
+                  fontFamily: 'Inter',
+                  fontStyle: 'normal',
+                  fontWeight: '700',
+                  fontSize: '14px',
+                  lineHeight: '150%',
+                  color: colorHeader,
+                }}
+                align="left"
+              >
+                {staticData.routTable.is_popular}
+              </TableCell>
 
               <TableCell
                 sx={{
@@ -246,6 +260,21 @@ const RoutTable = ({
                         <Bus_marker width={16} height={16} /> {item?.to_place}{' '}
                         {item?.price} UAH
                       </Box>
+                    </TableCell>
+                    <TableCell align="left">
+                      {item?.isPopular ? (
+                        <Box
+                          sx={{
+                            display: 'block',
+
+                            alignItems: 'center',
+                            width: '14px',
+                            height: '14px',
+                          }}
+                        >
+                          <Checked_icon width={14} height={14} />
+                        </Box>
+                      ) : null}
                     </TableCell>
 
                     <TableCell align="right">

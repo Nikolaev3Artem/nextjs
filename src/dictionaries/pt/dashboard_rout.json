@@ -28,6 +28,7 @@
     "save": "Guardar",
     "add_btn": "Adicionar",
     "no_stop": "There are no stops",
+    "is_popular": "Rota popular",
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

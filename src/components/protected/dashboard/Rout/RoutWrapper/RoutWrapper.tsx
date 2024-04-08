@@ -12,10 +12,9 @@ import Error from 'next/error';
 import React from 'react';
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
 import { dashboardRoutStaticData, TabProps } from '@/interface/IStaticData';
-import { useRouter } from 'next/navigation';
-import BusTable from '@/components/protected/dashboard/Bus/Table/BusTable';
+
 import { Locale } from '@/i18n.config';
 import { IRout } from '@/interface/IJourney';
 import RoutTable from '../RoutTable/RoutTable';
@@ -31,13 +30,6 @@ export const RoutWrapper = ({
   staticData: dashboardRoutStaticData;
   lang: Locale;
 }) => {
-  const router = useRouter();
-
-  function AddCard(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.stopPropagation();
-    router.push(`/${lang}/dashboard/rout/add`);
-  }
-
   return (
     <>
       <Stack
@@ -67,9 +59,10 @@ export const RoutWrapper = ({
         <Button
           color={'secondary'}
           variant={'contained'}
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-            AddCard(event)
-          }
+          // onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
+          //   AddCard(event)
+          // }
+          href={`/${lang}/dashboard/rout/add`}
           startIcon={<AiOutlinePlus />}
         >
           {staticData.searchForm.new_button_form.text}

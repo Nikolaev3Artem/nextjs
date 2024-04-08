@@ -13,18 +13,18 @@ import React from 'react';
 import EditBusInfo from '@/components/protected/dashboard/Bus/EditBusInfo/EditBusInfo';
 
 // import EditCardInfo from '../../../component/Dashboard/Rent/EditCardInfo/EditCardInfo';
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '../add/page';
 import {
   getDashboardBusDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import { getSession } from '@/lib/auth';
 
-const getBus = async (lang: Locale, id: number) => {
+const getBus = async (id: number, lang: Locale) => {
   const session = await getSession();
   try {
     const response = await axios.get(
@@ -65,7 +65,7 @@ export default async function BusInfo({
     id: number;
   };
 }>) {
-  const bus = await getBus(params.lang, params.id);
+  const bus = await getBus(params.id, params.lang);
   const staticData = await getDashboardBusDictionaries(params.lang);
 
   return (
