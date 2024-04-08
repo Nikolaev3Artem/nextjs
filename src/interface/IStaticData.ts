@@ -384,6 +384,7 @@ export interface dashboardBusStaticData {
     reduce: string;
     seats_first_floor: string;
     wc: string;
+    rentable: string;
     seats_second_floor: string;
     poster: string;
     images: string;
@@ -493,6 +494,7 @@ export interface dashboardRoutStaticData {
     save: string;
     add_btn: string;
     no_stop: string;
+    is_popular: string;
     snackBar: {
       remove_success: string;
       remove_error: string;

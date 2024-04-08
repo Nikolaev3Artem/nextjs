@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import React from 'react';
 
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import { IBanner } from '@/interface/IBanner';
 import { IRent } from '@/interface/IRent';
 
@@ -15,8 +15,7 @@ import {
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import { getSession } from '@/lib/auth';
 import { RoutWrapper } from '@/components/protected/dashboard/Rout/RoutWrapper';
 
@@ -32,7 +31,7 @@ const getRouts = async (lang: Locale) => {
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=25`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=199`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,
@@ -64,7 +63,7 @@ export default async function Rout({
   const routs = await getRouts(params.lang);
   const tabs = await getDashboardTubsDictionaries(params.lang);
   const staticData = await getDashboardRoutDictionaries(params.lang);
-  console.log(routs);
+
   return (
     <DashboardContainer>
       <Fade in={true} timeout={600}>

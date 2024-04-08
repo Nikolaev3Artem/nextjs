@@ -148,7 +148,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       .integer(staticData.errors.error_number)
       .positive(staticData.errors.error_number),
     wc: yup.boolean(),
-    is_active: yup.boolean(),
+
     plates_number: yup.string().max(10, `${staticData.errors.plates_number10}`),
   });
 
@@ -165,7 +165,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       second_floor_seats_count: bus?.second_floor_seats_count || 0,
       busIdService: [],
       photo: bus?.photo || null,
-      is_active: bus?.is_active || false,
+      rentable: bus?.rentable || false,
       uploaded_images: {},
       plates_number: bus?.plates_number || '',
       wc: bus?.wc || false,
@@ -181,7 +181,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const second_floor_seats_count = watch('second_floor_seats_count');
   const plates_number = watch('plates_number');
   const wc = watch('wc');
-  const is_active = watch('is_active');
+  const rentable = watch('rentable');
   const photo = watch('photo');
   const rout = useRouter();
 
@@ -225,10 +225,10 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         // @ts-ignore
         data?.second_floor_seats_count || 0,
       );
-      formData.append('is_active', data.is_active);
-      formData.append('wc', data.wc);
-      formData.append('plates_number', data.plates_number);
 
+      formData.append('wc', data.wc);
+      formData.append('rentable', data.rentable);
+      formData.append('plates_number', data.plates_number);
       data.photo?.length
         ? formData.append('photo', data.photo[0] || null)
         : formData.append('photo', bus.photo);
@@ -600,16 +600,14 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                             color: color_title,
                           }}
                         >
-                          {staticData.busTable.active}
+                          {staticData.busTable.wc}
                         </Typography>
                         <Checkbox
-                          {...register('is_active')}
+                          {...register('wc')}
                           color="success"
-                          checked={is_active}
-                          required={false}
+                          checked={wc}
                         />
                       </Stack>
-
                       <Stack
                         direction={'row'}
                         spacing={2}
@@ -627,12 +625,12 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                             color: color_title,
                           }}
                         >
-                          {staticData.busTable.wc}
+                          {staticData.busTable.rentable}
                         </Typography>
                         <Checkbox
-                          {...register('wc')}
+                          {...register('rentable')}
                           color="success"
-                          checked={wc}
+                          checked={rentable}
                         />
                       </Stack>
                     </Stack>

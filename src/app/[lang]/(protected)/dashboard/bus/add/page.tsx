@@ -8,16 +8,14 @@ import Error from 'next/error';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import { IRent } from '@/interface/IRent';
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
-import AddRentCard from '@/components/protected/dashboard/Rent/Form/AddRentCard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import {
   getDashboardBusDictionaries,
   getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCard';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 
 const getBus = async (lang: Locale) => {
   try {
