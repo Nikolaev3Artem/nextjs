@@ -63,7 +63,7 @@ interface IInfoCardProps {
 interface CityProp {
   id: number | undefined;
   city: string;
-  price: number | undefined;
+  price?: string | number | undefined;
 }
 
 const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
@@ -73,10 +73,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const [selectedStop, setSelectedStop] = useState<CityProp>({
     id: undefined,
     city: '',
-    price: undefined,
   });
-
-  const [deleteId, setDeleteId] = useState<any>([]);
 
   const nameRegex = /^[^\s№?]+$/;
   const UploadFileSchema = yup.object().shape({
@@ -119,12 +116,10 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       from_place: {
         id: undefined,
         city: '',
-        price: undefined,
       },
       to_place: {
         id: undefined,
         city: '',
-        price: undefined,
       },
       price: 0,
       stops: [],
@@ -142,33 +137,26 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const stops = watch('stops');
   const is_stop = watch('is_stop');
   const is_popular = watch('is_popular');
-  console.log('f', from_place);
+
   const router = useRouter();
 
   const handleDeleteStop = (id: number) => {
-    // setImagesList((prevImagesList: ItemProps[]) =>
-    //   prevImagesList.filter(
-    //     (item: ItemProps) => String(item.id) !== String(id),
-    //   ),
-    // );
+    const stops = getValues('stops');
+    const updatedCity = stops.filter(item => item.id !== id);
+    setValue('stops', updatedCity);
   };
 
   const onSubmitForm = async (data: IRout) => {
     try {
       const session = await getSession();
-      // const formData = new FormData();
-
-      // formData.append('from_place', data.from_place.city || '');
-      // formData.append('to_place', data.to_place.city || '');
-      // formData.append('price', data?.to_place.price?.toString() || '');
 
       const response = await axios.post(
         `${BASE_URL}/${selectLang}/api/admin/routes/create`,
-        // formData,
+
         {
           from_place: data.from_place.city || '',
           to_place: data.to_place.city || '',
-          price: data?.to_place.price?.toString() || '',
+          price: data?.price || 0,
           is_popular: data?.is_popular || false,
           // stops: {}
         },
@@ -210,17 +198,14 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
             {
               id: 3,
               city: 'Tokio',
-              price: 200,
             },
             {
               id: 4,
               city: 'Berlin',
-              price: 200,
             },
             {
               id: 4,
               city: 'NY',
-              price: 200,
             },
           ],
         },
@@ -241,10 +226,10 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
     getCity().catch(console.error);
   }, [getCity]);
 
-  const handleAddCity = () => {
-    setCity(prevCity => [...prevCity, selectedStop]);
-    setSelectedStop({ id: undefined, city: '', price: undefined });
-  };
+  // const handleAddCity = () => {
+  //   setCity(prevCity => [...prevCity, selectedStop]);
+  //   setSelectedStop({ id: undefined, city: '', price: undefined });
+  // };
 
   return (
     <>
@@ -365,13 +350,14 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                         <TextField
                           // {...register('from_place.price')}
                           size={'small'}
+                          type="number"
                           label={staticData.routTable.price}
                           InputLabelProps={{
                             style: { color: '#808080' },
                           }}
-                          value={watch('to_place.price') || ''}
+                          value={watch('price') || ''}
                           onChange={e =>
-                            setValue('to_place.price', e.target.value)
+                            setValue('price', e.target.value.toString())
                           }
                         />
 
@@ -448,9 +434,28 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               selectedCity || {
                                 id: undefined,
                                 city: newInputValue,
-                                price: undefined,
+                                price: '',
                               },
                             );
+                          }}
+                        />
+                      </Stack>
+                      <Stack>
+                        <TextField
+                          // {...register('from_place.price')}
+                          size={'small'}
+                          type="number"
+                          label={staticData.routTable.price}
+                          InputLabelProps={{
+                            style: { color: '#808080' },
+                          }}
+                          // value={watch('selectedStop.price') || 0}
+                          onChange={e => {
+                            const { value } = e.target;
+                            setSelectedStop(prevSelectedStop => ({
+                              ...prevSelectedStop,
+                              price: value,
+                            }));
                           }}
                         />
                       </Stack>
@@ -465,6 +470,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           {...register('is_stop')}
                           color="success"
                           sx={{ padding: 0, color: '#808080' }}
+                          checked={is_stop}
                         />
                         <Typography
                           sx={{
@@ -489,17 +495,16 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                             onClick={() => {
                               const currentStops = getValues('stops');
 
-                              // Додавання нового об'єкту selectedStop до поточного масиву
                               const updatedStops = [
                                 ...currentStops,
                                 selectedStop,
                               ];
 
-                              // Оновлення значення поля форми stops
                               setValue('stops', updatedStops);
+                              setValue('is_stop', false);
                             }}
                           >
-                            {staticData.routTable.add_btn}
+                            {staticData.routTable.add_stop}
                           </Button>
                         </Box>
                       </Stack>
@@ -565,49 +570,50 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <Circle height={16} width={16} />
                                 </Box>
-
-                                <Stack
-                                  spacing={1}
-                                  alignItems={'start'}
-                                  direction={'column'}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontFamily: 'Inter',
-                                      fontStyle: 'normal',
-                                      fontWeight: 700,
-                                      fontSize: '16px',
-                                      lineHeight: '140%',
-                                      color: color_title,
-                                    }}
-                                    color={colorHeading}
-                                  >
-                                    {from_place.city}
-                                  </Typography>
-                                  <Box
-                                    display={'flex'}
-                                    alignItems={'center'}
-                                    justifyContent={'space-between'}
+                                {from_place.city && (
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'column'}
                                   >
                                     <Typography
                                       sx={{
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontSize: '12px',
-                                        lineHeight: '150%',
+                                        fontWeight: 700,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
                                         color: color_title,
                                       }}
                                       color={colorHeading}
                                     >
-                                      Двірцева площа, 1, Львів, Львівська
-                                      область
+                                      {from_place.city}
                                     </Typography>
-                                    <Box height={16} width={16}>
-                                      <Marker height={16} width={16} />
+                                    <Box
+                                      display={'flex'}
+                                      alignItems={'center'}
+                                      justifyContent={'space-between'}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          fontFamily: 'Inter',
+                                          fontStyle: 'normal',
+                                          fontWeight: 400,
+                                          fontSize: '12px',
+                                          lineHeight: '150%',
+                                          color: color_title,
+                                        }}
+                                        color={colorHeading}
+                                      >
+                                        Двірцева площа, 1, Львів, Львівська
+                                        область
+                                      </Typography>
+                                      <Box height={16} width={16}>
+                                        <Marker height={16} width={16} />
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                </Stack>
+                                  </Stack>
+                                )}
                               </Stack>
                             </Stack>
 
@@ -721,62 +727,63 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <ToCircle height={16} width={16} />
                                 </Box>
-
-                                <Stack
-                                  spacing={1}
-                                  alignItems={'start'}
-                                  direction={'column'}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontFamily: 'Inter',
-                                      fontStyle: 'normal',
-                                      fontWeight: 700,
-                                      fontSize: '16px',
-                                      lineHeight: '140%',
-                                      color: color_title,
-                                    }}
-                                    color={colorHeading}
-                                  >
-                                    {to_place.city}
-                                  </Typography>
-                                  <Typography
-                                    sx={{
-                                      fontFamily: 'Inter',
-                                      fontStyle: 'normal',
-                                      fontWeight: 700,
-                                      fontSize: '16px',
-                                      lineHeight: '140%',
-                                      color: color_title,
-                                    }}
-                                    color={colorHeading}
-                                  >
-                                    {to_place.price} UAH
-                                  </Typography>
-                                  <Box
-                                    display={'flex'}
-                                    alignItems={'center'}
-                                    justifyContent={'space-between'}
+                                {to_place.city && (
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'column'}
                                   >
                                     <Typography
                                       sx={{
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontSize: '12px',
-                                        lineHeight: '150%',
+                                        fontWeight: 700,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
                                         color: color_title,
                                       }}
                                       color={colorHeading}
                                     >
-                                      Двірцева площа, 1, Львів, Львівська
-                                      область
+                                      {to_place.city}
                                     </Typography>
-                                    <Box height={16} width={16}>
-                                      <Marker height={16} width={16} />
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 700,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {price} UAH
+                                    </Typography>
+                                    <Box
+                                      display={'flex'}
+                                      alignItems={'center'}
+                                      justifyContent={'space-between'}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          fontFamily: 'Inter',
+                                          fontStyle: 'normal',
+                                          fontWeight: 400,
+                                          fontSize: '12px',
+                                          lineHeight: '150%',
+                                          color: color_title,
+                                        }}
+                                        color={colorHeading}
+                                      >
+                                        Двірцева площа, 1, Львів, Львівська
+                                        область
+                                      </Typography>
+                                      <Box height={16} width={16}>
+                                        <Marker height={16} width={16} />
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                </Stack>
+                                  </Stack>
+                                )}
                               </Stack>
                             </Stack>
                             {is_popular && (
@@ -814,7 +821,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 variant={'contained'}
                                 fullWidth
                                 type={'submit'}
-                                // disabled={!isValid}
+                                disabled={!isValid}
                               >
                                 {staticData.routTable.save}
                               </Button>
