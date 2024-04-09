@@ -432,7 +432,7 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                             type={'submit'}
                             disabled={!isValid}
                           >
-                            {staticData.routTable.save}
+                            {staticData.routTable.add_stop}
                           </Button>
                         </Box>
                       </Stack>

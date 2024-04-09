@@ -44,14 +44,17 @@ export interface IJourney {
 export interface StopsProps {
   city: string;
   id: number | undefined;
-  price: number | undefined;
+  price?: number | string | undefined;
+  coords_x: string;
+  cooords_y: string;
+  address: string;
 }
 
 export interface IRout {
   from_place: any;
   id: string;
   isPopular: boolean;
-  price: number;
+  price?: number | string;
   stops: StopsProps[];
   to_place: any;
   is_stop?: boolean;

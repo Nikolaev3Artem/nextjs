@@ -22,7 +22,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { SyntheticEvent, useState } from 'react';
 
@@ -60,7 +60,7 @@ export function Login({
   const [user, setUser] = useState<IProfile[]>([]);
   const [phone, setPhone] = useState('');
   const [isLoading, setIsloading] = useState(false);
-
+  const searchParams = useSearchParams();
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: event.target.value });
@@ -92,8 +92,13 @@ export function Login({
         const currentPath = window.location.pathname;
         const previousPath = document.referrer;
 
-        if (currentPath === previousPath) {
+        const search = searchParams.get('callbackUrl');
+        console.log('paramValue', search);
+        console.log('previousPath', previousPath);
+        if (currentPath !== previousPath) {
           router.replace('/');
+        } else if (search && search?.length > 0) {
+          router.replace(`${lang}/my-order/new-order`);
         } else {
           router.back();
         }

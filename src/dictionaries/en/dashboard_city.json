@@ -1,0 +1,42 @@
+{
+  "cities": "Міста",
+  "new_city": "Нове місто",
+
+  "back": "Назад",
+  "searchForm": {
+    "label": "Пошук...",
+    "new_button_form": {
+      "text": "Нове місто"
+    }
+  },
+  "cityTable": {
+    "number": "Number",
+    "name": "Name",
+    "all": "All",
+
+    "address": "Address",
+    "location": "Location",
+    "rows": "Rows per page",
+    "reduce": "Reduce",
+    "add_city": "Add city",
+    "city": "City",
+
+    "save": "save",
+
+    "snackBar": {
+      "remove_success": "Card deleted",
+      "remove_error": "Deletion error",
+      "update_success": "Your changes have been saved",
+      "add_success": "Your card has been added",
+      "add_error": "Error saving changes"
+    }
+  },
+  "errors": {
+    "size": "File size should not exceed (5 MB)",
+    "formats": "Only the following formats are supported: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Name should not exceed 60 characters",
+    "plates_number10": "Number should not exceed 10 characters",
+    "error_number": "Only digits are allowed",
+    "error_text": "Invalid text format"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "cities": "Miestai",
+  "new_city": "Naujas miestas",
+
+  "back": "Atgal",
+  "searchForm": {
+    "label": "Paieška...",
+    "new_button_form": {
+      "text": "Naujas miestas"
+    }
+  },
+  "cityTable": {
+    "number": "Numeris",
+    "name": "Vardas",
+    "address": "Adresas",
+    "location": "Vietovė",
+    "add_city": "Pridėti miestą",
+    "city": "Miestą",
+    "rows": "Eilės puslapyje",
+    "reduce": "Mažinti",
+    "save": "Išsaugoti",
+    "all": "Visi",
+
+    "snackBar": {
+      "remove_success": "Kortelė sėkmingai pašalinta",
+      "remove_error": "Klaida pašalinant",
+      "update_success": "Jūsų pakeitimai sėkmingai išsaugoti",
+      "add_success": "Jūsų kortelė sėkmingai pridėta",
+      "add_error": "Klaida pridedant"
+    }
+  },
+  "errors": {
+    "size": "Failo dydis neturi viršyti (5 MB)",
+    "formats": "Palaikomi tik šie formatai: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Pavadinimas neturi būti ilgesnis nei 60 simbolių",
+    "plates_number10": "Numeris neturi būti ilgesnis nei 10 simbolių",
+    "error_number": "Leidžiami tik skaitmenys",
+    "error_text": "Netinkamas teksto formatas"
+  }
+}

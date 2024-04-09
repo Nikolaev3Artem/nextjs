@@ -512,3 +512,44 @@ export interface dashboardRoutStaticData {
     error_text: string;
   };
 }
+
+export interface dashboardCityStaticData {
+  cities: string;
+  new_city: string;
+
+  back: string;
+  searchForm: {
+    label: string;
+
+    new_button_form: {
+      text: string;
+    };
+  };
+  cityTable: {
+    number: string;
+    name: string;
+    address: string;
+    location: string;
+    rows: string;
+    reduce: string;
+    add_city: string;
+    city: string;
+    save: string;
+    all: string;
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+      update_success: string;
+      add_success: string;
+      add_error: string;
+    };
+  };
+  errors: {
+    size: string;
+    formats: string;
+    name_more30: string;
+    plates_number10: string;
+    error_number: string;
+    error_text: string;
+  };
+}
