@@ -45,6 +45,9 @@ export interface StopsProps {
   city: string;
   id: number | undefined;
   price?: number | string | undefined;
+  coords_x: string;
+  cooords_y: string;
+  address: string;
 }
 
 export interface IRout {

@@ -189,11 +189,11 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       formData.append('plates_number', data.plates_number || '');
       formData.append(
         'first_floor_seats_count',
-        data?.first_floor_seats_count?.toString() || '',
+        firstFloorSeatsCount?.toString() || '',
       );
       formData.append(
         'second_floor_seats_count',
-        data?.second_floor_seats_count?.toString() || '',
+        secondFloorSeatsCount?.toString() || '',
       );
       formData.append('is_active', data.is_active || 'false');
       data.photo?.length && formData.append('photo', data.photo[0] || null);

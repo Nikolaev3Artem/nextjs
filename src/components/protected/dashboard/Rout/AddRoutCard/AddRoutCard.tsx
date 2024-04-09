@@ -149,10 +149,17 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const onSubmitForm = async (data: IRout) => {
     try {
       const session = await getSession();
+      const formData = new FormData();
 
+      formData.append('from_place', data.from_place.city || '');
       const response = await axios.post(
         `${BASE_URL}/${selectLang}/api/admin/routes/create`,
 
+        //         const objectsArray = [
+        //   { id: 1, name: 'Object 1' },
+        //   { id: 2, name: 'Object 2' },
+        //   { id: 3, name: 'Object 3' }
+        // ];
         {
           from_place: data.from_place.city || '',
           to_place: data.to_place.city || '',
@@ -190,27 +197,23 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
 
   const getCity = useCallback(async () => {
     try {
-      // const response = await axios.get<CityProp[]>(`${BASE_URL}/${selectLang}/api/main`);
-      // get city
-      const response = {
-        data: {
-          results: [
-            {
-              id: 3,
-              city: 'Tokio',
-            },
-            {
-              id: 4,
-              city: 'Berlin',
-            },
-            {
-              id: 4,
-              city: 'NY',
-            },
-          ],
+      const session = await getSession();
+      if (!session) return null;
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/stop/?limit=599`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
         },
-      };
-      setCity(response.data.results);
+      );
+
+      if (response.status === 200) {
+        setCity(response.data.results);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);

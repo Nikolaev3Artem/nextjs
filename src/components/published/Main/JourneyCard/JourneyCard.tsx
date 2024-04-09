@@ -33,6 +33,7 @@ import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -87,12 +88,16 @@ export const JourneyCard = ({
     }
     return null;
   }
-
+  const router = useRouter();
   const handleBookingClick = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('modal', 'seats');
+    router.push(`/${lang}?${queryParams}`);
     setIsShowModal(true);
   };
 
   const handleBookingClose = () => {
+    router.push(`/${lang}`);
     setIsShowModal(false);
   };
   console.log(data);
