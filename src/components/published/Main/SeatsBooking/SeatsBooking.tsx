@@ -165,7 +165,7 @@ export const SeatsBooking = ({
 
   return (
     <JourneySeatsBookingModal onClose={onClose} isShowModal={isShowModal}>
-      <Box>
+      <Box sx={{ overflowY: 'scroll', height: { xs: '94vh', md: 'auto' } }}>
         <Box
           p={4}
           display={'flex'}
@@ -188,8 +188,8 @@ export const SeatsBooking = ({
           </IconButton>
           <Stack
             width={'100%'}
-            direction={'row'}
-            alignItems={'center'}
+            direction={{ sm: 'row', xs: 'column' }}
+            alignItems={{ sm: 'center', xs: 'flex-start' }}
             display={'flex'}
             justifyContent={'space-between'}
           >
@@ -241,10 +241,10 @@ export const SeatsBooking = ({
           </Stack>
           <Stack
             width={'100%'}
-            direction={'row'}
-            alignItems={'center'}
+            alignItems={'flex-start'}
             display={'flex'}
             justifyContent={'space-between'}
+            direction={{ md: 'row', xs: 'column' }}
           >
             <Box
               flexDirection={'row'}
@@ -349,6 +349,7 @@ export const SeatsBooking = ({
                       seats_start={1}
                       handleCheck={handleCheck}
                       floor={1}
+                      is_wc="yes"
                     />
                   </FormGroup>
                 </Box>

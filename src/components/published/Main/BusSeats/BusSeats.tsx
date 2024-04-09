@@ -82,7 +82,7 @@ const BusSeats = (props: BusConstructorProps) => {
           sx={{
             fontSize: 'inherit',
             color: 'inherit',
-            transform: 'rotate(-90deg)',
+            transform: { md: 'rotate(-90deg)' },
           }}
         >
           {enter1 || enter2 || empty || wc ? '' : seatNumber}
