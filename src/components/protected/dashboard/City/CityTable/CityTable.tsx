@@ -37,6 +37,7 @@ import { dashboardCityStaticData } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { StopsProps } from '@/interface/IJourney';
 import { EditCity } from '../EditCity';
+import { AddCity } from '../AddCity';
 
 const colorIcon = grey[700];
 const colorHeader = grey[800];
@@ -56,6 +57,7 @@ const CityTable = ({
   const [rowsPerPage, setRowsPerPage] = useState(15);
   const { selectLang } = useLangContext();
   const [isShowModal, setIsShowModal] = useState(false);
+
   const [selectedCity, setSelectedCity] = useState<StopsProps>({
     city: '',
     id: 0,

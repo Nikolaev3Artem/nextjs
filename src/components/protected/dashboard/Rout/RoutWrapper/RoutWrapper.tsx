@@ -1,15 +1,17 @@
 'use client';
 
-import { Container, Fade, Stack } from '@mui/material';
+import { Container, Fade, SelectChangeEvent, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import debounce from '@mui/utils/debounce';
+
 import axios from 'axios';
 
 import Error from 'next/error';
 
-import React from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
@@ -30,6 +32,45 @@ export const RoutWrapper = ({
   staticData: dashboardRoutStaticData;
   lang: Locale;
 }) => {
+  const [filter, setFilter] = useState('');
+  const [filteredRouts, setFilteredRouts] = useState<IRout[]>([
+    {
+      from_place: '',
+      id: '',
+      isPopular: false,
+
+      stops: [],
+      to_place: '',
+    },
+  ]);
+
+  const handleChange = () => {
+    return debounce(
+      (
+        event:
+          | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          | SelectChangeEvent<string>,
+      ) => {
+        setFilter(event?.target?.value);
+      },
+      600,
+    );
+  };
+
+  useEffect(() => {
+    filter
+      ? setFilteredRouts(
+          routs.filter(obj =>
+            Object.values(obj).some(
+              val =>
+                typeof val === 'string' &&
+                val.toLowerCase().includes(filter.toLowerCase()),
+            ),
+          ),
+        )
+      : setFilteredRouts(routs);
+  }, [filter]);
+
   return (
     <>
       <Stack
@@ -55,6 +96,7 @@ export const RoutWrapper = ({
               </InputAdornment>
             ),
           }}
+          onChange={handleChange()}
         />
         <Button
           color={'secondary'}
@@ -69,7 +111,7 @@ export const RoutWrapper = ({
         </Button>
       </Stack>
       <TabMenuLocale staticData={tabs}>
-        <RoutTable routs={routs} staticData={staticData} lang={lang} />
+        <RoutTable routs={filteredRouts} staticData={staticData} lang={lang} />
       </TabMenuLocale>
     </>
   );

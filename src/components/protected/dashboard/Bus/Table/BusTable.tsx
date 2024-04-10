@@ -227,11 +227,11 @@ const BusTable = ({
             {buses &&
               buses
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => (
+                .map((item, ind) => (
                   <TableRow
                     hover
                     tabIndex={-1}
-                    key={item.id}
+                    key={`${item.id}${item.name} || ${ind}`}
                     // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
