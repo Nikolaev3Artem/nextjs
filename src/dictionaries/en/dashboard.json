@@ -77,12 +77,7 @@
       "path": "/dashboard/content/about_us",
       "title": "About Us"
     },
-    {
-      "id": 3,
-      "name": "direction",
-      "path": "/dashboard/content/direction",
-      "title": "Direction"
-    },
+
     {
       "id": 4,
       "name": "ruler",

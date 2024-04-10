@@ -64,6 +64,9 @@ interface CityProp {
   id: number | undefined;
   city: string;
   price?: string | number | undefined;
+  coords_x?: string | undefined;
+  cooords_y?: string | undefined;
+  address?: string | undefined;
 }
 
 const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {

@@ -89,19 +89,23 @@ export function Login({
         enqueueSnackbar(`${staticData.snack_bar.success}`, {
           variant: 'success',
         });
-        const currentPath = window.location.pathname;
-        const previousPath = document.referrer;
+        // const currentPath = window.location.pathname;
+        // const previousPath = document.referrer;
 
         const search = searchParams.get('callbackUrl');
-        console.log('paramValue', search);
-        console.log('previousPath', previousPath);
-        if (currentPath !== previousPath) {
-          router.replace('/');
-        } else if (search && search?.length > 0) {
-          router.replace(`${lang}/my-order/new-order`);
+
+        if (search?.includes('new-order')) {
+          router.replace(`/${lang}/my-order/new-order`);
         } else {
           router.back();
         }
+        // if (currentPath !== previousPath) {
+        //   router.replace('/');
+        // } else if (search && search?.length > 0) {
+        //   router.replace(`${lang}/my-order/new-order`);
+        // } else {
+        //   router.back();
+        // }
       }
       if (result !== 200) {
         enqueueSnackbar(`${staticData.snack_bar.error}`, {

@@ -91,7 +91,7 @@ export const JourneyCard = ({
   const router = useRouter();
   const handleBookingClick = () => {
     const queryParams = new URLSearchParams();
-    queryParams.set('modal', 'seats');
+
     router.push(`/${lang}?${queryParams}`);
     setIsShowModal(true);
   };

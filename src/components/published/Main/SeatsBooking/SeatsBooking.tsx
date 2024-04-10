@@ -329,7 +329,7 @@ export const SeatsBooking = ({
                   label={`${staticData.seat_booking.float} 1`}
                   {...a11yProps(0)}
                 />
-                {data.bus[0].second_floor_seats_count > 0 && (
+                {data?.bus[0]?.second_floor_seats_count > 0 && (
                   <Tab
                     label={`${staticData.seat_booking.float} 2`}
                     {...a11yProps(1)}
@@ -345,7 +345,7 @@ export const SeatsBooking = ({
                       rows_2={4}
                       rows_3={4}
                       enter_2={true}
-                      seats={data.bus[0].first_floor_seats}
+                      seats={data?.bus[0]?.first_floor_seats}
                       seats_start={1}
                       handleCheck={handleCheck}
                       floor={1}
@@ -361,8 +361,8 @@ export const SeatsBooking = ({
                       rows_1={4}
                       enter_1={false}
                       rows_2={4}
-                      seats={data.bus[0].second_floor_seats}
-                      seats_start={data.bus[0].first_floor_seats_count + 1}
+                      seats={data?.bus[0]?.second_floor_seats}
+                      seats_start={data?.bus[0]?.first_floor_seats_count + 1}
                       handleCheck={handleCheck}
                       floor={2}
                     />

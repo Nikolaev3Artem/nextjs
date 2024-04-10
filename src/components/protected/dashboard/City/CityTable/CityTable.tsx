@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
@@ -36,6 +36,7 @@ import { useLangContext } from '@/app/context';
 import { dashboardCityStaticData } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { StopsProps } from '@/interface/IJourney';
+import { EditCity } from '../EditCity';
 
 const colorIcon = grey[700];
 const colorHeader = grey[800];
@@ -50,10 +51,15 @@ const CityTable = ({
   lang: Locale;
 }) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
-  const [dense, setDense] = React.useState(false);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(15);
+  const [dense, setDense] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(15);
   const { selectLang } = useLangContext();
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<StopsProps>({
+    city: '',
+    id: 0,
+  });
 
   const rout = useRouter();
 
@@ -76,7 +82,14 @@ const CityTable = ({
   };
 
   const handleClick = (id: any): any => {
-    rout.push(`/${lang}/dashboard/bus/${id}`);
+    const foundCity = cities.find(city => city.id === id);
+    foundCity ? setSelectedCity(foundCity) : console.log('City not found');
+
+    setIsShowModal(true);
+  };
+
+  const handleModalClose = () => {
+    setIsShowModal(false);
   };
 
   const handleClickDelete = async (id: any) => {
@@ -108,216 +121,228 @@ const CityTable = ({
   };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer
-        className={Style.table_container}
-        elevation={0}
-        component={Paper}
-      >
-        <Table
-          sx={{ minWidth: 650 }}
-          size={dense ? 'small' : 'medium'}
-          aria-label="simple table"
+    <>
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        <TableContainer
+          className={Style.table_container}
+          elevation={0}
+          component={Paper}
         >
-          <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              >
-                {staticData.cityTable.number}
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              >
-                {staticData.cityTable.name}
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              >
-                {staticData.cityTable.address}
-              </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              >
-                {staticData.cityTable.location}
-              </TableCell>
-
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              ></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {cities &&
-              cities
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => (
-                  <TableRow
-                    hover
-                    tabIndex={-1}
-                    key={item.id}
-                    // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {item.id}
-                    </TableCell>
-
-                    <TableCell component="th" scope="row">
-                      {item.city}
-                    </TableCell>
-
-                    <TableCell component="th" scope="row">
-                      {item.address}
-                    </TableCell>
-
-                    <TableCell align="left">
-                      <Stack
-                        direction={'row'}
-                        display={'flex'}
-                        columnGap={0.5}
-                        alignItems={'center'}
-                      >
-                        <MarkerIcon width={14} height={14} />
-                        <Typography fontSize={'14px'}>
-                          {item?.coords_x}
-                        </Typography>
-                      </Stack>
-                      <Stack
-                        direction={'row'}
-                        display={'flex'}
-                        columnGap={0.5}
-                        alignItems={'center'}
-                      >
-                        <MarkerIcon width={14} height={14} />
-                        <Typography fontSize={'14px'}>
-                          {item?.cooords_y}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell align="right">
-                      <Stack
-                        justifyContent={'flex-end'}
-                        direction={'row'}
-                        spacing={2}
-                        width={'100%'}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleClick(item.id);
-                          }}
-                          sx={{ color: colorIcon, fontSize: 16 }}
-                          size={'small'}
-                        >
-                          <FiEdit />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleClickDelete(item.id);
-                          }}
-                          sx={{ color: colorIcon, fontSize: 16 }}
-                          size={'small'}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
-                      </Stack>
-                    </TableCell>
-                  </TableRow>
-                ))}
-          </TableBody>
-        </Table>
-        <TableFooter component={'div'} sx={{ width: '100%', display: 'flex' }}>
-          <Stack
-            sx={{ width: '100%' }}
-            display={'flex'}
-            direction={'row'}
-            alignItems={'center'}
-            justifyContent={'flex-end'}
+          <Table
+            sx={{ minWidth: 650 }}
+            size={dense ? 'small' : 'medium'}
+            aria-label="simple table"
           >
-            <Box
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                    color: colorHeader,
+                  }}
+                  align="left"
+                >
+                  {staticData.cityTable.number}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                    color: colorHeader,
+                  }}
+                  align="left"
+                >
+                  {staticData.cityTable.name}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                    color: colorHeader,
+                  }}
+                  align="left"
+                >
+                  {staticData.cityTable.address}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                    color: colorHeader,
+                  }}
+                  align="left"
+                >
+                  {staticData.cityTable.location}
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                    color: colorHeader,
+                  }}
+                  align="left"
+                ></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {cities &&
+                cities
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(item => (
+                    <TableRow
+                      hover
+                      tabIndex={-1}
+                      key={item.id}
+                      // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {item.id}
+                      </TableCell>
+
+                      <TableCell component="th" scope="row">
+                        {item.city}
+                      </TableCell>
+
+                      <TableCell component="th" scope="row">
+                        {item.address}
+                      </TableCell>
+
+                      <TableCell align="left">
+                        <Stack
+                          direction={'row'}
+                          display={'flex'}
+                          columnGap={0.5}
+                          alignItems={'center'}
+                        >
+                          <MarkerIcon width={14} height={14} />
+                          <Typography fontSize={'14px'}>
+                            {item?.coords_x}
+                          </Typography>
+                        </Stack>
+                        <Stack
+                          direction={'row'}
+                          display={'flex'}
+                          columnGap={0.5}
+                          alignItems={'center'}
+                        >
+                          <MarkerIcon width={14} height={14} />
+                          <Typography fontSize={'14px'}>
+                            {item?.cooords_y}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+
+                      <TableCell align="right">
+                        <Stack
+                          justifyContent={'flex-end'}
+                          direction={'row'}
+                          spacing={2}
+                          width={'100%'}
+                        >
+                          <IconButton
+                            onClick={() => {
+                              handleClick(item.id);
+                            }}
+                            sx={{ color: colorIcon, fontSize: 16 }}
+                            size={'small'}
+                          >
+                            <FiEdit />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => {
+                              handleClickDelete(item.id);
+                            }}
+                            sx={{ color: colorIcon, fontSize: 16 }}
+                            size={'small'}
+                          >
+                            <FiTrash2 />
+                          </IconButton>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+          <TableFooter
+            component={'div'}
+            sx={{ width: '100%', display: 'flex' }}
+          >
+            <Stack
+              sx={{ width: '100%' }}
               display={'flex'}
+              direction={'row'}
               alignItems={'center'}
               justifyContent={'flex-end'}
             >
-              <Typography
-                mr={1}
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '400',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                }}
+              <Box
+                display={'flex'}
+                alignItems={'center'}
+                justifyContent={'flex-end'}
               >
-                {staticData.cityTable.reduce}
-              </Typography>
-              <Switch onChange={handleChangeDense} />
-            </Box>
-            <TablePagination
-              rowsPerPageOptions={[
-                15,
-                25,
-                50,
-                { label: `${staticData.cityTable.all}`, value: -1 },
-              ]}
-              component="div"
-              count={cities.length}
-              rowsPerPage={rowsPerPage}
-              labelRowsPerPage={`${staticData.cityTable.rows}`}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': `${staticData.cityTable.rows}`,
-                },
-                native: false,
-              }}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </Stack>
-        </TableFooter>
-      </TableContainer>
-    </Paper>
+                <Typography
+                  mr={1}
+                  sx={{
+                    fontFamily: 'Inter',
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    fontSize: '14px',
+                    lineHeight: '150%',
+                  }}
+                >
+                  {staticData.cityTable.reduce}
+                </Typography>
+                <Switch onChange={handleChangeDense} />
+              </Box>
+              <TablePagination
+                rowsPerPageOptions={[
+                  15,
+                  25,
+                  50,
+                  { label: `${staticData.cityTable.all}`, value: -1 },
+                ]}
+                component="div"
+                count={cities.length}
+                rowsPerPage={rowsPerPage}
+                labelRowsPerPage={`${staticData.cityTable.rows}`}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': `${staticData.cityTable.rows}`,
+                  },
+                  native: false,
+                }}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Stack>
+          </TableFooter>
+        </TableContainer>
+      </Paper>
+      <EditCity
+        data={selectedCity}
+        onClose={handleModalClose}
+        isShowModal={isShowModal}
+        staticData={staticData}
+        lang={lang}
+      />
+    </>
   );
 };
 
