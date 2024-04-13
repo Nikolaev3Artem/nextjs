@@ -18,6 +18,7 @@ import { IRent } from '@/interface/IRent';
 // import { IServiceBus } from '../add/page';
 import {
   getDashboardBusDictionaries,
+  getDashboardJourneyDictionaries,
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
@@ -25,6 +26,7 @@ import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/Ta
 import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import EditRoutInfo from '@/components/protected/dashboard/Rout/EditRoutInfo/EditRoutInfo';
 import AddRoutCard from '@/components/protected/dashboard/Rout/AddRoutCard/AddRoutCard';
+import AddJourneyCard from '@/components/protected/dashboard/Journey/AddJourneyCard/AddJourneyCard';
 
 export interface IRentProps {
   rent: IRent;
@@ -32,7 +34,7 @@ export interface IRentProps {
   // serviceBus?: readonly IServiceBus[];
 }
 
-export default async function RoutAdd({
+export default async function AddJourney({
   params,
 }: Readonly<{
   params: {
@@ -40,8 +42,7 @@ export default async function RoutAdd({
     id: number;
   };
 }>) {
-  const staticData = await getDashboardRoutDictionaries(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
+  const staticData = await getDashboardJourneyDictionaries(params.lang);
 
   return (
     <DashboardContainer>
@@ -49,12 +50,10 @@ export default async function RoutAdd({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
             // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-            title={`${staticData.new_routs} `}
+            title={`${staticData.new_journey} `}
             back={staticData.back}
           >
-            <TabMenuLocale staticData={tabs}>
-              <AddRoutCard staticData={staticData} lang={params.lang} />
-            </TabMenuLocale>
+            <AddJourneyCard staticData={staticData} lang={params.lang} />
           </ContentDashboard>
         </Box>
       </Fade>

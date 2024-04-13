@@ -553,3 +553,62 @@ export interface dashboardCityStaticData {
     error_text: string;
   };
 }
+
+export interface dashboardJourneyStaticData {
+  journeys: string;
+  new_journey: string;
+  back: string;
+  searchForm: {
+    label: string;
+    filter: string;
+    data: string;
+    new_button_form: {
+      text: string;
+    };
+  };
+  journeyTable: {
+    number: string;
+    seats: string;
+    rout: string;
+    bus: string;
+    departure: string;
+    create: string;
+    all: string;
+    rows: string;
+    reduce: string;
+    add_stop: string;
+    departure_time: string;
+    departure_date: string;
+    arrival_time: string;
+    float: string;
+    blocked: string;
+    to_journey: string;
+    journey: string;
+    un_blocked: string;
+    reserve: string;
+    passenger_list: string;
+    name: string;
+    seat: string;
+    comment: string;
+    luggage: string;
+    from: string;
+    to: string;
+    next_step: string;
+    choose_journey: string;
+    snackBar: {
+      remove_success: string;
+      remove_error: string;
+      update_success: string;
+      add_success: string;
+      add_error: string;
+    };
+  };
+  errors: {
+    size: string;
+    formats: string;
+    name_more30: string;
+    plates_number10: string;
+    error_number: string;
+    error_text: string;
+  };
+}

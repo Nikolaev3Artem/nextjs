@@ -25,6 +25,7 @@ import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/Ta
 import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import EditRoutInfo from '@/components/protected/dashboard/Rout/EditRoutInfo/EditRoutInfo';
 import AddRoutCard from '@/components/protected/dashboard/Rout/AddRoutCard/AddRoutCard';
+import { getSession } from '@/lib/auth';
 
 export interface IRentProps {
   rent: IRent;
@@ -32,7 +33,34 @@ export interface IRentProps {
   // serviceBus?: readonly IServiceBus[];
 }
 
-export default async function RoutAdd({
+const getRout = async (id: number, lang: Locale) => {
+  // const session = await getSession();
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/${id}/`,
+      // {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: 'Bearer ' + session.access,
+      //   },
+      // },
+    );
+
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ');
+      return 'An unexpected error occurred';
+    }
+  }
+};
+
+export default async function BusInfo({
   params,
 }: Readonly<{
   params: {
@@ -42,6 +70,7 @@ export default async function RoutAdd({
 }>) {
   const staticData = await getDashboardRoutDictionaries(params.lang);
   const tabs = await getDashboardTubsDictionaries(params.lang);
+  const rout = await getRout(params.id, params.lang);
 
   return (
     <DashboardContainer>
@@ -49,11 +78,15 @@ export default async function RoutAdd({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
             // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-            title={`${staticData.new_routs} `}
+            title={`${staticData.routTable.rout} ${rout.id}: ${rout.from_place} - ${rout.to_place}`}
             back={staticData.back}
           >
             <TabMenuLocale staticData={tabs}>
-              <AddRoutCard staticData={staticData} lang={params.lang} />
+              <EditRoutInfo
+                staticData={staticData}
+                lang={params.lang}
+                rout={rout}
+              />
             </TabMenuLocale>
           </ContentDashboard>
         </Box>

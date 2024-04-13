@@ -30,6 +30,9 @@ import {
   IconButton,
   TextField,
   Typography,
+  Tabs,
+  Tab,
+  FormGroup,
 } from '@mui/material';
 
 import Style from '@/components/published/Rent/CardInfo/cardinfo.module.css';
@@ -51,12 +54,18 @@ import { getSession } from '@/lib/auth';
 import { Locale } from '@/i18n.config';
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
-import { dashboardRoutStaticData } from '@/interface/IStaticData';
-import { IRout } from '@/interface/IJourney';
+import { dashboardJourneyStaticData } from '@/interface/IStaticData';
+import { IBus, IRout } from '@/interface/IJourney';
+import { DataPicker } from '@/components/common/DataPicker';
+import dayjs from 'dayjs';
+import { TimPicker } from '@/components/common/TimPicker';
+import BusConstructor from '../../Bus/BusConstructor/BusConstructor';
+
+import BusSeats from '@/components/common/BusSeats/BusSeats';
 // import BusService from '../../../Rent/BusService/BusService';
 
 interface IInfoCardProps {
-  staticData: dashboardRoutStaticData;
+  staticData: dashboardJourneyStaticData;
   lang: Locale;
 }
 
@@ -69,17 +78,74 @@ interface CityProp {
   address?: string | undefined;
 }
 
-const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+const isoDate = dayjs();
+const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
-  const [city, setCity] = useState<CityProp[]>([]);
-  const [selectedStop, setSelectedStop] = useState<CityProp>({
-    id: undefined,
-    city: '',
-    address: '',
-    coords_x: '',
-    cooords_y: '',
+  const [routs, setRouts] = useState<IRout[]>([]);
+  const [buses, setBuses] = useState<IBus[]>([]);
+  const [float, setFloat] = useState(0);
+  const [selectedBus, setSelectedBus] = useState<IBus>();
+  const [selectedRout, setSelectedRout] = useState<IRout>();
+  //    id: number;
+  // phone_number: string;
+  // telegram: string;
+  // viber: string;
+  // whatsup: string;
+  // first_floor_seats: any[];
+  // first_floor_seats_count: number;
+  // images_list: any[];
+  // name: string;
+  // photo: string;
+  // plates_number: string;
+
+  // second_floor_seats: any[];
+  // second_floor_seats_count: number;
+  // rows_1?: number | undefined;
+  // rows_2?: number;
+  // rows_3?: number;
+  // is_wc?: string;
+  // enter_2?: boolean;
+  // enter_1?: boolean;
+  // enter_3?: boolean;
+  // rows_4?: number | undefined;
+  // rows_5?: number | undefined;
+
+  const [values, setValues] = useState<any>({
+    time: isoDate,
+    date: isoDate,
   });
+
+  function a11yProps(index: number) {
+    return {
+      id: `tab-${index}`,
+      'aria-controls': `tabpanel-${index}`,
+    };
+  }
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setFloat(newValue);
+  };
+  function CustomTabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`tabpanel-${index}`}
+        aria-labelledby={`tab-${index}`}
+        {...other}
+      >
+        {value === index && <Box>{children}</Box>}
+      </div>
+    );
+  }
 
   const nameRegex = /^[^\s№?]+$/;
   const UploadFileSchema = yup.object().shape({
@@ -114,21 +180,21 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
     setValue,
     getValues,
     formState: { errors, isDirty, isValid },
-  } = useForm<IRout>({
+  } = useForm<any>({
     defaultValues: {
-      from_place: {
+      rout: {
         id: undefined,
-        city: '',
-        address: '',
-        coords_x: '',
-        cooords_y: '',
+        // city: '',
+        // address: '',
+        // coords_x: '',
+        // cooords_y: '',
       },
-      to_place: {
+      bus: {
         id: undefined,
-        city: '',
-        address: '',
-        coords_x: '',
-        cooords_y: '',
+        // city: '',
+        // address: '',
+        // coords_x: '',
+        // cooords_y: '',
       },
       price: 0,
       stops: [],
@@ -139,8 +205,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
-  const from_place = watch('from_place');
-  const to_place = watch('to_place');
+  const rout = watch('rout');
+  const bus = watch('bus');
   const price = watch('price');
   const stops = watch('stops');
   const is_stop = watch('is_stop');
@@ -148,11 +214,11 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
 
   const router = useRouter();
 
-  const handleDeleteStop = (id: number) => {
-    const stops = getValues('stops');
-    const updatedCity = stops.filter(item => item.id !== id);
-    setValue('stops', updatedCity);
-  };
+  // const handleDeleteStop = (id: number) => {
+  //   const stops = getValues('stops');
+  //   const updatedCity = stops.filter(item => item.id !== id);
+  //   setValue('stops', updatedCity);
+  // };
 
   const onSubmitForm = async (data: IRout) => {
     try {
@@ -191,32 +257,32 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       );
 
       if (response.status === 200) {
-        enqueueSnackbar(`${staticData.routTable.snackBar.update_success}`, {
+        enqueueSnackbar(`${staticData.journeyTable.snackBar.update_success}`, {
           variant: 'success',
         });
         router.push(`/${lang}/dashboard/rout/`);
       }
       if (response.status === 201) {
-        enqueueSnackbar(`${staticData.routTable.snackBar.add_success}`, {
+        enqueueSnackbar(`${staticData.journeyTable.snackBar.add_success}`, {
           variant: 'success',
         });
         router.push(`/${lang}/dashboard/rout/`);
       }
     } catch (error) {
       console.error(error);
-      enqueueSnackbar(`${staticData.routTable.snackBar.add_error}`, {
+      enqueueSnackbar(`${staticData.journeyTable.snackBar.add_error}`, {
         variant: 'error',
       });
     }
   };
 
-  const getCity = useCallback(async () => {
+  const getRout = useCallback(async () => {
     try {
       const session = await getSession();
       if (!session) return null;
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city/?limit=599`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=500`,
         {
           headers: {
             Authorization: 'Bearer ' + session.access,
@@ -227,7 +293,67 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       );
 
       if (response.status === 200) {
-        setCity(response.data.results);
+        setRouts(response.data.results);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+  }, []);
+
+  const getBus = useCallback(async () => {
+    try {
+      const session = await getSession();
+      if (!session) return null;
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/?limit=500`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
+      console.log(response.data);
+      if (response.status === 200) {
+        setBuses(response.data);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+  }, []);
+
+  const getBusById = useCallback(async (busId: number | undefined) => {
+    try {
+      const session = await getSession();
+      if (!session) return null;
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/${busId}`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setSelectedBus(response.data);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -241,13 +367,26 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   }, []);
 
   useEffect(() => {
-    getCity().catch(console.error);
-  }, [getCity]);
+    getRout().catch(console.error);
+  }, [getRout]);
+  useEffect(() => {
+    getBus().catch(console.error);
+  }, [getBus]);
 
   // const handleAddCity = () => {
   //   setCity(prevCity => [...prevCity, selectedStop]);
   //   setSelectedStop({ id: undefined, city: '', price: undefined });
   // };
+
+  const handleCheck = (id: number, floor: number) => {
+    // setSelectedSeats(prevSelectedSeats => ({
+    //   ...prevSelectedSeats,
+    //   [floor]: prevSelectedSeats[floor].includes(id)
+    //     ? prevSelectedSeats[floor].filter(seatId => seatId !== id)
+    //     : [...prevSelectedSeats[floor], id],
+    // }));
+    console.log(id, floor);
+  };
 
   return (
     <>
@@ -258,280 +397,219 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
             <Grid item xs={8} height={'100%'}>
               <Paper sx={{ mb: 2 }}>
                 <Box
-                  p={4}
+                  p={'20px'}
                   display={'flex'}
                   width={'100%'}
                   flexDirection={'column'}
                 >
                   <Container disableGutters>
-                    <Typography
-                      sx={{
-                        fontFamily: 'Inter',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        fontSize: '20px',
-                        lineHeight: '140%',
-                        color: color_title,
-                      }}
-                      mb={4}
-                    >
-                      {`${staticData.routTable.rout}`}
-                    </Typography>
-                    <Stack spacing={2}>
-                      <Stack spacing={2} flexDirection={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.routTable.from}
-                        </Typography>
-
-                        <Autocomplete
-                          {...register('from_place')}
-                          disablePortal
-                          fullWidth={true}
-                          size="small"
-                          sx={{ backgroundColor: 'white' }}
-                          options={city}
-                          getOptionLabel={(item: CityProp) =>
-                            `${item.city} ${item.address}`
-                          }
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label={staticData.routTable.city}
-                              FormHelperTextProps={{
-                                color: '#256223',
-                              }}
-                              // helperText={errors?.from_place?.message}
-                              // onError={!!errors?.from_place}
-                            />
-                          )}
-                          onChange={(event, newValue) => {
-                            newValue
-                              ? setValue('from_place', newValue)
-                              : setValue('from_place', {
-                                  id: undefined,
-                                  city: '',
-                                  price: undefined,
-                                });
-                          }}
-                        />
-                      </Stack>
-
-                      <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.routTable.to}
-                        </Typography>
-                        <Autocomplete
-                          {...register('to_place')}
-                          disablePortal
-                          fullWidth={true}
-                          size="small"
-                          sx={{ backgroundColor: 'white' }}
-                          options={city}
-                          getOptionLabel={(item: CityProp) =>
-                            `${item.city} ${item.address}`
-                          }
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label={staticData.routTable.city}
-                              FormHelperTextProps={{
-                                color: '#256223',
-                              }}
-                              // helperText={errors?.from_place?.message.}
-                              // onError={!!errors?.from_place?.message?.city}
-                            />
-                          )}
-                          onChange={(event, newValue) => {
-                            newValue
-                              ? setValue('to_place', newValue)
-                              : setValue('to_place', {
-                                  id: undefined,
-                                  city: '',
-                                  price: undefined,
-                                });
-                          }}
-                        />
-                        <TextField
-                          // {...register('from_place.price')}
-                          size={'small'}
-                          type="number"
-                          label={staticData.routTable.price}
-                          InputLabelProps={{
-                            style: { color: '#808080' },
-                          }}
-                          value={watch('price') || ''}
-                          onChange={e =>
-                            setValue('price', e.target.value.toString())
-                          }
-                        />
-
-                        <Stack
-                          justifyContent={'flex-end'}
-                          alignItems={'center'}
-                          display={'flex'}
-                          flexDirection={'row'}
-                          columnGap={1}
-                        >
-                          <Checkbox
-                            {...register('is_popular')}
-                            color="success"
-                            sx={{ padding: 0, color: '#808080' }}
-                          />
-                          <Typography
-                            sx={{
-                              fontFamily: 'Inter',
-                              fontStyle: 'normal',
-
-                              fontSize: '16px',
-                              lineHeight: '140%',
-                              color: '#808080',
-                            }}
-                          >
-                            {staticData.routTable.is_popular}
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Container>
-                </Box>
-              </Paper>
-              <Paper>
-                <Box
-                  p={4}
-                  display={'flex'}
-                  width={'100%'}
-                  flexDirection={'column'}
-                >
-                  <Container disableGutters>
-                    <Stack spacing={2}>
-                      <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.routTable.add_stop}
-                        </Typography>
-                        <Autocomplete
-                          value={selectedStop.city}
-                          disablePortal
-                          fullWidth={true}
-                          size="small"
-                          sx={{ backgroundColor: 'white' }}
-                          options={city.map(
-                            (item: CityProp) => `${item.city} ${item.address}`,
-                          )}
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label={staticData.routTable.city}
-                            />
-                          )}
-                          onInputChange={(event, newInputValue, reason) => {
-                            const selectedCity = city.find(
-                              item => item.city === newInputValue,
-                            );
-                            setSelectedStop(
-                              selectedCity || {
-                                id: undefined,
-                                city: newInputValue,
-                                price: '',
-                              },
-                            );
-                          }}
-                        />
-                      </Stack>
-                      <Stack>
-                        <TextField
-                          // {...register('from_place.price')}
-                          size={'small'}
-                          type="number"
-                          label={staticData.routTable.price}
-                          InputLabelProps={{
-                            style: { color: '#808080' },
-                          }}
-                          // value={watch('selectedStop.price') || 0}
-                          onChange={e => {
-                            const { value } = e.target;
-                            setSelectedStop(prevSelectedStop => ({
-                              ...prevSelectedStop,
-                              price: value,
-                            }));
-                          }}
-                        />
-                      </Stack>
-                      <Stack
-                        justifyContent={'flex-end'}
-                        alignItems={'center'}
-                        display={'flex'}
-                        flexDirection={'row'}
-                        columnGap={1}
+                    <Stack spacing={2} flexDirection={'column'}>
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+                          fontWeight: 700,
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: color_title,
+                        }}
                       >
-                        <Checkbox
-                          {...register('is_stop')}
-                          color="success"
-                          sx={{ padding: 0, color: '#808080' }}
-                          checked={is_stop}
-                        />
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
+                        {`${staticData.journeyTable.choose_journey}`}
+                      </Typography>
 
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: '#808080',
-                          }}
-                        >
-                          {staticData.routTable.stop}
-                        </Typography>
-                        <Box display={'flex'}>
-                          <Button
-                            color={'secondary'}
-                            size={'large'}
-                            variant={'contained'}
-                            sx={{ textTransform: 'none' }}
-                            fullWidth
-                            disabled={!is_stop}
-                            onClick={() => {
-                              const currentStops = getValues('stops');
-
-                              const updatedStops = [
-                                ...currentStops,
-                                selectedStop,
-                              ];
-
-                              setValue('stops', updatedStops);
-                              setValue('is_stop', false);
+                      <Autocomplete
+                        {...register('rout')}
+                        disablePortal
+                        fullWidth={true}
+                        size="small"
+                        sx={{ backgroundColor: 'white' }}
+                        options={routs}
+                        getOptionLabel={(item: IRout) =>
+                          `${item.from_place} - ${item.to_place}`
+                        }
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            label={staticData.journeyTable.rout}
+                            FormHelperTextProps={{
+                              color: '#256223',
                             }}
-                          >
-                            {staticData.routTable.add_stop}
-                          </Button>
-                        </Box>
+                            // helperText={errors?.from_place?.message}
+                            // onError={!!errors?.from_place}
+                          />
+                        )}
+                        onChange={(event, newValue) => {
+                          newValue
+                            ? setValue('rout', newValue)
+                            : setValue('rout', {
+                                id: undefined,
+                                city: '',
+                                price: undefined,
+                              });
+                        }}
+                      />
+
+                      <Autocomplete
+                        {...register('bus')}
+                        disablePortal
+                        fullWidth={true}
+                        size="small"
+                        sx={{ backgroundColor: 'white' }}
+                        options={buses}
+                        getOptionLabel={(item: IBus) =>
+                          `${item.id} ${item.name}`
+                        }
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            label={staticData.journeyTable.bus}
+                            FormHelperTextProps={{
+                              color: '#256223',
+                            }}
+                            // helperText={errors?.from_place?.message.}
+                            // onError={!!errors?.from_place?.message?.city}
+                          />
+                        )}
+                        onChange={(event, newValue) => {
+                          newValue
+                            ? setValue('bus', newValue)
+                            : setValue('bus', {
+                                id: undefined,
+                                city: '',
+                                price: undefined,
+                              });
+                          newValue
+                            ? getBusById(newValue?.id)
+                            : setSelectedBus(undefined);
+                        }}
+                      />
+                    </Stack>
+                    <Stack spacing={2} flexDirection={'column'} mt={2}>
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+                          fontWeight: 700,
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: color_title,
+                        }}
+                      >
+                        {`${staticData.journeyTable.departure_time}`}
+                      </Typography>
+                      <Stack spacing={2} direction={'row'}>
+                        <DataPicker
+                          staticData={staticData.journeyTable.departure_date}
+                          lang={lang}
+                          setValues={setValues}
+                          values={setValues}
+                          minOff
+                        />
+                        <TimPicker
+                          staticData={staticData.journeyTable.departure_time}
+                          lang={lang}
+                          setValues={setValues}
+                          values={setValues}
+                        />
                       </Stack>
+                      {selectedBus && (
+                        <Stack width={'100%'}>
+                          <Box>
+                            <Tabs
+                              value={float}
+                              onChange={handleChange}
+                              aria-label={staticData.journeyTable.float}
+                              sx={{
+                                minHeight: 'auto',
+                                mb: 2,
+                                '& .MuiTabs-indicator': {
+                                  display: 'none',
+                                },
+
+                                '& .Mui-selected': {
+                                  backgroundColor: `${theme.palette.info.main}`,
+                                },
+                                '& .MuiTab-root': {
+                                  px: 1,
+                                  py: 0.5,
+                                  fontSize: '10px',
+                                  minHeight: '22px',
+                                  minWidth: '60px',
+                                  borderRadius: '4px',
+                                  textTransform: 'none',
+                                },
+                              }}
+                            >
+                              <Tab
+                                label={`${staticData.journeyTable.float} 1`}
+                                {...a11yProps(0)}
+                              />
+
+                              <Tab
+                                label={`${staticData.journeyTable.float} 2`}
+                                {...a11yProps(1)}
+                              />
+                            </Tabs>
+                            <CustomTabPanel value={float} index={0}>
+                              <FormGroup
+                                sx={{ display: 'flex', flexDirection: 'row' }}
+                              >
+                                <BusSeats
+                                  rows_1={selectedBus?.rows_1}
+                                  rows_2={selectedBus?.rows_2}
+                                  rows_3={selectedBus?.rows_3}
+                                  is_wc={selectedBus?.wc ? 'yes' : 'no'}
+                                  enter_2={selectedBus?.enter_2}
+                                  enter_1={selectedBus?.enter_1}
+                                  seats={selectedBus?.first_floor_seats}
+                                  seats_start={1}
+                                  floor={1}
+                                  small
+                                  handleCheck={handleCheck}
+                                />
+                              </FormGroup>
+                            </CustomTabPanel>
+                            <CustomTabPanel value={float} index={1}>
+                              <FormGroup
+                                sx={{ display: 'flex', flexDirection: 'row' }}
+                              >
+                                <BusSeats
+                                  rows_1={selectedBus?.rows_4}
+                                  rows_2={selectedBus?.rows_5}
+                                  enter_1={selectedBus?.enter_3}
+                                  seats={selectedBus?.second_floor_seats}
+                                  seats_start={
+                                    selectedBus?.first_floor_seats_count + 1 ||
+                                    0
+                                  }
+                                  floor={2}
+                                  small
+                                  handleCheck={handleCheck}
+                                />
+                              </FormGroup>
+                            </CustomTabPanel>
+                            <Stack mt={2}>
+                              <Button
+                                sx={{
+                                  display: 'flex',
+                                  width: 'fit-content',
+                                  textTransform: 'none',
+                                  fontSize: '20px',
+                                  fontWeight: '400',
+                                }}
+                                color={'secondary'}
+                                size={'small'}
+                                variant={'contained'}
+                                type={'button'}
+
+                                // disabled={!isValid}
+                              >
+                                {staticData.journeyTable.blocked}
+                              </Button>
+                            </Stack>
+                          </Box>
+                        </Stack>
+                      )}
                     </Stack>
                   </Container>
                 </Box>
@@ -574,7 +652,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 color: color_title,
                               }}
                             >
-                              {staticData.routTable.rout}
+                              {staticData.journeyTable.rout}
                             </Typography>
                             <Stack
                               spacing={1}
@@ -582,8 +660,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               p={2}
                               sx={{
                                 borderRadius: '4px',
-
-                                border: '1px solid rgba(0, 0, 0, 0.23)',
+                                backgroundColor: '#E3EDF9',
                               }}
                             >
                               <Stack
@@ -594,7 +671,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <Circle height={16} width={16} />
                                 </Box>
-                                {from_place.city && (
+                                {rout && (
                                   <Stack
                                     spacing={1}
                                     alignItems={'start'}
@@ -611,9 +688,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       }}
                                       color={colorHeading}
                                     >
-                                      {from_place.city}
+                                      {rout.from_place}
                                     </Typography>
-                                    <Box
+                                    {/* <Box
                                       display={'flex'}
                                       alignItems={'center'}
                                       justifyContent={'space-between'}
@@ -634,13 +711,13 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       <Box height={16} width={16}>
                                         <Marker height={16} width={16} />
                                       </Box>
-                                    </Box>
+                                    </Box> */}
                                   </Stack>
                                 )}
                               </Stack>
                             </Stack>
 
-                            {stops.length > 0 ? (
+                            {/* {stops.length > 0 ? (
                               stops.map((stop, ind) => (
                                 <Stack
                                   key={`${stop.id} ${ind}`}
@@ -727,11 +804,11 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               ))
                             ) : (
                               <Typography>
-                                {staticData.routTable.no_stop}
+                                {staticData.journeyTable.no_stop}
                               </Typography>
-                            )}
+                            )} */}
 
-                            <Stack
+                            {/* <Stack
                               spacing={1}
                               direction={'column'}
                               p={2}
@@ -749,7 +826,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <ToCircle height={16} width={16} />
                                 </Box>
-                                {to_place.city && (
+                                {rout && (
                                   <Stack
                                     spacing={1}
                                     alignItems={'start'}
@@ -766,7 +843,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       }}
                                       color={colorHeading}
                                     >
-                                      {to_place.city}
+                                      {rout}
                                     </Typography>
                                     <Typography
                                       sx={{
@@ -806,8 +883,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                   </Stack>
                                 )}
                               </Stack>
-                            </Stack>
-                            {is_popular && (
+                            </Stack> */}
+                            {/* {is_popular && (
                               <Box
                                 display={'flex'}
                                 alignItems={'center'}
@@ -829,12 +906,12 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {staticData.routTable.is_popular}
+                                  {staticData.journeyTable.is_popular}
                                 </Typography>
                               </Box>
-                            )}
+                            )} */}
 
-                            <Box display={'flex'}>
+                            {/* <Box display={'flex'}>
                               <Button
                                 sx={{ height: 50 }}
                                 color={'success'}
@@ -844,9 +921,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                 type={'submit'}
                                 disabled={!isValid}
                               >
-                                {staticData.routTable.save}
+                                {staticData.journeyTable.save}
                               </Button>
-                            </Box>
+                            </Box> */}
                           </Stack>
                         </Stack>
                       </Grid>
@@ -862,4 +939,4 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   );
 };
 
-export default AddRoutCard;
+export default AddJourneyCard;

@@ -22,7 +22,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { SyntheticEvent, useState } from 'react';
 
@@ -61,6 +61,7 @@ export function Login({
   const [phone, setPhone] = useState('');
   const [isLoading, setIsloading] = useState(false);
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const handleChange =
     (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setValues({ ...values, [prop]: event.target.value });
@@ -89,23 +90,14 @@ export function Login({
         enqueueSnackbar(`${staticData.snack_bar.success}`, {
           variant: 'success',
         });
-        // const currentPath = window.location.pathname;
-        // const previousPath = document.referrer;
 
         const search = searchParams.get('callbackUrl');
 
         if (search?.includes('new-order')) {
-          router.replace(`/${lang}/my-order/new-order`);
+          router.replace(`${search}`);
         } else {
           router.back();
         }
-        // if (currentPath !== previousPath) {
-        //   router.replace('/');
-        // } else if (search && search?.length > 0) {
-        //   router.replace(`${lang}/my-order/new-order`);
-        // } else {
-        //   router.back();
-        // }
       }
       if (result !== 200) {
         enqueueSnackbar(`${staticData.snack_bar.error}`, {

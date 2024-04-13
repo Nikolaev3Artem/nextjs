@@ -18,12 +18,12 @@ export interface IRent {
   first_floor_seats?: ISeat[];
   second_floor_seats?: ISeat[];
   lang?: Locale;
-  staticData?: BusRentStaticDataPageProp;
+
   plates_number: string;
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
   wc?: any;
-  is_wc?: string;
+  is_wc_working?: boolean;
   rows_1?: number;
   rows_2?: number;
   rows_3?: number;

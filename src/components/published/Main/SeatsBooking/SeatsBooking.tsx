@@ -23,7 +23,7 @@ import Link from 'next/link';
 import { Locale } from '@/i18n.config';
 import { styled } from '@mui/material/styles';
 import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
-import BusSeats from '../BusSeats/BusSeats';
+import BusSeats from '../../../common/BusSeats/BusSeats';
 
 const color_title = grey[800];
 
@@ -340,16 +340,16 @@ export const SeatsBooking = ({
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
                     <BusSeats
-                      rows_1={2}
-                      enter_1={true}
-                      rows_2={4}
-                      rows_3={4}
-                      enter_2={true}
+                      rows_1={data?.bus[0]?.rows_1}
+                      enter_1={data?.bus[0]?.enter_1}
+                      rows_2={data?.bus[0]?.rows_2}
+                      rows_3={data?.bus[0]?.rows_3}
+                      enter_2={data?.bus[0]?.enter_2}
                       seats={data?.bus[0]?.first_floor_seats}
                       seats_start={1}
                       handleCheck={handleCheck}
                       floor={1}
-                      is_wc="yes"
+                      is_wc={data?.bus[0]?.wc ? 'yes' : 'no'}
                     />
                   </FormGroup>
                 </Box>
@@ -358,9 +358,9 @@ export const SeatsBooking = ({
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
                     <BusSeats
-                      rows_1={4}
-                      enter_1={false}
-                      rows_2={4}
+                      rows_1={data?.bus[0]?.rows_4}
+                      enter_1={data?.bus[0]?.enter_3}
+                      rows_2={data?.bus[0]?.rows_5}
                       seats={data?.bus[0]?.second_floor_seats}
                       seats_start={data?.bus[0]?.first_floor_seats_count + 1}
                       handleCheck={handleCheck}

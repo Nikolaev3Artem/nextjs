@@ -135,7 +135,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       uploaded_images: {},
       rentable: false,
       plates_number: '',
-      wc: false,
+      is_wc_working: false,
       rows_1: 2,
       rows_2: 0,
       rows_3: 0,
@@ -144,7 +144,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       enter_1: true,
       enter_2: false,
       enter_3: false,
-      is_wc: 'no',
+      wc: 'no',
     },
     mode: 'onChange',
   });
@@ -156,7 +156,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   // const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
-  const is_Wc_Work = watch('wc');
+  const is_wc_working = watch('is_wc_working');
   const files = watch('uploaded_images');
   const rows_1 = watch('rows_1');
   const rows_2 = watch('rows_2');
@@ -166,7 +166,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const enter_1 = watch('enter_1');
   const enter_2 = watch('enter_2');
   const enter_3 = watch('enter_3');
-  const is_wc = useWatch({ name: 'is_wc', control: control });
+  const wc = useWatch({ name: 'wc', control: control });
 
   async function onSubmitForm(data: IRent) {
     try {
@@ -196,6 +196,20 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         secondFloorSeatsCount?.toString() || '',
       );
       formData.append('is_active', data.is_active || 'false');
+      formData.append(
+        'is_wc_working',
+        data?.is_wc_working?.toString() || 'false',
+      );
+      formData.append('wc', data.wc === 'yes' ? 'true' : 'false');
+      formData.append('rows_1', data?.rows_1?.toString() || '');
+      formData.append('rows_2', data?.rows_2?.toString() || '');
+      formData.append('rows_3', data?.rows_3?.toString() || '');
+      formData.append('rows_4', data?.rows_4?.toString() || '');
+      formData.append('rows_5', data?.rows_5?.toString() || '');
+      formData.append('enter_1', data?.enter_1?.toString() || '');
+      formData.append('enter_2', data?.enter_2?.toString() || '');
+      formData.append('enter_3', data?.enter_3?.toString() || '');
+
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       const response = await axios.post(
         `${BASE_URL}${selectLang}/api/admin/service/bus/create/`,
@@ -360,7 +374,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                       display={'flex'}
                     >
                       <Checkbox
-                        {...register('wc')}
+                        {...register('is_wc_working')}
                         color="success"
                         sx={{ padding: 0, color: '#808080' }}
                       />
@@ -386,7 +400,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                           color: '#808080',
                         }}
                       >
-                        {is_Wc_Work
+                        {is_wc_working
                           ? staticData.busTable.working
                           : staticData.busTable.not_working}
                       </Typography>
@@ -501,9 +515,9 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                   {staticData.busTable.kitchen}
                                 </Typography>
                                 <Select
-                                  {...register('is_wc')}
+                                  {...register('wc')}
                                   id=" wc"
-                                  value={is_wc}
+                                  value={wc}
                                   size="small"
                                 >
                                   <MenuItem value="no">
@@ -566,7 +580,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                             rows_1={rows_1}
                             rows_2={rows_2}
                             rows_3={rows_3}
-                            is_wc={is_wc}
+                            is_wc={wc}
                             enter_2={enter_2}
                             enter_1={enter_1}
                             setSeatsCount={setFirstFloorSeatsCount}
@@ -881,7 +895,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {is_Wc_Work
+                                {is_wc_working
                                   ? staticData.busTable.working
                                   : staticData.busTable.not_working}
                               </Typography>

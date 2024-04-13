@@ -33,7 +33,7 @@ import BusTable from '@/components/protected/dashboard/Bus/Table/BusTable';
 import { Locale } from '@/i18n.config';
 import { ITickets } from '@/interface/IJourney';
 import CalendarIcon from '../../../../../../public/icons/calendar-month.svg';
-import { DataPicker } from '@/components/published/Main/DataPicker';
+import { DataPicker } from '@/components/common/DataPicker';
 import TicketsTable from '../Table/TicketsTable';
 
 interface State {

@@ -13,7 +13,7 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { Input } from '@/components/published/Main/Input';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { DataPicker } from '@/components/published/Main/DataPicker';
+import { DataPicker } from '@/components/common/DataPicker';
 
 import { SearchJourney } from '@/components/published/Main/SearchRout';
 import { IJourney } from '@/interface/IJourney';

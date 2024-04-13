@@ -19,7 +19,7 @@ import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
@@ -58,10 +58,18 @@ const CityTable = ({
   const { selectLang } = useLangContext();
   const [isShowModal, setIsShowModal] = useState(false);
 
+  const [cityList, setCityList] = useState<StopsProps[]>([{ city: '', id: 0 }]);
+
   const [selectedCity, setSelectedCity] = useState<StopsProps>({
     city: '',
     id: 0,
   });
+
+  useEffect(() => {
+    if (cities) {
+      setCityList(cities);
+    }
+  }, [cities]);
 
   const rout = useRouter();
 
@@ -84,7 +92,7 @@ const CityTable = ({
   };
 
   const handleClick = (id: any): any => {
-    const foundCity = cities.find(city => city.id === id);
+    const foundCity = cityList.find(city => city.id === id);
     foundCity ? setSelectedCity(foundCity) : console.log('City not found');
 
     setIsShowModal(true);
@@ -98,7 +106,7 @@ const CityTable = ({
     const session = await getSession();
     try {
       const response = await fetch(
-        `${BASE_URL}/${selectLang}/api/admin/stop/${id}`,
+        `${BASE_URL}/${selectLang}/api/admin/city/delete/${id}`,
         {
           method: 'DELETE',
           headers: {
@@ -112,6 +120,13 @@ const CityTable = ({
         enqueueSnackbar(`${staticData.cityTable.snackBar.remove_success}`, {
           variant: 'success',
         });
+        setCityList((prevImagesList: StopsProps[]) => {
+          const updatedImagesList = prevImagesList.filter(
+            (el: StopsProps) => el.id !== id,
+          );
+          return updatedImagesList;
+        });
+
         rout.refresh();
       }
     } catch (error) {
@@ -204,8 +219,8 @@ const CityTable = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {cities &&
-                cities
+              {cityList.length > 0 &&
+                cityList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(item => (
                     <TableRow

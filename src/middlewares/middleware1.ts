@@ -50,14 +50,16 @@ export function withAuthMiddleware(middleware: CustomMiddleware) {
     const session = await getSession();
     const locale = getLocale();
     const pathname = request.nextUrl.pathname;
+    const searchParams = request.nextUrl.search;
 
+    const callbackUrl = searchParams ? `${pathname}${searchParams}` : pathname;
     const protectedPathsWithLocale = getProtectedRoutes(protectedPaths, [
       ...i18n.locales,
     ]);
 
     if (!session && protectedPathsWithLocale.includes(pathname)) {
       const signInUrl = new URL(`/${locale}/auth`, request.url);
-      signInUrl.searchParams.set('callbackUrl', pathname);
+      signInUrl.searchParams.set('callbackUrl', callbackUrl);
       return NextResponse.redirect(signInUrl);
     }
     updateSession(request);
