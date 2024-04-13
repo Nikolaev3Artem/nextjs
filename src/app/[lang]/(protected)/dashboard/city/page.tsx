@@ -32,7 +32,7 @@ const getCity = async (lang: Locale) => {
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/stop/?limit=299`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city/?limit=299`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,

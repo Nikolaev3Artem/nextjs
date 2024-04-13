@@ -12,6 +12,10 @@
   }
 }
 
+.bus_layout.small {
+  column-gap: 4px;
+}
+
 .bus_row {
   display: flex;
   flex-direction: row;
@@ -21,6 +25,10 @@
     flex-direction: column-reverse;
     row-gap: 10px;
   }
+}
+
+.bus_row.small {
+  row-gap: 4px;
 }
 
 .bus_seat {
@@ -45,6 +53,10 @@
   }
 }
 
+.bus_seat.small {
+  width: 32px;
+  height: 30px;
+}
 .bus_seat:hover {
   border: 2px solid #bfbfbf;
   font-size: 19px;
@@ -143,4 +155,17 @@
 .bus_seat.selected {
   background-color: #296fca;
   color: white;
+}
+
+.bus_seat.wc.small::before {
+  height: 32px !important;
+  width: 64px !important;
+  top: 64px;
+}
+
+.bus_seat.enter.small::before {
+  width: 21px !important;
+  height: 68px !important;
+  top: 0px !important;
+  left: 6px !important;
 }

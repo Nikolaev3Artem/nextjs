@@ -22,14 +22,32 @@ import { IRent } from '@/interface/IRent';
 import CardInfo from '@/components/published/Rent/CardInfo/CardInfo';
 
 import Style from './rentcard.module.css';
+import { BusRentStaticDataPageProp } from '@/interface/IStaticData';
+import { Locale } from '@/i18n.config';
 
 const color = grey[700];
 const colorHeading = grey[900];
 
+interface Rent {
+  id: number | undefined;
+  name?: string;
+  photo?: any;
+  images_list?: {
+    id?: number;
+
+    photo?: string;
+  }[];
+
+  first_floor_seats_count?: number;
+  second_floor_seats_count?: number;
+  plates_number: string;
+  lang: Locale;
+  staticData: BusRentStaticDataPageProp;
+}
+
 export const RentCard = ({
   id,
   name,
-
   images_list,
   photo,
   first_floor_seats_count,
@@ -37,7 +55,7 @@ export const RentCard = ({
   plates_number,
   lang,
   staticData,
-}: IRent) => {
+}: Rent) => {
   const [data, setData] = useState<IRent | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -62,7 +80,7 @@ export const RentCard = ({
               component="img"
               height="195"
               image={photo}
-              alt={staticData.name}
+              alt={staticData?.name || ''}
             />
           ) : (
             <Skeleton variant={'rectangular'} />
@@ -82,7 +100,7 @@ export const RentCard = ({
                 }}
                 color={colorHeading}
               >
-                {staticData.name}
+                {staticData?.name}
                 {name}
               </Typography>
             </Stack>
@@ -99,7 +117,7 @@ export const RentCard = ({
                 variant="h6"
                 color={color}
               >
-                {staticData.service}
+                {staticData?.service}
               </Typography>
               {/* <BusService busIdService={busIdService} /> */}
             </Stack>
@@ -116,7 +134,7 @@ export const RentCard = ({
                 variant="h6"
                 color={color}
               >
-                {staticData.first_floor}
+                {staticData?.first_floor}
               </Typography>
 
               <Typography
@@ -148,7 +166,7 @@ export const RentCard = ({
                   variant="h6"
                   color={color}
                 >
-                  {staticData.second_floor}
+                  {staticData?.second_floor}
                 </Typography>
                 <Typography
                   sx={{
@@ -183,7 +201,7 @@ export const RentCard = ({
             color={'secondary'}
             variant={'contained'}
           >
-            {staticData.see_more_btn}
+            {staticData?.see_more_btn}
           </Button>
         </CardActions>
       </Card>

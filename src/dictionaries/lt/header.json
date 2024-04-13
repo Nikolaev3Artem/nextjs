@@ -2,12 +2,7 @@
   "pages": [
     { "id": 1, "name": "home", "title": "Pagrindinis", "path": "/" },
     { "id": 2, "name": "about_us", "title": "Apie mus", "path": "/about" },
-    {
-      "id": 3,
-      "name": "directions",
-      "title": "Kryptys",
-      "path": "/direction"
-    },
+
     { "id": 4, "name": "rules", "title": "Taisyklės", "path": "/rule" },
     { "id": 5, "name": "parcels", "title": "Siuntiniai", "path": "/parcels" },
     {

@@ -155,15 +155,15 @@ const TicketsTable = ({
           </TableCell>
 
           <TableCell component="th" scope="row">
-            {item.journey[0].routes[0].from_place} -{' '}
+            {item.journey[0].routes[0].from_place} -
             {item.journey[0].routes[0].to_place}
           </TableCell>
 
           <TableCell align="left">
             {dayjs(item?.journey[0].arrival_date)
               .locale(`${lang}`)
-              .format('DD.MM.YYYY')}{' '}
-            {dayjs(item?.journey[0].arrival_time)
+              .format('DD.MM.YYYY')}
+            {dayjs(item?.journey[0].arrival_date)
               .locale(`${lang}`)
               .format('HH:mm')}
           </TableCell>

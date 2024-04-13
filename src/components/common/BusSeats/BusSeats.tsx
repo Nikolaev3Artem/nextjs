@@ -13,6 +13,13 @@ export interface BusSeatsProps {
   wc?: boolean;
   empty?: boolean;
   status?: string;
+  rows_1?: number | undefined;
+  rows_2?: number;
+  rows_3?: number;
+  is_wc?: string;
+  enter_2?: boolean;
+  enter_1?: boolean;
+  small?: boolean;
 }
 
 export interface BusConstructorProps {
@@ -28,6 +35,7 @@ export interface BusConstructorProps {
   seats_start: number;
   handleCheck: (arg: number, ar: number) => void;
   floor: number;
+  small?: boolean;
 }
 
 const BusSeats = (props: BusConstructorProps) => {
@@ -36,18 +44,24 @@ const BusSeats = (props: BusConstructorProps) => {
 
   useEffect(() => {
     setSeats(props.seats);
-  }, []);
+  }, [props]);
 
   const handleClick = (seatNumber: number, floor: number) => {
-    if (seats) {
-      const updatedSeats = seats.map(seat => {
+    console.log(seats);
+
+    setSeats(prevState => {
+      console.log('prevState', prevState); // Log previous state
+      const updatedSeats = prevState?.map(seat => {
+        console.log('seat', seat); // Log each seat
+        console.log('seatNumber', seatNumber); // Log seatNumber
         if (seat.seat === seatNumber) {
-          return { ...seat, status: 'Ordered' };
+          return { ...seat, status: 'Selected' };
         }
         return seat;
       });
-      setSeats(updatedSeats);
-    }
+      console.log('updatedSeats', updatedSeats); // Log updated seats
+      return updatedSeats; // Return the updated array of seats
+    });
     if (seatNumber) {
       props.handleCheck(seatNumber, floor);
     }
@@ -67,8 +81,8 @@ const BusSeats = (props: BusConstructorProps) => {
     seatNumber,
     wc,
     status,
+    small,
   }: BusSeatsProps) {
-    console.log(seatNumber, status);
     return (
       <button
         id={id}
@@ -76,7 +90,7 @@ const BusSeats = (props: BusConstructorProps) => {
           seatNumber ? handleClick(seatNumber, props?.floor) : null
         }
         disabled={empty || enter1 || enter2}
-        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'new' ? Style.new : status?.toLocaleLowerCase() === 'orderd' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''}`}
+        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}`}
       >
         <Typography
           sx={{
@@ -91,9 +105,15 @@ const BusSeats = (props: BusConstructorProps) => {
     );
   }
 
-  function BusRow({ seats }: { seats: BusSeatsProps[] }) {
+  function BusRow({
+    seats,
+    small,
+  }: {
+    seats: BusSeatsProps[];
+    small?: boolean;
+  }) {
     return (
-      <div className={Style.bus_row}>
+      <div className={`${Style.bus_row}  ${small ? Style.small : ''}`}>
         {seats.map(seat => (
           <BusSeat
             key={seat.id}
@@ -104,6 +124,7 @@ const BusSeats = (props: BusConstructorProps) => {
             seatNumber={seat.seatNumber}
             wc={seat.wc}
             status={checkStatus(seat?.seatNumber)}
+            small={small}
           />
         ))}
       </div>
@@ -144,9 +165,9 @@ const BusSeats = (props: BusConstructorProps) => {
   }, []);
 
   return (
-    <Box className={Style.bus_layout}>
+    <Box className={`${Style.bus_layout}  ${props.small ? Style.small : ''}`}>
       {busSeats.map((row, index) => (
-        <BusRow key={index} seats={row} />
+        <BusRow key={index} seats={row} small={props.small} />
       ))}
     </Box>
   );

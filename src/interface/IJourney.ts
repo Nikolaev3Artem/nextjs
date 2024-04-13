@@ -18,22 +18,7 @@ export interface ITickets {
 export interface IJourney {
   id: number;
   routes: IRout[];
-  bus: {
-    id: number;
-    phone_number: string;
-    telegram: string;
-    viber: string;
-    whatsup: string;
-    first_floor_seats: any[];
-    first_floor_seats_count: number;
-    images_list: any[];
-    name: string;
-    photo: string;
-    plates_number: string;
-
-    second_floor_seats: any[];
-    second_floor_seats_count: number;
-  }[];
+  bus: IBus[];
   departure_date: string;
   departure_time: string;
   arrival_date: string;
@@ -41,13 +26,39 @@ export interface IJourney {
   is_active: boolean;
 }
 
+export interface IBus {
+  id: number;
+  phone_number: string;
+  telegram: string;
+  viber: string;
+  whatsup: string;
+  first_floor_seats: any[];
+  first_floor_seats_count: number;
+  images_list: any[];
+  name: string;
+  photo: string;
+  plates_number: string;
+
+  second_floor_seats: any[];
+  second_floor_seats_count: number;
+  rows_1?: number | undefined;
+  rows_2?: number;
+  rows_3?: number;
+  wc?: string;
+  enter_2?: boolean;
+  enter_1?: boolean;
+  enter_3?: boolean;
+  rows_4?: number | undefined;
+  rows_5?: number | undefined;
+}
+
 export interface StopsProps {
   city: string;
   id: number | undefined;
   price?: number | string | undefined;
-  coords_x: string;
-  cooords_y: string;
-  address: string;
+  coords_x?: string;
+  cooords_y?: string;
+  address?: string;
 }
 
 export interface IRout {

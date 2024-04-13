@@ -1,0 +1,58 @@
+{
+  "journeys": "Journeys",
+  "new_journey": "New Journey",
+  "back": "Back",
+  "searchForm": {
+    "label": "Search",
+    "filter": "Filter",
+    "data": "Date",
+    "new_button_form": {
+      "text": "New Journey"
+    }
+  },
+  "journeyTable": {
+    "number": "Number",
+    "seats": "Seats",
+    "rout": "Route",
+    "bus": "Bus",
+    "departure": "Departure",
+    "create": "Created",
+    "all": "All",
+    "rows": "Rows per page",
+    "reduce": "Reduce",
+    "add_stop": "Add New Journey",
+    "departure_time": "Departure Time",
+    "departure_date": "Departure Date",
+    "arrival_time": "Arrival Time",
+    "float": "Float",
+    "blocked": "Blocked Seat",
+    "to_journey": "To Journey",
+    "journey": "Journey",
+    "un_blocked": "Unblocked Seat",
+    "reserve": "Reserve",
+    "passenger_list": "Passenger List",
+    "name": "Name",
+    "seat": "Seat",
+    "comment": "Comment",
+    "luggage": "Luggage",
+    "from": "From",
+    "to": "To",
+    "next_step": "Next Step",
+    "choose_journey": "Choose a route and a bus",
+    "snackBar": {
+      "remove_success": "Card Removed",
+      "remove_error": "Removal Error",
+      "update_success": "Your changes are saved",
+      "add_success": "Your card is added",
+      "add_error": "Error saving changes"
+    }
+  },
+  "errors": {
+    "size": "File size cannot exceed (5 MB)",
+    "formats": "Only these formats are supported: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Name cannot exceed 60 characters",
+    "plates_number10": "Number cannot exceed 10 characters",
+    "error_number": "Only numbers are allowed",
+    "error_text": "Invalid text format"
+  }
+}

@@ -60,7 +60,7 @@ const getRout = async (id: number, lang: Locale) => {
   }
 };
 
-export default async function BusInfo({
+export default async function RoutInfo({
   params,
 }: Readonly<{
   params: {

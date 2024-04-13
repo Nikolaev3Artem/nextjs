@@ -12,26 +12,29 @@ import { IRent } from '@/interface/IRent';
 
 import { Locale } from '@/i18n.config';
 import {
+  getDashboardJourneyDictionaries,
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
 import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import { getSession } from '@/lib/auth';
 import { RoutWrapper } from '@/components/protected/dashboard/Rout/RoutWrapper';
+import { IJourney } from '@/interface/IJourney';
+import { JourneyWrapper } from '@/components/protected/dashboard/Journey/JourneyWrapper';
 
-export interface IRentProps {
+export interface IJourneyProps {
   errorCode: any;
   res?: IBanner[];
-  rents: IRent[];
+  journey: IJourney[];
 }
 
-const getRouts = async (lang: Locale) => {
+const getJourney = async (lang: Locale) => {
   try {
     const session = await getSession();
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=199`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/?limit=199`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,
@@ -60,18 +63,17 @@ export default async function Rout({
 }: Readonly<{
   params: { lang: Locale };
 }>) {
-  const routs = await getRouts(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
-  const staticData = await getDashboardRoutDictionaries(params.lang);
+  const journey = await getJourney(params.lang);
+
+  const staticData = await getDashboardJourneyDictionaries(params.lang);
 
   return (
     <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ContentDashboard title={staticData.routs} back={staticData.back}>
-            <RoutWrapper
-              routs={routs}
-              tabs={tabs}
+          <ContentDashboard title={staticData.journeys} back={staticData.back}>
+            <JourneyWrapper
+              journey={journey}
               staticData={staticData}
               lang={params.lang}
             />

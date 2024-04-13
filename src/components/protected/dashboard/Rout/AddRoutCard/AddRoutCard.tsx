@@ -64,6 +64,9 @@ interface CityProp {
   id: number | undefined;
   city: string;
   price?: string | number | undefined;
+  coords_x?: string | undefined;
+  cooords_y?: string | undefined;
+  address?: string | undefined;
 }
 
 const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
@@ -73,34 +76,34 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const [selectedStop, setSelectedStop] = useState<CityProp>({
     id: undefined,
     city: '',
+    address: '',
+    coords_x: '',
+    cooords_y: '',
   });
 
   const nameRegex = /^[^\s№?]+$/;
   const UploadFileSchema = yup.object().shape({
-    // from_place: yup
-    //   .object()
-    //   .shape({
-    //     id: yup.number().required(),
-    //     city: yup.string().required(),
-    //     price: yup.number().nullable(),
-    //   })
-    //   .required(),
-    // to_place: yup
-    //   .object()
-    //   .shape({
-    //     id: yup.number().required(),
-    //     city: yup.string().required(),
-    //     price: yup.number().nullable(),
-    //   })
-    //   .required(),
-    // price: yup
-    //   .number()
-    //   .integer(staticData.errors.error_number)
-    //   .positive(staticData.errors.error_number),
-    // stop_price: yup
-    //   .number()
-    //   .integer(staticData.errors.error_number)
-    //   .positive(staticData.errors.error_number),
+    from_place: yup.object().shape({
+      id: yup.number().required(),
+      city: yup.string().required(),
+      // address: yup.string().required(),
+      // price: yup.number().nullable(),
+    }),
+    to_place: yup.object().shape({
+      id: yup.number().required(),
+      city: yup.string().required(),
+      // price: yup.number().nullable(),
+      // address: yup.string().required(),
+    }),
+
+    price: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
+    stop_price: yup
+      .number()
+      .integer(staticData.errors.error_number)
+      .positive(staticData.errors.error_number),
   });
 
   const {
@@ -116,14 +119,19 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       from_place: {
         id: undefined,
         city: '',
+        address: '',
+        coords_x: '',
+        cooords_y: '',
       },
       to_place: {
         id: undefined,
         city: '',
+        address: '',
+        coords_x: '',
+        cooords_y: '',
       },
       price: 0,
       stops: [],
-      is_stop: false,
       is_popular: false,
     },
     // @ts-ignore
@@ -150,27 +158,34 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
     try {
       const session = await getSession();
       const formData = new FormData();
-
+      const jsonPrice = JSON.stringify(data?.price);
+      const s = [
+        {
+          id: 0,
+          city: 'XX',
+          price: 0,
+          coords_x: '121',
+          cooords_y: '4242',
+          address: 'ADD',
+        },
+      ];
+      const jsonStop = JSON.stringify(s);
       formData.append('from_place', data.from_place.city || '');
+      formData.append('to_place', data.from_place.city || '');
+      formData.append('price', jsonPrice || '');
+      formData.append('price', data?.isPopular?.toString() || 'false');
+      formData.append('stops', jsonStop || '');
+
       const response = await axios.post(
         `${BASE_URL}/${selectLang}/api/admin/routes/create`,
 
-        //         const objectsArray = [
-        //   { id: 1, name: 'Object 1' },
-        //   { id: 2, name: 'Object 2' },
-        //   { id: 3, name: 'Object 3' }
-        // ];
-        {
-          from_place: data.from_place.city || '',
-          to_place: data.to_place.city || '',
-          price: data?.price || 0,
-          is_popular: data?.is_popular || false,
-          // stops: {}
-        },
+        formData,
+
         {
           headers: {
             Authorization: 'Bearer ' + session.access,
-            'Content-Type': 'application/json',
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
           },
         },
       );
@@ -201,7 +216,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       if (!session) return null;
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/stop/?limit=599`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city/?limit=599`,
         {
           headers: {
             Authorization: 'Bearer ' + session.access,
@@ -284,7 +299,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           size="small"
                           sx={{ backgroundColor: 'white' }}
                           options={city}
-                          getOptionLabel={(item: CityProp) => item.city}
+                          getOptionLabel={(item: CityProp) =>
+                            `${item.city} ${item.address}`
+                          }
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -328,7 +345,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           size="small"
                           sx={{ backgroundColor: 'white' }}
                           options={city}
-                          getOptionLabel={(item: CityProp) => item.city}
+                          getOptionLabel={(item: CityProp) =>
+                            `${item.city} ${item.address}`
+                          }
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -336,8 +355,8 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               FormHelperTextProps={{
                                 color: '#256223',
                               }}
-                              // helperText={errors?.to_place?.message}
-                              // onError={!!errors?.to_place}
+                              // helperText={errors?.from_place?.message.}
+                              // onError={!!errors?.from_place?.message?.city}
                             />
                           )}
                           onChange={(event, newValue) => {
@@ -422,7 +441,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           fullWidth={true}
                           size="small"
                           sx={{ backgroundColor: 'white' }}
-                          options={city.map((item: CityProp) => item.city)}
+                          options={city.map(
+                            (item: CityProp) => `${item.city} ${item.address}`,
+                          )}
                           renderInput={params => (
                             <TextField
                               {...params}
@@ -608,8 +629,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                         }}
                                         color={colorHeading}
                                       >
-                                        Двірцева площа, 1, Львів, Львівська
-                                        область
+                                        {from_place.address}
                                       </Typography>
                                       <Box height={16} width={16}>
                                         <Marker height={16} width={16} />
@@ -689,8 +709,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                           }}
                                           color={colorHeading}
                                         >
-                                          Двірцева площа, 1, Львів, Львівська
-                                          область
+                                          {stop.address}
                                         </Typography>
                                         <IconButton
                                           onClick={() => {
@@ -778,8 +797,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                         }}
                                         color={colorHeading}
                                       >
-                                        Двірцева площа, 1, Львів, Львівська
-                                        область
+                                        {to_place.address}
                                       </Typography>
                                       <Box height={16} width={16}>
                                         <Marker height={16} width={16} />

@@ -32,7 +32,7 @@ export interface IRentProps {
   // serviceBus?: readonly IServiceBus[];
 }
 
-export default async function BusInfo({
+export default async function RoutAdd({
   params,
 }: Readonly<{
   params: {

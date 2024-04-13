@@ -1,15 +1,16 @@
 'use client';
 
-import { Container, Fade, Stack } from '@mui/material';
+import { Container, Fade, SelectChangeEvent, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import debounce from '@mui/utils/debounce';
 
 import Error from 'next/error';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import React from 'react';
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
@@ -33,6 +34,42 @@ export const BusWrapper = ({
   lang: Locale;
 }) => {
   const router = useRouter();
+  const [filter, setFilter] = useState('');
+  const [filteredBus, setFilteredBus] = useState<IRent[]>([
+    {
+      id: undefined,
+      name: '',
+
+      plates_number: '',
+    },
+  ]);
+
+  const handleChange = () => {
+    return debounce(
+      (
+        event:
+          | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          | SelectChangeEvent<string>,
+      ) => {
+        setFilter(event?.target?.value);
+      },
+      600,
+    );
+  };
+
+  useEffect(() => {
+    filter
+      ? setFilteredBus(
+          buses.filter(obj =>
+            Object.values(obj).some(
+              val =>
+                typeof val === 'string' &&
+                val.toLowerCase().includes(filter.toLowerCase()),
+            ),
+          ),
+        )
+      : setFilteredBus(buses);
+  }, [filter]);
 
   return (
     <>
@@ -59,6 +96,7 @@ export const BusWrapper = ({
               </InputAdornment>
             ),
           }}
+          onChange={handleChange()}
         />
         <Button
           color={'secondary'}
@@ -71,7 +109,7 @@ export const BusWrapper = ({
         </Button>
       </Stack>
 
-      <BusTable buses={buses} staticData={staticData} lang={lang} />
+      <BusTable buses={filteredBus} staticData={staticData} lang={lang} />
     </>
   );
 };

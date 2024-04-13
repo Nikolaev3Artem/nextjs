@@ -113,7 +113,7 @@ export function generateBusSeats(
           }
         }
       }
-      console.log('rr', row);
+
       colCount++;
       busSeats.push(row);
     }

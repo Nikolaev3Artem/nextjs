@@ -1,6 +1,5 @@
 import { LangContextProvider } from '@/app/context';
 import { Locale } from '@/i18n.config';
-
 import { getUser, logout } from '@/lib/auth';
 
 import { permanentRedirect } from 'next/navigation';

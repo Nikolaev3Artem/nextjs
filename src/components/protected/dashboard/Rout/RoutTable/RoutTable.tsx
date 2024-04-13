@@ -84,7 +84,7 @@ const RoutTable = ({
     const session = await getSession();
     try {
       const response = await axios.delete(
-        `${BASE_URL}/${selectLang}/api/admin/service/rout/${id}/delete/`,
+        `${BASE_URL}/${selectLang}/api/admin/routes/delete/${id}/`,
         {
           headers: {
             Authorization: 'Bearer ' + session.access,

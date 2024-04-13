@@ -1,0 +1,59 @@
+{
+  "journeys": "Viagens",
+  "new_journey": "Nova viagem",
+  "back": "Voltar",
+  "searchForm": {
+    "label": "Pesquisar",
+    "filter": "Filtrar",
+    "data": "Data",
+    "new_button_form": {
+      "text": "Nova viagem"
+    }
+  },
+  "journeyTable": {
+    "number": "Número",
+    "seats": "Assentos",
+    "rout": "Rota",
+    "bus": "Ônibus",
+    "departure": "Partida",
+    "create": "Criado",
+    "all": "Todos",
+    "rows": "Linhas por página",
+    "reduce": "Reduzir",
+    "add_stop": "Adicionar nova viagem",
+    "departure_time": "Hora de partida",
+    "departure_date": "Data de partida",
+    "arrival_time": "Hora de chegada",
+    "float": "Flutuar",
+    "blocked": "Assento bloqueado",
+    "to_journey": "Para a viagem",
+    "journey": "Viagem",
+    "un_blocked": "Assento desbloqueado",
+    "reserve": "Reservar",
+    "passenger_list": "Lista de passageiros",
+    "name": "Nome",
+    "seat": "Assento",
+    "comment": "Comentário",
+    "luggage": "Bagagem",
+    "from": "De",
+    "to": "Para",
+    "next_step": "Próximo passo",
+    "choose_journey": "Escolha a rota e o ônibus",
+
+    "snackBar": {
+      "remove_success": "Cartão removido",
+      "remove_error": "Erro ao remover",
+      "update_success": "Suas alterações foram salvas",
+      "add_success": "Seu cartão foi adicionado",
+      "add_error": "Erro ao salvar as alterações"
+    }
+  },
+  "errors": {
+    "size": "O arquivo não pode exceder (5 MB)",
+    "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+    "name_more30": "O nome não pode ter mais de 60 caracteres",
+    "plates_number10": "O número não pode ter mais de 10 caracteres",
+    "error_number": "Pode conter apenas números",
+    "error_text": "Formato de texto inválido"
+  }
+}
