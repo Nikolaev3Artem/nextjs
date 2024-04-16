@@ -161,7 +161,7 @@ export const ContentForm = ({
       const { data, status } = await axios.get(
         `${BASE_URL}/${selectLang}/api/${rout}/`,
       );
-      console.log(data.results[data.results.length - 1]);
+
       if (status === 200) {
         setRes(data.results[data.results.length - 1]);
       }

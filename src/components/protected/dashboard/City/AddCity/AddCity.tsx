@@ -112,7 +112,7 @@ export const AddCity = ({
   const coords_x = watch('coords_x');
   const cooords_y = watch('cooords_y');
   const address = watch('address');
-  console.log('city', city);
+
   async function onSubmitForm(data: StopsProps) {
     try {
       const session = await getSession();

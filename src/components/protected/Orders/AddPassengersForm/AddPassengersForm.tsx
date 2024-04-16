@@ -31,6 +31,7 @@ import axios from 'axios';
 import { getSession } from '@/lib/auth';
 import { JourneyInfo } from '../JourneyInfo';
 import { getRoutInfo } from '../JourneyInfo/getInfo';
+import { fondyCheck } from '@/helpers/fondy';
 
 const discount = 30;
 
@@ -123,6 +124,24 @@ export const AddPassengersForm = ({
     return transformedSeats;
   };
 
+  const getOrderDesc = () => {
+    const pass_data = [];
+
+    for (const passengerKey in values) {
+      const passenger = values[passengerKey];
+      const pass = {
+        name: passenger.name,
+        surname: passenger.surname,
+        seat: passenger.seat,
+        floor: passenger.floor,
+      };
+      const passString = `${staticData.orderForm.passenger}: ${pass.name} ${pass.surname}, ${staticData.orderForm.floor}: ${pass.floor}, ${staticData.orderForm.seat}: ${pass.seat}`;
+      pass_data.push(passString);
+    }
+    const pass_data_string = pass_data.join(', ');
+    return `${staticData.orderForm.payment_button.title}: ${staticData.orderForm.journey}: ${data?.routes[0]?.from_place}-${data?.routes[0]?.to_place} ${pass_data_string}`;
+  };
+
   useEffect(() => {
     if (seatsObject) {
       setPassengerSeat(transformSeats(seatsObject));
@@ -194,6 +213,7 @@ export const AddPassengersForm = ({
     try {
       const session = await getSession();
       if (!session) return null;
+      const ticket_id = [];
       for (const passengerKey in values) {
         if (Object.hasOwnProperty.call(values, passengerKey)) {
           const passenger = values[passengerKey];
@@ -212,7 +232,7 @@ export const AddPassengersForm = ({
           );
           formData.append('additional_baggage', passenger.luggage);
           formData.append('passanger_type', passenger.passanger_type);
-          formData.append('status', 'PAYED');
+          formData.append('status', 'NEW');
 
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_BASE_URL}/uk/api/journey/${routId}/create_ticket`,
@@ -224,10 +244,19 @@ export const AddPassengersForm = ({
               },
             },
           );
+          ticket_id.push(response?.data?.id);
         }
       }
 
-      router.push(`/${lang}/my-order`);
+      const response = await axios.post(`/${lang}/api/fondy`, {
+        order_id: `id${ticket_id.join(', ')}`,
+        order_desc: getOrderDesc(),
+        amount: getTotal(values) * 100,
+        currency: 'USD',
+      });
+
+      const url = await response.data.response.checkout_url;
+      if (url) router.push(url);
     } catch (error) {
       console.error(error);
     }

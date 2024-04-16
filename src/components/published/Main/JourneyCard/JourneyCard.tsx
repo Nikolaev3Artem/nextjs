@@ -70,7 +70,7 @@ export const JourneyCard = ({
   };
 
   const icons = ['wifi', 'conditioning', 'wc', 'seats', 'socket'];
-  console.log(data);
+
   interface ConveniencesIconProp {
     icon: string;
     name: string;
@@ -100,7 +100,7 @@ export const JourneyCard = ({
     router.push(`/${lang}`);
     setIsShowModal(false);
   };
-  console.log(data);
+
   return (
     <>
       <Grid item className={Style.wrapper} sx={{ flexDirection: 'column' }}>

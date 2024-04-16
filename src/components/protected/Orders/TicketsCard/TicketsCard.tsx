@@ -61,7 +61,7 @@ export const TicketsCard = ({
   lang: Locale;
 }) => {
   const [expanded, setExpanded] = React.useState(false);
-  console.log(data);
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -156,12 +156,12 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {dayjs(data?.journey[0].departure_date)
+                  {dayjs(data?.journey[0]?.departure_date)
                     .locale(`${lang}`)
                     .format('HH:mm')}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {dayjs(data?.journey[0].departure_date)
+                  {dayjs(data?.journey[0]?.departure_date)
                     .locale(`${lang}`)
                     .format('DD.MM.YYYY')}
                 </Typography>
@@ -172,12 +172,12 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {dayjs(data?.journey[0].arrival_date)
+                  {dayjs(data?.journey[0]?.arrival_date)
                     .locale(`${lang}`)
                     .format('HH:mm')}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {dayjs(data?.journey[0].arrival_date)
+                  {dayjs(data?.journey[0]?.arrival_date)
                     .locale(`${lang}`)
                     .format('DD.MM.YYYY')}
                 </Typography>
@@ -224,7 +224,7 @@ export const TicketsCard = ({
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
                   {data.journey[0]
-                    ? data.journey[0].routes[0].from_place.city
+                    ? data.journey[0]?.routes[0]?.from_place.city
                     : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
@@ -233,7 +233,7 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data.journey[0].routes[0].from_place.address || ''}
+                    {data.journey[0]?.routes[0]?.from_place.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -246,8 +246,8 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0]
-                    ? data.journey[0].routes[0].to_place.city
+                  {data?.journey[0]
+                    ? data.journey[0]?.routes[0]?.to_place.city
                     : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
@@ -256,7 +256,7 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data.journey[0].routes[0].to_place.address || ''}
+                    {data?.journey[0]?.routes[0]?.to_place?.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -434,13 +434,13 @@ export const TicketsCard = ({
                     component={'span'}
                     sx={{ fontSize: { xs: '13px', md: '16px' }, mr: 1 }}
                   >
-                    {data.journey[0].routes[0].from_place}
+                    {data?.journey[0]?.routes[0]?.from_place}
                   </Typography>
                   <Typography
                     component={'span'}
                     sx={{ fontSize: { xs: '13px', md: '16px' } }}
                   >
-                    {data.journey[0].routes[0].to_place}
+                    {data?.journey[0]?.routes[0]?.to_place}
                   </Typography>
                 </Box>
                 <Box display={'flex'} columnGap={2}>
@@ -454,8 +454,8 @@ export const TicketsCard = ({
                       <FromCircleSvg width={12} height={13} />
                     </Box>
 
-                    {data.journey[0].routes[0].stops &&
-                      data.journey[0].routes[0].stops.map((el, ind) => {
+                    {data?.journey[0]?.routes[0]?.stops &&
+                      data?.journey[0]?.routes[0]?.stops.map((el, ind) => {
                         return (
                           <Box
                             component={'li'}
@@ -492,11 +492,11 @@ export const TicketsCard = ({
                       alignItems={'center'}
                     >
                       <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data.journey[0].routes[0].from_place}
+                        {data?.journey[0]?.routes[0]?.from_place}
                       </Typography>
                     </Box>
-                    {data.journey[0].routes[0].stops &&
-                      data.journey[0].routes[0].stops.map(
+                    {data?.journey[0]?.routes[0]?.stops &&
+                      data?.journey[0]?.routes[0]?.stops.map(
                         (stop: StopsProps, ind) => {
                           return (
                             <Box
@@ -522,7 +522,7 @@ export const TicketsCard = ({
                       alignItems={'center'}
                     >
                       <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data.journey[0].routes[0].to_place}
+                        {data.journey[0]?.routes[0]?.to_place}
                       </Typography>
                     </Box>
                   </Box>
@@ -688,7 +688,7 @@ export const TicketsCard = ({
                             color={'primary'}
                             sx={{ fontSize: { xs: '13px', md: '16px' } }}
                           >
-                            {data.journey[0].routes[0].price}
+                            {data.journey[0]?.routes[0]?.price}
                           </Typography>
                           <Typography
                             color={'primary'}

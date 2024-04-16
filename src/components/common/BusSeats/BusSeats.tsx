@@ -47,19 +47,14 @@ const BusSeats = (props: BusConstructorProps) => {
   }, [props]);
 
   const handleClick = (seatNumber: number, floor: number) => {
-    console.log(seats);
-
     setSeats(prevState => {
-      console.log('prevState', prevState); // Log previous state
       const updatedSeats = prevState?.map(seat => {
-        console.log('seat', seat); // Log each seat
-        console.log('seatNumber', seatNumber); // Log seatNumber
         if (seat.seat === seatNumber) {
           return { ...seat, status: 'Selected' };
         }
         return seat;
       });
-      console.log('updatedSeats', updatedSeats); // Log updated seats
+
       return updatedSeats; // Return the updated array of seats
     });
     if (seatNumber) {
@@ -90,7 +85,7 @@ const BusSeats = (props: BusConstructorProps) => {
           seatNumber ? handleClick(seatNumber, props?.floor) : null
         }
         disabled={empty || enter1 || enter2}
-        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}`}
+        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'new' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}`}
       >
         <Typography
           sx={{

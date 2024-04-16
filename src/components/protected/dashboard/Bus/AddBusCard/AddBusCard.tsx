@@ -29,7 +29,7 @@ import cn from 'clsx';
 import 'keen-slider/keen-slider.min.css';
 import { useKeenSlider } from 'keen-slider/react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
@@ -44,6 +44,7 @@ import { dashboardBusStaticData } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { getSession } from '@/lib/auth';
 import BusConstructor from '../BusConstructor/BusConstructor';
+import { revalidatePath } from 'next/cache';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -226,7 +227,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
           variant: 'success',
         });
-        rout.push(`/${lang}/dashboard/bus/`);
+        revalidatePath(`/${lang}/dashboard/bus/`);
+        redirect(`/${lang}/dashboard/bus/`);
       }
     } catch (error) {
       console.error(error);
