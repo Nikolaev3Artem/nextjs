@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { IJourney, ITickets, StopsProps } from '@/interface/IJourney';
 import { MainStaticDataProps } from '@/interface/IStaticData';
+import dayjs from 'dayjs';
 import {
   Box,
   Button,
@@ -60,7 +61,7 @@ export const TicketsCard = ({
   lang: Locale;
 }) => {
   const [expanded, setExpanded] = React.useState(false);
-
+  console.log(data);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -155,10 +156,14 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data?.journey[0] ? data?.journey[0].departure_time : ''}
+                  {dayjs(data?.journey[0].departure_date)
+                    .locale(`${lang}`)
+                    .format('HH:mm')}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0] ? data.journey[0].departure_date : ''}
+                  {dayjs(data?.journey[0].departure_date)
+                    .locale(`${lang}`)
+                    .format('DD.MM.YYYY')}
                 </Typography>
               </Box>
               <Box>
@@ -167,10 +172,14 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0] ? data.journey[0].arrival_time : ''}
+                  {dayjs(data?.journey[0].arrival_date)
+                    .locale(`${lang}`)
+                    .format('HH:mm')}
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                  {data.journey[0] ? data.journey[0].arrival_date : ''}
+                  {dayjs(data?.journey[0].arrival_date)
+                    .locale(`${lang}`)
+                    .format('DD.MM.YYYY')}
                 </Typography>
               </Box>
             </Grid>
@@ -187,7 +196,11 @@ export const TicketsCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {/* {data.arrival_date} */} 10 годин
+                {dayjs(
+                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
+                )
+                  .locale(`${lang}`)
+                  .format('HH:mm')}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>
@@ -210,7 +223,9 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0] ? data.journey[0].routes[0].from_place : ''}
+                  {data.journey[0]
+                    ? data.journey[0].routes[0].from_place.city
+                    : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
                   <Typography
@@ -218,8 +233,7 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {/* {data.departure_date} */} Двірцева площа, 1, Львів,
-                    Львівська область
+                    {data.journey[0].routes[0].from_place.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -232,7 +246,9 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0] ? data.journey[0].routes[0].to_place : ''}
+                  {data.journey[0]
+                    ? data.journey[0].routes[0].to_place.city
+                    : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
                   <Typography
@@ -240,8 +256,7 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {/* {data.departure_date} */} Lisboa 1100-341, 1100-341
-                    Buenos Aires
+                    {data.journey[0].routes[0].to_place.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -365,8 +380,11 @@ export const TicketsCard = ({
                   fontSize: { xs: '13px', md: '16px' },
                 }}
               >
-                {/* {staticData.routs_card.conveniences} */}
-                10 годин
+                {dayjs(
+                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
+                )
+                  .locale(`${lang}`)
+                  .format('HH:mm')}
               </Typography>
             </Box>
           </Box>

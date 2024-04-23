@@ -1,0 +1,49 @@
+{
+  "routs": "Maršrutai",
+  "new_routs": "Naujas maršrutai",
+
+  "back": "Atgal",
+  "searchForm": {
+    "label": "Paieška...",
+    "new_button_form": {
+      "text": "Naujas maršrutai"
+    }
+  },
+  "routTable": {
+    "number": "Numeris",
+    "from": "Iš",
+    "to": "Į",
+    "stops": "Stotelės",
+    "stop": "Stotelė",
+    "all": "Visi",
+    "rows": "Eilutės puslapyje",
+    "reduce": "Sumažinti",
+    "add_stop": "Pridėti stotelę",
+    "city": "Miestas",
+    "departure_time": "Išvykimo laikas",
+    "order": "Užsakymas",
+    "arrival_time": "Atvykimo laikas",
+    "price": "Kaina",
+    "rout": "Maršrutas",
+    "save": "Išsaugoti",
+    "add_btn": "Pridėti",
+    "no_stop": "There are no stops",
+    "is_popular": "Populiarus maršrutas",
+
+    "snackBar": {
+      "remove_success": "Kortelė sėkmingai pašalinta",
+      "remove_error": "Klaida pašalinant",
+      "update_success": "Jūsų pakeitimai sėkmingai išsaugoti",
+      "add_success": "Jūsų kortelė sėkmingai pridėta",
+      "add_error": "Klaida pridedant"
+    }
+  },
+  "errors": {
+    "size": "Failo dydis neturi viršyti (5 MB)",
+    "formats": "Palaikomi tik šie formatai: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Pavadinimas neturi būti ilgesnis nei 60 simbolių",
+    "plates_number10": "Numeris neturi būti ilgesnis nei 10 simbolių",
+    "error_number": "Leidžiami tik skaitmenys",
+    "error_text": "Netinkamas teksto formatas"
+  }
+}

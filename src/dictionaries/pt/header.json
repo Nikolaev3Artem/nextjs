@@ -2,12 +2,7 @@
   "pages": [
     { "id": 1, "name": "home", "title": "Principal", "path": "/" },
     { "id": 2, "name": "about_us", "title": "Sobre nós", "path": "/about" },
-    {
-      "id": 3,
-      "name": "directions",
-      "title": "Instruções",
-      "path": "/direction"
-    },
+
     { "id": 4, "name": "rules", "title": "Regras", "path": "/rule" },
     { "id": 5, "name": "parcels", "title": "Parcelas", "path": "/parcels" },
     {

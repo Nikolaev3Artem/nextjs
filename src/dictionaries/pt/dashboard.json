@@ -76,12 +76,7 @@
       "path": "/dashboard/content/about_us",
       "title": "Sobre nós"
     },
-    {
-      "id": 3,
-      "name": "direction",
-      "path": "/dashboard/content/direction",
-      "title": "Direções"
-    },
+
     {
       "id": 4,
       "name": "ruler",
@@ -112,12 +107,17 @@
     {
       "id": 2,
       "name": "tickets",
-      "path": "/#",
+      "path": "/dashboard/tickets",
       "title": "Pesquisa de bilhetes"
     },
-    { "id": 3, "name": "bus", "path": "/#", "title": "Ônibus" },
-    { "id": 4, "name": "city", "path": "/#", "title": "Cidades" },
-    { "id": 5, "name": "rout", "path": "/#", "title": "Rotas" },
-    { "id": 6, "name": "flights", "path": "/#", "title": "Viagens" }
+    { "id": 3, "name": "bus", "path": "/dashboard/bus", "title": "Ônibus" },
+    { "id": 4, "name": "city", "path": "/dashboard/city", "title": "Cidades" },
+    { "id": 5, "name": "rout", "path": "/dashboard/rout", "title": "Rotas" },
+    {
+      "id": 6,
+      "name": "flights",
+      "path": "/dashboard/flights",
+      "title": "Viagens"
+    }
   ]
 }

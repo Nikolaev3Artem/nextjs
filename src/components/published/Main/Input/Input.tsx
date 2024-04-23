@@ -46,15 +46,19 @@ export function Input({
   let active = true;
 
   useEffect(() => {
-    if ((active = true)) {
+    if (active === true) {
+      console.log('to', selectRoutsTo);
+      setValue2(selectRoutsTo);
+      setValue1(selectRoutsFrom);
+      setValues({ ...values, ['from']: selectRoutsFrom });
+      setValues({ ...values, ['to']: selectRoutsTo });
+      console.log('from', selectRoutsFrom);
+      setTimeout(() => {}, 1000);
       window.scrollTo({
         top: 0,
         left: 0,
         behavior: 'smooth',
       });
-      setValue1(selectRoutsTo);
-      setValue2(selectRoutsFrom);
-      setTimeout(() => {}, 1000);
     }
   }, [selectRoutsTo, selectRoutsFrom]);
 

@@ -1,4 +1,5 @@
 'use client';
+import { revalidatePath } from 'next/cache';
 
 import {
   Paper,
@@ -95,6 +96,7 @@ const BusTable = ({
         enqueueSnackbar(`${staticData.busTable.snackBar.remove_success}`, {
           variant: 'success',
         });
+        revalidatePath('/uk/dashboard/bus');
         rout.refresh();
       }
     } catch (error) {
@@ -227,11 +229,11 @@ const BusTable = ({
             {buses &&
               buses
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => (
+                .map((item, ind) => (
                   <TableRow
                     hover
                     tabIndex={-1}
-                    key={item.id}
+                    key={`${item.id}${item.name} || ${ind}`}
                     // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell component="th" scope="row">
@@ -252,7 +254,7 @@ const BusTable = ({
                       {item?.first_floor_seats_count}
                     </TableCell>
                     <TableCell align="left">
-                      {item.wc ? (
+                      {item.is_wc_working ? (
                         <AiOutlineCheckCircle size={16} color={'green'} />
                       ) : (
                         <MdOutlineCancel size={16} color={'red'} />

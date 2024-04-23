@@ -19,6 +19,7 @@
     "plate": "Numeris",
     "seats_first_floor": "Sėdimos vietos pirmame aukšte",
     "wc": "WC",
+    "rentable": "Nuomojamas",
     "seats_second_floor": "Sėdimos vietos antrame aukšte",
     "poster": "Plakatas",
     "images": "Nuotraukos",
@@ -31,6 +32,11 @@
     "not_working": "Nedirba",
     "float": "Aukštas",
     "choose": "Pasirinkite failą",
+    "row": "Eilės",
+    "enter": "Įėjimas",
+    "kitchen": "Kambarys",
+    "no": "Ne",
+    "yes": "Taip",
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

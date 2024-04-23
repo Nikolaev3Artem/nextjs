@@ -1,0 +1,58 @@
+{
+  "journeys": "Kelionės",
+  "new_journey": "Nauja kelionė",
+  "back": "Atgal",
+  "searchForm": {
+    "label": "Ieškoti",
+    "filter": "Filtruoti",
+    "data": "Data",
+    "new_button_form": {
+      "text": "Nauja kelionė"
+    }
+  },
+  "journeyTable": {
+    "number": "Numeris",
+    "seats": "Vietos",
+    "rout": "Maršrutas",
+    "bus": "Autobusas",
+    "departure": "Išvykimas",
+    "create": "Sukurtas",
+    "all": "Visi",
+    "rows": "Eilės puslapyje",
+    "reduce": "Sumažinti",
+    "add_stop": "Pridėti naują kelionę",
+    "departure_time": "Išvykimo laikas",
+    "departure_date": "Išvykimo Data",
+    "arrival_time": "Atvykimo laikas",
+    "float": "Plūduriuoti",
+    "blocked": "Blokuotas sėdynė",
+    "to_journey": "Į kelionę",
+    "journey": "Kelionė",
+    "un_blocked": "Neblokuotas sėdynė",
+    "reserve": "Rezervuoti",
+    "passenger_list": "Keleivių sąrašas",
+    "name": "Vardas",
+    "seat": "Vieta",
+    "comment": "Komentaras",
+    "luggage": "Bagažas",
+    "from": "Iš",
+    "to": "Į",
+    "next_step": "Kitas žingsnis",
+    "choose_journey": "Pasirinkite maršrutą ir autobusą",
+    "snackBar": {
+      "remove_success": "Kortelė pašalinta",
+      "remove_error": "Klaida šalinant",
+      "update_success": "Jūsų pakeitimai išsaugoti",
+      "add_success": "Jūsų kortelė pridėta",
+      "add_error": "Klaida įrašant pakeitimus"
+    }
+  },
+  "errors": {
+    "size": "Failas negali būti didesnis nei (5 MB)",
+    "formats": "Leidžiami tik šie formatai: .jpeg, .jpg, .png, .webp",
+    "name_more30": "Vardas negali būti ilgesnis nei 60 simbolių",
+    "plates_number10": "Numeris negali būti ilgesnis nei 10 simbolių",
+    "error_number": "Gali būti tik skaičiai",
+    "error_text": "Netinkamas teksto formatas"
+  }
+}

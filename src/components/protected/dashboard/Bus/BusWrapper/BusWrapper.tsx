@@ -1,15 +1,16 @@
 'use client';
 
-import { Container, Fade, Stack } from '@mui/material';
+import { Container, Fade, SelectChangeEvent, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import debounce from '@mui/utils/debounce';
 
 import Error from 'next/error';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import React from 'react';
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
@@ -19,24 +20,56 @@ import { dashboardBusStaticData, TabProps } from '@/interface/IStaticData';
 import { useRouter } from 'next/navigation';
 import BusTable from '@/components/protected/dashboard/Bus/Table/BusTable';
 import { Locale } from '@/i18n.config';
+import Link from 'next/link';
 
 export const BusWrapper = ({
   buses,
-  tabs,
+
   staticData,
   lang,
 }: {
   buses: IRent[];
-  tabs: { tab: TabProps[] };
+
   staticData: dashboardBusStaticData;
   lang: Locale;
 }) => {
   const router = useRouter();
+  const [filter, setFilter] = useState('');
+  const [filteredBus, setFilteredBus] = useState<IRent[]>([
+    {
+      id: undefined,
+      name: '',
 
-  function AddCard(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    event.stopPropagation();
-    router.push(`/${lang}/dashboard/bus/add`);
-  }
+      plates_number: '',
+    },
+  ]);
+
+  const handleChange = () => {
+    return debounce(
+      (
+        event:
+          | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+          | SelectChangeEvent<string>,
+      ) => {
+        setFilter(event?.target?.value);
+      },
+      600,
+    );
+  };
+
+  useEffect(() => {
+    filter
+      ? setFilteredBus(
+          buses.filter(obj =>
+            Object.values(obj).some(
+              val =>
+                typeof val === 'string' &&
+                val.toLowerCase().includes(filter.toLowerCase()),
+            ),
+          ),
+        )
+      : setFilteredBus(buses);
+  }, [filter]);
 
   return (
     <>
@@ -63,21 +96,20 @@ export const BusWrapper = ({
               </InputAdornment>
             ),
           }}
+          onChange={handleChange()}
         />
         <Button
           color={'secondary'}
           variant={'contained'}
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-            AddCard(event)
-          }
+          LinkComponent={Link}
+          href={`/${lang}/dashboard/bus/add`}
           startIcon={<AiOutlinePlus />}
         >
           {staticData.searchForm.new_button_form.text}
         </Button>
       </Stack>
-      <TabMenuLocale staticData={tabs}>
-        <BusTable buses={buses} staticData={staticData} lang={lang} />
-      </TabMenuLocale>
+
+      <BusTable buses={filteredBus} staticData={staticData} lang={lang} />
     </>
   );
 };

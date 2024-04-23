@@ -12,8 +12,8 @@ import React from 'react';
 import { AiOutlinePlus, AiOutlineSearch } from 'react-icons/ai';
 
 import RentTable from '@/components/protected/dashboard/Rent/Table/RentTable';
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
 import { IBanner } from '@/interface/IBanner';
 import { IRent } from '@/interface/IRent';
 
@@ -25,10 +25,10 @@ import {
   getDashboardTubsDictionaries,
   getMainDictionaries,
 } from '@/lib/dictionary';
-import { RentWrapper } from '@/components/protected/dashboard/Rent/RentWrapper';
+import { RentWrapper } from '@/components/protected/dashboard/Rent/RentWrapper/RentWrapper';
 import { BusWrapper } from '@/components/protected/dashboard/Bus/BusWrapper';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
-import { TicketsWrapper } from '@/components/protected/dashboard/Tickets/TicketsWrapper';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
+import { TicketsWrapper } from '@/components/protected/dashboard/Tickets/TicketsWrapper/TicketsWrapper';
 
 export interface IRentProps {
   errorCode: any;

@@ -36,7 +36,7 @@ interface IEditorNumProps {
   data: number;
   titleOne?: string;
   titleTwo?: string;
-  res: IEditorText[];
+  res: IEditorText;
   lang: Locale;
   setEditorData: Dispatch<SetStateAction<string>>;
 }
@@ -84,8 +84,8 @@ function TextEditor({
 
   useEffect(() => {
     if (editorState !== undefined) {
-      const blocksFromHTML1 = convertFromHTML((res && res[0]?.text1) || '');
-      const blocksFromHTML2 = convertFromHTML((res && res[0]?.text2) || '');
+      const blocksFromHTML1 = convertFromHTML((res && res?.text1) || '');
+      const blocksFromHTML2 = convertFromHTML((res && res?.text2) || '');
       const contentState1 = ContentState.createFromBlockArray(
         blocksFromHTML1.contentBlocks,
       );

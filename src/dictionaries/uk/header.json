@@ -2,12 +2,7 @@
   "pages": [
     { "id": 1, "name": "home", "title": "Головна", "path": "/" },
     { "id": 2, "name": "about_us", "title": "Про нас", "path": "/about" },
-    {
-      "id": 3,
-      "name": "directions",
-      "title": "Напрямки",
-      "path": "/direction"
-    },
+
     { "id": 4, "name": "rules", "title": "Правила", "path": "/rule" },
     { "id": 5, "name": "parcels", "title": "Посилки", "path": "/parcels" },
     {

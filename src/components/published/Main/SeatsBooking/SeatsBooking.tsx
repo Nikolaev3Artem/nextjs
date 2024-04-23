@@ -22,6 +22,8 @@ import theme from '@/theme';
 import Link from 'next/link';
 import { Locale } from '@/i18n.config';
 import { styled } from '@mui/material/styles';
+import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
+import BusSeats from '../../../common/BusSeats/BusSeats';
 
 const color_title = grey[800];
 
@@ -163,7 +165,7 @@ export const SeatsBooking = ({
 
   return (
     <JourneySeatsBookingModal onClose={onClose} isShowModal={isShowModal}>
-      <Box>
+      <Box sx={{ overflowY: 'scroll', height: { xs: '94vh', md: 'auto' } }}>
         <Box
           p={4}
           display={'flex'}
@@ -186,8 +188,8 @@ export const SeatsBooking = ({
           </IconButton>
           <Stack
             width={'100%'}
-            direction={'row'}
-            alignItems={'center'}
+            direction={{ sm: 'row', xs: 'column' }}
+            alignItems={{ sm: 'center', xs: 'flex-start' }}
             display={'flex'}
             justifyContent={'space-between'}
           >
@@ -239,10 +241,10 @@ export const SeatsBooking = ({
           </Stack>
           <Stack
             width={'100%'}
-            direction={'row'}
-            alignItems={'center'}
+            alignItems={'flex-start'}
             display={'flex'}
             justifyContent={'space-between'}
+            direction={{ md: 'row', xs: 'column' }}
           >
             <Box
               flexDirection={'row'}
@@ -281,8 +283,8 @@ export const SeatsBooking = ({
                 color={'primary'}
                 sx={{ fontSize: { xs: '13px', md: '20px' } }}
               >
-                {date
-                  ? dayjs(date).format('DD.MM.YYYY')
+                {data.departure_date
+                  ? dayjs(data.departure_date).format('DD.MM.YYYY')
                   : dayjs().format('DD.MM.YYYY')}
               </Typography>
             </Box>
@@ -327,7 +329,7 @@ export const SeatsBooking = ({
                   label={`${staticData.seat_booking.float} 1`}
                   {...a11yProps(0)}
                 />
-                {data.bus[0].second_floor_seats_count > 0 && (
+                {data?.bus[0]?.second_floor_seats_count > 0 && (
                   <Tab
                     label={`${staticData.seat_booking.float} 2`}
                     {...a11yProps(1)}
@@ -337,76 +339,33 @@ export const SeatsBooking = ({
               <CustomTabPanel value={value} index={0}>
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-                    {data.bus[0].first_floor_seats.map((el, ind) => {
-                      return (
-                        <FormControlLabel
-                          control={
-                            <BpCheckbox
-                              onChange={() => handleCheck(el.seat, 1)}
-                              checked={selectedSeats[1].includes(el.seat)}
-                            />
-                          }
-                          key={ind}
-                          label={`${el.seat}`}
-                          sx={{
-                            width: '60px',
-                            position: 'relative',
-                            '& .MuiFormControlLabel-label': {
-                              position: 'absolute',
-                              left: '59%',
-                              top: '50%',
-                              transform: 'translate(-50%, -50%) rotate(-90deg)',
-                              zIndex: 2,
-                              color: '#fff',
-                              fontSize: '10px',
-                            },
-                            '& .Mui-disabled.MuiFormControlLabel-label': {
-                              color: '#fff',
-                              fontSize: '10px',
-                            },
-                          }}
-                          disabled={el.status === 'ORDERED'}
-                        />
-                      );
-                    })}
+                    <BusSeats
+                      rows_1={data?.bus[0]?.rows_1}
+                      enter_1={data?.bus[0]?.enter_1}
+                      rows_2={data?.bus[0]?.rows_2}
+                      rows_3={data?.bus[0]?.rows_3}
+                      enter_2={data?.bus[0]?.enter_2}
+                      seats={data?.bus[0]?.first_floor_seats}
+                      seats_start={1}
+                      handleCheck={handleCheck}
+                      floor={1}
+                      is_wc={data?.bus[0]?.wc ? 'yes' : 'no'}
+                    />
                   </FormGroup>
                 </Box>
               </CustomTabPanel>
               <CustomTabPanel value={value} index={1}>
                 <Box>
                   <FormGroup sx={{ display: 'flex', flexDirection: 'row' }}>
-                    {data.bus[0].second_floor_seats.map((el, ind) => {
-                      return (
-                        <FormControlLabel
-                          control={
-                            <BpCheckbox
-                              onChange={() => handleCheck(el.seat, 2)}
-                              checked={selectedSeats[2].includes(el.seat)}
-                            />
-                          }
-                          key={ind}
-                          label={`${el.seat}`}
-                          sx={{
-                            width: '60px',
-                            position: 'relative',
-                            '& .MuiFormControlLabel-label': {
-                              position: 'absolute',
-                              left: '59%',
-                              top: '50%',
-                              transform: 'translate(-50%, -50%) rotate(-90deg)',
-                              zIndex: 2,
-                              color: '#fff',
-                              fontSize: '10px',
-                            },
-                            '& .Mui-disabled.MuiFormControlLabel-label': {
-                              color: '#fff',
-                              fontSize: '10px',
-                            },
-                          }}
-                          disabled={el.status === 'ORDERED'}
-                        />
-                      );
-                    })}
+                    <BusSeats
+                      rows_1={data?.bus[0]?.rows_4}
+                      enter_1={data?.bus[0]?.enter_3}
+                      rows_2={data?.bus[0]?.rows_5}
+                      seats={data?.bus[0]?.second_floor_seats}
+                      seats_start={data?.bus[0]?.first_floor_seats_count + 1}
+                      handleCheck={handleCheck}
+                      floor={2}
+                    />
                   </FormGroup>
                 </Box>
               </CustomTabPanel>

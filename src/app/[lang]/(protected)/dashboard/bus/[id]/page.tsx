@@ -13,20 +13,28 @@ import React from 'react';
 import EditBusInfo from '@/components/protected/dashboard/Bus/EditBusInfo/EditBusInfo';
 
 // import EditCardInfo from '../../../component/Dashboard/Rent/EditCardInfo/EditCardInfo';
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '../add/page';
 import {
   getDashboardBusDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
+import { getSession } from '@/lib/auth';
 
-const getBus = async (lang: Locale, id: number) => {
+const getBus = async (id: number, lang: Locale) => {
+  const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus/${id}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/${id}/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + session.access,
+        },
+      },
     );
 
     if (response.status === 200) {
@@ -57,9 +65,8 @@ export default async function BusInfo({
     id: number;
   };
 }>) {
-  const bus = await getBus(params.lang, params.id);
+  const bus = await getBus(params.id, params.lang);
   const staticData = await getDashboardBusDictionaries(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
 
   return (
     <DashboardContainer>
@@ -74,13 +81,11 @@ export default async function BusInfo({
             back={staticData.back}
           >
             {bus && (
-              <TabMenuLocale staticData={tabs}>
-                <EditBusInfo
-                  bus={bus}
-                  staticData={staticData}
-                  lang={params.lang}
-                />
-              </TabMenuLocale>
+              <EditBusInfo
+                bus={bus}
+                staticData={staticData}
+                lang={params.lang}
+              />
             )}
           </ContentDashboard>
         </Box>

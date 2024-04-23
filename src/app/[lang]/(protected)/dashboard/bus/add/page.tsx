@@ -8,16 +8,14 @@ import Error from 'next/error';
 import { ParsedUrlQuery } from 'querystring';
 import React from 'react';
 import { IRent } from '@/interface/IRent';
-import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard';
-import AddRentCard from '@/components/protected/dashboard/Rent/Form/AddRentCard';
+import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import {
   getDashboardBusDictionaries,
   getDashboardRentsDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
-import { DashboardContainer } from '@/components/layout/DashboardContainer';
+import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCard';
-import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 
 const getBus = async (lang: Locale) => {
   try {
@@ -53,7 +51,6 @@ export default async function Add({
 }: Readonly<{
   params: { lang: Locale };
 }>) {
-  const tabs = await getDashboardTubsDictionaries(params.lang);
   const staticData = await getDashboardBusDictionaries(params.lang);
 
   const bus = await getBus(params.lang);
@@ -67,13 +64,11 @@ export default async function Add({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.new_bus} back={staticData.back}>
-            <TabMenuLocale staticData={tabs}>
-              <AddBusCard
-                serviceBus={bus?.serviceBus}
-                staticData={staticData}
-                lang={params.lang}
-              />
-            </TabMenuLocale>
+            <AddBusCard
+              serviceBus={bus?.serviceBus}
+              staticData={staticData}
+              lang={params.lang}
+            />
           </ContentDashboard>
         </Box>
       </Fade>

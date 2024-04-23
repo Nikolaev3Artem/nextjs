@@ -23,7 +23,7 @@
     "poster": "Poster",
     "images": "Images",
     "active": "Active",
-
+    "rentable": "Rent",
     "alt": "bus Photo",
     "features": "Features",
     "save": "Save",
@@ -32,6 +32,11 @@
     "not_working": "Not working",
     "float": "Float",
     "choose": "Choose file",
+    "row": "Row",
+    "enter": "Enter",
+    "kitchen": "Kitchen",
+    "no": "No",
+    "yes": "Yes",
 
     "snackBar": {
       "remove_success": "Card deleted",

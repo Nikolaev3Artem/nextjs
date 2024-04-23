@@ -1,0 +1,40 @@
+{
+  "cities": "Cidades",
+  "new_city": "Nova cidade",
+
+  "back": "Atgal",
+  "searchForm": {
+    "label": "Paieška...",
+    "new_button_form": {
+      "text": "Nova cidade"
+    }
+  },
+  "cityTable": {
+    "number": "Numeris",
+    "name": "Nome",
+    "address": "Endereço",
+    "location": "Localização",
+    "rows": "Eilės puslapyje",
+    "reduce": "Mažinti",
+    "add_city": "Adicionar cidade",
+    "city": "cidade",
+    "all": "Visi",
+    "save": "Išsaugoti",
+
+    "snackBar": {
+      "remove_success": "Kortelė sėkmingai pašalinta",
+      "remove_error": "Klaida pašalinant",
+      "update_success": "Jūsų pakeitimai sėkmingai išsaugoti",
+      "add_success": "Jūsų kortelė sėkmingai pridėta",
+      "add_error": "Klaida pridedant"
+    }
+  },
+  "errors": {
+    "size": "O tamanho do arquivo não deve exceder (5 MB)",
+    "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+    "name_more30": "O nome não deve ter mais de 60 caracteres",
+    "plates_number10": "O número não deve ter mais de 10 caracteres",
+    "error_number": "Apenas números são permitidos",
+    "error_text": "Formato de texto inválido"
+  }
+}

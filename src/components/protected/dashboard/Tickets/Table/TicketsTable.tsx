@@ -44,6 +44,7 @@ import {
 import { Locale } from '@/i18n.config';
 import { ITickets } from '@/interface/IJourney';
 import { TicketCard } from '@/components/protected/dashboard/Tickets/TicketCard';
+import dayjs from 'dayjs';
 
 const colorIcon = grey[700];
 const colorHeader = grey[800];
@@ -154,19 +155,26 @@ const TicketsTable = ({
           </TableCell>
 
           <TableCell component="th" scope="row">
-            {item.journey[0].routes[0].from_place} -{' '}
+            {item.journey[0].routes[0].from_place} -
             {item.journey[0].routes[0].to_place}
           </TableCell>
 
           <TableCell align="left">
-            {item?.journey[0].arrival_date}
-            {item?.journey[0].arrival_time}
+            {dayjs(item?.journey[0].arrival_date)
+              .locale(`${lang}`)
+              .format('DD.MM.YYYY')}
+            {dayjs(item?.journey[0].arrival_date)
+              .locale(`${lang}`)
+              .format('HH:mm')}
           </TableCell>
           <TableCell align="left">
             {item.journey[0].routes[0].price} грн
           </TableCell>
-          <TableCell align="left">Оплачено</TableCell>
-          <TableCell align="left">10ю06</TableCell>
+          <TableCell align="left">{item.status}</TableCell>
+          <TableCell align="left">
+            {dayjs(item.created_at).locale(`${lang}`).format('DD.MM.YYYY')}{' '}
+            {dayjs(item?.created_at).locale(`${lang}`).format('HH:mm')}
+          </TableCell>
           <TableCell align="right">
             <Stack
               justifyContent={'flex-end'}

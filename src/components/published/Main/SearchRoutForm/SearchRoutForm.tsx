@@ -13,10 +13,12 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { Input } from '@/components/published/Main/Input';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { DataPicker } from '@/components/published/Main/DataPicker';
+import { DataPicker } from '@/components/common/DataPicker';
 
 import { SearchJourney } from '@/components/published/Main/SearchRout';
 import { IJourney } from '@/interface/IJourney';
+import dayjs, { Dayjs } from 'dayjs';
+import { useRoutsContext } from '@/app/context';
 
 interface State {
   to: string;
@@ -39,20 +41,28 @@ export const SearchRoutForm = ({
   routsFrom: any;
   routsTo: any;
 }) => {
+  const {
+    selectRoutsTo,
+    setSelectRoutsTo,
+    selectRoutsFrom,
+    setSelectRoutsFrom,
+  } = useRoutsContext();
+
+  const isoDate = new Date(Date.now()).toISOString();
   const [values, setValues] = React.useState<State>({
-    to: '',
-    from: '',
-    date: '',
+    to: selectRoutsTo || '',
+    from: selectRoutsFrom || '',
+    date: isoDate,
   });
 
   const [searchJourney, setSearchJourney] = React.useState<IJourney[]>();
 
   const Search = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-
+    setSearchJourney([]);
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}&from_date=${values.date}`,
       );
 
       if (response.status === 200) {

@@ -32,6 +32,8 @@ import FromCircleSvg from '../../../../../public/icons/journey_from_circle.svg';
 import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
+import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -68,7 +70,7 @@ export const JourneyCard = ({
   };
 
   const icons = ['wifi', 'conditioning', 'wc', 'seats', 'socket'];
-
+  console.log(data);
   interface ConveniencesIconProp {
     icon: string;
     name: string;
@@ -86,15 +88,19 @@ export const JourneyCard = ({
     }
     return null;
   }
-
+  const router = useRouter();
   const handleBookingClick = () => {
+    const queryParams = new URLSearchParams();
+
+    router.push(`/${lang}?${queryParams}`);
     setIsShowModal(true);
   };
 
   const handleBookingClose = () => {
+    router.push(`/${lang}`);
     setIsShowModal(false);
   };
-
+  console.log(data);
   return (
     <>
       <Grid item className={Style.wrapper} sx={{ flexDirection: 'column' }}>
@@ -125,10 +131,16 @@ export const JourneyCard = ({
                     fontWeight={'700'}
                     sx={{ fontSize: { xs: '19px', md: '24px' } }}
                   >
-                    {data.departure_time}
+                    {data?.departure_date
+                      ? dayjs(data?.departure_date).format('HH:mm')
+                      : dayjs().format('HH:mm')}
                   </Typography>
                   <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                    {data.departure_date}
+                    {data?.departure_date
+                      ? dayjs(data?.departure_date)
+                          .locale(`${lang}`)
+                          .format('DD MMMM')
+                      : dayjs().locale(`${lang}`).format('DD MMMM')}
                   </Typography>
                 </Box>
                 <Box>
@@ -137,10 +149,16 @@ export const JourneyCard = ({
                     fontWeight={'700'}
                     sx={{ fontSize: { xs: '19px', md: '24px' } }}
                   >
-                    {data.arrival_time}
+                    {data?.arrival_date
+                      ? dayjs(data?.arrival_date).format('HH:mm')
+                      : dayjs().format('HH:mm')}
                   </Typography>
                   <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                    {data.arrival_date}
+                    {data?.arrival_date
+                      ? dayjs(data?.arrival_date)
+                          .locale(`${lang}`)
+                          .format('DD MMMM')
+                      : dayjs().locale(`${lang}`).format('DD MMMM')}
                   </Typography>
                 </Box>
               </Grid>
@@ -158,7 +176,12 @@ export const JourneyCard = ({
                 <Typography
                   sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
                 >
-                  {/* {data.arrival_date} */} 10 годин
+                  {dayjs(
+                    dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
+                  )
+                    .locale(`${lang}`)
+                    .format('HH:mm')}
+                  {staticData.routs_card.hour}
                 </Typography>
                 <ToSvg width={24} height={59} />
               </Grid>
@@ -181,7 +204,7 @@ export const JourneyCard = ({
                     fontWeight={'700'}
                     sx={{ fontSize: { xs: '19px', md: '24px' } }}
                   >
-                    {data.routes[0].from_place}
+                    {data?.routes[0]?.from_place}
                   </Typography>
                   <Box display={'flex'} columnGap={1}>
                     <Typography

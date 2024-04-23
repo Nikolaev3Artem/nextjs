@@ -1,0 +1,64 @@
+.bus_layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bus_row {
+  display: flex;
+  flex-direction: column-reverse;
+  margin-right: 6px; /* Відступ між стовпцями */
+}
+
+.bus_seat {
+  width: 32px; /* Ширина сидіння */
+  height: 30px; /* Висота сидіння */
+  margin-bottom: 5px; /* Відступ між сидіннями */
+  background-color: #fff; /* Колір сидіння */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #bfbfbf;
+  border-radius: 4px;
+}
+
+.bus_seat.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.bus_seat.enter,
+.bus_seat.wc {
+  background-color: transparent;
+  position: relative;
+  border: none;
+}
+.bus_seat.enter::before {
+  content: '';
+  background-image: url('/icons/stairs.svg');
+  background-size: cover;
+  display: block;
+  position: absolute;
+  top: -2px;
+  left: 6px;
+  width: 22px;
+  height: 69px;
+}
+
+.bus_seat.wc::before {
+  content: 'WC';
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 65px;
+  border: 1px solid #bfbfbf;
+  height: 32px;
+  font-size: 10px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bfbfbf;
+}

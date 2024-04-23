@@ -10,7 +10,7 @@ import {
   getDashboardTubsDictionaries,
   getRuleDictionaries,
 } from '@/lib/dictionary';
-import { RuleForm } from '@/components/protected/dashboard/RuleForm';
+import { ContentForm } from '@/components/protected/dashboard/ContentForm';
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
 
 export default async function Content({
@@ -26,7 +26,11 @@ export default async function Content({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.rule} back={staticData.back}>
             <TabMenuLocale staticData={tabs}>
-              <RuleForm staticData={staticData} lang={params.lang} />
+              <ContentForm
+                staticData={staticData}
+                lang={params.lang}
+                rout="rule"
+              />
             </TabMenuLocale>
           </ContentDashboard>
         </Box>

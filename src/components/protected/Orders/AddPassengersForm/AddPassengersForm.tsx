@@ -46,6 +46,7 @@ interface UserData {
   floor: number | null;
   price: number | null;
   id: string;
+  status: string;
 }
 
 type State = {
@@ -147,6 +148,7 @@ export const AddPassengersForm = ({
             seat: seat.seat || null,
             floor: seat.floor || null,
             price: data?.routes[0]?.price || null,
+            status: 'PAYED',
           };
         });
 
@@ -210,6 +212,7 @@ export const AddPassengersForm = ({
           );
           formData.append('additional_baggage', passenger.luggage);
           formData.append('passanger_type', passenger.passanger_type);
+          formData.append('status', 'PAYED');
 
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_BASE_URL}/uk/api/journey/${routId}/create_ticket`,
@@ -573,7 +576,9 @@ export const AddPassengersForm = ({
           sx={{ height: { lg: 'max-content' } }}
         >
           <Grid container display={'flex'} rowGap={2} width={'100%'}>
-            {data && <JourneyInfo data={data} staticData={staticData} />}
+            {data && (
+              <JourneyInfo data={data} staticData={staticData} lang={lang} />
+            )}
             <Grid item xs={12}>
               <Typography
                 color={'primary'}

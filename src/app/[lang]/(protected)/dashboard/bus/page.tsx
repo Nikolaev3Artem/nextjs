@@ -1,6 +1,7 @@
 import styles from './bus.module.css';
 import { Fade } from '@mui/material';
 import Box from '@mui/material/Box';
+import { revalidateTag } from 'next/cache';
 
 import axios from 'axios';
 
@@ -60,7 +61,7 @@ export default async function Bus({
   params: { lang: Locale };
 }>) {
   const buses = await getBus(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
+
   const staticData = await getDashboardBusDictionaries(params.lang);
 
   return (
@@ -70,7 +71,6 @@ export default async function Bus({
           <ContentDashboard title={staticData.bus} back={staticData.back}>
             <BusWrapper
               buses={buses}
-              tabs={tabs}
               staticData={staticData}
               lang={params.lang}
             />

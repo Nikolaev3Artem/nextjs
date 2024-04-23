@@ -3,7 +3,9 @@
 import {
   Box,
   Checkbox,
+  MenuItem,
   Paper,
+  Select,
   Skeleton,
   Stack,
   useMediaQuery,
@@ -30,7 +32,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/rent/add/page';
@@ -41,6 +43,7 @@ import { useLangContext } from '@/app/context';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
 import { getSession } from '@/lib/auth';
+import BusConstructor from '../BusConstructor/BusConstructor';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -57,6 +60,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const [dataIDService, setDataIDService] = useState<number[]>([]);
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [firstFloorSeatsCount, setFirstFloorSeatsCount] = useState<number>(0);
+  const [secondFloorSeatsCount, setSecondFloorSeatsCount] = useState<number>(0);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     loop: true,
@@ -117,7 +122,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
     resetField,
     watch,
     setValue,
-
+    control,
     formState: { errors, isDirty, isValid },
   } = useForm<IRent>({
     defaultValues: {
@@ -130,7 +135,16 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       uploaded_images: {},
       rentable: false,
       plates_number: '',
-      wc: false,
+      is_wc_working: false,
+      rows_1: 2,
+      rows_2: 0,
+      rows_3: 0,
+      rows_4: 0,
+      rows_5: 0,
+      enter_1: true,
+      enter_2: false,
+      enter_3: false,
+      wc: 'no',
     },
     mode: 'onChange',
   });
@@ -142,8 +156,17 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   // const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
-  const is_Wc_Work = watch('wc');
+  const is_wc_working = watch('is_wc_working');
   const files = watch('uploaded_images');
+  const rows_1 = watch('rows_1');
+  const rows_2 = watch('rows_2');
+  const rows_3 = watch('rows_3');
+  const rows_4 = watch('rows_4');
+  const rows_5 = watch('rows_5');
+  const enter_1 = watch('enter_1');
+  const enter_2 = watch('enter_2');
+  const enter_3 = watch('enter_3');
+  const wc = useWatch({ name: 'wc', control: control });
 
   async function onSubmitForm(data: IRent) {
     try {
@@ -166,13 +189,27 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       formData.append('plates_number', data.plates_number || '');
       formData.append(
         'first_floor_seats_count',
-        data?.first_floor_seats_count?.toString() || '',
+        firstFloorSeatsCount?.toString() || '',
       );
       formData.append(
         'second_floor_seats_count',
-        data?.second_floor_seats_count?.toString() || '',
+        secondFloorSeatsCount?.toString() || '',
       );
       formData.append('is_active', data.is_active || 'false');
+      formData.append(
+        'is_wc_working',
+        data?.is_wc_working?.toString() || 'false',
+      );
+      formData.append('wc', data.wc === 'yes' ? 'true' : 'false');
+      formData.append('rows_1', data?.rows_1?.toString() || '');
+      formData.append('rows_2', data?.rows_2?.toString() || '');
+      formData.append('rows_3', data?.rows_3?.toString() || '');
+      formData.append('rows_4', data?.rows_4?.toString() || '');
+      formData.append('rows_5', data?.rows_5?.toString() || '');
+      formData.append('enter_1', data?.enter_1?.toString() || '');
+      formData.append('enter_2', data?.enter_2?.toString() || '');
+      formData.append('enter_3', data?.enter_3?.toString() || '');
+
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       const response = await axios.post(
         `${BASE_URL}${selectLang}/api/admin/service/bus/create/`,
@@ -230,9 +267,9 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
     <Box height={'100%'} width={'100%'}>
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <Grid container direction={'row'} spacing={2}>
-          <Grid item lg={7} height={'100%'}>
+          <Grid item lg={7.5} height={'100%'}>
             <Paper>
-              <Box p={4} display={'flex'} width={'100%'}>
+              <Box p={3} display={'flex'} width={'100%'}>
                 <Container disableGutters>
                   <Stack spacing={2}>
                     <Stack spacing={2} direction={'column'}>
@@ -250,7 +287,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         {...register('photo')}
                         size={'small'}
                         type={'file'}
-                        InputLabelProps={{
+                        inputProps={{
                           style: { color: '#808080' },
                         }}
                         // label={staticData.busTable.poster}
@@ -262,6 +299,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         size={'small'}
                         type={'file'}
                         // label={staticData.busTable.images}
+
                         inputProps={{
                           multiple: true,
 
@@ -327,27 +365,6 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         }}
                       />
                     </Stack>
-                    <Stack spacing={2} direction={'column'}>
-                      <TextField
-                        {...register('first_floor_seats_count')}
-                        size={'small'}
-                        label={staticData.busTable.seats_first_floor}
-                        InputLabelProps={{
-                          style: { color: '#808080' },
-                        }}
-                      />
-                    </Stack>
-
-                    <Stack spacing={2} direction={'column'}>
-                      <TextField
-                        {...register('second_floor_seats_count')}
-                        size={'small'}
-                        label={staticData.busTable.seats_second_floor}
-                        InputLabelProps={{
-                          style: { color: '#808080' },
-                        }}
-                      />
-                    </Stack>
 
                     <Stack
                       direction={'row'}
@@ -357,7 +374,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                       display={'flex'}
                     >
                       <Checkbox
-                        {...register('wc')}
+                        {...register('is_wc_working')}
                         color="success"
                         sx={{ padding: 0, color: '#808080' }}
                       />
@@ -373,19 +390,6 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                       >
                         {staticData.busTable.wc}
                       </Typography>
-                    </Stack>
-                    <Stack
-                      direction={'row'}
-                      spacing={1}
-                      justifyItems={'center'}
-                      alignItems={'center'}
-                      display={'flex'}
-                    >
-                      <Checkbox
-                        {...register('is_active')}
-                        color="success"
-                        sx={{ padding: 0, color: '#808080' }}
-                      />
                       <Typography
                         sx={{
                           fontFamily: 'Inter',
@@ -396,7 +400,9 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                           color: '#808080',
                         }}
                       >
-                        {staticData.busTable.active}
+                        {is_wc_working
+                          ? staticData.busTable.working
+                          : staticData.busTable.not_working}
                       </Typography>
                     </Stack>
 
@@ -438,10 +444,223 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                           />
                         </Tabs>
                         <CustomTabPanel value={float} index={0}>
-                          <Box>1</Box>
+                          <Grid container spacing={2}>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_1}
+                                  {...register('rows_1')}
+                                  type="number"
+                                  size={'small'}
+                                  InputProps={{ inputProps: { min: 0 } }}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                    shrink: true,
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 0
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={1.5} height={'100%'}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.enter}
+                                </Typography>
+                                <Checkbox
+                                  {...register('enter_1')}
+                                  checked={enter_1}
+                                  color="success"
+                                  sx={{
+                                    padding: 0,
+                                    color: '#808080',
+                                    justifyContent: 'left',
+                                    pb: '16px',
+                                  }}
+                                />
+                                <Typography fontSize={12} mt={'auto'}>
+                                  {staticData.busTable.seats_first_floor}: 2
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_2}
+                                  type="number"
+                                  {...register('rows_2')}
+                                  size={'small'}
+                                  InputProps={{ inputProps: { min: 0 } }}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                    shrink: true,
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 0
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.wc}/{' '}
+                                  {staticData.busTable.kitchen}
+                                </Typography>
+                                <Select
+                                  {...register('wc')}
+                                  id=" wc"
+                                  value={wc}
+                                  size="small"
+                                >
+                                  <MenuItem value="no">
+                                    {staticData.busTable.no}
+                                  </MenuItem>
+                                  <MenuItem value="yes">
+                                    {staticData.busTable.yes}
+                                  </MenuItem>
+                                </Select>
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 2
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={1.5} mb={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.enter}
+                                </Typography>
+                                <Checkbox
+                                  {...register('enter_2')}
+                                  checked={enter_2}
+                                  color="success"
+                                  sx={{
+                                    padding: 0,
+                                    color: '#808080',
+                                    justifyContent: 'left',
+                                    pb: '16px',
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 2
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_3}
+                                  {...register('rows_3')}
+                                  size={'small'}
+                                  type="number"
+                                  InputProps={{ inputProps: { min: 0 } }}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                    shrink: true,
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 0
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                          </Grid>
+
+                          <BusConstructor
+                            rows_1={rows_1}
+                            rows_2={rows_2}
+                            rows_3={rows_3}
+                            is_wc={wc}
+                            enter_2={enter_2}
+                            enter_1={enter_1}
+                            setSeatsCount={setFirstFloorSeatsCount}
+                            seats_start={1}
+                          />
                         </CustomTabPanel>
                         <CustomTabPanel value={float} index={1}>
-                          <Box>2</Box>
+                          <Grid container spacing={2}>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_4}
+                                  {...register('rows_4')}
+                                  type="number"
+                                  size={'small'}
+                                  InputProps={{ inputProps: { min: 0 } }}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                    shrink: true,
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 0
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={1.5} height={'100%'}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.enter}
+                                </Typography>
+                                <Checkbox
+                                  {...register('enter_3')}
+                                  checked={enter_3}
+                                  color="success"
+                                  sx={{
+                                    padding: 0,
+                                    color: '#808080',
+                                    justifyContent: 'left',
+                                    pb: '16px',
+                                  }}
+                                />
+                                <Typography fontSize={12} mt={'auto'}>
+                                  {staticData.busTable.seats_first_floor}: 2
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.row}
+                                </Typography>
+                                <TextField
+                                  value={rows_5}
+                                  type="number"
+                                  {...register('rows_5')}
+                                  size={'small'}
+                                  InputProps={{ inputProps: { min: 0 } }}
+                                  InputLabelProps={{
+                                    style: { color: '#808080' },
+                                    shrink: true,
+                                  }}
+                                />
+                                <Typography fontSize={12}>
+                                  {staticData.busTable.seats_first_floor}: 0
+                                </Typography>
+                              </Stack>
+                            </Grid>
+                          </Grid>
+
+                          <BusConstructor
+                            rows_1={rows_4}
+                            rows_2={rows_5}
+                            enter_1={enter_3}
+                            setSeatsCount={setSecondFloorSeatsCount}
+                            seats_start={firstFloorSeatsCount + 1}
+                          />
                         </CustomTabPanel>
                       </Box>
                     </Stack>
@@ -450,7 +669,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
               </Box>
             </Paper>
           </Grid>
-          <Grid item lg={5} height={'100%'}>
+          <Grid item lg={4.5} height={'100%'}>
             <Container disableGutters maxWidth={'md'}>
               <Paper>
                 <Box width={'100%'} height={732} px={3} py={3}>
@@ -676,7 +895,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {is_Wc_Work
+                                {is_wc_working
                                   ? staticData.busTable.working
                                   : staticData.busTable.not_working}
                               </Typography>
@@ -740,7 +959,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {first_floor_seats_count}
+                                {firstFloorSeatsCount}
                               </Typography>
                             </Stack>
                             <Stack
@@ -771,7 +990,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 }}
                                 color={colorHeading}
                               >
-                                {second_floor_seats_count}
+                                {secondFloorSeatsCount}
                               </Typography>
                             </Stack>
                           </Stack>
