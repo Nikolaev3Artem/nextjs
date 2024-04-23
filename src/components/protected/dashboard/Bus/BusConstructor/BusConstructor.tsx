@@ -26,6 +26,7 @@ export interface BusConstructorProps {
 
 const BusConstructor = (props: BusConstructorProps) => {
   const row = 2;
+
   function BusSeat({
     id,
     enter1,

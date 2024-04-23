@@ -227,7 +227,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
           variant: 'success',
         });
-        revalidatePath(`/${lang}/dashboard/bus/`);
+        revalidatePath(`/${lang}/dashboard/bus/id`);
         redirect(`/${lang}/dashboard/bus/`);
       }
     } catch (error) {

@@ -36,34 +36,17 @@ export interface BusConstructorProps {
   handleCheck: (arg: number, ar: number) => void;
   floor: number;
   small?: boolean;
+  setSelectedSeats?: any;
 }
 
 const BusSeats = (props: BusConstructorProps) => {
   const row = 2;
-  const [seats, setSeats] = useState<ISeat[]>();
-
-  useEffect(() => {
-    setSeats(props.seats);
-  }, [props]);
 
   const handleClick = (seatNumber: number, floor: number) => {
-    setSeats(prevState => {
-      const updatedSeats = prevState?.map(seat => {
-        if (seat.seat === seatNumber) {
-          return { ...seat, status: 'Selected' };
-        }
-        return seat;
-      });
-
-      return updatedSeats; // Return the updated array of seats
-    });
-    if (seatNumber) {
-      props.handleCheck(seatNumber, floor);
-    }
+    props.handleCheck(seatNumber, floor);
   };
-
   const checkStatus = (id: number | null | undefined): string | undefined => {
-    const seat = seats?.find(seat => seat.seat === id);
+    const seat = props.seats?.find(seat => seat.seat === id);
 
     return seat ? seat.status : '';
   };
@@ -84,7 +67,7 @@ const BusSeats = (props: BusConstructorProps) => {
         onClick={() =>
           seatNumber ? handleClick(seatNumber, props?.floor) : null
         }
-        disabled={empty || enter1 || enter2}
+        disabled={empty || enter1 || enter2 || wc}
         className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'new' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}`}
       >
         <Typography

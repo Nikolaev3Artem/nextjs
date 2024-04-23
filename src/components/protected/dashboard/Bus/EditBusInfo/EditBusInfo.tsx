@@ -266,7 +266,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
 
   const onSubmitForm = async (data: IRent) => {
     if (!bus) return;
-    console.log(data);
+
     try {
       const session = await getSession();
       const formData = new FormData();

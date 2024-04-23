@@ -588,11 +588,19 @@ export interface dashboardJourneyStaticData {
     reserve: string;
     passenger_list: string;
     name: string;
+    title: string;
+    services: string;
+    plate: string;
+    seats_first_floor: string;
+    wc: string;
+    seats_second_floor: string;
     seat: string;
     comment: string;
     luggage: string;
     from: string;
     to: string;
+    no: string;
+    yes: string;
     next_step: string;
     choose_journey: string;
     snackBar: {

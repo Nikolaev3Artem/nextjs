@@ -17,13 +17,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import theme from '@/theme';
 import Link from 'next/link';
 import { Locale } from '@/i18n.config';
 import { styled } from '@mui/material/styles';
 import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
 import BusSeats from '../../../common/BusSeats/BusSeats';
+import { ISeat } from '@/interface/IRent';
 
 const color_title = grey[800];
 
@@ -100,13 +101,56 @@ export const SeatsBooking = ({
     );
   }
 
-  const handleCheck = (id: number, floor: number) => {
+  useEffect(() => {
+    setFirstFloorSeats(data?.bus[0]?.first_floor_seats);
+  }, [data?.bus[0]?.first_floor_seats]);
+  useEffect(() => {
+    setSecondFloorSeats(data?.bus[0]?.second_floor_seats);
+  }, [data?.bus[0]?.second_floor_seats]);
+
+  const [firstFloorSeats, setFirstFloorSeats] = useState<ISeat[]>();
+  const [secondFloorSeats, setSecondFloorSeats] = useState<ISeat[]>();
+
+  const handleCheck = (seatNumber: number, floor: number) => {
     setSelectedSeats(prevSelectedSeats => ({
       ...prevSelectedSeats,
-      [floor]: prevSelectedSeats[floor].includes(id)
-        ? prevSelectedSeats[floor].filter(seatId => seatId !== id)
-        : [...prevSelectedSeats[floor], id],
+      [floor]: prevSelectedSeats[floor].includes(seatNumber)
+        ? prevSelectedSeats[floor].filter(seatId => seatId !== seatNumber)
+        : [...prevSelectedSeats[floor], seatNumber],
     }));
+
+    if (floor === 1) {
+      setFirstFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
+    if (floor === 2) {
+      setSecondFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
   };
 
   const getLinkHref = () => {
@@ -345,7 +389,7 @@ export const SeatsBooking = ({
                       rows_2={data?.bus[0]?.rows_2}
                       rows_3={data?.bus[0]?.rows_3}
                       enter_2={data?.bus[0]?.enter_2}
-                      seats={data?.bus[0]?.first_floor_seats}
+                      seats={firstFloorSeats}
                       seats_start={1}
                       handleCheck={handleCheck}
                       floor={1}
@@ -361,7 +405,7 @@ export const SeatsBooking = ({
                       rows_1={data?.bus[0]?.rows_4}
                       enter_1={data?.bus[0]?.enter_3}
                       rows_2={data?.bus[0]?.rows_5}
-                      seats={data?.bus[0]?.second_floor_seats}
+                      seats={secondFloorSeats}
                       seats_start={data?.bus[0]?.first_floor_seats_count + 1}
                       handleCheck={handleCheck}
                       floor={2}

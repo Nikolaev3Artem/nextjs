@@ -34,6 +34,7 @@ import BagSuitcaseSvg from '../../../../../../public/icons/bag-suitcase.svg';
 import BagPersonalSvgDisable from '../../../../../../public/icons/bag-personal-disable.svg';
 import BagSuitcaseSvgDisable from '../../../../../../public/icons/bag-suitcase-disable.svg';
 import dayjs from 'dayjs';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -200,11 +201,7 @@ export const TicketCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {dayjs(
-                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
-                )
-                  .locale(`${lang}`)
-                  .format('HH:mm')}
+                {getTimeDuration(data?.arrival_date, data?.departure_date)}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>

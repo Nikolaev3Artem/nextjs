@@ -159,27 +159,52 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       const session = await getSession();
       const formData = new FormData();
       const jsonPrice = JSON.stringify(data?.price);
-      const s = [
-        {
-          id: 0,
-          city: 'XX',
-          price: 0,
-          coords_x: '121',
-          cooords_y: '4242',
-          address: 'ADD',
-        },
-      ];
-      const jsonStop = JSON.stringify(s);
-      formData.append('from_place', data.from_place.city || '');
-      formData.append('to_place', data.from_place.city || '');
-      formData.append('price', jsonPrice || '');
-      formData.append('price', data?.isPopular?.toString() || 'false');
-      formData.append('stops', jsonStop || '');
+
+      // formData.append('from_place', data.from_place.city || '');
+      // formData.append('to_place', data.from_place.city || '');
+      // formData.append('price', jsonPrice || '');
+      // formData.append('price', data?.isPopular?.toString() || 'false');
 
       const response = await axios.post(
         `${BASE_URL}/${selectLang}/api/admin/routes/create`,
 
-        formData,
+        {
+          price: data?.price,
+          isPopular: data?.is_popular,
+          travel_time: '3000',
+        },
+
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      const rout_id = await response?.data?.id;
+
+      const from_place_resp = await axios.put(
+        `${BASE_URL}/${selectLang}/api/admin/routes/${rout_id}/add_stop/${data.from_place.id}`,
+
+        {
+          isPopular: true,
+        },
+
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
+
+      const to_place_resp = await axios.put(
+        `${BASE_URL}/${selectLang}/api/admin/routes/${rout_id}/add_stop/${data.to_place.id}`,
+
+        {
+          isPopular: true,
+        },
 
         {
           headers: {

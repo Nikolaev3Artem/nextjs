@@ -52,24 +52,19 @@ export const ContentForm = ({
   rout: string;
 }) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
-  const [res, setRes] = useState<IEditorText>({});
+  const [res, setRes] = useState<IEditorText>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { selectLang } = useLangContext();
+  const { selectLang, setSelectLang } = useLangContext();
   const [size, setSize] = useState<any>(0);
   const [editorData1, setEditorData1] = useState('');
-  const [editorData2, setEditorData2] = useState('вп');
+  const [editorData2, setEditorData2] = useState('');
 
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
 
-  useEffect(() => {
-    // dispatch(setAccordionClose());
-  }, []);
-  // onSubmitForm({ res, lang, data, dataTwo })
   const onSubmit = async () => {
     try {
       const session = await getSession();
       if (!session) return null;
-      if (!res) return;
 
       setIsLoading(true);
 
@@ -82,21 +77,38 @@ export const ContentForm = ({
       formData.append('main_desc', main_desc || '');
 
       file.length && formData.append('img', file[0] || null);
+      let response;
 
-      const response = await axios.put(
-        `${BASE_URL}/${lang}/api/admin/${rout}/update/${res.id}/`,
-        formData,
-        {
-          headers: {
-            Authorization: 'Bearer ' + session.access,
-            'Content-Type':
-              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+      if (!res) {
+        console.log('post');
+        response = await axios.post(
+          `${BASE_URL}${selectLang}/api/admin/${rout}/create/`,
+          formData,
+          {
+            headers: {
+              Authorization: 'Bearer ' + session.access,
+              'Content-Type':
+                'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+            },
           },
-        },
-      );
+        );
+      } else {
+        console.log('update', res.id);
+        response = await axios.put(
+          `${BASE_URL}/${selectLang}/api/admin/${rout}/update/${res.id}/`,
+          formData,
+          {
+            headers: {
+              Authorization: 'Bearer ' + session.access,
+              'Content-Type':
+                'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+            },
+          },
+        );
+      }
       reset();
       await getData();
-      if (response.status === 200) {
+      if (response?.status === 200) {
         setTimeout(() => {
           enqueueSnackbar(`${staticData.snackBar.success}`, {
             variant: 'success',
@@ -122,6 +134,7 @@ export const ContentForm = ({
     text2: string | undefined;
     alt: string | undefined;
     file: any;
+    id: number;
   }
 
   const UploadFileSchema = yup.object().shape({
@@ -162,8 +175,8 @@ export const ContentForm = ({
         `${BASE_URL}/${selectLang}/api/${rout}/`,
       );
 
-      if (status === 200) {
-        setRes(data.results[data.results.length - 1]);
+      if (status === 200 && data.count > 0) {
+        setRes(data.results[data.count - 1]);
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -196,6 +209,7 @@ export const ContentForm = ({
       text1: res?.text1 || '',
       text2: res?.text2 || '',
       file: {},
+      id: res?.id || 0,
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -225,7 +239,7 @@ export const ContentForm = ({
   };
 
   const clearable = () => {
-    setImagePreviewUrl(res.img);
+    setImagePreviewUrl(res?.img);
     resetField('file');
   };
   return (
@@ -388,465 +402,444 @@ export const ContentForm = ({
                   height: '100%',
                 }}
               >
-                {res ? (
-                  <>
-                    <Grid container spacing={2}>
-                      <Grid item width={'100%'} pr={{ md: 0, xl: 2 }} xl={6}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '18px',
-                            lineHeight: '140%',
-                            color: color_title,
+                <Grid container spacing={2} padding={2}>
+                  <Grid item width={'100%'} xl={6}>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Inter',
+                        fontStyle: 'normal',
+                        fontWeight: 700,
+                        fontSize: '18px',
+                        lineHeight: '140%',
+                        color: color_title,
+                      }}
+                      mb={2}
+                    >
+                      {staticData.form.text.h1}
+                    </Typography>
+                    <Box
+                      sx={{ width: '100%', minHeight: 64 }}
+                      display={'flex'}
+                      justifyContent={'center'}
+                      flexDirection={'row'}
+                    >
+                      <>
+                        <TextField
+                          {...register('main_title')}
+                          InputLabelProps={{
+                            color: 'secondary',
                           }}
-                          mb={2}
-                        >
-                          {staticData.form.text.h1}
-                        </Typography>
-                        <Box
-                          sx={{ width: '100%', minHeight: 64 }}
-                          display={'flex'}
-                          justifyContent={'center'}
-                          flexDirection={'row'}
-                        >
-                          <>
-                            <TextField
-                              {...register('main_title')}
-                              InputLabelProps={{
-                                color: 'secondary',
-                              }}
-                              sx={{
-                                '& label': {
-                                  fontSize: 14,
-                                  color: color_title,
-                                },
-                              }}
-                              fullWidth
-                              label={staticData.form.text.label}
-                              size={'small'}
-                              value={main_title}
-                              variant={'outlined'}
-                              FormHelperTextProps={{
-                                color: '#256223',
-                              }}
-                              helperText={errors?.main_title?.message}
-                              error={!!errors?.main_title}
-                              defaultChecked={false}
-                              defaultValue={null}
-                              InputProps={{
-                                color: 'secondary',
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    {main_title && main_title.length ? (
-                                      <>
-                                        <Typography
-                                          sx={{ fontSize: 11 }}
-                                          mr={1}
-                                          color={'#999'}
-                                        >
-                                          ({main_title?.length}/60)
-                                        </Typography>
-                                        <IconButton
-                                          className={Style.home_form_icon}
-                                          size={'small'}
-                                          onClick={() => {
-                                            resetField('main_title');
-                                          }}
-                                        >
-                                          <FaTrashAlt />
-                                        </IconButton>
-                                      </>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </>
-                        </Box>
-                      </Grid>
-
-                      <Grid item width={'100%'} pr={{ md: 0, xl: 2 }} xl={6}>
-                        <Typography
                           sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '18px',
-                            lineHeight: '140%',
-                            color: color_title,
+                            '& label': {
+                              fontSize: 14,
+                              color: color_title,
+                            },
                           }}
-                          mb={2}
-                        >
-                          {staticData.form.text.description}
-                        </Typography>
-                        <Box
-                          sx={{ width: '100%', minHeight: 64 }}
-                          display={'flex'}
-                          justifyContent={'center'}
-                          flexDirection={'row'}
-                        >
-                          <>
-                            <TextField
-                              {...register('main_desc')}
-                              InputLabelProps={{
-                                color: 'secondary',
-                              }}
-                              sx={{
-                                '& label': {
-                                  fontSize: 14,
-                                  color: color_title,
-                                },
-                              }}
-                              fullWidth
-                              label={staticData.form.text.label}
-                              size={'small'}
-                              variant={'outlined'}
-                              FormHelperTextProps={{
-                                color: '#256223',
-                              }}
-                              helperText={errors?.main_desc?.message}
-                              error={!!errors?.main_desc}
-                              defaultChecked={false}
-                              defaultValue={null}
-                              InputProps={{
-                                color: 'secondary',
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    {main_desc && main_desc.length ? (
-                                      <>
-                                        <Typography
-                                          sx={{ fontSize: 11 }}
-                                          mr={1}
-                                          color={'#999'}
-                                        >
-                                          ({main_desc?.length}/60)
-                                        </Typography>
-                                        <IconButton
-                                          className={Style.home_form_icon}
-                                          size={'small'}
-                                          onClick={() => {
-                                            resetField('main_desc');
-                                          }}
-                                        >
-                                          <FaTrashAlt />
-                                        </IconButton>
-                                      </>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </InputAdornment>
-                                ),
-                              }}
-                            />
-                          </>
-                        </Box>
-                      </Grid>
-                      <Grid item width={'100%'} pr={{ md: 0, xl: 2 }} xl={6}>
-                        <Typography
-                          mb={2}
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '18px',
-                            lineHeight: '140%',
-                            color: color_title,
+                          fullWidth
+                          label={staticData.form.text.label}
+                          size={'small'}
+                          value={main_title}
+                          variant={'outlined'}
+                          FormHelperTextProps={{
+                            color: '#256223',
                           }}
-                        >
-                          {staticData.form.text.banner}
-                        </Typography>
-                        <Box sx={{ width: '100%', minHeight: 64 }}>
-                          <TextField
-                            {...register('file', {
-                              onChange: event => {
-                                fileSizeFile(event);
-                                if (event.target?.files[0] !== undefined) {
-                                  setImagePreviewUrl(
-                                    window.URL.createObjectURL(
-                                      event.target?.files[0],
-                                    ),
-                                  );
-                                } else {
-                                  clearable();
-                                }
-                              },
-                            })}
-                            InputLabelProps={{
-                              color: 'secondary',
-                            }}
-                            InputProps={{
-                              color: 'secondary',
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  {file && file.length ? (
+                          helperText={errors?.main_title?.message}
+                          error={!!errors?.main_title}
+                          defaultChecked={false}
+                          defaultValue={null}
+                          InputProps={{
+                            color: 'secondary',
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                {main_title && main_title.length ? (
+                                  <>
                                     <Typography
                                       sx={{ fontSize: 11 }}
                                       mr={1}
                                       color={'#999'}
                                     >
-                                      ({size})
+                                      ({main_title?.length}/60)
                                     </Typography>
-                                  ) : (
-                                    <></>
-                                  )}
-                                  {file && file.length ? (
                                     <IconButton
                                       className={Style.home_form_icon}
                                       size={'small'}
-                                      onClick={clearable}
+                                      onClick={() => {
+                                        resetField('main_title');
+                                      }}
                                     >
                                       <FaTrashAlt />
                                     </IconButton>
-                                  ) : (
-                                    <></>
-                                  )}
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{
-                              '& input': {
-                                fontSize: 14,
-                                color: color_title,
-                                paddingTop: '8.5px',
-                                paddingBottom: '8.5px',
-                                minHeight: '23px',
-                              },
-                            }}
-                            fullWidth
-                            type={'file'}
-                            required={false}
-                            color={'warning'}
-                            size={'small'}
-                            variant={'outlined'}
-                            helperText={'' || errors?.file?.message?.toString()}
-                            error={!!errors.file}
-                          />
-                        </Box>
-                      </Grid>
-                    </Grid>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </>
+                    </Box>
+                  </Grid>
 
-                    <Grid container direction={'column'} mt={2}>
-                      <Grid item>
-                        <Box className={Style.text_editor_container}>
-                          <Grid container direction={'row'}>
-                            <Grid
-                              item
-                              width={'100%'}
-                              mb={4}
-                              pr={{ md: 0, xl: 2 }}
-                              xl={6}
-                            >
-                              <Typography
-                                sx={{
-                                  fontFamily: 'Inter',
-                                  fontStyle: 'normal',
-                                  fontWeight: 700,
-                                  fontSize: '18px',
-                                  lineHeight: '140%',
-                                  color: color_title,
+                  <Grid item width={'100%'} xl={6}>
+                    <Typography
+                      sx={{
+                        fontFamily: 'Inter',
+                        fontStyle: 'normal',
+                        fontWeight: 700,
+                        fontSize: '18px',
+                        lineHeight: '140%',
+                        color: color_title,
+                      }}
+                      mb={2}
+                    >
+                      {staticData.form.text.description}
+                    </Typography>
+                    <Box
+                      sx={{ width: '100%', minHeight: 64 }}
+                      display={'flex'}
+                      justifyContent={'center'}
+                      flexDirection={'row'}
+                    >
+                      <>
+                        <TextField
+                          {...register('main_desc')}
+                          InputLabelProps={{
+                            color: 'secondary',
+                          }}
+                          sx={{
+                            '& label': {
+                              fontSize: 14,
+                              color: color_title,
+                            },
+                          }}
+                          fullWidth
+                          label={staticData.form.text.label}
+                          size={'small'}
+                          variant={'outlined'}
+                          FormHelperTextProps={{
+                            color: '#256223',
+                          }}
+                          helperText={errors?.main_desc?.message}
+                          error={!!errors?.main_desc}
+                          defaultChecked={false}
+                          defaultValue={null}
+                          InputProps={{
+                            color: 'secondary',
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                {main_desc && main_desc.length ? (
+                                  <>
+                                    <Typography
+                                      sx={{ fontSize: 11 }}
+                                      mr={1}
+                                      color={'#999'}
+                                    >
+                                      ({main_desc?.length}/60)
+                                    </Typography>
+                                    <IconButton
+                                      className={Style.home_form_icon}
+                                      size={'small'}
+                                      onClick={() => {
+                                        resetField('main_desc');
+                                      }}
+                                    >
+                                      <FaTrashAlt />
+                                    </IconButton>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </>
+                    </Box>
+                  </Grid>
+                  <Grid item width={'100%'} xl={6}>
+                    <Typography
+                      mb={2}
+                      sx={{
+                        fontFamily: 'Inter',
+                        fontStyle: 'normal',
+                        fontWeight: 700,
+                        fontSize: '18px',
+                        lineHeight: '140%',
+                        color: color_title,
+                      }}
+                    >
+                      {staticData.form.text.banner}
+                    </Typography>
+                    <Box sx={{ width: '100%', minHeight: 64 }}>
+                      <TextField
+                        {...register('file', {
+                          onChange: event => {
+                            fileSizeFile(event);
+                            if (event.target?.files[0] !== undefined) {
+                              setImagePreviewUrl(
+                                window.URL.createObjectURL(
+                                  event.target?.files[0],
+                                ),
+                              );
+                            } else {
+                              clearable();
+                            }
+                          },
+                        })}
+                        InputLabelProps={{
+                          color: 'secondary',
+                        }}
+                        InputProps={{
+                          color: 'secondary',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              {file && file.length ? (
+                                <Typography
+                                  sx={{ fontSize: 11 }}
+                                  mr={1}
+                                  color={'#999'}
+                                >
+                                  ({size})
+                                </Typography>
+                              ) : (
+                                <></>
+                              )}
+                              {file && file.length ? (
+                                <IconButton
+                                  className={Style.home_form_icon}
+                                  size={'small'}
+                                  onClick={clearable}
+                                >
+                                  <FaTrashAlt />
+                                </IconButton>
+                              ) : (
+                                <></>
+                              )}
+                            </InputAdornment>
+                          ),
+                        }}
+                        sx={{
+                          '& input': {
+                            fontSize: 14,
+                            color: color_title,
+                            paddingTop: '8.5px',
+                            paddingBottom: '8.5px',
+                            minHeight: '23px',
+                          },
+                        }}
+                        fullWidth
+                        type={'file'}
+                        required={false}
+                        color={'warning'}
+                        size={'small'}
+                        variant={'outlined'}
+                        helperText={'' || errors?.file?.message?.toString()}
+                        error={!!errors.file}
+                      />
+                    </Box>
+                  </Grid>
+                </Grid>
+
+                <Grid container direction={'column'} padding={2}>
+                  <Grid item>
+                    <Box className={Style.text_editor_container}>
+                      <Grid container direction={'row'} spacing={2}>
+                        <Grid item width={'100%'} mb={4} xl={6}>
+                          <Typography
+                            sx={{
+                              fontFamily: 'Inter',
+                              fontStyle: 'normal',
+                              fontWeight: 700,
+                              fontSize: '18px',
+                              lineHeight: '140%',
+                              color: color_title,
+                            }}
+                            mb={2}
+                          >
+                            {staticData.form.text.title1}
+                          </Typography>
+                          <Box
+                            sx={{ width: '100%', minHeight: 64 }}
+                            display={'flex'}
+                            justifyContent={'center'}
+                            flexDirection={'row'}
+                          >
+                            <>
+                              <TextField
+                                {...register('title1')}
+                                InputLabelProps={{
+                                  color: 'secondary',
                                 }}
-                                mb={2}
-                              >
-                                {staticData.form.text.title1}
-                              </Typography>
-                              <Box
-                                sx={{ width: '100%', minHeight: 64 }}
-                                display={'flex'}
-                                justifyContent={'center'}
-                                flexDirection={'row'}
-                              >
-                                <>
-                                  <TextField
-                                    {...register('title1')}
-                                    InputLabelProps={{
-                                      color: 'secondary',
-                                    }}
-                                    sx={{
-                                      '& label': {
-                                        fontSize: 14,
-                                        color: color_title,
-                                      },
-                                    }}
-                                    fullWidth
-                                    label={staticData.form.text.label}
-                                    size={'small'}
-                                    variant={'outlined'}
-                                    FormHelperTextProps={{
-                                      color: '#256223',
-                                    }}
-                                    helperText={errors?.title1?.message}
-                                    error={!!errors?.title1}
-                                    defaultChecked={false}
-                                    defaultValue={null}
-                                    InputProps={{
-                                      color: 'secondary',
-                                      endAdornment: (
-                                        <InputAdornment position="end">
-                                          {title1 && title1?.length ? (
-                                            <>
-                                              <Typography
-                                                sx={{ fontSize: 11 }}
-                                                mr={1}
-                                                color={'#999'}
-                                              >
-                                                ({title1?.length}/60)
-                                              </Typography>
-                                              <IconButton
-                                                className={Style.home_form_icon}
-                                                size={'small'}
-                                                onClick={() => {
-                                                  resetField('title1');
-                                                }}
-                                              >
-                                                <FaTrashAlt />
-                                              </IconButton>
-                                            </>
-                                          ) : (
-                                            <></>
-                                          )}
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </>
-                              </Box>
-                              <TextEditor
-                                data={1}
-                                titleOne={staticData.form.text.text1}
-                                res={res}
-                                setEditorData={setEditorData1}
-                                lang={lang}
-                              />
-                            </Grid>
-                            <Grid
-                              item
-                              width={'100%'}
-                              mb={4}
-                              xl={6}
-                              pl={{ md: 0, xl: 2 }}
-                            >
-                              <Typography
                                 sx={{
-                                  fontFamily: 'Inter',
-                                  fontStyle: 'normal',
-                                  fontWeight: 700,
-                                  fontSize: '18px',
-                                  lineHeight: '140%',
-                                  color: color_title,
+                                  '& label': {
+                                    fontSize: 14,
+                                    color: color_title,
+                                  },
                                 }}
-                                mb={2}
-                              >
-                                {staticData.form.text.title2}
-                              </Typography>
-                              <Box
-                                sx={{ width: '100%', minHeight: 64 }}
-                                display={'flex'}
-                                justifyContent={'center'}
-                                flexDirection={'row'}
-                              >
-                                <>
-                                  <TextField
-                                    {...register('title2')}
-                                    InputLabelProps={{
-                                      color: 'secondary',
-                                    }}
-                                    sx={{
-                                      '& label': {
-                                        fontSize: 14,
-                                        color: color_title,
-                                      },
-                                    }}
-                                    fullWidth
-                                    label={staticData.form.text.label}
-                                    size={'small'}
-                                    variant={'outlined'}
-                                    FormHelperTextProps={{
-                                      color: '#256223',
-                                    }}
-                                    helperText={errors?.title2?.message}
-                                    error={!!errors?.title2}
-                                    defaultChecked={false}
-                                    defaultValue={null}
-                                    InputProps={{
-                                      color: 'secondary',
-                                      endAdornment: (
-                                        <InputAdornment position="end">
-                                          {title2 && title2?.length ? (
-                                            <>
-                                              <Typography
-                                                sx={{ fontSize: 11 }}
-                                                mr={1}
-                                                color={'#999'}
-                                              >
-                                                ({title2?.length}/60)
-                                              </Typography>
-                                              <IconButton
-                                                className={Style.home_form_icon}
-                                                size={'small'}
-                                                onClick={() => {
-                                                  resetField('title2');
-                                                }}
-                                              >
-                                                <FaTrashAlt />
-                                              </IconButton>
-                                            </>
-                                          ) : (
-                                            <></>
-                                          )}
-                                        </InputAdornment>
-                                      ),
-                                    }}
-                                  />
-                                </>
-                              </Box>
-                              <TextEditor
-                                data={2}
-                                titleTwo={staticData.form.text.text2}
-                                res={res}
-                                setEditorData={setEditorData2}
-                                lang={lang}
+                                fullWidth
+                                label={staticData.form.text.label}
+                                size={'small'}
+                                variant={'outlined'}
+                                FormHelperTextProps={{
+                                  color: '#256223',
+                                }}
+                                helperText={errors?.title1?.message}
+                                error={!!errors?.title1}
+                                defaultChecked={false}
+                                defaultValue={null}
+                                InputProps={{
+                                  color: 'secondary',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      {title1 && title1?.length ? (
+                                        <>
+                                          <Typography
+                                            sx={{ fontSize: 11 }}
+                                            mr={1}
+                                            color={'#999'}
+                                          >
+                                            ({title1?.length}/60)
+                                          </Typography>
+                                          <IconButton
+                                            className={Style.home_form_icon}
+                                            size={'small'}
+                                            onClick={() => {
+                                              resetField('title1');
+                                            }}
+                                          >
+                                            <FaTrashAlt />
+                                          </IconButton>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </InputAdornment>
+                                  ),
+                                }}
                               />
-                            </Grid>
-                          </Grid>
-                        </Box>
-                        <Box display={'flex'} justifyContent={'flex-end'}>
-                          <Stack spacing={2} direction={'row'}>
-                            <Button
-                              type={'submit'}
-                              sx={{
-                                fontFamily: 'Inter',
-                                fontStyle: 'normal',
-                                textTransform: 'none',
-                                fontWeight: 300,
-                                fontSize: '16px',
-                                lineHeight: '150%',
-                                padding: '8px 16px',
-                                gap: '4px',
-                                height: '40px',
-                              }}
-                              startIcon={<BiSave />}
-                              color={'secondary'}
-                              variant={'contained'}
-                            >
-                              {staticData.form.save_btn.text}
-                            </Button>
-                          </Stack>
-                        </Box>
+                            </>
+                          </Box>
+                          <TextEditor
+                            data={1}
+                            titleOne={staticData.form.text.text1}
+                            res={res}
+                            setEditorData={setEditorData1}
+                            lang={lang}
+                            label={staticData.form.text.label}
+                          />
+                        </Grid>
+                        <Grid item width={'100%'} mb={4} xl={6}>
+                          <Typography
+                            sx={{
+                              fontFamily: 'Inter',
+                              fontStyle: 'normal',
+                              fontWeight: 700,
+                              fontSize: '18px',
+                              lineHeight: '140%',
+                              color: color_title,
+                            }}
+                            mb={2}
+                          >
+                            {staticData.form.text.title2}
+                          </Typography>
+                          <Box
+                            sx={{ width: '100%', minHeight: 64 }}
+                            display={'flex'}
+                            justifyContent={'center'}
+                            flexDirection={'row'}
+                          >
+                            <>
+                              <TextField
+                                {...register('title2')}
+                                InputLabelProps={{
+                                  color: 'secondary',
+                                }}
+                                sx={{
+                                  '& label': {
+                                    fontSize: 14,
+                                    color: color_title,
+                                  },
+                                }}
+                                fullWidth
+                                label={staticData.form.text.label}
+                                size={'small'}
+                                variant={'outlined'}
+                                FormHelperTextProps={{
+                                  color: '#256223',
+                                }}
+                                helperText={errors?.title2?.message}
+                                error={!!errors?.title2}
+                                defaultChecked={false}
+                                defaultValue={null}
+                                InputProps={{
+                                  color: 'secondary',
+                                  endAdornment: (
+                                    <InputAdornment position="end">
+                                      {title2 && title2?.length ? (
+                                        <>
+                                          <Typography
+                                            sx={{ fontSize: 11 }}
+                                            mr={1}
+                                            color={'#999'}
+                                          >
+                                            ({title2?.length}/60)
+                                          </Typography>
+                                          <IconButton
+                                            className={Style.home_form_icon}
+                                            size={'small'}
+                                            onClick={() => {
+                                              resetField('title2');
+                                            }}
+                                          >
+                                            <FaTrashAlt />
+                                          </IconButton>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </InputAdornment>
+                                  ),
+                                }}
+                              />
+                            </>
+                          </Box>
+                          <TextEditor
+                            data={2}
+                            titleTwo={staticData.form.text.text2}
+                            res={res}
+                            setEditorData={setEditorData2}
+                            lang={lang}
+                            label={staticData.form.text.label}
+                          />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </>
-                ) : (
-                  <Skeleton
-                    variant="rectangular"
-                    animation={'wave'}
-                    width={'100%'}
-                    height={400}
-                  />
-                )}
+                    </Box>
+                    <Box display={'flex'} justifyContent={'flex-end'}>
+                      <Stack spacing={2} direction={'row'}>
+                        <Button
+                          type={'submit'}
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+                            textTransform: 'none',
+                            fontWeight: 300,
+                            fontSize: '16px',
+                            lineHeight: '150%',
+                            padding: '8px 16px',
+                            gap: '4px',
+                            height: '40px',
+                          }}
+                          startIcon={<BiSave />}
+                          color={'secondary'}
+                          variant={'contained'}
+                        >
+                          {staticData.form.save_btn.text}
+                        </Button>
+                      </Stack>
+                    </Box>
+                  </Grid>
+                </Grid>
               </Box>
             </Box>
           </Container>

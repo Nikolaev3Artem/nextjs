@@ -13,6 +13,7 @@ import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 import { orderStaticData } from '@/interface/IStaticData';
 import { IJourney } from '@/interface/IJourney';
 import dayjs from 'dayjs';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
 
 export const JourneyInfo = ({
   data,
@@ -162,11 +163,7 @@ export const JourneyInfo = ({
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {dayjs(
-                dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
-              )
-                .locale(`${lang}`)
-                .format('HH:mm')}
+              {getTimeDuration(data?.arrival_date, data?.departure_date)}
             </Typography>
           </Typography>
         </Grid>

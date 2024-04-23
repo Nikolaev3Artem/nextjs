@@ -50,18 +50,17 @@ export const Popular = ({
       className={Style.popular}
       component={'section'}
     >
-      <Container maxWidth={'xl'}>
+      {/* <Container maxWidth={'xl'}>
         <Grid mt={6} container>
-          <Grid item>
-            <Typography className={Style.text} variant={'h2'}>
-              {staticData.title}
-            </Typography>
-          </Grid>
+          <Grid item></Grid>
         </Grid>
-      </Container>
+      </Container> */}
       <Box mt={6} className={Style.content}>
         <Container className={Style.card_content} maxWidth={'xl'}>
-          <Grid container>
+          <Grid container direction={'column'}>
+            <Typography className={Style.text} variant={'h2'} mb={'22px'}>
+              {staticData.title}
+            </Typography>
             <Grid item>
               <Grid
                 container

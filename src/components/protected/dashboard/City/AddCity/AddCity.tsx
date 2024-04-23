@@ -129,7 +129,7 @@ export const AddCity = ({
       formData.append('address', data.address?.trim() || '');
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/stop/create`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/city/create`,
         formData,
         {
           headers: {

@@ -16,7 +16,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding-bottom: 16px;
+  padding-bottom: 0 !important;
 }
 
 .text_editor_toolbar {

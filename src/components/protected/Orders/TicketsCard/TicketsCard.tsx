@@ -34,6 +34,7 @@ import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import BagPersonalSvgDisable from '../../../../../public/icons/bag-personal-disable.svg';
 import BagSuitcaseSvgDisable from '../../../../../public/icons/bag-suitcase-disable.svg';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -50,6 +51,8 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
+
+const discount = 30;
 
 export const TicketsCard = ({
   staticData,
@@ -196,11 +199,10 @@ export const TicketsCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {dayjs(
-                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
-                )
-                  .locale(`${lang}`)
-                  .format('HH:mm')}
+                {getTimeDuration(
+                  data?.journey[0]?.arrival_date,
+                  data?.journey[0]?.departure_date,
+                )}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>
@@ -380,11 +382,7 @@ export const TicketsCard = ({
                   fontSize: { xs: '13px', md: '16px' },
                 }}
               >
-                {dayjs(
-                  dayjs(data?.departure_date).diff(dayjs(data?.arrival_date)),
-                )
-                  .locale(`${lang}`)
-                  .format('HH:mm')}
+                {getTimeDuration(data?.arrival_date, data?.departure_date)}
               </Typography>
             </Box>
           </Box>
@@ -688,7 +686,9 @@ export const TicketsCard = ({
                             color={'primary'}
                             sx={{ fontSize: { xs: '13px', md: '16px' } }}
                           >
-                            {data.journey[0]?.routes[0]?.price}
+                            {data && data.passanger_type === 'child'
+                              ? `${typeof data?.journey[0]?.routes[0]?.price === 'number' ? data?.journey[0]?.routes[0]?.price - discount : data?.journey[0]?.routes[0]?.price}`
+                              : `${data?.journey[0]?.routes[0]?.price ?? 0}`}
                           </Typography>
                           <Typography
                             color={'primary'}

@@ -24,6 +24,7 @@ export interface IJourney {
   arrival_date: string;
   arrival_time: string;
   is_active: boolean;
+  created_at: string;
 }
 
 export interface IBus {

@@ -49,14 +49,14 @@ export const SearchJourney = ({
               color={'primary'}
               sx={{ fontSize: { xs: '13px', md: '20px' } }}
             >
-              {values.from}
+              {searchJourney[0].routes[0].from_place}
             </Typography>
             <IoMdArrowForward width={3} height={3} />
             <Typography
               color={'primary'}
               sx={{ fontSize: { xs: '13px', md: '20px' } }}
             >
-              {values.to}
+              {searchJourney[0].routes[0].to_place}
             </Typography>
             <CalendarIcon width={'24px'} height={'24px'} />
             <Typography

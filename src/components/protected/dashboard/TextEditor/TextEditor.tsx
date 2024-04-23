@@ -36,9 +36,10 @@ interface IEditorNumProps {
   data: number;
   titleOne?: string;
   titleTwo?: string;
-  res: IEditorText;
+  res?: IEditorText;
   lang: Locale;
   setEditorData: Dispatch<SetStateAction<string>>;
+  label: string;
 }
 
 const Editor = dynamic(
@@ -55,6 +56,7 @@ function TextEditor({
   res,
   setEditorData,
   lang,
+  label,
 }: IEditorNumProps) {
   const [focus, setFocus] = useState<boolean>(false);
   const [textRaw, setTextRaw] = useState();
@@ -118,7 +120,6 @@ function TextEditor({
             fontSize: '16px',
             lineHeight: '140%',
           }}
-          mb={2}
           variant={'h4'}
           component={'h4'}
         >
@@ -134,7 +135,6 @@ function TextEditor({
             fontSize: '16px',
             lineHeight: '140%',
           }}
-          mb={2}
           variant={'h4'}
           component={'h4'}
         >
@@ -211,7 +211,7 @@ function TextEditor({
           translations: lang,
         }}
         // toolbarCustomButtons={[<Replacements editorState={editorState} />]}
-        placeholder=" Введіть текст..."
+        placeholder={label}
         editorState={editorState}
         toolbarClassName={Style.text_editor_toolbar}
         wrapperClassName={Style.wrapper_editor}

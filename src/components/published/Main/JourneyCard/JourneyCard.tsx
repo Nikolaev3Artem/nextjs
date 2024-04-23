@@ -33,7 +33,10 @@ import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import dayjs from 'dayjs';
+// import duration from 'dayjs/plugin/duration';
+// dayjs.extend(duration);
 import { useRouter } from 'next/navigation';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -136,8 +139,8 @@ export const JourneyCard = ({
                       : dayjs().format('HH:mm')}
                   </Typography>
                   <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                    {data?.departure_date
-                      ? dayjs(data?.departure_date)
+                    {data.departure_date
+                      ? dayjs(data.departure_date)
                           .locale(`${lang}`)
                           .format('DD MMMM')
                       : dayjs().locale(`${lang}`).format('DD MMMM')}
@@ -176,11 +179,7 @@ export const JourneyCard = ({
                 <Typography
                   sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
                 >
-                  {dayjs(
-                    dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
-                  )
-                    .locale(`${lang}`)
-                    .format('HH:mm')}
+                  {getTimeDuration(data.arrival_date, data.departure_date)}
                   {staticData.routs_card.hour}
                 </Typography>
                 <ToSvg width={24} height={59} />

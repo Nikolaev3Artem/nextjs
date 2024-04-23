@@ -48,7 +48,7 @@ export async function getSession() {
   return await JSON.parse(session);
 }
 
-export async function getUser() {
+export async function getCustomer() {
   const session = cookies().get('session')?.value;
   if (!session) return null;
   try {
@@ -63,7 +63,29 @@ export async function getUser() {
         },
       },
     );
+    console.log(data.results);
+    return data.results[0].user;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
+export async function getAdmin() {
+  const session = cookies().get('session')?.value;
+  if (!session) return null;
+  try {
+    const access = JSON.parse(session).access;
+
+    const { data } = await axios.get<CustomerProps>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/admin/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access,
+        },
+      },
+    );
+    console.log(data.results);
     return data.results[0].user;
   } catch (error) {
     console.log(error);

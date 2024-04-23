@@ -52,16 +52,17 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import { useLangContext } from '@/app/context';
 import { getSession } from '@/lib/auth';
 import { Locale } from '@/i18n.config';
-import { IRent } from '@/interface/IRent';
+import { IRent, ISeat } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
 import { dashboardJourneyStaticData } from '@/interface/IStaticData';
-import { IBus, IRout } from '@/interface/IJourney';
+import { IBus, IJourney, IRout, StopsProps } from '@/interface/IJourney';
 import { DataPicker } from '@/components/common/DataPicker';
 import dayjs from 'dayjs';
 import { TimPicker } from '@/components/common/TimPicker';
 import BusConstructor from '../../Bus/BusConstructor/BusConstructor';
 
 import BusSeats from '@/components/common/BusSeats/BusSeats';
+import { CalendarIcon, ClockIcon } from '@mui/x-date-pickers';
 // import BusService from '../../../Rent/BusService/BusService';
 
 interface IInfoCardProps {
@@ -83,6 +84,12 @@ interface TabPanelProps {
   index: number;
   value: number;
 }
+
+interface SelectedSeatsState {
+  1: number[];
+  2: number[];
+  [key: string]: number[];
+}
 const isoDate = dayjs();
 const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
@@ -92,6 +99,12 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
   const [float, setFloat] = useState(0);
   const [selectedBus, setSelectedBus] = useState<IBus>();
   const [selectedRout, setSelectedRout] = useState<IRout>();
+  // const [selectedSeats, setSelectedSeats] = useState<IRout>();
+  const [selectedSeats, setSelectedSeats] = useState<SelectedSeatsState>({
+    1: [],
+    2: [],
+  });
+
   //    id: number;
   // phone_number: string;
   // telegram: string;
@@ -116,9 +129,9 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
   // rows_4?: number | undefined;
   // rows_5?: number | undefined;
 
-  const [values, setValues] = useState<any>({
-    time: isoDate,
-    date: isoDate,
+  const [departureValues, setDepartureValues] = useState<any>({
+    time: '',
+    date: '',
   });
 
   function a11yProps(index: number) {
@@ -201,7 +214,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
       is_popular: false,
     },
     // @ts-ignore
-    resolver: yupResolver(UploadFileSchema),
+    // resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
@@ -220,40 +233,40 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
   //   setValue('stops', updatedCity);
   // };
 
-  const onSubmitForm = async (data: IRout) => {
+  const onSubmitForm = async (data: any) => {
     try {
       const session = await getSession();
       const formData = new FormData();
-      const jsonPrice = JSON.stringify(data?.price);
-      const s = [
-        {
-          id: 0,
-          city: 'XX',
-          price: 0,
-          coords_x: '121',
-          cooords_y: '4242',
-          address: 'ADD',
-        },
-      ];
-      const jsonStop = JSON.stringify(s);
-      formData.append('from_place', data.from_place.city || '');
-      formData.append('to_place', data.from_place.city || '');
-      formData.append('price', jsonPrice || '');
-      formData.append('price', data?.isPopular?.toString() || 'false');
-      formData.append('stops', jsonStop || '');
+      // const combinedDate = new Date(
+      //   departureValues.date + ' ' + departureValues.time,
+      // );
+      // const formattedDate = dayjs(combinedDate).toISOString();
+      // console.log(dayjs(formattedDate).format('HH:mm DD.MM.YYYY'));
+
+      const day = dayjs(departureValues.date).format('DD.MM.YYYY');
+      const isoDay = dayjs(day).toISOString();
+
+      const result = dayjs(isoDay)
+        .add(dayjs(departureValues.time).hour(), 'hour')
+        .add(dayjs(departureValues.time).minute(), 'minute');
+
+      formData.append('created_at ', isoDate.toISOString());
+      formData.append('departure_date ', dayjs(result).toISOString() || '');
+      formData.append('arrival_date ', departureValues.time || '');
+      formData.append('is_active', 'true' || 'false');
 
       const response = await axios.post(
-        `${BASE_URL}/${selectLang}/api/admin/routes/create`,
+        `${BASE_URL}/${selectLang}/api/admin/journey/create?bus_id=${data.bus.id}&route_id=${data.rout.id}`,
 
         formData,
 
-        {
-          headers: {
-            Authorization: 'Bearer ' + session.access,
-            'Content-Type':
-              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-          },
-        },
+        // {
+        //   headers: {
+        //     Authorization: 'Bearer ' + session.access,
+        //     'Content-Type':
+        //       'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+        //   },
+        // },
       );
 
       if (response.status === 200) {
@@ -291,7 +304,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
           },
         },
       );
-
+      console.log(response.data.results);
       if (response.status === 200) {
         setRouts(response.data.results);
       }
@@ -321,7 +334,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
           },
         },
       );
-      console.log(response.data);
+
       if (response.status === 200) {
         setBuses(response.data);
       }
@@ -373,19 +386,60 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
     getBus().catch(console.error);
   }, [getBus]);
 
-  // const handleAddCity = () => {
-  //   setCity(prevCity => [...prevCity, selectedStop]);
-  //   setSelectedStop({ id: undefined, city: '', price: undefined });
-  // };
+  useEffect(() => {
+    setFirstFloorSeats(selectedBus?.first_floor_seats);
+  }, [selectedBus?.first_floor_seats]);
+  useEffect(() => {
+    setSecondFloorSeats(selectedBus?.second_floor_seats);
+  }, [selectedBus?.second_floor_seats]);
 
-  const handleCheck = (id: number, floor: number) => {
-    // setSelectedSeats(prevSelectedSeats => ({
-    //   ...prevSelectedSeats,
-    //   [floor]: prevSelectedSeats[floor].includes(id)
-    //     ? prevSelectedSeats[floor].filter(seatId => seatId !== id)
-    //     : [...prevSelectedSeats[floor], id],
-    // }));
-    console.log(id, floor);
+  const [firstFloorSeats, setFirstFloorSeats] = useState<ISeat[]>();
+  const [secondFloorSeats, setSecondFloorSeats] = useState<ISeat[]>();
+
+  const handleCheck = (seatNumber: number, floor: number) => {
+    setSelectedSeats(prevSelectedSeats => ({
+      ...prevSelectedSeats,
+      [floor]: prevSelectedSeats[floor].includes(seatNumber)
+        ? prevSelectedSeats[floor].filter(seatId => seatId !== seatNumber)
+        : [...prevSelectedSeats[floor], seatNumber],
+    }));
+    if (floor === 1) {
+      setFirstFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
+    if (floor === 2) {
+      setSecondFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
+  };
+
+  const handleSeatBlock = () => {
+    // оновити статус квитка на reserved
+    return console.log('click', selectedSeats);
   };
 
   return (
@@ -501,15 +555,14 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                         <DataPicker
                           staticData={staticData.journeyTable.departure_date}
                           lang={lang}
-                          setValues={setValues}
-                          values={setValues}
-                          minOff
+                          setValues={setDepartureValues}
+                          values={departureValues}
                         />
                         <TimPicker
                           staticData={staticData.journeyTable.departure_time}
                           lang={lang}
-                          setValues={setValues}
-                          values={setValues}
+                          setValues={setDepartureValues}
+                          values={departureValues}
                         />
                       </Stack>
                       {selectedBus && (
@@ -561,7 +614,8 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                   is_wc={selectedBus?.wc ? 'yes' : 'no'}
                                   enter_2={selectedBus?.enter_2}
                                   enter_1={selectedBus?.enter_1}
-                                  seats={selectedBus?.first_floor_seats}
+                                  seats={firstFloorSeats}
+                                  // seats={selectedBus?.first_floor_seats}
                                   seats_start={1}
                                   floor={1}
                                   small
@@ -577,7 +631,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                   rows_1={selectedBus?.rows_4}
                                   rows_2={selectedBus?.rows_5}
                                   enter_1={selectedBus?.enter_3}
-                                  seats={selectedBus?.second_floor_seats}
+                                  // seats={selectedBus?.second_floor_seats}
                                   seats_start={
                                     selectedBus?.first_floor_seats_count + 1 ||
                                     0
@@ -585,6 +639,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                   floor={2}
                                   small
                                   handleCheck={handleCheck}
+                                  seats={secondFloorSeats}
                                 />
                               </FormGroup>
                             </CustomTabPanel>
@@ -601,8 +656,8 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                 size={'small'}
                                 variant={'contained'}
                                 type={'button'}
-
                                 // disabled={!isValid}
+                                onClick={handleSeatBlock}
                               >
                                 {staticData.journeyTable.blocked}
                               </Button>
@@ -654,43 +709,44 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                             >
                               {staticData.journeyTable.rout}
                             </Typography>
-                            <Stack
-                              spacing={1}
-                              direction={'column'}
-                              p={2}
-                              sx={{
-                                borderRadius: '4px',
-                                backgroundColor: '#E3EDF9',
-                              }}
-                            >
+                            {rout.from_place && (
                               <Stack
                                 spacing={1}
-                                alignItems={'start'}
-                                direction={'row'}
+                                direction={'column'}
+                                p={2}
+                                sx={{
+                                  borderRadius: '4px',
+                                  backgroundColor: '#E3EDF9',
+                                }}
                               >
-                                <Box height={16} width={16}>
-                                  <Circle height={16} width={16} />
-                                </Box>
-                                {rout && (
-                                  <Stack
-                                    spacing={1}
-                                    alignItems={'start'}
-                                    direction={'column'}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        fontSize: '16px',
-                                        lineHeight: '140%',
-                                        color: color_title,
-                                      }}
-                                      color={colorHeading}
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'row'}
+                                >
+                                  <Box height={16} width={16}>
+                                    <Circle height={16} width={16} />
+                                  </Box>
+                                  {rout && (
+                                    <Stack
+                                      spacing={1}
+                                      alignItems={'start'}
+                                      direction={'column'}
                                     >
-                                      {rout.from_place}
-                                    </Typography>
-                                    {/* <Box
+                                      <Typography
+                                        sx={{
+                                          fontFamily: 'Inter',
+                                          fontStyle: 'normal',
+                                          fontWeight: 700,
+                                          fontSize: '16px',
+                                          lineHeight: '140%',
+                                          color: color_title,
+                                        }}
+                                        color={colorHeading}
+                                      >
+                                        {rout.from_place}
+                                      </Typography>
+                                      {/* <Box
                                       display={'flex'}
                                       alignItems={'center'}
                                       justifyContent={'space-between'}
@@ -712,153 +768,109 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                         <Marker height={16} width={16} />
                                       </Box>
                                     </Box> */}
-                                  </Stack>
-                                )}
-                              </Stack>
-                            </Stack>
+                                    </Stack>
+                                  )}
+                                </Stack>
 
-                            {/* {stops.length > 0 ? (
-                              stops.map((stop, ind) => (
+                                {rout?.stops?.length > 0
+                                  ? stops.map(
+                                      (stop: StopsProps, ind: number) => (
+                                        <Stack
+                                          key={`${stop.id} ${ind}`}
+                                          spacing={1}
+                                          direction={'column'}
+                                        >
+                                          <Stack
+                                            spacing={1}
+                                            alignItems={'start'}
+                                            direction={'row'}
+                                          >
+                                            <Box height={16} width={16}>
+                                              <Bus_marker
+                                                height={16}
+                                                width={16}
+                                              />
+                                            </Box>
+
+                                            <Stack
+                                              spacing={1}
+                                              alignItems={'start'}
+                                              direction={'row'}
+                                            >
+                                              <Typography
+                                                sx={{
+                                                  fontFamily: 'Inter',
+                                                  fontStyle: 'normal',
+                                                  fontWeight: 400,
+                                                  fontSize: '16px',
+                                                  lineHeight: '140%',
+                                                  color: color_title,
+                                                }}
+                                                color={colorHeading}
+                                              >
+                                                {stop.city}
+                                              </Typography>
+                                              <Typography
+                                                sx={{
+                                                  fontFamily: 'Inter',
+                                                  fontStyle: 'normal',
+                                                  fontWeight: 400,
+                                                  fontSize: '12px',
+                                                  lineHeight: '140%',
+                                                  color: color_title,
+                                                }}
+                                                color={colorHeading}
+                                              >
+                                                {stop.price} UAH
+                                              </Typography>
+                                            </Stack>
+                                          </Stack>
+                                        </Stack>
+                                      ),
+                                    )
+                                  : null}
+
                                 <Stack
-                                  key={`${stop.id} ${ind}`}
                                   spacing={1}
-                                  direction={'column'}
-                                  p={2}
-                                  sx={{
-                                    borderRadius: '4px',
-
-                                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                                  }}
+                                  alignItems={'start'}
+                                  direction={'row'}
                                 >
-                                  <Stack
-                                    spacing={1}
-                                    alignItems={'start'}
-                                    direction={'row'}
-                                  >
-                                    <Box height={16} width={16}>
-                                      <Bus_marker height={16} width={16} />
-                                    </Box>
-
+                                  <Box height={16} width={16}>
+                                    <ToCircle height={16} width={16} />
+                                  </Box>
+                                  {rout && (
                                     <Stack
                                       spacing={1}
                                       alignItems={'start'}
-                                      direction={'column'}
+                                      direction={'row'}
                                     >
                                       <Typography
                                         sx={{
                                           fontFamily: 'Inter',
                                           fontStyle: 'normal',
-                                          fontWeight: 700,
+                                          fontWeight: 400,
                                           fontSize: '16px',
                                           lineHeight: '140%',
                                           color: color_title,
                                         }}
                                         color={colorHeading}
                                       >
-                                        {stop.city}
+                                        {rout.to_place}
                                       </Typography>
                                       <Typography
                                         sx={{
                                           fontFamily: 'Inter',
                                           fontStyle: 'normal',
                                           fontWeight: 400,
-                                          fontSize: '12px',
+                                          fontSize: '16px',
                                           lineHeight: '140%',
                                           color: color_title,
                                         }}
                                         color={colorHeading}
                                       >
-                                        {stop.price} UAH
+                                        {rout.price} UAH
                                       </Typography>
-                                      <Box
-                                        display={'flex'}
-                                        alignItems={'center'}
-                                        justifyContent={'space-between'}
-                                      >
-                                        <Typography
-                                          sx={{
-                                            fontFamily: 'Inter',
-                                            fontStyle: 'normal',
-                                            fontWeight: 400,
-                                            fontSize: '12px',
-                                            lineHeight: '150%',
-                                            color: color_title,
-                                          }}
-                                          color={colorHeading}
-                                        >
-                                          {stop.address}
-                                        </Typography>
-                                        <IconButton
-                                          onClick={() => {
-                                            if (stop.id)
-                                              handleDeleteStop(stop.id);
-                                          }}
-                                          size={'small'}
-                                        >
-                                          <Trash height={20} width={20} />
-                                        </IconButton>
-                                      </Box>
-                                    </Stack>
-                                  </Stack>
-                                </Stack>
-                              ))
-                            ) : (
-                              <Typography>
-                                {staticData.journeyTable.no_stop}
-                              </Typography>
-                            )} */}
-
-                            {/* <Stack
-                              spacing={1}
-                              direction={'column'}
-                              p={2}
-                              sx={{
-                                borderRadius: '4px',
-                                backgroundColor: '#E3EDF9',
-                                border: '1px solid rgba(0, 0, 0, 0.23)',
-                              }}
-                            >
-                              <Stack
-                                spacing={1}
-                                alignItems={'start'}
-                                direction={'row'}
-                              >
-                                <Box height={16} width={16}>
-                                  <ToCircle height={16} width={16} />
-                                </Box>
-                                {rout && (
-                                  <Stack
-                                    spacing={1}
-                                    alignItems={'start'}
-                                    direction={'column'}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        fontSize: '16px',
-                                        lineHeight: '140%',
-                                        color: color_title,
-                                      }}
-                                      color={colorHeading}
-                                    >
-                                      {rout}
-                                    </Typography>
-                                    <Typography
-                                      sx={{
-                                        fontFamily: 'Inter',
-                                        fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        fontSize: '16px',
-                                        lineHeight: '140%',
-                                        color: color_title,
-                                      }}
-                                      color={colorHeading}
-                                    >
-                                      {price} UAH
-                                    </Typography>
-                                    <Box
+                                      {/* <Box
                                       display={'flex'}
                                       alignItems={'center'}
                                       justifyContent={'space-between'}
@@ -879,39 +891,429 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                       <Box height={16} width={16}>
                                         <Marker height={16} width={16} />
                                       </Box>
-                                    </Box>
-                                  </Stack>
-                                )}
+                                    </Box> */}
+                                    </Stack>
+                                  )}
+                                </Stack>
                               </Stack>
-                            </Stack> */}
-                            {/* {is_popular && (
-                              <Box
-                                display={'flex'}
-                                alignItems={'center'}
-                                justifyContent={'start'}
+                            )}
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                            >
+                              {staticData.journeyTable.bus}
+                            </Typography>
+                            {selectedBus && (
+                              <Stack
+                                spacing={1}
+                                direction={'column'}
+                                p={2}
+                                sx={{
+                                  borderRadius: '4px',
+                                  backgroundColor: '#E3EDF9',
+                                }}
                               >
-                                <Checkbox
-                                  checked
-                                  color="success"
-                                  sx={{ padding: 0, color: '#808080' }}
-                                />
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'Inter',
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontSize: '12px',
-                                    lineHeight: '150%',
-                                    color: color_title,
-                                  }}
-                                  color={colorHeading}
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
                                 >
-                                  {staticData.journeyTable.is_popular}
-                                </Typography>
-                              </Box>
-                            )} */}
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {staticData.journeyTable.title}:
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {selectedBus.name}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {staticData.journeyTable.services}:
+                                    </Typography>
+                                    {/* <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {selectedBus.name}
+                                    </Typography> */}
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {staticData.journeyTable.wc}:
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {bus.is_wc_working
+                                        ? staticData.journeyTable.yes
+                                        : staticData.journeyTable.no}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {staticData.journeyTable.plate}:
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {bus.plates_number}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {
+                                        staticData.journeyTable
+                                          .seats_first_floor
+                                      }
+                                      :
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {bus.first_floor_seats_count}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                                <Stack
+                                  spacing={1}
+                                  alignItems={'start'}
+                                  direction={'column'}
+                                >
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'row'}
+                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {
+                                        staticData.journeyTable
+                                          .seats_second_floor
+                                      }
+                                      :
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {bus.second_floor_seats_count}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                              </Stack>
+                            )}
 
-                            {/* <Box display={'flex'}>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                            >
+                              {staticData.journeyTable.departure_time}
+                            </Typography>
+                            {(departureValues.time || departureValues.date) && (
+                              <Stack
+                                spacing={1}
+                                direction={'column'}
+                                p={2}
+                                sx={{
+                                  borderRadius: '4px',
+                                  backgroundColor: '#E3EDF9',
+                                }}
+                              >
+                                <Stack direction={'row'} spacing={2}>
+                                  <Stack alignItems={'start'} direction={'row'}>
+                                    <Box height={16} width={16} mr={1}>
+                                      <ClockIcon
+                                        height={16}
+                                        width={16}
+                                        sx={{ color: '#404040' }}
+                                      />
+                                    </Box>
+
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {dayjs(departureValues.time).format(
+                                        'HH:mm',
+                                      )}
+                                    </Typography>
+                                  </Stack>
+                                  <Stack alignItems={'start'} direction={'row'}>
+                                    <Box height={16} width={16} mr={1}>
+                                      <CalendarIcon
+                                        height={16}
+                                        width={16}
+                                        sx={{ color: '#404040' }}
+                                      />
+                                    </Box>
+
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {dayjs(departureValues.date).format(
+                                        'DD.MM.YYYY',
+                                      )}
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                              </Stack>
+                            )}
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                            >
+                              {staticData.journeyTable.arrival_time}
+                            </Typography>
+                            {(departureValues.time || departureValues.date) && (
+                              <Stack
+                                spacing={1}
+                                direction={'column'}
+                                p={2}
+                                sx={{
+                                  borderRadius: '4px',
+                                  backgroundColor: '#E3EDF9',
+                                }}
+                              >
+                                <Stack direction={'row'} spacing={2}>
+                                  <Stack alignItems={'start'} direction={'row'}>
+                                    <Box height={16} width={16} mr={1}>
+                                      <ClockIcon
+                                        height={16}
+                                        width={16}
+                                        sx={{ color: '#404040' }}
+                                      />
+                                    </Box>
+
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {dayjs(departureValues.time).format(
+                                        'HH:mm',
+                                      )}
+                                    </Typography>
+                                  </Stack>
+                                  <Stack alignItems={'start'} direction={'row'}>
+                                    <Box height={16} width={16} mr={1}>
+                                      <CalendarIcon
+                                        height={16}
+                                        width={16}
+                                        sx={{ color: '#404040' }}
+                                      />
+                                    </Box>
+
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 400,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {dayjs(departureValues.date).format(
+                                        'DD.MM.YYYY',
+                                      )}{' '}
+                                      + duration
+                                    </Typography>
+                                  </Stack>
+                                </Stack>
+                              </Stack>
+                            )}
+                            <Box display={'flex'}>
                               <Button
                                 sx={{ height: 50 }}
                                 color={'success'}
@@ -919,11 +1321,11 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                 variant={'contained'}
                                 fullWidth
                                 type={'submit'}
-                                disabled={!isValid}
+                                // disabled={!isValid}
                               >
-                                {staticData.journeyTable.save}
+                                {staticData.journeyTable.to_journey}
                               </Button>
-                            </Box> */}
+                            </Box>
                           </Stack>
                         </Stack>
                       </Grid>

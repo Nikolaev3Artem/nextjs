@@ -109,17 +109,30 @@ export const Form = ({
     data.file.length && formData.append('img', data.file[0] || null);
 
     formData.append('description', data.description || '');
-
-    const response = await axios.put(
-      `${BASE_URL}/${selectLang}/api/admin/main/update/${res[0].id}`,
-      formData,
-      {
-        headers: {
-          Authorization: 'Bearer ' + session.access,
-          'Content-Type': 'multipart/form-data',
+    let response;
+    if (res[0]?.id) {
+      response = await axios.put(
+        `${BASE_URL}/${selectLang}/api/admin/main/update/${res[0].id}`,
+        formData,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type': 'multipart/form-data',
+          },
         },
-      },
-    );
+      );
+    } else {
+      response = await axios.post(
+        `${BASE_URL}/${selectLang}/api/admin/main/create`,
+        formData,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+    }
     reset();
     await getBanner();
     if (response.status === 200) {
@@ -174,11 +187,7 @@ export const Form = ({
 
   return (
     <>
-      <Box
-        className={Style.home_form}
-        pb={4}
-        sx={{ backgroundColor: theme.palette.background.default }}
-      >
+      <Box className={Style.home_form} pb={4}>
         <Typography
           mb={2}
           sx={{
@@ -209,7 +218,7 @@ export const Form = ({
                 }}
               >
                 <Fade in={true} timeout={1000}>
-                  {imagePreviewUrl || res[0] ? (
+                  {imagePreviewUrl || res[0]?.img ? (
                     <Image
                       style={{
                         objectFit: 'cover',
@@ -292,6 +301,10 @@ export const Form = ({
                         color: 'secondary',
                       }}
                       sx={{
+                        '&.MuiTextField-root': {
+                          backgroundColor: '#fff',
+                          height: 'fit-content',
+                        },
                         '& label': {
                           fontSize: 14,
                           color: color_title,
@@ -391,6 +404,10 @@ export const Form = ({
                       ),
                     }}
                     sx={{
+                      '&.MuiTextField-root': {
+                        backgroundColor: '#fff',
+                        height: 'fit-content',
+                      },
                       '& label': {
                         fontSize: 14,
                         color: color_title,
@@ -458,6 +475,10 @@ export const Form = ({
                       ),
                     }}
                     sx={{
+                      '&.MuiTextField-root': {
+                        backgroundColor: '#fff',
+                        height: 'fit-content',
+                      },
                       '& label': {
                         fontSize: 14,
                         color: color_title,
@@ -534,6 +555,10 @@ export const Form = ({
                       ),
                     }}
                     sx={{
+                      '&.MuiTextField-root': {
+                        backgroundColor: '#fff',
+                        height: 'fit-content',
+                      },
                       '& input': {
                         fontSize: 14,
                         color: color_title,

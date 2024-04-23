@@ -62,7 +62,7 @@ export function TimPicker({
           slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
           onChange={newValue => {
             setDatePickerValue(newValue);
-            setValues({ ...values, time: newValue?.toISOString() });
+            setValues({ ...values, time: newValue });
           }}
           // @ts-ignore
           // slotProps={{

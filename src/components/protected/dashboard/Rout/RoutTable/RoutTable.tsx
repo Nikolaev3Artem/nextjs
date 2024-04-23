@@ -230,7 +230,7 @@ const RoutTable = ({
 
                     <TableCell component="th" scope="row">
                       <Stack direction={'column'} rowGap={0.5}>
-                        {item?.stops.map((el, ind) => {
+                        {item?.stops?.map((el, ind) => {
                           return (
                             <Box
                               key={el.id || ind}
