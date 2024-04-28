@@ -13,16 +13,18 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import { TbCurrencyHryvnia } from 'react-icons/tb';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Style from './CurrencySelect.module.css';
+import { useCurrencyContext, useLangContext } from '@/app/context';
 
 const currency = [
   {
     id: 1,
     title: 'UAH',
-    icon: 'CurrencyBitcoinIcon',
+    icon: 'TbCurrencyHryvnia',
     rate: 40,
   },
   { id: 2, title: 'USD', icon: 'AttachMoneyIcon', rate: 0.98 },
@@ -32,6 +34,11 @@ const currency = [
 export const CurrencySelect = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(1);
+  const { selectCurrency, setSelectCurrency } = useCurrencyContext();
+
+  useEffect(() => {
+    setSelectedIndex(selectCurrency);
+  }, [selectCurrency]);
 
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
@@ -42,6 +49,7 @@ export const CurrencySelect = () => {
     event: React.MouseEvent<HTMLElement>,
     id: number,
   ) => {
+    setSelectCurrency(id);
     setSelectedIndex(id);
     setAnchorEl(null);
   };
@@ -113,9 +121,24 @@ export const CurrencySelect = () => {
               disabled={item.id === 0}
               selected={item.id === selectedIndex}
               onClick={event => handleMenuItemClick(event, item.id)}
+              sx={{ alignItems: 'center', justifyContent: 'center' }}
             >
-              {item.icon === 'CurrencyBitcoinIcon' ? (
-                <CurrencyBitcoinIcon fontSize={'small'} />
+              {item.icon === 'TbCurrencyHryvnia' ? (
+                <Box
+                  width={30}
+                  height={30}
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <TbCurrencyHryvnia
+                    width={24}
+                    height={24}
+                    style={{ width: '22px', height: '30px' }}
+                  />
+                </Box>
               ) : null}
               {item.icon === 'AttachMoneyIcon' ? (
                 <AttachMoneyIcon fontSize={'small'} />

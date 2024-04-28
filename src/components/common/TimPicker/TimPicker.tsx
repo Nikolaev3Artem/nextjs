@@ -24,6 +24,7 @@ export function TimPicker({
   values,
   isWhite,
   small,
+  defaultValue,
 }: {
   staticData: string;
   lang: Locale;
@@ -32,6 +33,7 @@ export function TimPicker({
   values: any;
   isWhite?: boolean;
   small?: boolean;
+  defaultValue?: string;
 }) {
   const [datePickerValue, setDatePickerValue] = React.useState<Dayjs | null>(
     null,
@@ -39,6 +41,13 @@ export function TimPicker({
   const [open, setOpen] = useState<boolean>(false);
 
   const today = dayjs();
+  React.useEffect(() => {
+    if (defaultValue) {
+      setDatePickerValue(
+        dayjs().startOf('day').add(parseInt(defaultValue), 'minute'),
+      );
+    }
+  }, [defaultValue]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>

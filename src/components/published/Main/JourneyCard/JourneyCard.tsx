@@ -422,8 +422,8 @@ export const JourneyCard = ({
                         <FromCircleSvg width={12} height={13} />
                       </Box>
 
-                      {data.routes[0].stops &&
-                        data.routes[0].stops.map((el, ind) => {
+                      {data.routes[0].cities &&
+                        data.routes[0].cities.map((el, ind) => {
                           return (
                             <Box
                               key={ind}
@@ -465,8 +465,8 @@ export const JourneyCard = ({
                           {data.routes[0].from_place}
                         </Typography>
                       </Box>
-                      {data.routes[0].stops &&
-                        data.routes[0].stops.map(stop => {
+                      {data.routes[0].cities &&
+                        data.routes[0].cities.map(stop => {
                           return (
                             <Box
                               key={stop.id}

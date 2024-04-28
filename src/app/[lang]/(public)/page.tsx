@@ -5,6 +5,7 @@ import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
 import { getMainDictionaries } from '@/lib/dictionary';
 import { MainSection } from '@/components/published/Main/MainSection';
+import { Metadata } from 'next';
 
 const getBanner = async (lang: Locale) => {
   try {

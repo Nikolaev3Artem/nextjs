@@ -452,8 +452,8 @@ export const TicketsCard = ({
                       <FromCircleSvg width={12} height={13} />
                     </Box>
 
-                    {data?.journey[0]?.routes[0]?.stops &&
-                      data?.journey[0]?.routes[0]?.stops.map((el, ind) => {
+                    {data?.journey[0]?.routes[0]?.cities &&
+                      data?.journey[0]?.routes[0]?.cities.map((el, ind) => {
                         return (
                           <Box
                             component={'li'}
@@ -493,8 +493,8 @@ export const TicketsCard = ({
                         {data?.journey[0]?.routes[0]?.from_place}
                       </Typography>
                     </Box>
-                    {data?.journey[0]?.routes[0]?.stops &&
-                      data?.journey[0]?.routes[0]?.stops.map(
+                    {data?.journey[0]?.routes[0]?.cities &&
+                      data?.journey[0]?.routes[0]?.cities.map(
                         (stop: StopsProps, ind) => {
                           return (
                             <Box

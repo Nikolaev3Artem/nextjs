@@ -1,0 +1,49 @@
+{
+  "contacts": "Sobre nós",
+  "home": "Principal",
+  "back": "Voltar",
+
+  "form": {
+    "errors": {
+      "size": "O arquivo não deve exceder (5 MB)",
+      "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
+      "title_more60": "O título não pode ter mais de 60 caracteres",
+      "text_more60": "O texto não pode ter mais de 60 caracteres",
+      "alt_more30": "ALT não pode ter mais de 30 caracteres"
+    },
+    "text": {
+      "h1": "Título H1 de nível superior",
+      "label": "Digite o texto",
+      "description": "Descrição de texto adicional",
+      "alt": "Texto adicional (ALT)",
+      "banner": "Banner de fundo",
+      "schedule": "Horário de funcionamento",
+      "lunchtime": "Horário de almoço",
+      "weekend": "Fim de semana",
+      "address": "Endereço",
+      "email": "Email",
+      "phone": "Número de telefone",
+      "workDay": [
+        { "name": "mo", "title": "Segunda-feira", "shot_name": "Se" },
+        { "name": "tu", "title": "Terça-feira", "shot_name": "Te" },
+        {
+          "name": "we",
+          "title": "Quarta-feira",
+          "shot_name": "Qua "
+        },
+        { "name": "th", "title": "Quinta-feira", "shot_name": "Qui" },
+        { "name": "fr", "title": "Sexta-feira", "shot_name": "Sex " },
+        { "name": "sa", "title": "Sábado", "shot_name": "Sáb" },
+        { "name": "su", "title": "Domingo", "shot_name": "Dom " }
+      ]
+    },
+    "save_btn": {
+      "text": "Salvar"
+    }
+  },
+  "snackBar": {
+    "success": "Suas alterações foram salvas",
+    "error": "Erro ao salvar"
+  },
+  "preview": "Visualização"
+}

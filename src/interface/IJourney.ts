@@ -55,7 +55,7 @@ export interface IBus {
 
 export interface StopsProps {
   city: string;
-  id: number | undefined;
+  id: string;
   price?: number | string | undefined;
   coords_x?: string;
   cooords_y?: string;
@@ -66,9 +66,11 @@ export interface IRout {
   from_place: any;
   id: string;
   isPopular: boolean;
-  price?: number | string;
-  stops: StopsProps[];
+  price?: number | string | null;
+
   to_place: any;
   is_stop?: boolean;
   is_popular?: boolean;
+  travel_time: string;
+  cities: StopsProps[];
 }

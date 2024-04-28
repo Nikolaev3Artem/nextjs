@@ -73,7 +73,7 @@ export const JourneyWrapper = ({
               route =>
                 route.to_place.toLowerCase().includes(filter.toLowerCase()) ||
                 route.from_place.toLowerCase().includes(filter.toLowerCase()) ||
-                route.stops.some(stop =>
+                route.cities.some(stop =>
                   stop.city.toLowerCase().includes(filter.toLowerCase()),
                 ),
             ) ||

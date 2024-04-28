@@ -50,11 +50,6 @@ export const Popular = ({
       className={Style.popular}
       component={'section'}
     >
-      {/* <Container maxWidth={'xl'}>
-        <Grid mt={6} container>
-          <Grid item></Grid>
-        </Grid>
-      </Container> */}
       <Box mt={6} className={Style.content}>
         <Container className={Style.card_content} maxWidth={'xl'}>
           <Grid container direction={'column'}>
@@ -69,7 +64,10 @@ export const Popular = ({
               >
                 {card.map((i: any, index: number) => (
                   <Grid item xs={12} sm={6} md={2} lg={2} xl={2} key={index}>
-                    <CardPopular name1={i.from_place} name2={i.to_place} />
+                    <CardPopular
+                      name1={i?.cities[0]?.city}
+                      name2={i?.cities[i?.cities?.length - 1]?.city}
+                    />
                   </Grid>
                 ))}
               </Grid>

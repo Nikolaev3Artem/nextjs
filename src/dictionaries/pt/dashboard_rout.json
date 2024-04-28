@@ -21,6 +21,7 @@
     "add_stop": "Adicionar paragem",
     "city": "Cidade",
     "departure_time": "Hora de partida",
+    "duration": "Duração da viagem",
     "order": "Ordem",
     "arrival_time": "Hora de chegada",
     "price": "Preço",
@@ -29,6 +30,8 @@
     "add_btn": "Adicionar",
     "no_stop": "There are no stops",
     "is_popular": "Rota popular",
+    "hours": "horas",
+    "minutes": "minutos",
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

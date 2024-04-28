@@ -50,13 +50,17 @@ export const MainSection = async ({
 }) => {
   const routs = await getRoute(lang);
   const popularRouts = await getPopularRouts(lang);
-  const routsFrom = [...new Set(routs.map(item => item.from_place))];
-  const routsTo = [...new Set(routs.map(item => item.to_place))];
+  const routsFrom = [...new Set(routs.map(item => item?.cities[0]?.city))];
+  const routsTo = [
+    ...new Set(routs.map(item => item?.cities[item?.cities.length - 1]?.city)),
+  ];
   const popularRoutsFrom = [
-    ...new Set(popularRouts.map(item => item.from_place)),
+    ...new Set(popularRouts.map(item => item?.cities[0]?.city)),
   ].slice(0, 4);
   const popularRoutsTo = [
-    ...new Set(popularRouts.map(item => item.to_place)),
+    ...new Set(
+      popularRouts.map(item => item?.cities[item?.cities.length - 1]?.city),
+    ),
   ].slice(0, 4);
 
   return (

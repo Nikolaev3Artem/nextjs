@@ -1,0 +1,44 @@
+{
+  "contacts": "About us",
+  "home": "Main",
+  "back": "Back",
+  "form": {
+    "errors": {
+      "size": "The file must not exceed (5 MB)",
+      "formats": "Only the following formats are supported: .jpeg, .jpg, .png, .webp",
+      "title_more60": "The title must not contain more than 60 characters",
+      "text_more60": "The text must not contain more than 60 characters",
+      "alt_more30": "ALT must not contain more than 30 characters"
+    },
+    "text": {
+      "h1": "Heading level 1 (H1)",
+      "label": "Enter text",
+      "description": "Additional text description",
+      "alt": "Additional text (ALT)",
+      "banner": "Background banner",
+      "schedule": "Working hours",
+      "lunchtime": "Lunchtime",
+      "weekend": "Weekend",
+      "address": "Address",
+      "email": "Email",
+      "phone": "Phone number",
+      "workDay": [
+        { "name": "mo", "title": "Monday", "shot_name": "Mon" },
+        { "name": "tu", "title": "Tuesday", "shot_name": "Tue" },
+        { "name": "we", "title": "Wednesday", "shot_name": "Wed" },
+        { "name": "th", "title": "Thursday", "shot_name": "Thu" },
+        { "name": "fr", "title": "Friday", "shot_name": "Fri" },
+        { "name": "sa", "title": "Saturday", "shot_name": "Sat" },
+        { "name": "su", "title": "Sunday", "shot_name": "Sun" }
+      ]
+    },
+    "save_btn": {
+      "text": "Save"
+    }
+  },
+  "snackBar": {
+    "success": "Your changes have been saved",
+    "error": "Save error"
+  },
+  "preview": "Preview"
+}

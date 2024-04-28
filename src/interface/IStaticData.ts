@@ -122,6 +122,7 @@ export interface loginStaticDataProp {
   snack_bar: {
     error: string;
     success: string;
+    server_error: string;
   };
 }
 
@@ -295,6 +296,44 @@ export interface dashboardAboutStaticData {
   };
   snackBar: {
     success: string;
+  };
+  preview: string;
+}
+
+export interface dashboardContactsStaticData {
+  contacts: string;
+  home: string;
+  back: string;
+
+  form: {
+    errors: {
+      size: string;
+      formats: string;
+      title_more60: string;
+      text_more60: string;
+      alt_more30: string;
+    };
+    text: {
+      h1: string;
+      label: string;
+      description: string;
+      alt: string;
+      banner: string;
+      schedule: string;
+      lunchtime: string;
+      weekend: string;
+      address: string;
+      email: string;
+      phone: string;
+      workDay: { name: string; title: string; shot_name: string }[];
+    };
+    save_btn: {
+      text: string;
+    };
+  };
+  snackBar: {
+    success: string;
+    error: string;
   };
   preview: string;
 }
@@ -487,6 +526,7 @@ export interface dashboardRoutStaticData {
     add_stop: string;
     city: string;
     departure_time: string;
+    duration: string;
     order: string;
     arrival_time: string;
     price: string;
@@ -495,6 +535,8 @@ export interface dashboardRoutStaticData {
     add_btn: string;
     no_stop: string;
     is_popular: string;
+    hours: string;
+    minutes: string;
     snackBar: {
       remove_success: string;
       remove_error: string;

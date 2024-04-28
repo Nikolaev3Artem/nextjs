@@ -1,6 +1,6 @@
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|public|images|icons|meta|favicon.ico).*)',
+    '/((?!api|_next/static|_next/image|public|images|icons|meta|favicon.ico|favicon).*)',
   ],
 };
 

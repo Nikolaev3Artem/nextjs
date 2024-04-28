@@ -37,6 +37,8 @@ import { dashboardRoutStaticData } from '@/interface/IStaticData';
 
 import { IRout } from '@/interface/IJourney';
 import { useState } from 'react';
+import TimeClock from '../../../../../../public/icons/clock.svg';
+import dayjs from 'dayjs';
 
 const colorIcon = grey[700];
 const colorHeader = grey[800];
@@ -54,10 +56,9 @@ const RoutTable = ({
   const [dense, setDense] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
-  const { selectLang } = useLangContext();
 
   const rout = useRouter();
-
+  console.log(routs);
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number,
@@ -84,7 +85,7 @@ const RoutTable = ({
     const session = await getSession();
     try {
       const response = await axios.delete(
-        `${BASE_URL}/${selectLang}/api/admin/routes/delete/${id}/`,
+        `${BASE_URL}/${lang}/api/admin/routes/delete/${id}/`,
         {
           headers: {
             Authorization: 'Bearer ' + session.access,
@@ -184,6 +185,19 @@ const RoutTable = ({
                 }}
                 align="left"
               >
+                {staticData.routTable.duration}
+              </TableCell>
+              <TableCell
+                sx={{
+                  fontFamily: 'Inter',
+                  fontStyle: 'normal',
+                  fontWeight: '700',
+                  fontSize: '14px',
+                  lineHeight: '150%',
+                  color: colorHeader,
+                }}
+                align="left"
+              >
                 {staticData.routTable.is_popular}
               </TableCell>
 
@@ -224,28 +238,29 @@ const RoutTable = ({
                         }}
                       >
                         <Circle width={16} height={16} />
-                        {item.from_place}
+                        {item?.cities[0]?.city}
                       </Box>
                     </TableCell>
 
                     <TableCell component="th" scope="row">
                       <Stack direction={'column'} rowGap={0.5}>
-                        {item?.stops?.map((el, ind) => {
-                          return (
-                            <Box
-                              key={el.id || ind}
-                              sx={{
-                                display: 'flex',
-                                columnGap: 1,
-                                alignItems: 'center',
-                              }}
-                            >
-                              <Bus_marker width={16} height={16} />
-                              <Typography>{el.city}</Typography>
-                              <Typography> {el.price} UAH</Typography>
-                            </Box>
-                          );
-                        })}
+                        {item?.cities?.slice(-1, 1).length > 0 &&
+                          item?.cities?.slice(-1, 1)?.map((el, ind) => {
+                            return (
+                              <Box
+                                key={el.id || ind}
+                                sx={{
+                                  display: 'flex',
+                                  columnGap: 1,
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <Bus_marker width={16} height={16} />
+                                <Typography>{el.city}</Typography>
+                                <Typography> {el.price} UAH</Typography>
+                              </Box>
+                            );
+                          })}
                       </Stack>
                     </TableCell>
 
@@ -257,8 +272,24 @@ const RoutTable = ({
                           alignItems: 'center',
                         }}
                       >
-                        <Bus_marker width={16} height={16} /> {item?.to_place}{' '}
+                        <Bus_marker width={16} height={16} />
+                        {item?.cities[item?.cities?.length - 1]?.city}
                         {item?.price} UAH
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          columnGap: 1,
+                          alignItems: 'center',
+                        }}
+                      >
+                        <TimeClock width={16} height={16} /> {item?.to_place}
+                        {dayjs()
+                          .startOf('day')
+                          .add(parseInt(item?.travel_time), 'minute')
+                          .format('HH:mm')}
                       </Box>
                     </TableCell>
                     <TableCell align="left">

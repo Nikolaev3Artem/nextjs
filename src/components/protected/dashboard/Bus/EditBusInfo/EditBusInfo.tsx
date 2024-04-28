@@ -294,29 +294,29 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       );
       formData.append('rentable', data.rentable);
       formData.append('wc', data?.wc === 'yes' ? 'true' : 'false');
-      // @ts-ignore
-      formData.append('rows_1', data?.rows_1 || 0);
-      // @ts-ignore
-      formData.append('rows_2', data?.rows_2 || 0);
-      // @ts-ignore
-      formData.append('rows_3', data?.rows_3 || 0);
-      // @ts-ignore
-      formData.append('rows_4', data?.rows_4 || 0);
-      // @ts-ignore
-      formData.append('rows_5', data?.rows_5 || 0);
-      // @ts-ignore
-      formData.append('enter_1', data?.enter_1 || false);
-      // @ts-ignore
-      formData.append('enter_2', data?.enter_2 || false);
-      // @ts-ignore
-      formData.append('enter_3', data?.enter_3 || false);
+
+      formData.append('rows_1', data?.rows_1?.toString() || '');
+
+      formData.append('rows_2', data?.rows_2?.toString() || '');
+
+      formData.append('rows_3', data?.rows_3?.toString() || '');
+
+      formData.append('rows_4', data?.rows_4?.toString() || '');
+
+      formData.append('rows_5', data?.rows_5?.toString() || '');
+
+      formData.append('enter_1', data?.enter_1?.toString() || 'false');
+
+      formData.append('enter_2', data?.enter_2?.toString() || 'false');
+
+      formData.append('enter_3', data?.enter_3?.toString() || 'false');
       formData.append('plates_number', data.plates_number);
       data.photo?.length
         ? formData.append('photo', data.photo[0] || null)
         : formData.append('photo', bus.photo);
 
       const response = await axios.patch(
-        `${BASE_URL}/${selectLang}/api/admin/service/bus/${bus.id}/update/`,
+        `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/update/`,
         formData,
         {
           headers: {
@@ -331,7 +331,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         Object.values(data.uploaded_images).forEach(async (file: any) => {
           imageFormData.append('photo', file);
           const response = await axios.post(
-            `${BASE_URL}/${selectLang}/api/admin/service/bus/${bus.id}/add_photo/`,
+            `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/add_photo/`,
             imageFormData,
             {
               headers: {

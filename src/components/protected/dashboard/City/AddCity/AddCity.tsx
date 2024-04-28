@@ -118,7 +118,7 @@ export const AddCity = ({
       const session = await getSession();
       if (!session) return null;
       const formData = new FormData();
-
+      console.log(data);
       formData.append('city', data.city.trim() || '');
       formData.append('id', data?.id?.toString() || '');
 

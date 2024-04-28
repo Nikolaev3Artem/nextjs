@@ -38,8 +38,8 @@ export const RoutWrapper = ({
       from_place: '',
       id: '',
       isPopular: false,
-
-      stops: [],
+      travel_time: '',
+      cities: [],
       to_place: '',
     },
   ]);
@@ -110,9 +110,8 @@ export const RoutWrapper = ({
           {staticData.searchForm.new_button_form.text}
         </Button>
       </Stack>
-      <TabMenuLocale staticData={tabs}>
-        <RoutTable routs={filteredRouts} staticData={staticData} lang={lang} />
-      </TabMenuLocale>
+
+      <RoutTable routs={filteredRouts} staticData={staticData} lang={lang} />
     </>
   );
 };

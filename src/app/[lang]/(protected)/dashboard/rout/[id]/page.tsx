@@ -81,13 +81,11 @@ export default async function RoutInfo({
             title={`${staticData.routTable.rout} ${rout.id}: ${rout.from_place} - ${rout.to_place}`}
             back={staticData.back}
           >
-            <TabMenuLocale staticData={tabs}>
-              <EditRoutInfo
-                staticData={staticData}
-                lang={params.lang}
-                rout={rout}
-              />
-            </TabMenuLocale>
+            <EditRoutInfo
+              staticData={staticData}
+              lang={params.lang}
+              rout={rout}
+            />
           </ContentDashboard>
         </Box>
       </Fade>

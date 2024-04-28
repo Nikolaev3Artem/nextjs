@@ -23,6 +23,8 @@ export interface IContactText {
   lunch_time?: string;
   description?: string;
   text?: string;
+  text2?: string;
+  alt?: string;
   img?: string;
   main_desc?: string;
 }

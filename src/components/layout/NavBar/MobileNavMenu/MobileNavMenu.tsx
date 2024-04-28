@@ -47,8 +47,8 @@ export const MobileNavMenu = ({
   anchorElUser: any;
   handleCloseUserMenu: any;
   contacts: PhoneType[];
-  is_staff?: boolean;
-  is_superuser?: boolean;
+  is_staff?: boolean | undefined | null;
+  is_superuser?: boolean | undefined | null;
 }) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 

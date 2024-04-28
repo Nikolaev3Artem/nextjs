@@ -52,9 +52,7 @@ export default async function RoutAdd({
             title={`${staticData.new_routs} `}
             back={staticData.back}
           >
-            <TabMenuLocale staticData={tabs}>
-              <AddRoutCard staticData={staticData} lang={params.lang} />
-            </TabMenuLocale>
+            <AddRoutCard staticData={staticData} lang={params.lang} />
           </ContentDashboard>
         </Box>
       </Fade>

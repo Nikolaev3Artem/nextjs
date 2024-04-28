@@ -58,11 +58,13 @@ const CityTable = ({
   const { selectLang } = useLangContext();
   const [isShowModal, setIsShowModal] = useState(false);
 
-  const [cityList, setCityList] = useState<StopsProps[]>([{ city: '', id: 0 }]);
+  const [cityList, setCityList] = useState<StopsProps[]>([
+    { city: '', id: '0' },
+  ]);
 
   const [selectedCity, setSelectedCity] = useState<StopsProps>({
     city: '',
-    id: 0,
+    id: '0',
   });
 
   useEffect(() => {

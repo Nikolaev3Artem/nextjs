@@ -38,7 +38,7 @@ export const CityWrapper = ({
   const [filteredCities, setFilteredCities] = useState<StopsProps[]>([
     {
       city: '',
-      id: 0,
+      id: '0',
       coords_x: '',
       cooords_y: '',
       address: '',
