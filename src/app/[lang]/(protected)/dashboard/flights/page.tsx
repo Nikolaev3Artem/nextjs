@@ -64,7 +64,6 @@ export default async function Rout({
   params: { lang: Locale };
 }>) {
   const journey = await getJourney(params.lang);
-
   const staticData = await getDashboardJourneyDictionaries(params.lang);
 
   return (

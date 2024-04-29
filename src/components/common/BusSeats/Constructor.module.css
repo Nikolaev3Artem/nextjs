@@ -12,6 +12,12 @@
   }
 }
 
+.bus_layout.vertical {
+  flex-direction: column;
+  column-gap: initial;
+  row-gap: 6px;
+}
+
 .bus_layout.small {
   column-gap: 4px;
 }
@@ -25,6 +31,12 @@
     flex-direction: column-reverse;
     row-gap: 10px;
   }
+}
+
+.bus_row.vertical {
+  flex-direction: row;
+  row-gap: initial;
+  column-gap: 6px;
 }
 
 .bus_row.small {
@@ -94,8 +106,8 @@
   top: 0;
   left: -43px;
   width: 80px;
-  border: 1px solid #bfbfbf;
   height: 35px;
+  border: 1px solid #bfbfbf;
   font-size: 12px;
   text-transform: capitalize;
   border-radius: 4px;
@@ -168,4 +180,20 @@
   height: 68px !important;
   top: 0px !important;
   left: 6px !important;
+}
+
+.bus_seat.enter.vertical::before {
+  width: 21px !important;
+  height: 68px !important;
+  top: 24px !important;
+  left: 8px !important;
+  rotate: 90deg;
+  transform-origin: right top;
+}
+
+.bus_seat.wc.vertical::before {
+  top: 0;
+  left: -38px;
+  width: 70px !important;
+  rotate: 90deg;
 }

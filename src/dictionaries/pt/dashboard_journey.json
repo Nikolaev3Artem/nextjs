@@ -41,12 +41,20 @@
     "seat": "Assento",
     "comment": "Comentário",
     "luggage": "Bagagem",
+    "extra_luggage": "Bagagem Extra",
+    "base_bag": "Base",
+    "extra_bag": "Mala Extra",
     "from": "De",
     "to": "Para",
     "no": "Nem",
     "yes": "Sim",
     "next_step": "Próximo passo",
     "choose_journey": "Escolha a rota e o ônibus",
+    "seats_status": {
+      "payed": "Pagos",
+      "available": "Disponíveis",
+      "reserved": "Reservados"
+    },
 
     "snackBar": {
       "remove_success": "Cartão removido",

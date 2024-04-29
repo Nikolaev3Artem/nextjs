@@ -18,6 +18,7 @@ import { IRent } from '@/interface/IRent';
 // import { IServiceBus } from '../add/page';
 import {
   getDashboardBusDictionaries,
+  getDashboardJourneyDictionaries,
   getDashboardRoutDictionaries,
   getDashboardTubsDictionaries,
 } from '@/lib/dictionary';
@@ -26,6 +27,8 @@ import { DashboardContainer } from '@/components/layout/DashboardContainer/Dashb
 import EditRoutInfo from '@/components/protected/dashboard/Rout/EditRoutInfo/EditRoutInfo';
 import AddRoutCard from '@/components/protected/dashboard/Rout/AddRoutCard/AddRoutCard';
 import { getSession } from '@/lib/auth';
+import { JourneyInfo } from '@/components/protected/dashboard/Journey/JourneyInfo/JourneyInfo';
+import { ITickets } from '@/interface/IJourney';
 
 export interface IRentProps {
   rent: IRent;
@@ -33,17 +36,17 @@ export interface IRentProps {
   // serviceBus?: readonly IServiceBus[];
 }
 
-const getRout = async (id: number, lang: Locale) => {
-  // const session = await getSession();
+const getJourney = async (id: number, lang: Locale) => {
+  const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/${id}/`,
-      // {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: 'Bearer ' + session.access,
-      //   },
-      // },
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/${id}/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + session.access,
+        },
+      },
     );
 
     if (response.status === 200) {
@@ -60,7 +63,36 @@ const getRout = async (id: number, lang: Locale) => {
   }
 };
 
-export default async function BusInfo({
+const getTickets = async (id: number, lang: Locale) => {
+  const session = await getSession();
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets/`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + session.access,
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      return response.data.results.filter(
+        (el: ITickets) => el.journey[0].id == id,
+      );
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('error message: ', error.message);
+      return error.message;
+    } else {
+      console.log('unexpected error: ');
+      return 'An unexpected error occurred';
+    }
+  }
+};
+
+export default async function JourniesInfo({
   params,
 }: Readonly<{
   params: {
@@ -68,9 +100,10 @@ export default async function BusInfo({
     id: number;
   };
 }>) {
-  const staticData = await getDashboardRoutDictionaries(params.lang);
-  const tabs = await getDashboardTubsDictionaries(params.lang);
-  const rout = await getRout(params.id, params.lang);
+  console.log(params);
+  const journey = await getJourney(params.id, params.lang);
+  const tickets = await getTickets(params.id, params.lang);
+  const staticData = await getDashboardJourneyDictionaries(params.lang);
 
   return (
     <DashboardContainer>
@@ -78,16 +111,15 @@ export default async function BusInfo({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
             // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-            title={`${staticData.routTable.rout} ${rout.id}: ${rout.from_place} - ${rout.to_place}`}
+            title={`${staticData.journeyTable.journey}: #${journey.id}`}
             back={staticData.back}
           >
-            <TabMenuLocale staticData={tabs}>
-              <EditRoutInfo
-                staticData={staticData}
-                lang={params.lang}
-                rout={rout}
-              />
-            </TabMenuLocale>
+            <JourneyInfo
+              staticData={staticData}
+              lang={params.lang}
+              journey={journey}
+              tickets={tickets}
+            />
           </ContentDashboard>
         </Box>
       </Fade>

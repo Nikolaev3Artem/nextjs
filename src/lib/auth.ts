@@ -68,7 +68,7 @@ export async function getCustomerStatus() {
       },
     );
     console.log(data.results);
-    return data.results[0].user?.is_staff;
+    return data.results[0]?.user?.is_staff;
   } catch (error) {
     console.log(error);
     return false;

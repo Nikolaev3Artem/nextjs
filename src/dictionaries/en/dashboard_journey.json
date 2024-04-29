@@ -41,12 +41,21 @@
     "seat": "Seat",
     "comment": "Comment",
     "luggage": "Luggage",
+    "extra_luggage": "Extra luggage",
+    "base_bag": "Base",
+    "extra_bag": "Extra bag",
     "from": "From",
     "to": "To",
     "no": "No",
     "yes": "Yes",
     "next_step": "Next Step",
     "choose_journey": "Choose a route and a bus",
+    "seats_status": {
+      "payed": "Paid",
+      "available": "Available",
+      "reserved": "Reserved"
+    },
+
     "snackBar": {
       "remove_success": "Card Removed",
       "remove_error": "Removal Error",

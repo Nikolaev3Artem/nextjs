@@ -639,12 +639,22 @@ export interface dashboardJourneyStaticData {
     seat: string;
     comment: string;
     luggage: string;
+    extra_luggage: string;
+    base_bag: string;
+    extra_bag: string;
     from: string;
     to: string;
     no: string;
     yes: string;
     next_step: string;
     choose_journey: string;
+
+    seats_status: {
+      payed: string;
+      available: string;
+      reserved: string;
+    };
+
     snackBar: {
       remove_success: string;
       remove_error: string;

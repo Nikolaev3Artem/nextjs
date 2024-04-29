@@ -29,7 +29,6 @@ export const JourneyWrapper = ({
   lang,
 }: {
   journey: IJourney[];
-
   staticData: dashboardJourneyStaticData;
   lang: Locale;
 }) => {

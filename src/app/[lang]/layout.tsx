@@ -37,7 +37,7 @@ export async function generateMetadata({
     description: metadata.description,
     metadataBase: new URL(metadata.base),
     alternates: {
-      canonical: process.env.NEXT_PUBLIC_BASE_URL + '/uk',
+      canonical: process.env.NEXT_PUBLIC_URL + '/uk',
       languages: {
         'en-US': '/en',
         'pt-PT': '/pt',
@@ -45,25 +45,49 @@ export async function generateMetadata({
       },
     },
     keywords: metadata.keywords,
-    twitter,
-    openGraph,
+    twitter: {
+      title: twitter.title,
+      card: 'summary_large_image',
+      images: {
+        url: `${process.env.NEXT_PUBLIC_URL}${twitter.images.url}`,
+        width: twitter.images.width,
+        height: twitter.images.height,
+        alt: twitter.images.alt,
+      },
+      description: twitter.description,
+    },
+    openGraph: {
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_URL}${openGraph.images.url}`,
+          width: openGraph.images.width,
+          height: openGraph.images.height,
+          alt: openGraph.images.alt,
+        },
+      ],
+      description: openGraph.description,
+      type: 'website',
+      locale: openGraph.locale,
+      title: openGraph.title,
+      url: process.env.NEXT_PUBLIC_URL,
+    },
     icons: [
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '32x32',
-        url: 'http://localhost:3000/favicon/favicon-32x32.png',
+        url: `${process.env.NEXT_PUBLIC_URL}/favicon/favicon-32x32.png`,
       },
       {
         rel: 'icon',
         type: 'image/png',
         sizes: '16x16',
-        url: 'http://localhost:3000/favicon/favicon-16x16.png',
+        url: `${process.env.NEXT_PUBLIC_URL}/favicon/favicon-16x16.png`,
       },
       {
         rel: 'apple-touch-icon',
         sizes: '180x180',
-        url: 'http://localhost:3000/favicon/apple-touch-icon.png',
+        url: `${process.env.NEXT_PUBLIC_URL}/favicon/apple-touch-icon.png`,
       },
     ],
   };

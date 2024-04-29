@@ -9,42 +9,26 @@
     "twitter": {
       "title": "Комапнія Фаворит Легенда-транc",
       "card": "otg-img.png",
-      "images": [
-        {
-          "url": "https://lehendatrans.com/favicon/otg-img.png",
-          "width": 1200,
-          "height": 630,
-          "alt": "Автобусні перевезення в Португалію та Литву"
-        }
-      ],
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Автобусні перевезення в Португалію та Литву"
+      },
       "description": "Автобусні перевезення в Португалію та Литву"
     },
     "openGraph": {
-      "images": [
-        {
-          "url": "https://lehendatrans.com/favicon/otg-img.png",
-          "width": 1200,
-          "height": 630,
-          "alt": "Автобусні перевезення в Португалію та Литву"
-        },
-        {
-          "url": "https://lehendatrans.com/favicon/android-chrome-512x512.png",
-          "width": 512,
-          "height": 512,
-          "alt": "Автобусні перевезення в Португалію та Литву"
-        },
-        {
-          "url": "https://lehendatrans.com/favicon/android-chrome-192x192.png",
-          "width": 192,
-          "height": 192,
-          "alt": "Автобусні перевезення в Португалію та Литву"
-        }
-      ],
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Автобусні перевезення в Португалію та Литву"
+      },
+
       "description": "Автобусні перевезення в Португалію та Литву",
       "type": "website",
       "locale": "uk_UA",
-      "title": "Автобусні перевезення в Португалію та Литву",
-      "url": "https://lehendatrans.com/uk"
+      "title": "Автобусні перевезення в Португалію та Литву"
     }
   }
 }

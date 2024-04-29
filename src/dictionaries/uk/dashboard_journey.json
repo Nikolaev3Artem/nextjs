@@ -42,12 +42,20 @@
     "seat": "Місце",
     "comment": "Коментар",
     "luggage": "Багаж",
+    "extra_luggage": "Додатковий багаж",
+    "base_bag": "Базовий",
+    "extra_bag": "Додаткова валіза",
     "from": "Звідки",
     "to": "Куди",
     "no": "Ні",
     "yes": "Так",
     "next_step": "Наступний крок",
     "choose_journey": "Оберіть маршрут та автобус",
+    "seats_status": {
+      "payed": "Сплачені",
+      "available": "Вільні",
+      "reserved": "Броньовані"
+    },
 
     "snackBar": {
       "remove_success": "Карточка видалена",
