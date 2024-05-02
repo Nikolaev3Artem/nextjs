@@ -226,7 +226,7 @@ export const TicketsCard = ({
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
                   {data.journey[0]
-                    ? data.journey[0]?.routes[0]?.from_place.city
+                    ? data.journey[0]?.routes[0]?.cities[0]?.city
                     : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
@@ -235,7 +235,7 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data.journey[0]?.routes[0]?.from_place.address || ''}
+                    {data.journey[0]?.routes[0]?.cities[0]?.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -249,7 +249,9 @@ export const TicketsCard = ({
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
                   {data?.journey[0]
-                    ? data.journey[0]?.routes[0]?.to_place.city
+                    ? data.journey[0]?.routes[0]?.cities[
+                        data.journey[0]?.routes?.length - 1
+                      ]?.city
                     : ''}
                 </Typography>
                 <Box display={'flex'} columnGap={1}>
@@ -258,7 +260,9 @@ export const TicketsCard = ({
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data?.journey[0]?.routes[0]?.to_place?.address || ''}
+                    {data?.journey[0]?.routes[0]?.cities[
+                      data.journey[0]?.routes?.length - 1
+                    ]?.address || ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />

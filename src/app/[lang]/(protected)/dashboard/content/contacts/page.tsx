@@ -14,7 +14,6 @@ import {
 } from '@/lib/dictionary';
 
 import { DashboardContainer } from '@/components/layout/DashboardContainer';
-import { ContentForm } from '@/components/protected/dashboard/ContentForm';
 import { ContactForm } from '@/components/protected/dashboard/ContactForm';
 
 export default async function Contacts({

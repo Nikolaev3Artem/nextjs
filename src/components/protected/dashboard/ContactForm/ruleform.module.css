@@ -108,3 +108,29 @@
 .home_form_icon:hover {
   color: #922121;
 }
+
+.contact__address::before,
+.contact__email::before,
+.contact__phone::before,
+.contact__schedule::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 14px;
+  margin-right: 4px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.contact__address::before {
+  background-image: url('/icons/map-marker.svg');
+}
+
+.contact__email::before {
+  background-image: url('/icons/email.svg');
+}
+
+.contact__phone::before {
+  background-image: url('/icons/phone.svg');
+}

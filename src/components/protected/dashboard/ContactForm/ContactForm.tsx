@@ -1,12 +1,17 @@
 'use client';
 
 import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Checkbox,
   CircularProgress,
   Fade,
   FormControl,
   IconButton,
   InputAdornment,
-  InputLabel,
+  ListItemText,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -14,45 +19,47 @@ import {
   Stack,
   TextField,
   Typography,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import { grey } from '@mui/material/colors';
+
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
-import { BiSave } from 'react-icons/bi';
-import * as yup from 'yup';
-import { filesize } from 'filesize';
-import { IContactText, IEditorText } from '@/interface/IEditorText';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FaTrashAlt } from 'react-icons/fa';
-import { enqueueSnackbar } from 'notistack';
-
-// import { setAccordionClose } from '../../../../store/admin/accordion/accordionOpenSlice';
-// import { useAppDispatch, useAppSelector } from '../../../../store/auth/redux';
-import theme from '@/theme';
-// import { onSubmitForm } from '../../../../utils/onSubmit';
-import Rule from '@/components/protected/dashboard/Rule/Rule';
-import TextEditor from '@/components/protected/dashboard/TextEditor/TextEditor';
-import CustomAccordion from '@/components/protected/dashboard/Accordion/CustomAccordion';
-import CustomButtonAccordion from '@/components/protected/dashboard/Accordion/CustomButtonAccordion';
-import Style from './ruleform.module.css';
-import { useLangContext } from '@/app/context';
 import Image from 'next/image';
 import { Locale } from '@/i18n.config';
-import {
-  dashboardContactsStaticData,
-  dashboardRuleStaticData,
-} from '@/interface/IStaticData';
+import * as yup from 'yup';
+import { filesize } from 'filesize';
 import { getSession } from '@/lib/auth';
 import dayjs, { Dayjs } from 'dayjs';
+
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { enqueueSnackbar } from 'notistack';
+
+import theme from '@/theme';
+import Style from './ruleform.module.css';
+import { useLangContext } from '@/app/context';
+
+import { dashboardContactsStaticData } from '@/interface/IStaticData';
+
 import { LocalizationProvider, TimeField } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { IContactText, PhoneType } from '@/interface/IEditorText';
+import { FaTrashAlt } from 'react-icons/fa';
+import { BiSave } from 'react-icons/bi';
+import { FaViber } from 'react-icons/fa';
+import { TbBrandTelegram } from 'react-icons/tb';
+import { FaWhatsapp } from 'react-icons/fa';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { grey } from '@mui/material/colors';
 
 const color_title = grey[800];
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+
 export const ContactForm = ({
   staticData,
   lang,
@@ -64,12 +71,15 @@ export const ContactForm = ({
 }) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const [res, setRes] = useState<IContactText>();
+  const [social, setSocial] = useState<PhoneType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { selectLang, setSelectLang } = useLangContext();
   const [size, setSize] = useState<any>(0);
   const [workTime, setWorkTime] = useState<Dayjs[]>(() => []);
-  const [workDay, setWorkDay] = useState<string[]>(() => ['mo', 'mo']);
+  const [lunchTime, setLunchTime] = useState<Dayjs[]>(() => []);
+  const [workDay, setWorkDay] = useState<string[]>(() => ['']);
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
+  const [weekendDay, setWeekendDay] = React.useState<string[]>([]);
 
   const onSubmit = async () => {
     try {
@@ -82,22 +92,23 @@ export const ContactForm = ({
 
       const weekdays_time_string = `${dayjs(workTime[0]).format('HH:mm')} - ${dayjs(workTime[1]).format('HH:mm')}`;
 
-      formData.append('text', text || '');
-      formData.append('text2', text2 || '');
-      formData.append('title', title || '');
-      formData.append('alt', alt || '');
+      formData.append('text', text || res?.text || '');
+      formData.append('text2', text2 || res?.text2 || '');
+      formData.append('title', title || res?.title || '');
+      formData.append('alt', alt || res?.alt || '');
       formData.append('icon', selectLang || '');
-      formData.append('address', address || '');
+      formData.append('address', address || res?.address || '');
 
-      formData.append('email', email || '');
-      formData.append('weekdays_work', weekdays_work || '');
-
+      formData.append('email', email || res?.email || '');
       formData.append(
-        'weekdays_time',
-        weekdays_time_string || res?.weekdays_time || '',
+        'weekdays_work',
+        weekdays_work || res?.weekdays_work || '',
       );
-      formData.append('weekends', weekends || '');
-      formData.append('lunch_time', lunch_time || '');
+
+      const t = workTime.length > 0 ? weekdays_time_string : '';
+      formData.append('weekdays_time', t || res?.weekdays_time || '');
+      formData.append('weekends', weekends || res?.weekends || '');
+      formData.append('lunch_time', lunch_time || res?.lunch_time || '');
 
       img.length && formData.append('img', img[0] || null);
       let response;
@@ -117,8 +128,8 @@ export const ContactForm = ({
         );
       } else {
         console.log('update', res.id);
-        response = await axios.put(
-          `${BASE_URL}/${selectLang}/api/admin/${rout}/update/${res.id}/`,
+        response = await axios.post(
+          `${BASE_URL}/${selectLang}/api/admin/contacts/create`,
           formData,
           {
             headers: {
@@ -162,9 +173,26 @@ export const ContactForm = ({
     weekdays_time: string | undefined;
     weekends: string | undefined;
     lunch_time: string | undefined;
+    phone: PhoneType;
   }
 
   const UploadFileSchema = yup.object().shape({
+    phone: yup
+      .object()
+      .notRequired()
+      .shape({
+        phone_number: yup
+          .string()
+          .nullable()
+          .test(`${staticData.form.errors.alt_more30}`, value => {
+            if (!value) return true;
+            if (value.length !== 10) return true;
+            // Проверить, содержит ли строка только цифры
+            return /^[0-9]+$/.test(value);
+          }),
+        // .matches(/^[0-9\s]+$/, `${staticData.form.errors.formats}`),
+        // .length(10, `${staticData.form.errors.alt_more30}`),
+      }),
     img: yup
       .mixed()
       .test(`${staticData.form.errors.size}`, (value: any) => {
@@ -220,12 +248,39 @@ export const ContactForm = ({
     getData().catch(console.error);
   }, [getData]);
 
+  const getSocial = useCallback(async () => {
+    try {
+      const { data, status } = await axios.get(
+        `${BASE_URL}/${selectLang}/api/social_media/`,
+      );
+      console.log('social data', data);
+      if (status === 200 && data?.length > 0) {
+        setSocial(data);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    getSocial().catch(console.error);
+  }, [getSocial]);
+
   const {
     register,
     handleSubmit,
     reset,
     resetField,
+    getValues,
+    setValue,
     watch,
+
     formState: { errors, isDirty, isValid },
   } = useForm<IFormInput>({
     defaultValues: {
@@ -242,6 +297,13 @@ export const ContactForm = ({
       lunch_time: res?.lunch_time || '',
       img: {},
       id: res?.id || 0,
+      phone: {
+        viber: '',
+        telegram: '',
+        whatsup: '',
+        phone_number: '',
+        id: Date.now(),
+      },
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -257,6 +319,7 @@ export const ContactForm = ({
   const address = watch('address');
   const email = watch('email');
   const weekdays_work = watch('weekdays_work');
+  const phone = watch('phone');
 
   const weekends = watch('weekends');
   const lunch_time = watch('lunch_time');
@@ -287,11 +350,83 @@ export const ContactForm = ({
     }
   };
 
+  const handleLunchTimeChange = (newValue: Dayjs | null, index: number) => {
+    const updatedLunchTime = [...lunchTime];
+    if (newValue !== null) {
+      updatedLunchTime[index] = newValue;
+      setLunchTime(updatedLunchTime);
+    }
+  };
+
   const handleChange = (event: SelectChangeEvent, ind: number) => {
     const updatedWorkDay = [...workDay];
     updatedWorkDay[ind] = event.target.value;
     setWorkDay(updatedWorkDay);
+    setValue('weekdays_work', updatedWorkDay.toString().split(',').join('-'));
   };
+
+  const handleWeekDayChange = (event: SelectChangeEvent<typeof weekendDay>) => {
+    const {
+      target: { value },
+    } = event;
+    setWeekendDay(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split('-') : value,
+    );
+    setValue('weekends', value.toString().split(',').join('-'));
+  };
+
+  const handleSocialCheck = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: number,
+  ) => {
+    const socialObjIndex = social.findIndex(obj => obj.id === id);
+
+    if (socialObjIndex === -1) return;
+
+    const updatedSocial = [...social];
+    const socialObj = updatedSocial[socialObjIndex];
+    const el = event.target.name.toString();
+
+    if (el) {
+      switch (el) {
+        case 'viber':
+          socialObj.viber = socialObj.viber ? '' : socialObj.phone_number;
+          break;
+        case 'telegram':
+          socialObj.telegram = socialObj.telegram ? '' : socialObj.phone_number;
+
+          break;
+        case 'whatsup':
+          socialObj.whatsup = socialObj.whatsup ? '' : socialObj.phone_number;
+
+          break;
+        default:
+          break;
+      }
+    }
+    updatedSocial[socialObjIndex] = socialObj;
+    setSocial(updatedSocial);
+  };
+
+  const handleDeleteContact = (id: number) => {
+    const updatedSocial = [...social].filter(phone => phone.id !== id);
+    setSocial(updatedSocial);
+  };
+
+  const handleAddContact = (phone: PhoneType) => {
+    const updatedSocial = [...social, phone];
+
+    setSocial(updatedSocial);
+    setValue('phone', {
+      viber: '',
+      telegram: '',
+      whatsup: '',
+      phone_number: '',
+      id: Date.now(),
+    });
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Typography
@@ -395,6 +530,61 @@ export const ContactForm = ({
                     >
                       {email || (res && res?.email)}
                     </Typography>
+
+                    {social &&
+                      social?.map(el => (
+                        <Box
+                          fontSize={16}
+                          display={'flex'}
+                          columnGap={1}
+                          key={el.id}
+                          alignItems={'center'}
+                        >
+                          <Typography
+                            variant="body1"
+                            className={Style.contact__phone}
+                          >
+                            {el.phone_number}
+                          </Typography>
+                          {el.telegram && (
+                            <IconButton
+                              sx={{
+                                display: 'flex',
+                                padding: 0,
+                                width: '16px',
+                              }}
+                            >
+                              <TbBrandTelegram
+                                color={'404040'}
+                                width={'10px'}
+                                height={'10px'}
+                              />
+                            </IconButton>
+                          )}
+                          {el.viber && (
+                            <IconButton
+                              sx={{
+                                display: 'flex',
+                                padding: 0,
+                                width: '16px',
+                              }}
+                            >
+                              <FaViber color={'404040'} />
+                            </IconButton>
+                          )}
+                          {el.whatsup && (
+                            <IconButton
+                              sx={{
+                                display: 'flex',
+                                padding: 0,
+                                width: '16px',
+                              }}
+                            >
+                              <FaWhatsapp color={'404040'} />
+                            </IconButton>
+                          )}
+                        </Box>
+                      ))}
                   </Grid>
                   <Grid item xs={4}>
                     <Typography
@@ -409,7 +599,8 @@ export const ContactForm = ({
                       fontWeight={'400'}
                       variant="body1"
                     >
-                      {weekdays_work || (res && res?.weekdays_work)}
+                      {weekdays_work?.toUpperCase() ||
+                        (res && res?.weekdays_work?.toUpperCase())}
                     </Typography>
 
                     <Typography
@@ -434,14 +625,16 @@ export const ContactForm = ({
                       fontWeight={'400'}
                       variant="body1"
                     >
-                      {lunch_time || (res && res?.lunch_time)}
+                      {lunchTime.length > 0
+                        ? `${dayjs(lunchTime[0]).format('HH:mm')} - ${dayjs(lunchTime[1]).format('HH:mm')}`
+                        : res && res?.lunch_time}
                     </Typography>
                     <Typography
                       className={Style.home_form_text_title}
                       fontWeight={'700'}
                       variant="body1"
                     >
-                      {weekends || (res && res?.weekends)}
+                      {weekends || res?.weekends}
                     </Typography>
                     <Typography
                       className={Style.home_form_text_title}
@@ -907,67 +1100,211 @@ export const ContactForm = ({
                           >
                             {staticData.form.text.phone}
                           </Typography>
-                          {/* <Box
+                          <Box
                             sx={{ width: '100%', minHeight: 64 }}
                             display={'flex'}
-                            justifyContent={'center'}
-                            flexDirection={'row'}
+                            flexDirection={'column'}
+                            mb={0.5}
                           >
-                            <>
+                            {social &&
+                              social.map((el, ind) => (
+                                <Box
+                                  key={el.id || ind}
+                                  width={'100%'}
+                                  display={'flex'}
+                                  alignItems={'center'}
+                                  columnGap={1}
+                                >
+                                  <Typography
+                                    className={Style.contact__phone}
+                                    sx={{ marginRight: '16px' }}
+                                  >
+                                    {el.phone_number}
+                                  </Typography>
+                                  <FormGroup
+                                    sx={{
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                    }}
+                                  >
+                                    <FormControlLabel
+                                      sx={{ padding: 0 }}
+                                      control={
+                                        <Checkbox
+                                          checked={
+                                            el?.viber?.length > 0 ? true : false
+                                          }
+                                          onChange={ev =>
+                                            handleSocialCheck(ev, el.id)
+                                          }
+                                          name="viber"
+                                          size="small"
+                                        />
+                                      }
+                                      label="viber"
+                                    />
+                                    <FormControlLabel
+                                      control={
+                                        <Checkbox
+                                          checked={
+                                            el?.telegram?.length > 0
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={ev =>
+                                            handleSocialCheck(ev, el.id)
+                                          }
+                                          name="telegram"
+                                          size="small"
+                                        />
+                                      }
+                                      label="telegram"
+                                    />
+                                    <FormControlLabel
+                                      control={
+                                        <Checkbox
+                                          checked={
+                                            el?.whatsup?.length > 0
+                                              ? true
+                                              : false
+                                          }
+                                          onChange={ev =>
+                                            handleSocialCheck(ev, el.id)
+                                          }
+                                          name="whatsup"
+                                          size="small"
+                                        />
+                                      }
+                                      label="whatsup"
+                                    />
+                                  </FormGroup>
+                                  <IconButton
+                                    onClick={() => {
+                                      handleDeleteContact(el.id);
+                                    }}
+                                    color="error"
+                                    aria-label="delete"
+                                    sx={{ width: '20px', height: '20px' }}
+                                  >
+                                    <HighlightOffOutlinedIcon />
+                                  </IconButton>
+                                </Box>
+                              ))}
+                            <Box
+                              width={'100%'}
+                              display={'flex'}
+                              alignItems={'center'}
+                              columnGap={1}
+                              mt={1}
+                            >
                               <TextField
-                                {...register('email')}
+                                {...register('phone.phone_number')}
                                 InputLabelProps={{
                                   color: 'secondary',
                                 }}
                                 sx={{
+                                  width: '132px',
+                                  marginRight: '16px',
                                   '& label': {
                                     fontSize: 14,
                                     color: color_title,
                                   },
+                                  '& .MuiFormHelperText-root': {
+                                    position: 'absolute',
+                                    top: '38px',
+                                  },
                                 }}
-                                fullWidth
+                                // fullWidth
                                 label={staticData.form.text.label}
                                 size={'small'}
                                 variant={'outlined'}
                                 FormHelperTextProps={{
                                   color: '#256223',
                                 }}
-                                helperText={errors?.email?.message}
-                                error={!!errors?.email}
+                                helperText={
+                                  errors?.phone?.phone_number?.message
+                                }
+                                error={!!errors?.phone}
                                 defaultChecked={false}
                                 defaultValue={null}
-                                InputProps={{
-                                  color: 'secondary',
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      {email && email?.length ? (
-                                        <>
-                                          <Typography
-                                            sx={{ fontSize: 11 }}
-                                            mr={1}
-                                            color={'#999'}
-                                          >
-                                            ({email?.length}/60)
-                                          </Typography>
-                                          <IconButton
-                                            className={Style.home_form_icon}
-                                            size={'small'}
-                                            onClick={() => {
-                                              resetField('email');
-                                            }}
-                                          >
-                                            <FaTrashAlt />
-                                          </IconButton>
-                                        </>
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </InputAdornment>
-                                  ),
-                                }}
                               />
-                            </>
-                          </Box> */}
+                              <FormGroup
+                                sx={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <FormControlLabel
+                                  sx={{ padding: 0 }}
+                                  control={
+                                    <Checkbox
+                                      {...register('phone.viber')}
+                                      onChange={e =>
+                                        setValue(
+                                          'phone.viber',
+                                          e.target.checked
+                                            ? phone.phone_number
+                                            : '',
+                                        )
+                                      }
+                                      name="viber"
+                                      size="small"
+                                    />
+                                  }
+                                  label="viber"
+                                />
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      onChange={e =>
+                                        setValue(
+                                          'phone.telegram',
+                                          e.target.checked
+                                            ? phone.phone_number
+                                            : '',
+                                        )
+                                      }
+                                      name="telegram"
+                                      size="small"
+                                    />
+                                  }
+                                  label="telegram"
+                                />
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      onChange={e =>
+                                        setValue(
+                                          'phone.whatsup',
+                                          e.target.checked
+                                            ? phone.phone_number
+                                            : '',
+                                        )
+                                      }
+                                      name="whatsup"
+                                      size="small"
+                                    />
+                                  }
+                                  label="whatsup"
+                                />
+                              </FormGroup>
+                              {!errors.phone?.phone_number &&
+                                phone?.phone_number && (
+                                  <IconButton
+                                    onClick={() => {
+                                      handleAddContact(phone);
+                                    }}
+                                    aria-label="add"
+                                    sx={{ padding: 0 }}
+                                  >
+                                    <AiOutlineCheckCircle
+                                      color={'green'}
+                                      size={24}
+                                    />
+                                  </IconButton>
+                                )}
+                            </Box>
+                          </Box>
                         </Grid>
                         <Grid item xs={6}>
                           <Box>
@@ -994,6 +1331,9 @@ export const ContactForm = ({
                                   size="small"
                                   onChange={ev => handleChange(ev, 0)}
                                   sx={{ width: '100%' }}
+                                  MenuProps={{
+                                    disableScrollLock: true,
+                                  }}
                                 >
                                   {staticData.form.text.workDay.map(day => {
                                     return (
@@ -1026,6 +1366,9 @@ export const ContactForm = ({
                                   sx={{ width: '100%' }}
                                   onChange={ev => handleChange(ev, 1)}
                                   size="small"
+                                  MenuProps={{
+                                    disableScrollLock: true,
+                                  }}
                                 >
                                   {staticData.form.text.workDay.map(day => {
                                     return (
@@ -1073,6 +1416,118 @@ export const ContactForm = ({
                                     handleTimeChange(newValue, 1)
                                   }
                                 />
+                              </Grid>
+                            </Grid>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '18px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                              my={2}
+                            >
+                              {staticData.form.text.lunchtime}
+                            </Typography>
+                            <Grid container spacing={2}>
+                              <Grid item xs={5.5}>
+                                <TimeField
+                                  label={staticData.form.text.label}
+                                  format="HH:mm"
+                                  size="small"
+                                  value={lunchTime[0]}
+                                  onChange={newValue =>
+                                    handleLunchTimeChange(newValue, 0)
+                                  }
+                                />
+                              </Grid>
+                              <Grid
+                                item
+                                xs={1}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                -
+                              </Grid>
+                              <Grid item xs={5.5}>
+                                <TimeField
+                                  label={staticData.form.text.label}
+                                  format="HH:mm"
+                                  size="small"
+                                  value={lunchTime[1]}
+                                  onChange={newValue =>
+                                    handleLunchTimeChange(newValue, 1)
+                                  }
+                                />
+                              </Grid>
+                            </Grid>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '18px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                              my={2}
+                            >
+                              {staticData.form.text.weekend}
+                            </Typography>
+                            <Grid container spacing={2}>
+                              <Grid item xs={5.5} mb={2}>
+                                <FormControl fullWidth>
+                                  {/* <InputLabel id="weekend-multiple-checkbox-label">
+                                    {staticData.form.text.weekend}
+                                  </InputLabel> */}
+                                  <Select
+                                    labelId="weekend-multiple-checkbox-label"
+                                    id="weekend-multiple-checkbox"
+                                    multiple
+                                    value={weekendDay}
+                                    size="small"
+                                    onChange={handleWeekDayChange}
+                                    renderValue={selected =>
+                                      selected.length > 0
+                                        ? selected.join(', ')
+                                        : 'no select'
+                                    }
+                                    MenuProps={{
+                                      disableScrollLock: true,
+                                      PaperProps: {
+                                        style: {
+                                          maxHeight:
+                                            ITEM_HEIGHT * 4.5 +
+                                            ITEM_PADDING_TOP,
+                                          width: 250,
+                                        },
+                                      },
+                                    }}
+                                  >
+                                    {staticData.form.text.workDay.map(
+                                      (day, ind) => (
+                                        <MenuItem
+                                          key={`${day.shot_name}${ind}`}
+                                          value={day.shot_name}
+                                        >
+                                          <Checkbox
+                                            checked={
+                                              weekendDay.indexOf(
+                                                day.shot_name,
+                                              ) > -1
+                                            }
+                                          />
+                                          <ListItemText primary={day.title} />
+                                        </MenuItem>
+                                      ),
+                                    )}
+                                  </Select>
+                                </FormControl>
                               </Grid>
                             </Grid>
                           </Box>

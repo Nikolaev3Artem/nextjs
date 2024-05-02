@@ -33,15 +33,17 @@ export const SeatsBooking = ({
   onClose,
   isShowModal,
   staticData,
-  date,
   lang,
+  addPassClick,
+  addPassengers,
 }: {
   data: IJourney;
-  date?: string;
   onClose: () => void;
   isShowModal: boolean;
   staticData: MainStaticDataProps;
   lang: Locale;
+  addPassengers: boolean;
+  addPassClick?: any;
 }) => {
   const getColor = (name: string) => {
     switch (name) {
@@ -159,7 +161,7 @@ export const SeatsBooking = ({
     );
     const queryParams = new URLSearchParams();
     queryParams.set('selectedSeats', JSON.stringify(nonEmptySeats));
-    queryParams.set('routId', `${data.id}`);
+    queryParams.set('routId', `${data?.id}`);
     const pathWithParams = `/${lang}/my-order/new-order?${queryParams}`;
     return pathWithParams;
   };
@@ -306,7 +308,7 @@ export const SeatsBooking = ({
                   color: color_title,
                 }}
               >
-                {data.routes[0].from_place}
+                {data?.routes[0]?.cities[0].city}
               </Typography>
               <IoMdArrowForward width={3} height={3} />
               <Typography
@@ -318,7 +320,10 @@ export const SeatsBooking = ({
                   color: color_title,
                 }}
               >
-                {data.routes[0].to_place}
+                {
+                  data?.routes[0]?.cities[data?.routes[0]?.cities?.length - 1]
+                    .city
+                }
               </Typography>
 
               <CalendarIcon width={'24px'} height={'24px'} />
@@ -327,8 +332,8 @@ export const SeatsBooking = ({
                 color={'primary'}
                 sx={{ fontSize: { xs: '13px', md: '20px' } }}
               >
-                {data.departure_date
-                  ? dayjs(data.departure_date).format('DD.MM.YYYY')
+                {data?.departure_date
+                  ? dayjs(data?.departure_date).format('DD.MM.YYYY')
                   : dayjs().format('DD.MM.YYYY')}
               </Typography>
             </Box>
@@ -434,23 +439,49 @@ export const SeatsBooking = ({
             >
               {staticData.cancel_btn.title}
             </Button>
-            <Button
-              sx={{
-                p: '8px 24px',
-                fontWeight: '400',
-                textTransform: 'none',
-                fontSize: { sm: '16px', lg: '20px' },
-              }}
-              variant={'contained'}
-              color={'success'}
-              LinkComponent={Link}
-              href={getLinkHref()}
-              disabled={
-                selectedSeats[1].length === 0 && selectedSeats[2].length === 0
-              }
-            >
-              {staticData.select_btn.title}
-            </Button>
+
+            {addPassengers ? (
+              <Button
+                sx={{
+                  p: '8px 24px',
+                  fontWeight: '400',
+                  textTransform: 'none',
+                  fontSize: { sm: '16px', lg: '20px' },
+                }}
+                variant={'contained'}
+                color={'success'}
+                onClick={() => {
+                  setSelectedSeats({
+                    1: [],
+                    2: [],
+                  });
+                  addPassClick(selectedSeats);
+                }}
+                disabled={
+                  selectedSeats[1].length === 0 && selectedSeats[2].length === 0
+                }
+              >
+                {staticData.select_btn.title}
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  p: '8px 24px',
+                  fontWeight: '400',
+                  textTransform: 'none',
+                  fontSize: { sm: '16px', lg: '20px' },
+                }}
+                variant={'contained'}
+                color={'success'}
+                LinkComponent={Link}
+                href={getLinkHref()}
+                disabled={
+                  selectedSeats[1].length === 0 && selectedSeats[2].length === 0
+                }
+              >
+                {staticData.select_btn.title}
+              </Button>
+            )}
           </Stack>
         </Box>
       </Box>

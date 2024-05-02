@@ -15,7 +15,7 @@
 .bus_layout.vertical {
   flex-direction: column;
   column-gap: initial;
-  row-gap: 6px;
+  row-gap: 4px;
 }
 
 .bus_layout.small {
@@ -36,7 +36,7 @@
 .bus_row.vertical {
   flex-direction: row;
   row-gap: initial;
-  column-gap: 6px;
+  column-gap: 4px;
 }
 
 .bus_row.small {
@@ -69,9 +69,20 @@
   width: 32px;
   height: 30px;
 }
+
+.bus_seat.vertical {
+  width: 24px;
+  height: 20px;
+  font-size: 10px;
+}
+
 .bus_seat:hover {
   border: 2px solid #bfbfbf;
   font-size: 19px;
+}
+
+.bus_seat.vertical:hover {
+  font-size: 12px;
 }
 
 .bus_seat.empty {
@@ -183,17 +194,18 @@
 }
 
 .bus_seat.enter.vertical::before {
-  width: 21px !important;
-  height: 68px !important;
-  top: 24px !important;
-  left: 8px !important;
+  width: 20px !important;
+  height: 52px !important;
+  top: 20px !important;
+  left: 6px !important;
   rotate: 90deg;
   transform-origin: right top;
 }
 
 .bus_seat.wc.vertical::before {
   top: 0;
-  left: -38px;
-  width: 70px !important;
+  left: -28px;
+  width: 52px !important;
+  height: 20px !important;
   rotate: 90deg;
 }

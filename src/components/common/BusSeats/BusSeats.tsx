@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { generateKeyPair } from 'crypto';
 import { generateBusSeats } from '@/helpers/generateBusSeat';
 import { ISeat } from '@/interface/IRent';
+import theme from '@/theme';
 
 export interface BusSeatsProps {
   id: string;
@@ -77,7 +78,11 @@ const BusSeats = (props: BusConstructorProps) => {
           sx={{
             fontSize: 'inherit',
             color: 'inherit',
-            transform: { md: 'rotate(-90deg)' },
+            transform: vertical
+              ? 'rotate(0deg)'
+              : theme.breakpoints.up('md')
+                ? 'rotate(-90deg)'
+                : 'none',
           }}
         >
           {enter1 || enter2 || empty || wc ? '' : seatNumber}
