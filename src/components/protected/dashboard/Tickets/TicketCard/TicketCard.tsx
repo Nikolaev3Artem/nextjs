@@ -437,7 +437,7 @@ export const TicketCard = ({
                     component={'span'}
                     sx={{ fontSize: { xs: '13px', md: '16px' } }}
                   >
-                    {data.journey[0].routes[0].to_place}
+                    {data.journey[0].routes[0].cities[0].city}
                   </Typography>
                 </Box>
                 <Box display={'flex'} columnGap={2}>
@@ -452,25 +452,27 @@ export const TicketCard = ({
                     </Box>
 
                     {data.journey[0].routes[0].cities &&
-                      data.journey[0].routes[0].cities.map((el, ind) => {
-                        return (
-                          <Box
-                            component={'li'}
-                            display={'flex'}
-                            columnGap={1}
-                            alignItems={'center'}
-                            key={ind}
-                          >
+                      data.journey[0].routes[0].cities
+                        .slice(1, -1)
+                        .map((el, ind) => {
+                          return (
                             <Box
-                              width={'12px'}
-                              height={'32px'}
+                              component={'li'}
                               display={'flex'}
+                              columnGap={1}
+                              alignItems={'center'}
+                              key={ind}
                             >
-                              <ToSvg width={12} height={32} />
+                              <Box
+                                width={'12px'}
+                                height={'32px'}
+                                display={'flex'}
+                              >
+                                <ToSvg width={12} height={32} />
+                              </Box>
                             </Box>
-                          </Box>
-                        );
-                      })}
+                          );
+                        })}
                     <Box width={'12px'} height={'31px'} display={'flex'}>
                       <ToSvg />
                     </Box>
@@ -489,12 +491,17 @@ export const TicketCard = ({
                       alignItems={'center'}
                     >
                       <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data.journey[0].routes[0].from_place}
+                        {
+                          data.journey[0].routes[0].cities[
+                            data.journey[0].routes[0].cities.length - 1
+                          ].city
+                        }
                       </Typography>
                     </Box>
                     {data.journey[0].routes[0].cities &&
-                      data.journey[0].routes[0].cities.map(
-                        (stop: StopsProps, ind) => {
+                      data.journey[0].routes[0].cities
+                        .slice(1, -1)
+                        .map((stop: StopsProps, ind) => {
                           return (
                             <Box
                               component={'li'}
@@ -510,8 +517,7 @@ export const TicketCard = ({
                               </Typography>
                             </Box>
                           );
-                        },
-                      )}
+                        })}
                     <Box
                       component={'li'}
                       display={'flex'}
@@ -519,7 +525,11 @@ export const TicketCard = ({
                       alignItems={'center'}
                     >
                       <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data.journey[0].routes[0].to_place}
+                        {
+                          data.journey[0].routes[0].cities[
+                            data.journey[0].routes[0].cities.length - 1
+                          ].city
+                        }
                       </Typography>
                     </Box>
                   </Box>
