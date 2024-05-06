@@ -297,8 +297,16 @@ const JourneyTable = ({
                           alignItems: 'center',
                         }}
                       >
-                        <Typography>{item.routes[0]?.from_place} -</Typography>
-                        <Typography> {item.routes[0]?.to_place}</Typography>
+                        <Typography>
+                          {item.routes[0]?.cities[0]?.city} -
+                        </Typography>
+                        <Typography>
+                          {
+                            item.routes[0]?.cities[
+                              item.routes[0]?.cities?.length - 1
+                            ].city
+                          }
+                        </Typography>
                       </Box>
                     </TableCell>
 

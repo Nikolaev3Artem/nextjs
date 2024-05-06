@@ -122,7 +122,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       </svg>
     );
   }
-  const nameRegex = /^[^\s№?]+$/;
+  const nameRegex = /^[^№?]+$/;
   const UploadFileSchema = yup.object().shape({
     file: yup
       .mixed()
@@ -316,7 +316,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         : formData.append('photo', bus.photo);
 
       const response = await axios.patch(
-        `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/update/`,
+        `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/update`,
         formData,
         {
           headers: {
@@ -331,7 +331,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         Object.values(data.uploaded_images).forEach(async (file: any) => {
           imageFormData.append('photo', file);
           const response = await axios.post(
-            `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/add_photo/`,
+            `${BASE_URL}/${lang}/api/admin/service/bus/${bus.id}/add_photo`,
             imageFormData,
             {
               headers: {

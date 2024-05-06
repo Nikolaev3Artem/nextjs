@@ -10,11 +10,11 @@ import {
   Stack,
   useMediaQuery,
 } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete';
+
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
+
+import * as yup from 'yup';
 
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
@@ -37,7 +37,7 @@ import { useForm, useWatch } from 'react-hook-form';
 import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/rent/add/page';
 import theme from '@/theme';
-import { BusService } from '@/components/common/BusService';
+// import { BusService } from '@/components/common/BusService';
 import Style from '../../../../published/Rent/CardInfo/cardinfo.module.css';
 import { useLangContext } from '@/app/context';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
@@ -45,6 +45,7 @@ import { Locale } from '@/i18n.config';
 import { getSession } from '@/lib/auth';
 import BusConstructor from '../BusConstructor/BusConstructor';
 import { revalidatePath } from 'next/cache';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -115,6 +116,26 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
     );
   }
 
+  const UploadFileSchema = yup.object().shape({
+    name: yup.string().trim().max(30, `${staticData.errors.name_more30}`),
+
+    plates_number: yup
+      .string()
+
+      .max(10, `${staticData.errors.plates_number10}`),
+
+    photo: yup
+      .mixed()
+      .required()
+      .test(`${staticData.errors.size}`, (value: any) => {
+        if (value.length) {
+          return value && value[0]?.size <= 5242880;
+        } else {
+          return {};
+        }
+      }),
+  });
+
   const {
     register,
     handleSubmit,
@@ -147,6 +168,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       enter_3: false,
       wc: 'no',
     },
+    // @ts-ignore
+    resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
   const { selectLang } = useLangContext();
@@ -167,6 +190,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const enter_1 = watch('enter_1');
   const enter_2 = watch('enter_2');
   const enter_3 = watch('enter_3');
+  //@ts-ignore
   const wc = useWatch({ name: 'wc', control: control });
 
   async function onSubmitForm(data: IRent) {
@@ -213,7 +237,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
 
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       const response = await axios.post(
-        `${BASE_URL}${selectLang}/api/admin/service/bus/create/`,
+        `${BASE_URL}${selectLang}/api/admin/service/bus/create`,
         formData,
         {
           headers: {
@@ -227,7 +251,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         enqueueSnackbar(`${staticData.busTable.snackBar.add_success}`, {
           variant: 'success',
         });
-        revalidatePath(`/${lang}/dashboard/bus/id`);
+        // revalidatePath(`/${lang}/dashboard/bus/id`);
         redirect(`/${lang}/dashboard/bus/`);
       }
     } catch (error) {
@@ -267,6 +291,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
 
   return (
     <Box height={'100%'} width={'100%'}>
+      {/* @ts-ignore */}
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <Grid container direction={'row'} spacing={2}>
           <Grid item lg={7.5} height={'100%'}>
@@ -282,6 +307,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         InputLabelProps={{
                           style: { color: '#808080' },
                         }}
+                        helperText={errors?.name?.message}
+                        error={!!errors?.name}
                       />
                     </Stack>
                     <Stack spacing={2} direction={'column'}>
@@ -365,6 +392,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         InputLabelProps={{
                           style: { color: '#808080' },
                         }}
+                        helperText={errors?.plates_number?.message}
+                        error={!!errors?.plates_number}
                       />
                     </Stack>
 
@@ -582,6 +611,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                             rows_1={rows_1}
                             rows_2={rows_2}
                             rows_3={rows_3}
+                            //@ts-ignore
                             is_wc={wc}
                             enter_2={enter_2}
                             enter_1={enter_1}
@@ -1011,7 +1041,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                               color={'success'}
                               size={'large'}
                               variant={'contained'}
-                              disabled={!isDirty || !isValid}
+                              disabled={!isDirty || !isValid || !photo}
                               fullWidth
                               type={'submit'}
                               startIcon={<BiSave />}

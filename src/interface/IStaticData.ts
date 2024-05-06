@@ -228,6 +228,10 @@ export interface profileStaticData {
       title: string;
     };
   };
+  snackBar: {
+    success: string;
+    error: string;
+  };
 }
 
 export interface orderStaticData {
@@ -313,6 +317,7 @@ export interface dashboardContactsStaticData {
       title_more60: string;
       text_more60: string;
       alt_more30: string;
+      email_formats: string;
     };
     text: {
       h1: string;
@@ -544,6 +549,7 @@ export interface dashboardRoutStaticData {
       update_success: string;
       add_success: string;
       add_error: string;
+      add_stops_error: string;
     };
   };
   errors: {

@@ -72,6 +72,7 @@ export const ContactForm = ({
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const [res, setRes] = useState<IContactText>();
   const [social, setSocial] = useState<PhoneType[]>([]);
+  const [addedSocial, setAddedSocial] = useState<PhoneType[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { selectLang, setSelectLang } = useLangContext();
   const [size, setSize] = useState<any>(0);
@@ -79,7 +80,36 @@ export const ContactForm = ({
   const [lunchTime, setLunchTime] = useState<Dayjs[]>(() => []);
   const [workDay, setWorkDay] = useState<string[]>(() => ['']);
   const [imagePreviewUrl, setImagePreviewUrl] = React.useState<any>(null);
-  const [weekendDay, setWeekendDay] = React.useState<string[]>([]);
+  const [weekendDay, setWeekendDay] = React.useState<string[]>(['']);
+
+  useEffect(() => {
+    if (!res) {
+      return;
+    }
+
+    res?.weekends
+      ? setWeekendDay(res.weekends.split('-'))
+      : setWeekendDay(['']);
+  }, [res]);
+
+  useEffect(() => {
+    if (!res) {
+      return;
+    }
+    const day = res?.weekdays_work?.split('-');
+    res?.weekdays_work && day ? setWorkDay(day) : setWorkDay(['']);
+    setLunchTime(
+      res?.lunch_time
+        ? res?.lunch_time?.split('-').map(el => dayjs(el.trim(), 'HH:mm'))
+        : [],
+    );
+
+    setWorkTime(
+      res?.weekdays_time
+        ? res?.weekdays_time?.split('-').map(el => dayjs(el.trim(), 'HH:mm'))
+        : [],
+    );
+  }, [res]);
 
   const onSubmit = async () => {
     try {
@@ -111,43 +141,56 @@ export const ContactForm = ({
       formData.append('lunch_time', lunch_time || res?.lunch_time || '');
 
       img.length && formData.append('img', img[0] || null);
-      let response;
+      const response = await axios.post(
+        `${BASE_URL}/${selectLang}/api/admin/contacts/create`,
+        formData,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
 
-      if (!res) {
-        console.log('post');
-        response = await axios.post(
-          `${BASE_URL}${selectLang}/api/admin/${rout}/create/`,
-          formData,
-          {
-            headers: {
-              Authorization: 'Bearer ' + session.access,
-              'Content-Type':
-                'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-            },
-          },
-        );
-      } else {
-        console.log('update', res.id);
-        response = await axios.post(
-          `${BASE_URL}/${selectLang}/api/admin/contacts/create`,
-          formData,
-          {
-            headers: {
-              Authorization: 'Bearer ' + session.access,
-              'Content-Type':
-                'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-            },
-          },
-        );
-      }
       reset();
       await getData();
-      if (response?.status === 200) {
-        setTimeout(() => {
-          enqueueSnackbar(`${staticData.snackBar.success}`, {
-            variant: 'success',
+
+      if (social.length > 0) {
+        const requests = social.map(phone => {
+          const socialFormData = new FormData();
+          socialFormData.append('phone_number', phone.phone_number || '');
+          socialFormData.append('telegram', phone.telegram || '');
+          socialFormData.append('viber', phone.viber || '');
+          socialFormData.append('whatsup', phone.whatsup || '');
+          return axios.post(
+            `${BASE_URL}/${selectLang}/api/admin/social_media/create`,
+            socialFormData,
+            {
+              headers: {
+                Authorization: 'Bearer ' + session.access,
+                'Content-Type':
+                  'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+              },
+            },
+          );
+        });
+        const responses = await Promise.all(requests);
+
+        if (
+          responses.every(response => response.status === 201) &&
+          response.status === 201
+        ) {
+          setTimeout(() => {
+            enqueueSnackbar(`${staticData.snackBar.success}`, {
+              variant: 'success',
+            });
+          }, 1500);
+        } else {
+          enqueueSnackbar(`${staticData.snackBar.error}`, {
+            variant: 'error',
           });
-        }, 1500);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -176,6 +219,8 @@ export const ContactForm = ({
     phone: PhoneType;
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phone_regex = /^\d{3}\s?\d{3}\s?\d{2}\s?\d{2}$/;
   const UploadFileSchema = yup.object().shape({
     phone: yup
       .object()
@@ -184,14 +229,17 @@ export const ContactForm = ({
         phone_number: yup
           .string()
           .nullable()
-          .test(`${staticData.form.errors.alt_more30}`, value => {
-            if (!value) return true;
-            if (value.length !== 10) return true;
-            // Проверить, содержит ли строка только цифры
-            return /^[0-9]+$/.test(value);
-          }),
-        // .matches(/^[0-9\s]+$/, `${staticData.form.errors.formats}`),
-        // .length(10, `${staticData.form.errors.alt_more30}`),
+          .test(
+            'phone-format',
+            'Неправильний формат номера телефону',
+            function (value) {
+              if (!value || value === '') {
+                return true;
+              }
+
+              return phone_regex.test(value);
+            },
+          ),
       }),
     img: yup
       .mixed()
@@ -219,6 +267,13 @@ export const ContactForm = ({
     // main_desc: yup.string().max(60, `${staticData.form.errors.title_more60}`),
     // title1: yup.string().max(60, `${staticData.form.errors.title_more60}`),
     text: yup.string().max(60, `${staticData.form.errors.title_more60}`),
+    address: yup.string().max(60, `${staticData.form.errors.title_more60}`),
+    email: yup
+      .string()
+      .notRequired()
+      // .nullable()
+      // .matches(emailRegex, `${staticData.form.errors.email_formats}`)
+      .max(60, `${staticData.form.errors.title_more60}`),
     // title2: yup.string().max(60, `${staticData.form.errors.title_more60}`),
     text2: yup.string().max(60, `${staticData.form.errors.title_more60}`),
     alt: yup.string().max(30, `${staticData.form.errors.alt_more30}`),
@@ -227,9 +282,9 @@ export const ContactForm = ({
   const getData = useCallback(async () => {
     try {
       const { data, status } = await axios.get(
-        `${BASE_URL}/${selectLang}/api/contacts/`,
+        `${BASE_URL}/${selectLang}/api/contacts`,
       );
-      console.log(data);
+
       if (status === 200 && data?.length > 0) {
         setRes(data[data?.length - 1]);
       }
@@ -251,9 +306,9 @@ export const ContactForm = ({
   const getSocial = useCallback(async () => {
     try {
       const { data, status } = await axios.get(
-        `${BASE_URL}/${selectLang}/api/social_media/`,
+        `${BASE_URL}/${selectLang}/api/social_media`,
       );
-      console.log('social data', data);
+
       if (status === 200 && data?.length > 0) {
         setSocial(data);
       }
@@ -412,12 +467,18 @@ export const ContactForm = ({
   const handleDeleteContact = (id: number) => {
     const updatedSocial = [...social].filter(phone => phone.id !== id);
     setSocial(updatedSocial);
+
+    const updateAdd = [...addedSocial].filter(phone => phone.id !== id);
+    setAddedSocial(updateAdd);
   };
 
   const handleAddContact = (phone: PhoneType) => {
     const updatedSocial = [...social, phone];
 
     setSocial(updatedSocial);
+
+    const add = [...addedSocial, phone];
+    setAddedSocial(add);
     setValue('phone', {
       viber: '',
       telegram: '',
@@ -465,7 +526,10 @@ export const ContactForm = ({
                       objectFit: 'cover',
                       borderRadius: 4,
                     }}
-                    src={imagePreviewUrl || res?.img}
+                    src={
+                      imagePreviewUrl ||
+                      `http://api.lehendatrans.com${res?.img}`
+                    }
                     alt={alt || res?.title || ''}
                     fill
                     priority={true}
@@ -727,7 +791,6 @@ export const ContactForm = ({
                           helperText={errors?.title?.message}
                           error={!!errors?.title}
                           defaultChecked={false}
-                          defaultValue={null}
                           InputProps={{
                             color: 'secondary',
                             endAdornment: (
@@ -1001,14 +1064,6 @@ export const ContactForm = ({
                               />
                             </>
                           </Box>
-                          {/* <TextEditor
-                            data={1}
-                            // titleOne={staticData.form.text.text1}
-                            res={res}
-                            setEditorData={setEditorData1}
-                            lang={lang}
-                            label={staticData.form.text.label}
-                          /> */}
                         </Grid>
                         <Grid item xs={6}>
                           <Typography
@@ -1045,11 +1100,16 @@ export const ContactForm = ({
                                 fullWidth
                                 label={staticData.form.text.label}
                                 size={'small'}
+                                type="email"
                                 variant={'outlined'}
                                 FormHelperTextProps={{
                                   color: '#256223',
                                 }}
-                                helperText={errors?.email?.message}
+                                helperText={
+                                  errors?.email
+                                    ? staticData.form.errors.email_formats
+                                    : ''
+                                }
                                 error={!!errors?.email}
                                 defaultChecked={false}
                                 defaultValue={null}
@@ -1202,9 +1262,17 @@ export const ContactForm = ({
                                 InputLabelProps={{
                                   color: 'secondary',
                                 }}
+                                onBlur={event => {
+                                  // Викликаємо функцію trim для введеного значення
+                                  const trimmedValue =
+                                    event.target.value.trim();
+                                  setValue('phone.phone_number', trimmedValue);
+                                }}
                                 sx={{
                                   width: '132px',
+                                  minWidth: '132px',
                                   marginRight: '16px',
+                                  px: '2px',
                                   '& label': {
                                     fontSize: 14,
                                     color: color_title,
@@ -1212,6 +1280,9 @@ export const ContactForm = ({
                                   '& .MuiFormHelperText-root': {
                                     position: 'absolute',
                                     top: '38px',
+                                  },
+                                  '& .MuiInputBase-root  .MuiInputBase-input': {
+                                    px: '8px',
                                   },
                                 }}
                                 // fullWidth
@@ -1221,9 +1292,7 @@ export const ContactForm = ({
                                 FormHelperTextProps={{
                                   color: '#256223',
                                 }}
-                                helperText={
-                                  errors?.phone?.phone_number?.message
-                                }
+                                // helperText={`${staticData.form.errors.email_formats}`}
                                 error={!!errors?.phone}
                                 defaultChecked={false}
                                 defaultValue={null}
@@ -1325,6 +1394,7 @@ export const ContactForm = ({
                             <Grid container spacing={2}>
                               <Grid item xs={5.5} mb={2}>
                                 <Select
+                                  {...register('weekdays_time')}
                                   labelId="workday-start-label"
                                   id="workday-start"
                                   value={workDay[0]}
@@ -1335,16 +1405,19 @@ export const ContactForm = ({
                                     disableScrollLock: true,
                                   }}
                                 >
-                                  {staticData.form.text.workDay.map(day => {
-                                    return (
-                                      <MenuItem
-                                        id={day.name}
-                                        value={day.shot_name}
-                                      >
-                                        {day.title}
-                                      </MenuItem>
-                                    );
-                                  })}
+                                  {staticData.form.text.workDay.map(
+                                    (day, ind) => {
+                                      return (
+                                        <MenuItem
+                                          key={day.shot_name || ind}
+                                          id={day.name}
+                                          value={day.shot_name}
+                                        >
+                                          {day.title}
+                                        </MenuItem>
+                                      );
+                                    },
+                                  )}
                                 </Select>
                               </Grid>
                               <Grid
@@ -1359,28 +1432,33 @@ export const ContactForm = ({
                                 -
                               </Grid>
                               <Grid item xs={5.5}>
-                                <Select
-                                  labelId="workday-end-label"
-                                  id="workday-end"
-                                  value={workDay[1]}
-                                  sx={{ width: '100%' }}
-                                  onChange={ev => handleChange(ev, 1)}
-                                  size="small"
-                                  MenuProps={{
-                                    disableScrollLock: true,
-                                  }}
-                                >
-                                  {staticData.form.text.workDay.map(day => {
-                                    return (
-                                      <MenuItem
-                                        id={day.name}
-                                        value={day.shot_name}
-                                      >
-                                        {day.title}
-                                      </MenuItem>
-                                    );
-                                  })}
-                                </Select>
+                                {workDay[1] && (
+                                  <Select
+                                    labelId="workday-end-label"
+                                    id="workday-end"
+                                    value={workDay[1]}
+                                    sx={{ width: '100%' }}
+                                    onChange={ev => handleChange(ev, 1)}
+                                    size="small"
+                                    MenuProps={{
+                                      disableScrollLock: true,
+                                    }}
+                                  >
+                                    {staticData.form.text.workDay.map(
+                                      (day, ind) => {
+                                        return (
+                                          <MenuItem
+                                            key={day.shot_name || ind}
+                                            id={day.name}
+                                            value={day.shot_name}
+                                          >
+                                            {day.title}
+                                          </MenuItem>
+                                        );
+                                      },
+                                    )}
+                                  </Select>
+                                )}
                               </Grid>
                             </Grid>
                             <Grid container spacing={2}>
@@ -1552,6 +1630,7 @@ export const ContactForm = ({
                           startIcon={<BiSave />}
                           color={'secondary'}
                           variant={'contained'}
+                          disabled={!isValid}
                         >
                           {staticData.form.save_btn.text}
                         </Button>

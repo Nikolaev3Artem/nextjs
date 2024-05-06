@@ -1,5 +1,5 @@
 import styles from './tickets.module.css';
-import { Container, Fade, Stack } from '@mui/material';
+import { Container, Fade, Stack, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -39,7 +39,7 @@ export interface IRentProps {
 const getTickets = async (lang: Locale) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets?limit=599`,
     );
 
     if (response.status === 200) {
@@ -70,12 +70,16 @@ export default async function Tickets({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.tickets} back={staticData.back}>
-            <TicketsWrapper
-              tickets={tickets}
-              staticData={staticData}
-              lang={params.lang}
-              journeyStaticData={journeyStaticData}
-            />
+            {tickets ? (
+              <TicketsWrapper
+                tickets={tickets}
+                staticData={staticData}
+                lang={params.lang}
+                journeyStaticData={journeyStaticData}
+              />
+            ) : (
+              <Typography>no data</Typography>
+            )}
           </ContentDashboard>
         </Box>
       </Fade>

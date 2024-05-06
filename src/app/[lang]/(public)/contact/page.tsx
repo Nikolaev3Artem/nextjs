@@ -10,7 +10,7 @@ import { IContactText } from '@/interface/IEditorText';
 const getContact = async (lang: Locale) => {
   try {
     const response = await axios.get<IContactText[]>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/contacts/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/contacts`,
     );
 
     if (response.status === 200) {

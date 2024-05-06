@@ -44,7 +44,6 @@ export default async function AddJourney({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
-            // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
             title={`${staticData.new_journey} `}
             back={staticData.back}
           >

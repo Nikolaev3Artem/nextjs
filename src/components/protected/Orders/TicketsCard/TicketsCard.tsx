@@ -35,6 +35,8 @@ import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import BagPersonalSvgDisable from '../../../../../public/icons/bag-personal-disable.svg';
 import BagSuitcaseSvgDisable from '../../../../../public/icons/bag-suitcase-disable.svg';
 import { getTimeDuration } from '@/helpers/getTimeDuration';
+import { getCurrency } from '@/helpers/getCurrency';
+import { useCurrencyContext } from '@/app/context';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -64,6 +66,7 @@ export const TicketsCard = ({
   lang: Locale;
 }) => {
   const [expanded, setExpanded] = React.useState(false);
+  const { selectCurrency } = useCurrencyContext();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -92,7 +95,7 @@ export const TicketsCard = ({
   return (
     <Grid item className={Style.wrapper} sx={{ flexDirection: 'column' }}>
       <Card>
-        <CardContent sx={{ p: 3, minHeight: '190px' }}>
+        <CardContent sx={{ p: 3, minHeight: '200px' }}>
           <Grid
             container
             columnSpacing={{ sm: 2, md: 3 }}
@@ -199,10 +202,9 @@ export const TicketsCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {getTimeDuration(
-                  data?.journey[0]?.arrival_date,
-                  data?.journey[0]?.departure_date,
-                )}
+                {data?.journey[0]?.routes[0]?.travel_time
+                  ? `${String(Math.floor(parseInt(data?.journey[0]?.routes[0]?.travel_time) / 60)).padStart(2, '0')}:${String(parseInt(data?.journey[0]?.routes[0]?.travel_time) % 60).padStart(2, '0')}  ${staticData.routs_card.hour}`
+                  : ''}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>
@@ -698,7 +700,7 @@ export const TicketsCard = ({
                             color={'primary'}
                             sx={{ fontSize: { xs: '13px', md: '16px' } }}
                           >
-                            UAH
+                            {`${getCurrency(selectCurrency)}`}
                           </Typography>
                         </Box>
                       </Box>

@@ -31,7 +31,7 @@ const getBus = async (lang: Locale) => {
     const session = await getSession();
     if (!session) return null;
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus?limit=500`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,

@@ -17,5 +17,9 @@
     "edit": {
       "title": "Edit"
     }
+  },
+  "snackBar": {
+    "success": "Changes saved",
+    "error": "Error saving changes"
   }
 }

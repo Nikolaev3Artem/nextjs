@@ -60,13 +60,17 @@ export const RoutWrapper = ({
   useEffect(() => {
     filter
       ? setFilteredRouts(
-          routs.filter(obj =>
-            Object.values(obj).some(
+          routs.filter(obj => {
+            return obj.cities.some(
               val =>
-                typeof val === 'string' &&
-                val.toLowerCase().includes(filter.toLowerCase()),
-            ),
-          ),
+                val.city.toLowerCase().includes(filter.toLowerCase()) ||
+                Object.values(obj).some(
+                  val =>
+                    typeof val === 'string' &&
+                    val.toLowerCase().includes(filter.toLowerCase()),
+                ),
+            );
+          }),
         )
       : setFilteredRouts(routs);
   }, [filter]);
@@ -101,9 +105,6 @@ export const RoutWrapper = ({
         <Button
           color={'secondary'}
           variant={'contained'}
-          // onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-          //   AddCard(event)
-          // }
           href={`/${lang}/dashboard/rout/add`}
           startIcon={<AiOutlinePlus />}
         >

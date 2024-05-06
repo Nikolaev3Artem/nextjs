@@ -1,5 +1,5 @@
 import styles from './flights.module.css';
-import { Fade } from '@mui/material';
+import { Fade, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import axios from 'axios';
@@ -32,7 +32,7 @@ const getCity = async (lang: Locale) => {
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city/?limit=299`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city?limit=299`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,
@@ -70,12 +70,16 @@ export default async function Rout({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.cities} back={staticData.back}>
-            <CityWrapper
-              cities={cities}
-              tabs={tabs}
-              staticData={staticData}
-              lang={params.lang}
-            />
+            {cities ? (
+              <CityWrapper
+                cities={cities}
+                tabs={tabs}
+                staticData={staticData}
+                lang={params.lang}
+              />
+            ) : (
+              <Typography> no data</Typography>
+            )}
           </ContentDashboard>
         </Box>
       </Fade>

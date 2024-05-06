@@ -40,7 +40,7 @@ const getJourney = async (id: number, lang: Locale) => {
   const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/${id}/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ const getTickets = async (id: number, lang: Locale) => {
   const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,6 @@ export default async function JourniesInfo({
     id: number;
   };
 }>) {
-  console.log(params);
   const journey = await getJourney(params.id, params.lang);
   const tickets = await getTickets(params.id, params.lang);
   const staticData = await getDashboardJourneyDictionaries(params.lang);

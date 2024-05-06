@@ -38,7 +38,8 @@
       "remove_error": "Deletion error",
       "update_success": "Your changes have been saved",
       "add_success": "Your card has been added",
-      "add_error": "Error saving changes"
+      "add_error": "Error saving changes",
+      "add_stops_error": "Stop already adde"
     }
   },
   "errors": {

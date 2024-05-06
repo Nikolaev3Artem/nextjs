@@ -113,12 +113,10 @@ const CityTable = ({
           method: 'DELETE',
           headers: {
             Authorization: 'Bearer ' + session.access,
-            // 'Content-Type':
-            //   'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
           },
         },
       );
-      if (response.status === 204) {
+      if (response.status === 200) {
         enqueueSnackbar(`${staticData.cityTable.snackBar.remove_success}`, {
           variant: 'success',
         });
@@ -225,12 +223,7 @@ const CityTable = ({
                 cityList
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(item => (
-                    <TableRow
-                      hover
-                      tabIndex={-1}
-                      key={item.id}
-                      // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
+                    <TableRow hover tabIndex={-1} key={item.id}>
                       <TableCell component="th" scope="row">
                         {item.id}
                       </TableCell>
@@ -288,10 +281,16 @@ const CityTable = ({
                             onClick={() => {
                               handleClickDelete(item.id);
                             }}
-                            sx={{ color: colorIcon, fontSize: 16 }}
+                            sx={{
+                              color: colorIcon,
+                              fontSize: 16,
+                              '&:hover': {
+                                color: 'red',
+                              },
+                            }}
                             size={'small'}
                           >
-                            <FiTrash2 />
+                            <FiTrash2 color="inherit" />
                           </IconButton>
                         </Stack>
                       </TableCell>

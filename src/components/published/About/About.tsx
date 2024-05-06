@@ -60,15 +60,10 @@ export const About = ({ about }: { about: IEditorText }) => {
                   className={Style.about_text_content}
                   fontSize={16}
                   color={'darkslategray'}
-                >
-                  <Typography
-                    component={'p'}
-                    className={Style.about_text_content}
-                    fontSize={16}
-                  >
-                    {about.text1 ? about.text1 : ''}
-                  </Typography>
-                </Box>
+                  dangerouslySetInnerHTML={{
+                    __html: about.text1 || '',
+                  }}
+                />
               </Grid>
             </Grid>
 

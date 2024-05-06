@@ -20,7 +20,7 @@ import AddBusCard from '@/components/protected/dashboard/Bus/AddBusCard/AddBusCa
 const getBus = async (lang: Locale) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/service/bus`,
     );
 
     if (response.status === 200) {

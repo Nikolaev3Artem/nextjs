@@ -80,9 +80,8 @@ export const ContentForm = ({
       let response;
 
       if (!res) {
-        console.log('post');
         response = await axios.post(
-          `${BASE_URL}${selectLang}/api/admin/${rout}/create/`,
+          `${BASE_URL}${selectLang}/api/admin/${rout}/create`,
           formData,
           {
             headers: {
@@ -93,9 +92,8 @@ export const ContentForm = ({
           },
         );
       } else {
-        console.log('update', res.id);
         response = await axios.put(
-          `${BASE_URL}/${selectLang}/api/admin/${rout}/update/${res.id}/`,
+          `${BASE_URL}/${selectLang}/api/admin/${rout}/update/${res.id}`,
           formData,
           {
             headers: {
@@ -172,7 +170,7 @@ export const ContentForm = ({
   const getData = useCallback(async () => {
     try {
       const { data, status } = await axios.get(
-        `${BASE_URL}/${selectLang}/api/${rout}/`,
+        `${BASE_URL}/${selectLang}/api/${rout}`,
       );
 
       if (status === 200 && data.count > 0) {
@@ -332,6 +330,7 @@ export const ContentForm = ({
                     >
                       {title1 || (res && res?.title1)}
                     </Typography>
+
                     <Box
                       className={Style.rule_text_content}
                       fontSize={16}
@@ -355,11 +354,7 @@ export const ContentForm = ({
                       fontSize={16}
                       color={'darkslategray'}
                       dangerouslySetInnerHTML={{
-                        __html:
-                          (editorData2 && editorData2.trim()) ||
-                          text2 ||
-                          res?.text2 ||
-                          '',
+                        __html: editorData2 || text2 || res?.text2 || '',
                       }}
                     />
                   </Grid>
@@ -446,7 +441,6 @@ export const ContentForm = ({
                           helperText={errors?.main_title?.message}
                           error={!!errors?.main_title}
                           defaultChecked={false}
-                          defaultValue={null}
                           InputProps={{
                             color: 'secondary',
                             endAdornment: (
@@ -720,14 +714,16 @@ export const ContentForm = ({
                               />
                             </>
                           </Box>
-                          <TextEditor
-                            data={1}
-                            titleOne={staticData.form.text.text1}
-                            res={res}
-                            setEditorData={setEditorData1}
-                            lang={lang}
-                            label={staticData.form.text.label}
-                          />
+                          {res && (
+                            <TextEditor
+                              data={1}
+                              titleOne={staticData.form.text.text1}
+                              res={res}
+                              setEditorData={setEditorData1}
+                              lang={lang}
+                              label={staticData.form.text.label}
+                            />
+                          )}
                         </Grid>
                         <Grid item width={'100%'} mb={4} xl={6}>
                           <Typography
@@ -804,14 +800,16 @@ export const ContentForm = ({
                               />
                             </>
                           </Box>
-                          <TextEditor
-                            data={2}
-                            titleTwo={staticData.form.text.text2}
-                            res={res}
-                            setEditorData={setEditorData2}
-                            lang={lang}
-                            label={staticData.form.text.label}
-                          />
+                          {res && (
+                            <TextEditor
+                              data={2}
+                              titleTwo={staticData.form.text.text2}
+                              res={res}
+                              setEditorData={setEditorData2}
+                              lang={lang}
+                              label={staticData.form.text.label}
+                            />
+                          )}
                         </Grid>
                       </Grid>
                     </Box>
@@ -833,6 +831,7 @@ export const ContentForm = ({
                           startIcon={<BiSave />}
                           color={'secondary'}
                           variant={'contained'}
+                          disabled={!isValid || !isDirty}
                         >
                           {staticData.form.save_btn.text}
                         </Button>

@@ -65,7 +65,7 @@ export function TimPicker({
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
           label={staticData}
-          minDate={minOff ? null : today}
+          minTime={minOff ? null : today}
           autoFocus={false}
           value={minOff ? null : datePickerValue}
           slotProps={{ textField: { size: small ? 'small' : 'medium' } }}

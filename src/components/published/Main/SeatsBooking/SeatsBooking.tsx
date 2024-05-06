@@ -42,7 +42,7 @@ export const SeatsBooking = ({
   isShowModal: boolean;
   staticData: MainStaticDataProps;
   lang: Locale;
-  addPassengers: boolean;
+  addPassengers?: boolean;
   addPassClick?: any;
 }) => {
   const getColor = (name: string) => {

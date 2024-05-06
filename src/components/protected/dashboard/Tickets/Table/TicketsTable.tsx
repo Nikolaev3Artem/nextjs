@@ -13,6 +13,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Link as MaterialLink,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -24,6 +25,9 @@ import React, { ReactNode, useRef } from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { MdOutlineCancel } from 'react-icons/md';
+import CalendarIcon from '../../../../../../public/icons/calendar-month.svg';
+import ClockIcon from '../../../../../../public/icons/clock.svg';
+
 import PrintOutlinedIcon from '@mui/icons-material/PrintOutlined';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -42,10 +46,13 @@ import {
   MainStaticDataProps,
 } from '@/interface/IStaticData';
 import { Locale } from '@/i18n.config';
-import { ITickets } from '@/interface/IJourney';
+import { ITickets, StopsProps } from '@/interface/IJourney';
 import { TicketCard } from '@/components/protected/dashboard/Tickets/TicketCard';
 import dayjs from 'dayjs';
 import ReactDOMServer from 'react-dom/server';
+import { getCurrency } from '@/helpers/getCurrency';
+import Link from 'next/link';
+import theme from '@/theme';
 
 const colorIcon = grey[700];
 const colorHeader = grey[800];
@@ -115,6 +122,20 @@ const convertComponentToHTMLWithStyles = (component: ReactNode) => {
       </body>
     </html>
   `;
+};
+
+const getColor = (name: string) => {
+  switch (name) {
+    case 'new':
+      return '#808080';
+
+    case 'payed':
+      return `${theme.palette.success.main}`;
+    case 'ordered':
+      return theme.palette.error.main;
+    default:
+      return 'white';
+  }
 };
 
 const TicketsTable = ({
@@ -218,49 +239,49 @@ const TicketsTable = ({
               <p className="title">
                 {`${staticData.from}:`}{' '}
                 <span className="text">
-                  {dayjs(item?.journey[0].departure_date)
+                  {dayjs(item?.journey[0]?.departure_date)
                     .locale(`${lang}`)
                     .format('HH:mm')}{' '}
-                  {dayjs(item?.journey[0].departure_date)
+                  {dayjs(item?.journey[0]?.departure_date)
                     .locale(`${lang}`)
                     .format('DD.MM.YYYY')}
                 </span>
                 <span className="text">
-                  {item.journey[0].routes[0].cities[0].city}
+                  {item.journey[0]?.routes[0]?.cities[0]?.city}
                 </span>
                 <span className="description">
-                  {item.journey[0].routes[0].cities[0].address}
+                  {item.journey[0]?.routes[0]?.cities[0]?.address}
                 </span>
               </p>
               <p className="title">
                 {`${staticData.from}:`}{' '}
                 <span className="text">
-                  {dayjs(item?.journey[0].arrival_date)
+                  {dayjs(item?.journey[0]?.arrival_date)
                     .locale(`${lang}`)
                     .format('HH:mm')}{' '}
-                  {dayjs(item?.journey[0].arrival_date)
+                  {dayjs(item?.journey[0]?.arrival_date)
                     .locale(`${lang}`)
                     .format('DD.MM.YYYY')}
                 </span>
                 <span className="text">
                   {
-                    item.journey[0].routes[0].cities[
-                      item.journey[0].routes[0].cities.length - 1
-                    ].city
+                    item.journey[0]?.routes[0]?.cities[
+                      item.journey[0]?.routes[0]?.cities?.length - 1
+                    ]?.city
                   }
                 </span>
                 <span className="description">
                   {
-                    item.journey[0].routes[0].cities[
-                      item.journey[0].routes[0].cities.length - 1
-                    ].address
+                    item.journey[0]?.routes[0]?.cities[
+                      item.journey[0]?.routes[0]?.cities?.length - 1
+                    ]?.address
                   }
                 </span>
               </p>
               <p className="title">
                 {staticData.routs_card.price}{' '}
                 <span className="text">
-                  {item.journey[0].routes[0].price} UAH
+                  {item.journey[0]?.routes[0]?.price} {getCurrency(3)}
                 </span>
               </p>
               <p className="title">
@@ -276,7 +297,9 @@ const TicketsTable = ({
               <p className="title">
                 {staticData.routs_card.routs}:{' '}
                 <span className="text">
-                  {data.journey[0].routes[0].cities.map(el => el.city)}
+                  {data.journey[0]?.routes[0]?.cities?.map(
+                    (el: StopsProps) => el.city,
+                  )}
                 </span>
               </p>
               <p className="title">
@@ -319,55 +342,127 @@ const TicketsTable = ({
 
     return (
       <React.Fragment>
-        <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+        <TableRow sx={{ fontSize: '12px', '& > *': { borderBottom: 'unset' } }}>
           <TableCell component="th" scope="row">
-            {item.id}
+            <Typography fontSize={'12px'}>{item.id}</Typography>
           </TableCell>
 
           <TableCell component="th" scope="row">
-            {`${item.name} ${item.surname}`}
+            <Typography fontSize={'12px'}>
+              {`${item.name} ${item.surname}`}
+            </Typography>
           </TableCell>
 
           <TableCell component="th" scope="row">
-            {item.journey[0].routes[0].cities[0].city} -
-            {
-              item.journey[0].routes[0].cities[
-                item.journey[0].routes[0].cities.length - 1
-              ].city
-            }
+            <MaterialLink
+              component={Link}
+              href={
+                item.journey[0]?.routes[0]?.id
+                  ? `/${lang}/dashboard/rout/${item.journey[0]?.routes[0]?.id}`
+                  : '#'
+              }
+              color={'secondary'}
+              sx={{
+                fontSize: '12px',
+                textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
+              {item?.journey[0]?.routes[0]?.cities[0]?.city} -
+              {
+                item?.journey[0]?.routes[0]?.cities[
+                  item?.journey[0]?.routes[0]?.cities?.length - 1
+                ]?.city
+              }
+            </MaterialLink>
           </TableCell>
 
           <TableCell align="left">
-            {dayjs(item?.journey[0].arrival_date)
-              .locale(`${lang}`)
-              .format('DD.MM.YYYY')}{' '}
-            -
-            {dayjs(item?.journey[0].arrival_date)
-              .locale(`${lang}`)
-              .format('HH:mm')}
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
+              <Box width={14} height={14}>
+                <CalendarIcon width={14} height={14} />
+              </Box>
+              <Typography fontSize={'12px'}>
+                {dayjs(item?.journey[0]?.arrival_date)
+                  .locale(`${lang}`)
+                  .format('DD.MM.YYYY')}
+              </Typography>
+            </Box>
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
+              <Box width={14} height={14}>
+                <ClockIcon width={14} height={14} />
+              </Box>
+              <Typography fontSize={'12px'}>
+                {dayjs(item?.journey[0]?.arrival_date)
+                  .locale(`${lang}`)
+                  .format('HH:mm')}
+              </Typography>
+            </Box>
           </TableCell>
           <TableCell align="left">
-            {item.journey[0].routes[0].price} грн
+            <Typography fontSize={'12px'}>
+              {item.journey[0]?.routes[0]?.price
+                ? ` ${item.journey[0]?.routes[0]?.price} ${getCurrency(3)}`
+                : ''}
+            </Typography>
           </TableCell>
-          <TableCell align="left">{item.status}</TableCell>
           <TableCell align="left">
-            {dayjs(item.created_at).locale(`${lang}`).format('DD.MM.YYYY')}{' '}
-            {dayjs(item?.created_at).locale(`${lang}`).format('HH:mm')}
+            <Box
+              sx={{
+                minWidth: '66px',
+                padding: '4px',
+                borderRadius: '4px',
+
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              bgcolor={getColor(item.status.toLowerCase())}
+            >
+              <Typography fontSize={'12px'} color={'white'}>
+                {item.status === 'NEW'
+                  ? `${staticData.searchForm.options[1]}`
+                  : item.status === 'PAYED'
+                    ? `${staticData.searchForm.options[2]}`
+                    : item.status === 'RESERVED'
+                      ? `${staticData.searchForm.options[0]}`
+                      : ''}
+              </Typography>
+            </Box>
+          </TableCell>
+          <TableCell align="left">
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
+              <Box width={14} height={14}>
+                <CalendarIcon width={14} height={14} />
+              </Box>
+              <Typography fontSize={'12px'}>
+                {dayjs(item.created_at).locale(`${lang}`).format('DD.MM.YYYY')}
+              </Typography>
+            </Box>
+            <Box display={'flex'} columnGap={1} alignItems={'center'}>
+              <Box width={14} height={14}>
+                <ClockIcon width={14} height={14} />
+              </Box>
+              <Typography fontSize={'12px'}>
+                {dayjs(item?.created_at).locale(`${lang}`).format('HH:mm')}
+              </Typography>
+            </Box>
           </TableCell>
           <TableCell align="right">
             <Stack
               justifyContent={'flex-end'}
               direction={'row'}
-              spacing={2}
+              spacing={0.5}
               width={'100%'}
             >
               <IconButton
                 onClick={printDocument}
-                sx={{ color: colorIcon, fontSize: 16 }}
+                sx={{ color: colorIcon, fontSize: 18 }}
                 size={'small'}
                 aria-label={staticData.ticketsTable.print_label}
+                // color={'secondary'}
               >
-                <PrintOutlinedIcon />
+                <PrintOutlinedIcon fontSize="inherit" color={'secondary'} />
               </IconButton>
               <IconButton
                 aria-label="expand row"
@@ -523,7 +618,9 @@ const TicketsTable = ({
             {tickets &&
               tickets
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(item => <Row key={item.name} item={item} />)}
+                .map(item => (
+                  <Row key={`${item.name}${item.created_at}`} item={item} />
+                ))}
           </TableBody>
         </Table>
         <TableFooter component={'div'} sx={{ width: '100%', display: 'flex' }}>

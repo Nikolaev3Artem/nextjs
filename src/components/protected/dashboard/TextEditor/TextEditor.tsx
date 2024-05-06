@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
+
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import debounce from '@mui/utils/debounce';
@@ -20,11 +19,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { IEditorText } from '@/interface/IEditorText';
-// import {
-// 	setEditorData,
-// 	setEditorDataTwo
-// } from "../../store/admin/about/EditorSlice"
-// import { useAppDispatch } from "../../store/auth/redux"
+
 import { Replacements } from './Replacements';
 import Style from './Texteditor.module.css';
 
@@ -67,16 +62,25 @@ function TextEditor({
   const onFocus = clsx({
     [Style.focus]: focus,
   });
-  //   const dispatch = useAppDispatch();
-  //   const { locale } = useRouter();
+
   const { selectLang } = useLangContext();
   const rawContentState = convertToRaw(editorState.getCurrentContent());
+
   const debounced = debounce(html => {
     data ? setEditorData(html) : null;
   }, 600);
+
   const verify = useCallback((html: string) => {
     debounced(html);
   }, []);
+
+  const html = () => {
+    if (rawContentState.blocks.length) {
+      return draftToHtml(rawContentState);
+    } else {
+      return '';
+    }
+  };
 
   useEffect(() => {
     if (editorState !== undefined) {
@@ -85,7 +89,7 @@ function TextEditor({
   }, [editorState]);
 
   useEffect(() => {
-    if (editorState !== undefined) {
+    if (editorState !== undefined && res) {
       const blocksFromHTML1 = convertFromHTML((res && res?.text1) || '');
       const blocksFromHTML2 = convertFromHTML((res && res?.text2) || '');
       const contentState1 = ContentState.createFromBlockArray(
@@ -100,14 +104,6 @@ function TextEditor({
       data && data === 2 ? setEditorState(text2) : null;
     }
   }, []);
-
-  const html = () => {
-    if (rawContentState.blocks.length) {
-      return draftToHtml(rawContentState);
-    } else {
-      return '';
-    }
-  };
 
   return (
     <Box className={Style.wrapper}>

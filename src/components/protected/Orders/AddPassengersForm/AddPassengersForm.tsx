@@ -34,6 +34,8 @@ import { getRoutInfo } from '../JourneyInfo/getInfo';
 import { fondyCheck } from '@/helpers/fondy';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import dayjs from 'dayjs';
+import { getCurrency } from '@/helpers/getCurrency';
+import { useCurrencyContext } from '@/app/context';
 
 const discount = 30;
 
@@ -104,6 +106,7 @@ export const AddPassengersForm = ({
   const [data, setData] = useState<any>(null);
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [isShowModal, setIsShowModal] = useState(false);
+  const { selectCurrency } = useCurrencyContext();
 
   const handleBookingClick = () => {
     setIsShowModal(true);
@@ -261,11 +264,13 @@ export const AddPassengersForm = ({
         }
       }
 
+      const tickets_row = ticket_id.join(',');
+
       const response = await axios.post(`/${lang}/api/fondy`, {
-        order_id: `id${ticket_id.join(', ')}`,
+        order_id: `Id:rout${routId}:tickets:#${tickets_row}`,
         order_desc: getOrderDesc(),
         amount: getTotal(values) * 100,
-        currency: 'USD',
+        currency: 'EUR',
       });
 
       const url = await response.data.response.checkout_url;
@@ -579,7 +584,7 @@ export const AddPassengersForm = ({
                           : `${data?.routes[0].price - discount}`}
                       </Typography>
                       <Typography component={'span'} fontSize={'12px'}>
-                        UAH
+                        {getCurrency(selectCurrency)}
                       </Typography>
                     </Typography>
                   </Grid>
@@ -662,7 +667,8 @@ export const AddPassengersForm = ({
                     color={'primary'}
                     sx={{ fontSize: { xs: '12px' } }}
                   >
-                    {/* {data?.bus ? data.bus[0].name : ''} */} UAH
+                    {/* {data?.bus ? data.bus[0].name : ''} */}{' '}
+                    {getCurrency(selectCurrency)}
                   </Typography>
                 </Typography>
               </Grid>

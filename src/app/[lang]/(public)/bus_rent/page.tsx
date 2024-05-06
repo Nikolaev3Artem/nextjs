@@ -9,9 +9,9 @@ import { getBusRentDictionaries } from '@/lib/dictionary';
 const getBusRent = async (lang: Locale) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/rent/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/rent`,
     );
-    console.log(response.data);
+
     if (response.status === 200) {
       return {
         banner: {},

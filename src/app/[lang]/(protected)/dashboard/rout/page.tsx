@@ -1,5 +1,5 @@
 import styles from './bus.module.css';
-import { Fade } from '@mui/material';
+import { Fade, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 
 import axios from 'axios';
@@ -31,7 +31,7 @@ const getRouts = async (lang: Locale) => {
     if (!session) return null;
 
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/?limit=199`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes?limit=199`,
       {
         headers: {
           Authorization: 'Bearer ' + session.access,
@@ -69,12 +69,16 @@ export default async function Rout({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard title={staticData.routs} back={staticData.back}>
-            <RoutWrapper
-              routs={routs}
-              tabs={tabs}
-              staticData={staticData}
-              lang={params.lang}
-            />
+            {routs ? (
+              <RoutWrapper
+                routs={routs}
+                tabs={tabs}
+                staticData={staticData}
+                lang={params.lang}
+              />
+            ) : (
+              <Typography>No data</Typography>
+            )}
           </ContentDashboard>
         </Box>
       </Fade>

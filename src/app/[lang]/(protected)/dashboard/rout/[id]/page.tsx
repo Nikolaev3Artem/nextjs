@@ -37,7 +37,7 @@ const getRout = async (id: number, lang: Locale) => {
   // const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/${id}/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/${id}`,
       // {
       //   headers: {
       //     'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ export default async function RoutInfo({
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
             // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
-            title={`${staticData.routTable.rout} ${rout.id}: ${rout.from_place} - ${rout.to_place}`}
+            title={`${staticData.routTable.rout} ${rout.id}: ${rout.cities[0].city} - ${rout.cities[rout.cities.length - 1].city}`}
             back={staticData.back}
           >
             <EditRoutInfo

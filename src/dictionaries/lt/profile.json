@@ -17,5 +17,9 @@
     "edit": {
       "title": "Redaguoti"
     }
+  },
+  "snackBar": {
+    "success": "Pakeitimai išsaugoti",
+    "error": "Klaida įrašant pakeitimus"
   }
 }

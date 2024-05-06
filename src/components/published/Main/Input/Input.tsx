@@ -80,6 +80,7 @@ export function Input({
               value={value1}
               disablePortal
               fullWidth={true}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               options={routsFrom}
               renderInput={params => (
                 <TextField {...params} label={staticData.from} />
@@ -119,6 +120,7 @@ export function Input({
               fullWidth={true}
               disablePortal
               options={routsTo}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               renderInput={params => (
                 <TextField {...params} label={staticData.to} />
               )}

@@ -9,7 +9,8 @@
       "formats": "Apenas os seguintes formatos são suportados: .jpeg, .jpg, .png, .webp",
       "title_more60": "O título não pode ter mais de 60 caracteres",
       "text_more60": "O texto não pode ter mais de 60 caracteres",
-      "alt_more30": "ALT não pode ter mais de 30 caracteres"
+      "alt_more30": "ALT não pode ter mais de 30 caracteres",
+      "email_formats": "Formato inválido"
     },
     "text": {
       "h1": "Título H1 de nível superior",

@@ -10,7 +10,8 @@ export async function POST(req: Request) {
   const rawBody = await req.json();
   const fondy_pass = process.env.NEXT_PUBLIC_FONDY_PASS;
   const merchant_id = process.env.NEXT_PUBLIC_FONDY_MERCHANT_ID;
-  const response_url = 'http://localhost:3000/uk/api/callback';
+  const BASE_URL = process.env.NEXT_PUBLIC_URL;
+  const response_url = `${BASE_URL}uk/api/callback`;
   const order_body: OrderBody = {
     order_id: rawBody.order_id,
     merchant_id: merchant_id || '',

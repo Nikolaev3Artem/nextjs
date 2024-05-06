@@ -59,7 +59,7 @@ export async function getCustomerStatus() {
     const access = JSON.parse(session).access;
 
     const { data } = await axios.get<CustomerProps>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ export async function getCustomerStatus() {
         },
       },
     );
-    console.log(data.results);
+
     return data.results[0]?.user?.is_staff;
   } catch (error) {
     console.log(error);
@@ -82,7 +82,7 @@ export async function getAdminStatus() {
     const access = JSON.parse(session).access;
 
     const { data } = await axios.get<AdminProps>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/admin/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/admin`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ export async function getAdminStatus() {
         },
       },
     );
-    console.log(data.results);
+
     return data.results[0].is_superuser;
   } catch (error) {
     console.log(error);

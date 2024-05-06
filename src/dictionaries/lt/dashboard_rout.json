@@ -38,7 +38,8 @@
       "remove_error": "Klaida pašalinant",
       "update_success": "Jūsų pakeitimai sėkmingai išsaugoti",
       "add_success": "Jūsų kortelė sėkmingai pridėta",
-      "add_error": "Klaida pridedant"
+      "add_error": "Klaida pridedant",
+      "add_stops_error": "Stotelė jau pridėta"
     }
   },
   "errors": {

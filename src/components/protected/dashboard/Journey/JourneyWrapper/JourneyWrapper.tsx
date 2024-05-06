@@ -68,13 +68,10 @@ export const JourneyWrapper = ({
             obj.id.toString().toLowerCase().includes(filter.toLowerCase()) ||
             dayjs(obj.departure_date).format('DD.MM.YYYY').includes(filter) ||
             dayjs(obj.departure_date).format('HH:mm').includes(filter) ||
-            obj.routes.some(
-              route =>
-                route.to_place.toLowerCase().includes(filter.toLowerCase()) ||
-                route.from_place.toLowerCase().includes(filter.toLowerCase()) ||
-                route.cities.some(stop =>
-                  stop.city.toLowerCase().includes(filter.toLowerCase()),
-                ),
+            obj.routes.some(route =>
+              route.cities.some(stop =>
+                stop.city.toLowerCase().includes(filter.toLowerCase()),
+              ),
             ) ||
             obj.bus[0].name.toLowerCase().includes(filter.toLowerCase())
           );
@@ -115,9 +112,6 @@ export const JourneyWrapper = ({
         <Button
           color={'secondary'}
           variant={'contained'}
-          // onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-          //   AddCard(event)
-          // }
           href={`/${lang}/dashboard/flights/add`}
           startIcon={<AiOutlinePlus />}
         >

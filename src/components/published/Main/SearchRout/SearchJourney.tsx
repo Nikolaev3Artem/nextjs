@@ -49,14 +49,18 @@ export const SearchJourney = ({
               color={'primary'}
               sx={{ fontSize: { xs: '13px', md: '20px' } }}
             >
-              {searchJourney[0].routes[0].from_place}
+              {searchJourney[0]?.routes[0]?.cities[0]?.city}
             </Typography>
             <IoMdArrowForward width={3} height={3} />
             <Typography
               color={'primary'}
               sx={{ fontSize: { xs: '13px', md: '20px' } }}
             >
-              {searchJourney[0].routes[0].to_place}
+              {
+                searchJourney[0]?.routes[0]?.cities[
+                  searchJourney[0]?.routes[0]?.cities?.length - 1
+                ]?.city
+              }
             </Typography>
             <CalendarIcon width={'24px'} height={'24px'} />
             <Typography
@@ -69,26 +73,25 @@ export const SearchJourney = ({
             </Typography>
           </Box>
         </Grid>
-        <Box>
-          <Grid
-            container
-            direction={'column'}
-            rowGap={4}
-            className={Style.card_list}
-          >
-            {searchJourney.map(el => {
-              return (
-                <JourneyCard
-                  key={el.id}
-                  staticData={staticData}
-                  data={el}
-                  lang={lang}
-                  date={values.date}
-                />
-              );
-            })}
-          </Grid>
-        </Box>
+
+        <Grid
+          container
+          direction={'column'}
+          rowGap={4}
+          // className={Style.card_list}
+        >
+          {searchJourney.map(el => {
+            return (
+              <JourneyCard
+                key={el.id}
+                staticData={staticData}
+                data={el}
+                lang={lang}
+                date={values.date}
+              />
+            );
+          })}
+        </Grid>
       </Grid>
     </Stack>
   );

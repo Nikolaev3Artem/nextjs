@@ -1,8 +1,5 @@
 'use client';
 
-import createCache from '@emotion/cache';
-import { CacheProvider } from '@emotion/react';
-
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import Box from '@mui/material/Box';
@@ -21,25 +18,13 @@ import Style from './locale.module.css';
 import { Locale } from '@/i18n.config';
 
 import { LocalCard } from '@/components/common/LocalCard';
+import { langData } from '@/helpers/getLang';
 
 interface IColor {
   color?: string;
   weight?: string;
   lang: Locale;
 }
-
-const langData = [
-  {
-    id: 1,
-    title: 'Українська',
-    min_title: 'Укр',
-    icon: 'uk',
-    lang: 'uk',
-  },
-  { id: 2, title: 'English', min_title: 'EN', icon: 'en', lang: 'en' },
-  { id: 3, title: 'Português', min_title: 'PT', icon: 'pt', lang: 'pt' },
-  { id: 4, title: 'Lietuvių', min_title: 'LT', icon: 'lt', lang: 'lt' },
-];
 
 export function LocaleChange({ color, weight, lang }: IColor) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

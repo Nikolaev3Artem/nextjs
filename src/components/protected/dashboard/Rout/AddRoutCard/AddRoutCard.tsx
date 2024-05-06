@@ -45,6 +45,7 @@ import { dashboardRoutStaticData } from '@/interface/IStaticData';
 import { IRout, StopsProps } from '@/interface/IJourney';
 import { TimPicker } from '@/components/common/TimPicker';
 import dayjs from 'dayjs';
+import { getCurrency } from '@/helpers/getCurrency';
 // import BusService from '../../../Rent/BusService/BusService';
 
 interface IInfoCardProps {
@@ -91,7 +92,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       .number()
       .integer(staticData.errors.error_number)
       .positive(staticData.errors.error_number),
-    travel_time: yup.number().required(),
+    travel_time: yup.string().required(),
   });
 
   const {
@@ -117,7 +118,10 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   });
 
   useEffect(() => {
-    setValue('travel_time', durationValues.hour * 60 + durationValues.minute);
+    const duration =
+      parseInt(durationValues.hour) * 60 + parseInt(durationValues.minute);
+
+    setValue('travel_time', duration.toString());
   }, [durationValues, setValue]);
 
   const from_place = watch('from_place');
@@ -125,14 +129,12 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   const price = watch('price');
   const is_stop = watch('is_stop');
   const is_popular = watch('is_popular');
-
   const travel_time = watch('travel_time');
   const router = useRouter();
 
   const handleDeleteStop = (id: string) => {
-    const stops = getValues('cities');
     const updatedCity = stops.filter(item => item.id !== id);
-    setValue('cities', updatedCity);
+    setStops(updatedCity);
   };
 
   const onSubmitForm = async (data: IRout) => {
@@ -142,9 +144,12 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
         router.push(`/${lang}/auth`);
       }
 
-      // const durationTime =
-      //   dayjs(travel_time).hour() * 60 + dayjs(travel_time).minute();
-
+      const all_stops = [];
+      // const reversedArray = stops.slice().reverse();
+      stops.length > 0
+        ? all_stops.push(data.from_place, ...stops, data.to_place)
+        : all_stops.push(data.from_place, data.to_place);
+      console.log(travel_time);
       const response = await axios.post(
         `${BASE_URL}/${lang}/api/admin/routes/create`,
 
@@ -161,43 +166,38 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
           },
         },
       );
-      const rout_id = await response?.data?.id;
-
-      const all_stops = [];
-      stops.length > 0
-        ? all_stops.push(
-            data.from_place.id,
-            [...stops.map(stop => stop.id)],
-            data.to_place.id,
-          )
-        : all_stops.push(data.from_place.id, data.to_place.id);
 
       if (response.status === 201) {
-        const requests = all_stops.map(stop =>
-          axios.put(
-            `${BASE_URL}/${lang}/api/admin/routes/${rout_id}/add_stop/${stop}`,
-            { isPopular: true },
-            {
-              headers: {
-                Authorization: 'Bearer ' + session.access,
-                'Content-Type':
-                  'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+        const rout_id = await response?.data?.id;
+
+        async function executeRequestsSequentially(
+          requests: (() => Promise<void>)[],
+        ) {
+          for (const request of requests) {
+            await request();
+          }
+        }
+
+        const requests: (() => Promise<void>)[] = all_stops.map(
+          stop => () =>
+            axios.put(
+              `${BASE_URL}/${lang}/api/admin/routes/${rout_id}/add_stop/${stop.id}`,
+              { price: stop.price || 0 },
+              {
+                headers: {
+                  Authorization: 'Bearer ' + session.access,
+                  'Content-Type':
+                    'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+                },
               },
-            },
-          ),
+            ),
         );
 
-        const responses = await Promise.all(requests);
-
-        if (responses.every(response => response.status === 200)) {
-          enqueueSnackbar(`${staticData.routTable.snackBar.update_success}`, {
-            variant: 'success',
-          });
-          router.push(`/${lang}/dashboard/rout/`);
-        } else {
-          enqueueSnackbar('Some requests failed', { variant: 'error' });
-          router.push(`/${lang}/dashboard/rout/`);
-        }
+        await executeRequestsSequentially(requests);
+        enqueueSnackbar(`${staticData.routTable.snackBar.update_success}`, {
+          variant: 'success',
+        });
+        router.push(`/${lang}/dashboard/rout/`);
       }
     } catch (error) {
       console.error(error);
@@ -215,7 +215,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
       }
 
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city/?limit=599`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city?limit=599`,
         {
           headers: {
             Authorization: 'Bearer ' + session.access,
@@ -242,11 +242,6 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
   useEffect(() => {
     getCity().catch(console.error);
   }, [getCity]);
-
-  // const handleAddCity = () => {
-  //   setCity(prevCity => [...prevCity, selectedStop]);
-  //   setSelectedStop({ id: undefined, city: '', price: undefined });
-  // };
 
   return (
     <>
@@ -291,35 +286,6 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           {staticData.routTable.from}
                         </Typography>
 
-                        {/* <Autocomplete
-                          {...register('from_place')}
-                          disablePortal
-                          fullWidth={true}
-                          size="small"
-                          sx={{ backgroundColor: 'white' }}
-                          options={city}
-                          getOptionLabel={(item: CityProp) =>
-                            `${item.city} ${item.address}`
-                          }
-                          renderInput={params => (
-                            <TextField
-                              {...params}
-                              label={staticData.routTable.city}
-                              FormHelperTextProps={{
-                                color: '#256223',
-                              }}
-                            />
-                          )}
-                          onChange={(event, newValue) => {
-                            newValue
-                              ? setValue('from_place', newValue)
-                              : setValue('from_place', {
-                                  id: undefined,
-                                  city: '',
-                                  price: undefined,
-                                });
-                          }}
-                        /> */}
                         <Controller
                           name="from_place"
                           // @ts-ignore
@@ -332,6 +298,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               fullWidth
                               size="small"
                               options={city}
+                              isOptionEqualToValue={(option, value) =>
+                                option.id === value.id
+                              }
                               getOptionLabel={item =>
                                 `${item.city} ${item.address}`
                               }
@@ -376,6 +345,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                               fullWidth
                               size="small"
                               options={city}
+                              isOptionEqualToValue={(option, value) =>
+                                option.id === value.id
+                              }
                               getOptionLabel={item =>
                                 `${item.city} ${item.address}`
                               }
@@ -500,6 +472,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                           fullWidth={true}
                           size="small"
                           sx={{ backgroundColor: 'white' }}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
                           options={city.map(item => ({
                             city: item.city,
                             id: item.id,
@@ -536,6 +511,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                         <TextField
                           size={'small'}
                           type="number"
+                          value={selectedStop.price || ''}
                           label={staticData.routTable.price}
                           InputLabelProps={{
                             style: { color: '#808080' },
@@ -584,10 +560,29 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                             variant={'contained'}
                             sx={{ textTransform: 'none' }}
                             fullWidth
-                            disabled={!is_stop}
+                            disabled={!is_stop || !selectedStop.price}
                             onClick={() => {
-                              setStops(prevCity => [...prevCity, selectedStop]);
-                              setValue('is_stop', false);
+                              const stopExists = stops.find(
+                                stop => stop.id === selectedStop.id,
+                              );
+                              setSelectedStop(prevSelectedStop => ({
+                                ...prevSelectedStop,
+                                price: '',
+                              }));
+                              if (!stopExists) {
+                                setStops(prevStops => [
+                                  ...prevStops,
+                                  selectedStop,
+                                ]);
+                                setValue('is_stop', false);
+                              } else {
+                                enqueueSnackbar(
+                                  `${staticData.routTable.snackBar.add_stops_error}`,
+                                  {
+                                    variant: 'error',
+                                  },
+                                );
+                              }
                             }}
                           >
                             {staticData.routTable.add_stop}
@@ -602,7 +597,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
             <Grid item xs={4} height={'100%'}>
               <Container disableGutters maxWidth={'md'}>
                 <Paper>
-                  <Box width={'100%'} height={732} p={2}>
+                  <Box width={'100%'} minHeight={732} p={2}>
                     <Grid
                       height={'100%'}
                       display={'flex'}
@@ -661,6 +656,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                     spacing={1}
                                     alignItems={'start'}
                                     direction={'column'}
+                                    width={'100%'}
                                   >
                                     <Typography
                                       sx={{
@@ -679,6 +675,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       display={'flex'}
                                       alignItems={'center'}
                                       justifyContent={'space-between'}
+                                      width={'100%'}
                                     >
                                       <Typography
                                         sx={{
@@ -693,7 +690,7 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       >
                                         {from_place.address}
                                       </Typography>
-                                      <Box height={16} width={16}>
+                                      <Box height={20} width={20}>
                                         <Marker height={16} width={16} />
                                       </Box>
                                     </Box>
@@ -728,20 +725,47 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       spacing={1}
                                       alignItems={'start'}
                                       direction={'column'}
+                                      width={'100%'}
                                     >
-                                      <Typography
-                                        sx={{
-                                          fontFamily: 'Inter',
-                                          fontStyle: 'normal',
-                                          fontWeight: 700,
-                                          fontSize: '16px',
-                                          lineHeight: '140%',
-                                          color: color_title,
-                                        }}
-                                        color={colorHeading}
+                                      <Box
+                                        display={'flex'}
+                                        justifyContent={'space-between'}
+                                        alignItems={'flex-start'}
+                                        width={'100%'}
                                       >
-                                        {stop.city}
-                                      </Typography>
+                                        <Typography
+                                          sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: 700,
+                                            fontSize: '16px',
+                                            lineHeight: '140%',
+                                            color: color_title,
+                                          }}
+                                          color={colorHeading}
+                                        >
+                                          {stop.city}
+                                        </Typography>
+                                        <IconButton
+                                          onClick={() => {
+                                            if (stop.id)
+                                              handleDeleteStop(stop.id);
+                                          }}
+                                          size={'small'}
+                                          sx={{
+                                            padding: 0,
+                                            fill: '#424242',
+                                            '&:hover': { fill: 'red' },
+                                          }}
+                                        >
+                                          <Trash
+                                            height={20}
+                                            width={20}
+                                            fill={'inherit'}
+                                          />
+                                        </IconButton>
+                                      </Box>
+
                                       <Typography
                                         sx={{
                                           fontFamily: 'Inter',
@@ -753,12 +777,13 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                         }}
                                         color={colorHeading}
                                       >
-                                        {stop.price} UAH
+                                        {`${stop.price}  ${getCurrency(3)}`}
                                       </Typography>
                                       <Box
                                         display={'flex'}
                                         alignItems={'center'}
                                         justifyContent={'space-between'}
+                                        width={'100%'}
                                       >
                                         <Typography
                                           sx={{
@@ -773,15 +798,9 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                         >
                                           {stop.address}
                                         </Typography>
-                                        <IconButton
-                                          onClick={() => {
-                                            if (stop.id)
-                                              handleDeleteStop(stop.id);
-                                          }}
-                                          size={'small'}
-                                        >
-                                          <Trash height={20} width={20} />
-                                        </IconButton>
+                                        <Box height={20} width={20}>
+                                          <Marker height={16} width={16} />
+                                        </Box>
                                       </Box>
                                     </Stack>
                                   </Stack>
@@ -834,61 +853,27 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                       sx={{
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
-                                        fontWeight: 700,
-                                        fontSize: '16px',
+                                        fontWeight: 400,
+                                        fontSize: '12px',
                                         lineHeight: '140%',
                                         color: color_title,
                                       }}
                                       color={colorHeading}
                                     >
-                                      {price} UAH
+                                      {`${staticData.routTable.price}: ${price} ${getCurrency(3)}`}
                                     </Typography>
-                                    <Box
-                                      display={'flex'}
-                                      alignItems={'center'}
-                                      justifyContent={'space-between'}
-                                    >
-                                      <Typography
-                                        sx={{
-                                          fontFamily: 'Inter',
-                                          fontStyle: 'normal',
-                                          fontWeight: 400,
-                                          fontSize: '12px',
-                                          lineHeight: '150%',
-                                          color: color_title,
-                                        }}
-                                        color={colorHeading}
-                                      >
-                                        {to_place.address}
-                                      </Typography>
-                                      <Box height={16} width={16}>
-                                        <Marker height={16} width={16} />
-                                      </Box>
-                                    </Box>
                                   </Stack>
                                 )}
                               </Stack>
-
-                              <Stack
-                                spacing={1}
-                                alignItems={'start'}
-                                direction={'row'}
-                              >
-                                <Typography
-                                  sx={{
-                                    fontFamily: 'Inter',
-                                    fontStyle: 'normal',
-                                    fontWeight: 400,
-                                    fontSize: '12px',
-                                    lineHeight: '150%',
-                                    color: color_title,
-                                  }}
-                                  color={colorHeading}
+                              {to_place && (
+                                <Stack
+                                  direction={'row'}
+                                  display={'flex'}
+                                  alignItems={'flex-start'}
                                 >
-                                  {staticData.routTable.duration}:
-                                </Typography>
-                                {(durationValues.hour ||
-                                  durationValues.minute) && (
+                                  <Box height={20} width={20}>
+                                    <Marker height={16} width={16} />
+                                  </Box>
                                   <Typography
                                     sx={{
                                       fontFamily: 'Inter',
@@ -900,12 +885,46 @@ const AddRoutCard = ({ staticData, lang }: IInfoCardProps) => {
                                     }}
                                     color={colorHeading}
                                   >
-                                    {`${durationValues.hour} ${staticData.routTable.hours} ${durationValues.minute} ${staticData.routTable.minutes}`}
+                                    {to_place?.address}
                                   </Typography>
-                                )}
-                              </Stack>
+                                </Stack>
+                              )}
                             </Stack>
-
+                            <Stack
+                              spacing={1}
+                              alignItems={'start'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '12px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {staticData.routTable.duration}:
+                              </Typography>
+                              {(durationValues.hour ||
+                                durationValues.minute) && (
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '12px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {`${durationValues.hour} ${staticData.routTable.hours} ${durationValues.minute} ${staticData.routTable.minutes}`}
+                                </Typography>
+                              )}
+                            </Stack>
                             <Box
                               display={'flex'}
                               alignItems={'center'}

@@ -66,7 +66,7 @@ const PassengerTable = ({
   const { selectLang } = useLangContext();
 
   const rout = useRouter();
-  console.log('t', tickets);
+
   // const handleClick = (id: any): any => {
   //   rout.push(`/${lang}/dashboard/rout/${id}`);
   // };
