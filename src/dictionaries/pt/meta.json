@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "metadata": {
+      "title": "Favorit Leрenda-trans",
+      "description": "Transportes de autocarro para Portugal e Lituânia",
+      "base": "http://lehendatrans.com/",
+      "keywords": "autocarro, transporte, encomendas, bilheteи"
+    },
+    "twitter": {
+      "title": "Empresa Favorit Leрenda-trans",
+      "card": "otg-img.png",
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Transportes de autocarro para Portugal e Lituânia"
+      },
+      "description": "Transportes de autocarro para Portugal e Lituânia"
+    },
+    "openGraph": {
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Transportes de autocarro para Portugal e Lituânia"
+      },
+      "description": "Transportes de autocarro para Portugal e Lituânia",
+      "type": "website",
+      "locale": "pt-PT",
+      "title": "Transportes de autocarro para Portugal e Lituânia"
+    }
+  }
+}

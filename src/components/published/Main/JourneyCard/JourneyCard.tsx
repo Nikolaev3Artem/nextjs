@@ -33,7 +33,12 @@ import BagPersonalSvg from '../../../../../public/icons/bag-personal.svg';
 import BagSuitcaseSvg from '../../../../../public/icons/bag-suitcase.svg';
 import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import dayjs from 'dayjs';
+// import duration from 'dayjs/plugin/duration';
+// dayjs.extend(duration);
 import { useRouter } from 'next/navigation';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
+import { useCurrencyContext } from '@/app/context';
+import { getCurrency } from '@/helpers/getCurrency';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -65,12 +70,14 @@ export const JourneyCard = ({
   const [expanded, setExpanded] = React.useState(false);
   const [isShowModal, setIsShowModal] = React.useState(false);
 
+  const { selectCurrency } = useCurrencyContext();
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
   const icons = ['wifi', 'conditioning', 'wc', 'seats', 'socket'];
-  console.log(data);
+
   interface ConveniencesIconProp {
     icon: string;
     name: string;
@@ -100,7 +107,7 @@ export const JourneyCard = ({
     router.push(`/${lang}`);
     setIsShowModal(false);
   };
-  console.log(data);
+
   return (
     <>
       <Grid item className={Style.wrapper} sx={{ flexDirection: 'column' }}>
@@ -136,8 +143,8 @@ export const JourneyCard = ({
                       : dayjs().format('HH:mm')}
                   </Typography>
                   <Typography sx={{ fontSize: { xs: '10px', md: '12px' } }}>
-                    {data?.departure_date
-                      ? dayjs(data?.departure_date)
+                    {data.departure_date
+                      ? dayjs(data.departure_date)
                           .locale(`${lang}`)
                           .format('DD MMMM')
                       : dayjs().locale(`${lang}`).format('DD MMMM')}
@@ -176,12 +183,9 @@ export const JourneyCard = ({
                 <Typography
                   sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
                 >
-                  {dayjs(
-                    dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
-                  )
-                    .locale(`${lang}`)
-                    .format('HH:mm')}
-                  {staticData.routs_card.hour}
+                  {data?.routes[0]?.travel_time
+                    ? `${String(Math.floor(parseInt(data?.routes[0]?.travel_time) / 60)).padStart(2, '0')}:${String(parseInt(data?.routes[0]?.travel_time) % 60).padStart(2, '0')}  ${staticData.routs_card.hour}`
+                    : ''}
                 </Typography>
                 <ToSvg width={24} height={59} />
               </Grid>
@@ -204,7 +208,7 @@ export const JourneyCard = ({
                     fontWeight={'700'}
                     sx={{ fontSize: { xs: '19px', md: '24px' } }}
                   >
-                    {data?.routes[0]?.from_place}
+                    {data?.routes[0]?.cities[0]?.city}
                   </Typography>
                   <Box display={'flex'} columnGap={1}>
                     <Typography
@@ -212,8 +216,7 @@ export const JourneyCard = ({
                         fontSize: { xs: '10px', md: '12px' },
                       }}
                     >
-                      {/* {data.departure_date} */} Двірцева площа, 1, Львів,
-                      Львівська область
+                      {data?.routes[0]?.cities[0]?.address}
                     </Typography>
                     <Box width={'20px'} height={'20px'}>
                       <MapIcon width={20} height={20} />
@@ -226,7 +229,11 @@ export const JourneyCard = ({
                     fontWeight={'700'}
                     sx={{ fontSize: { xs: '19px', md: '24px' } }}
                   >
-                    {data.routes[0].to_place}
+                    {
+                      data?.routes[0]?.cities[
+                        data?.routes[0]?.cities.length - 1
+                      ]?.city
+                    }
                   </Typography>
                   <Box display={'flex'} columnGap={1}>
                     <Typography
@@ -234,8 +241,11 @@ export const JourneyCard = ({
                         fontSize: { xs: '10px', md: '12px' },
                       }}
                     >
-                      {/* {data.departure_date} */} Lisboa 1100-341, 1100-341
-                      Buenos Aires
+                      {
+                        data?.routes[0]?.cities[
+                          data?.routes[0]?.cities.length - 1
+                        ]?.address
+                      }
                     </Typography>
                     <Box width={'20px'} height={'20px'}>
                       <MapIcon width={20} height={20} />
@@ -278,7 +288,7 @@ export const JourneyCard = ({
                         fontWeight={'700'}
                         sx={{ fontSize: { xs: '19px', sm: '24px' } }}
                       >
-                        {data.routes[0].price}
+                        {data.routes[0]?.price}
                       </Typography>
                       <Typography
                         color={'primary'}
@@ -286,7 +296,7 @@ export const JourneyCard = ({
                         display={'flex'}
                         sx={{ fontSize: { xs: '19px', sm: '24px' } }}
                       >
-                        UAH
+                        {getCurrency(selectCurrency)}
                       </Typography>
                     </Box>
                   </Box>
@@ -296,6 +306,7 @@ export const JourneyCard = ({
                       fontWeight: '400',
                       textTransform: 'none',
                       fontSize: { sm: '16px', lg: '20px' },
+                      minWidth: '158px',
                     }}
                     fullWidth
                     variant={'contained'}
@@ -403,13 +414,17 @@ export const JourneyCard = ({
                       component={'span'}
                       sx={{ fontSize: { xs: '13px', md: '16px' }, mr: 1 }}
                     >
-                      {data.routes[0].from_place}
+                      {data.routes[0]?.cities[0]?.city}
                     </Typography>
                     <Typography
                       component={'span'}
                       sx={{ fontSize: { xs: '13px', md: '16px' } }}
                     >
-                      {data.routes[0].to_place}
+                      {
+                        data.routes[0]?.cities[
+                          data.routes[0]?.cities.length - 1
+                        ]?.city
+                      }
                     </Typography>
                   </Box>
                   <Box display={'flex'} columnGap={2}>
@@ -423,8 +438,8 @@ export const JourneyCard = ({
                         <FromCircleSvg width={12} height={13} />
                       </Box>
 
-                      {data.routes[0].stops &&
-                        data.routes[0].stops.map((el, ind) => {
+                      {data.routes[0]?.cities?.slice(1, -1)?.length > 0 &&
+                        data.routes[0]?.cities?.slice(1, -1).map((el, ind) => {
                           return (
                             <Box
                               key={ind}
@@ -463,11 +478,11 @@ export const JourneyCard = ({
                         <Typography
                           sx={{ fontSize: { xs: '13px', md: '16px' } }}
                         >
-                          {data.routes[0].from_place}
+                          {data.routes[0]?.cities[0].city}
                         </Typography>
                       </Box>
-                      {data.routes[0].stops &&
-                        data.routes[0].stops.map(stop => {
+                      {data.routes[0]?.cities?.slice(1, -1)?.length > 0 &&
+                        data.routes[0]?.cities?.slice(1, -1)?.map(stop => {
                           return (
                             <Box
                               key={stop.id}
@@ -493,7 +508,11 @@ export const JourneyCard = ({
                         <Typography
                           sx={{ fontSize: { xs: '13px', md: '16px' } }}
                         >
-                          {data.routes[0].to_place}
+                          {
+                            data.routes[0]?.cities[
+                              data.routes[0]?.cities.length - 1
+                            ].city
+                          }
                         </Typography>
                       </Box>
                     </Box>
@@ -598,7 +617,6 @@ export const JourneyCard = ({
         onClose={handleBookingClose}
         isShowModal={isShowModal}
         staticData={staticData}
-        date={date}
         lang={lang}
       />
     </>

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "metadata": {
+      "title": "Favorit Leрenda-trans",
+      "description": "Bus transportation to Portugal and Lithuania",
+      "base": "http://lehendatrans.com/",
+      "keywords": "Bus, Transportation, Parcels, Tickets"
+    },
+    "twitter": {
+      "title": "Favorit Leрenda-trans company",
+      "card": "otg-img.png",
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Bus transportation to Portugal and Lithuania"
+      },
+      "description": "Bus transportation to Portugal and Lithuania"
+    },
+    "openGraph": {
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Bus transportation to Portugal and Lithuania"
+      },
+      "description": "Bus transportation to Portugal and Lithuania",
+      "type": "website",
+      "locale": "en-US",
+      "title": "Bus transportation to Portugal and Lithuania"
+    }
+  }
+}

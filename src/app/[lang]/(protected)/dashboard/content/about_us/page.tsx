@@ -5,6 +5,7 @@ import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale';
 import { Locale } from '@/i18n.config';
 import { Form } from '@/components/protected/dashboard/Form/Form';
 import {
+  getAboutDictionaries,
   getDashboardAboutDictionaries,
   getDashboardRuleDictionaries,
   getDashboardTubsDictionaries,
@@ -21,11 +22,12 @@ export default async function About({
 }>) {
   const staticData = await getDashboardRuleDictionaries(params.lang);
   const tabs = await getDashboardTubsDictionaries(params.lang);
+  const about_static = await getDashboardAboutDictionaries(params.lang);
   return (
     <DashboardContainer>
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
-          <ContentDashboard title={staticData.rule} back={staticData.back}>
+          <ContentDashboard title={about_static.about} back={staticData.back}>
             <TabMenuLocale staticData={tabs}>
               <ContentForm
                 staticData={staticData}

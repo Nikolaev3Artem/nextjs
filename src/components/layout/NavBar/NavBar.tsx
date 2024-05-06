@@ -52,8 +52,8 @@ export const NavBar = ({
   lang: Locale;
   contacts: PhoneType[];
   user_email: string | undefined | null;
-  is_staff?: boolean;
-  is_superuser?: boolean;
+  is_staff?: boolean | undefined | null;
+  is_superuser?: boolean | undefined | null;
 }) => {
   const [userMail, setUserMail] = React.useState('');
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(

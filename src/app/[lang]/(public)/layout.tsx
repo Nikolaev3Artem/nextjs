@@ -13,7 +13,7 @@ import { InfoBuy } from '@/components/layout/InfoBuy';
 import { Popular } from '@/components/layout/Popular';
 import { PhoneType } from '@/interface/IEditorText';
 import { RoutsContextProvider } from '@/app/context';
-import { getUser } from '@/lib/auth';
+import { getAdminStatus, getCustomerStatus, getUserInfo } from '@/lib/auth';
 
 const getPopularRouts = async (lang: Locale) => {
   try {
@@ -58,7 +58,9 @@ export default async function PublicLayout({
   const popularRouts = await getPopularRouts(lang);
 
   const contacts = await getContact(lang);
-  const user = await getUser();
+  const user = await getUserInfo();
+  const is_superuser = await getAdminStatus();
+  const is_staff = await getCustomerStatus();
 
   return (
     <RoutsContextProvider>
@@ -67,8 +69,8 @@ export default async function PublicLayout({
         lang={lang}
         contacts={contacts}
         user_email={user?.email}
-        is_staff={user?.is_staff}
-        is_superuser={user?.is_superuser}
+        is_staff={is_staff}
+        is_superuser={is_superuser}
       />
       <main>
         {children}

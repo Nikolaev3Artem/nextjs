@@ -28,7 +28,7 @@ const getBus = async (id: number, lang: Locale) => {
   const session = await getSession();
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/${id}/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/service/bus/${id}`,
       {
         headers: {
           'Content-Type': 'application/json',

@@ -12,9 +12,12 @@ import 'dayjs/locale/en';
 import 'dayjs/locale/lt';
 import 'dayjs/locale/pt';
 import 'dayjs/locale/uk';
+import debounce from '@mui/utils/debounce';
 
 import * as React from 'react';
 import { useState } from 'react';
+import { IconButton, InputAdornment } from '@mui/material';
+import { FaTrashAlt } from 'react-icons/fa';
 
 export function DataPicker({
   staticData,
@@ -39,7 +42,10 @@ export function DataPicker({
   const [open, setOpen] = useState<boolean>(false);
 
   const today = dayjs();
-
+  const handleDateChange = debounce(newValue => {
+    setDatePickerValue(newValue);
+    setValues({ ...values, date: newValue?.toISOString() });
+  }, 1000);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
       <Box
@@ -60,14 +66,9 @@ export function DataPicker({
           autoFocus={false}
           value={minOff ? null : datePickerValue}
           slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
-          onChange={newValue => {
-            setDatePickerValue(newValue);
-            setValues({ ...values, date: newValue?.toISOString() });
-          }}
+          onChange={handleDateChange}
           // @ts-ignore
-          // slotProps={{
-          // 	textField: {...params, onClick = {(e) => setOpen(true)}}
-          // }}
+
           onViewChange={(params: object) => (
             <TextField {...params} onClick={e => setOpen(true)} />
           )}

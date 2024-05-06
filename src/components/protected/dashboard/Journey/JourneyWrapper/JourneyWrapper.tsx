@@ -21,6 +21,7 @@ import { Locale } from '@/i18n.config';
 import { IJourney } from '@/interface/IJourney';
 
 import JourneyTable from '../JourneyTable/JourneyTable';
+import dayjs from 'dayjs';
 
 export const JourneyWrapper = ({
   journey,
@@ -28,7 +29,6 @@ export const JourneyWrapper = ({
   lang,
 }: {
   journey: IJourney[];
-
   staticData: dashboardJourneyStaticData;
   lang: Locale;
 }) => {
@@ -43,6 +43,7 @@ export const JourneyWrapper = ({
       arrival_date: '',
       arrival_time: '',
       is_active: false,
+      created_at: '',
     },
   ]);
 
@@ -60,18 +61,26 @@ export const JourneyWrapper = ({
   };
 
   useEffect(() => {
-    filter
-      ? setFilteredJourney(
-          journey.filter(obj =>
-            Object.values(obj).some(
-              val =>
-                typeof val === 'string' &&
-                val.toLowerCase().includes(filter.toLowerCase()),
-            ),
-          ),
-        )
-      : setFilteredJourney(journey);
-  }, [filter]);
+    if (filter) {
+      setFilteredJourney(
+        journey.filter(obj => {
+          return (
+            obj.id.toString().toLowerCase().includes(filter.toLowerCase()) ||
+            dayjs(obj.departure_date).format('DD.MM.YYYY').includes(filter) ||
+            dayjs(obj.departure_date).format('HH:mm').includes(filter) ||
+            obj.routes.some(route =>
+              route.cities.some(stop =>
+                stop.city.toLowerCase().includes(filter.toLowerCase()),
+              ),
+            ) ||
+            obj.bus[0].name.toLowerCase().includes(filter.toLowerCase())
+          );
+        }),
+      );
+    } else {
+      setFilteredJourney(journey); // If no filter, set filtered journey to original journey
+    }
+  }, [filter, journey]);
 
   return (
     <>
@@ -103,9 +112,6 @@ export const JourneyWrapper = ({
         <Button
           color={'secondary'}
           variant={'contained'}
-          // onClick={(event: React.MouseEvent<HTMLButtonElement>) =>
-          //   AddCard(event)
-          // }
           href={`/${lang}/dashboard/flights/add`}
           startIcon={<AiOutlinePlus />}
         >

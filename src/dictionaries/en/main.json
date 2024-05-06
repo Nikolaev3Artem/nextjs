@@ -43,6 +43,7 @@
     "seat": "Seat",
     "duration": "Duration on the way: ",
     "hour": "hours",
+    "passenger": "Passenger",
     "baggage": {
       "title": "Baggage:",
       "light_luggage": "Light luggage - free for one passenger: 1 piece of hand luggage (max. size 15x25x35 cm)",

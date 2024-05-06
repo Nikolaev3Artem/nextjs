@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "metadata": {
+      "title": "Favorit Leрenda-trans",
+      "description": "Autobusų pervežimai į Portugaliją ir Lietuvą",
+      "base": "http://lehendatrans.com/",
+      "keywords": "Autobusas, pervežimas, siuntos, bilietas"
+    },
+    "twitter": {
+      "title": "įmonė Favorit Leрenda-trans",
+      "card": "otg-img.png",
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Autobusų pervežimai į Portugaliją ir Lietuvą"
+      },
+      "description": "Autobusų pervežimai į Portugaliją ir Lietuvą"
+    },
+    "openGraph": {
+      "images": {
+        "url": "/favicon/otg-img.png",
+        "width": 1200,
+        "height": 630,
+        "alt": "Autobusų pervežimai į Portugaliją ir Lietuvą"
+      },
+      "description": "Autobusų pervežimai į Portugaliją ir Lietuvą",
+      "type": "website",
+      "locale": "lt-LT",
+      "title": "Autobusų pervežimai į Portugaliją ir Lietuvą"
+    }
+  }
+}

@@ -10,7 +10,7 @@ import { getAboutDictionaries } from '@/lib/dictionary';
 const getAbout = async (lang: Locale) => {
   try {
     const response = await axios.get<IGetAbout>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/about/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/about`,
     );
 
     if (response.status === 200) {

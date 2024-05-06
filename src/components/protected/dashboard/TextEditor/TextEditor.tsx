@@ -1,6 +1,5 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
+
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import debounce from '@mui/utils/debounce';
@@ -20,11 +19,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { IEditorText } from '@/interface/IEditorText';
-// import {
-// 	setEditorData,
-// 	setEditorDataTwo
-// } from "../../store/admin/about/EditorSlice"
-// import { useAppDispatch } from "../../store/auth/redux"
+
 import { Replacements } from './Replacements';
 import Style from './Texteditor.module.css';
 
@@ -36,9 +31,10 @@ interface IEditorNumProps {
   data: number;
   titleOne?: string;
   titleTwo?: string;
-  res: IEditorText;
+  res?: IEditorText;
   lang: Locale;
   setEditorData: Dispatch<SetStateAction<string>>;
+  label: string;
 }
 
 const Editor = dynamic(
@@ -55,6 +51,7 @@ function TextEditor({
   res,
   setEditorData,
   lang,
+  label,
 }: IEditorNumProps) {
   const [focus, setFocus] = useState<boolean>(false);
   const [textRaw, setTextRaw] = useState();
@@ -65,16 +62,25 @@ function TextEditor({
   const onFocus = clsx({
     [Style.focus]: focus,
   });
-  //   const dispatch = useAppDispatch();
-  //   const { locale } = useRouter();
+
   const { selectLang } = useLangContext();
   const rawContentState = convertToRaw(editorState.getCurrentContent());
+
   const debounced = debounce(html => {
     data ? setEditorData(html) : null;
   }, 600);
+
   const verify = useCallback((html: string) => {
     debounced(html);
   }, []);
+
+  const html = () => {
+    if (rawContentState.blocks.length) {
+      return draftToHtml(rawContentState);
+    } else {
+      return '';
+    }
+  };
 
   useEffect(() => {
     if (editorState !== undefined) {
@@ -83,7 +89,7 @@ function TextEditor({
   }, [editorState]);
 
   useEffect(() => {
-    if (editorState !== undefined) {
+    if (editorState !== undefined && res) {
       const blocksFromHTML1 = convertFromHTML((res && res?.text1) || '');
       const blocksFromHTML2 = convertFromHTML((res && res?.text2) || '');
       const contentState1 = ContentState.createFromBlockArray(
@@ -99,14 +105,6 @@ function TextEditor({
     }
   }, []);
 
-  const html = () => {
-    if (rawContentState.blocks.length) {
-      return draftToHtml(rawContentState);
-    } else {
-      return '';
-    }
-  };
-
   return (
     <Box className={Style.wrapper}>
       {data && data === 1 ? (
@@ -118,7 +116,6 @@ function TextEditor({
             fontSize: '16px',
             lineHeight: '140%',
           }}
-          mb={2}
           variant={'h4'}
           component={'h4'}
         >
@@ -134,7 +131,6 @@ function TextEditor({
             fontSize: '16px',
             lineHeight: '140%',
           }}
-          mb={2}
           variant={'h4'}
           component={'h4'}
         >
@@ -211,7 +207,7 @@ function TextEditor({
           translations: lang,
         }}
         // toolbarCustomButtons={[<Replacements editorState={editorState} />]}
-        placeholder=" Введіть текст..."
+        placeholder={label}
         editorState={editorState}
         toolbarClassName={Style.text_editor_toolbar}
         wrapperClassName={Style.wrapper_editor}

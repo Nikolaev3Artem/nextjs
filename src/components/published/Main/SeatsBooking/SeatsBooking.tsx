@@ -17,13 +17,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import theme from '@/theme';
 import Link from 'next/link';
 import { Locale } from '@/i18n.config';
 import { styled } from '@mui/material/styles';
 import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
 import BusSeats from '../../../common/BusSeats/BusSeats';
+import { ISeat } from '@/interface/IRent';
 
 const color_title = grey[800];
 
@@ -32,15 +33,17 @@ export const SeatsBooking = ({
   onClose,
   isShowModal,
   staticData,
-  date,
   lang,
+  addPassClick,
+  addPassengers,
 }: {
   data: IJourney;
-  date?: string;
   onClose: () => void;
   isShowModal: boolean;
   staticData: MainStaticDataProps;
   lang: Locale;
+  addPassengers?: boolean;
+  addPassClick?: any;
 }) => {
   const getColor = (name: string) => {
     switch (name) {
@@ -100,13 +103,56 @@ export const SeatsBooking = ({
     );
   }
 
-  const handleCheck = (id: number, floor: number) => {
+  useEffect(() => {
+    setFirstFloorSeats(data?.bus[0]?.first_floor_seats);
+  }, [data?.bus[0]?.first_floor_seats]);
+  useEffect(() => {
+    setSecondFloorSeats(data?.bus[0]?.second_floor_seats);
+  }, [data?.bus[0]?.second_floor_seats]);
+
+  const [firstFloorSeats, setFirstFloorSeats] = useState<ISeat[]>();
+  const [secondFloorSeats, setSecondFloorSeats] = useState<ISeat[]>();
+
+  const handleCheck = (seatNumber: number, floor: number) => {
     setSelectedSeats(prevSelectedSeats => ({
       ...prevSelectedSeats,
-      [floor]: prevSelectedSeats[floor].includes(id)
-        ? prevSelectedSeats[floor].filter(seatId => seatId !== id)
-        : [...prevSelectedSeats[floor], id],
+      [floor]: prevSelectedSeats[floor].includes(seatNumber)
+        ? prevSelectedSeats[floor].filter(seatId => seatId !== seatNumber)
+        : [...prevSelectedSeats[floor], seatNumber],
     }));
+
+    if (floor === 1) {
+      setFirstFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
+    if (floor === 2) {
+      setSecondFloorSeats(prevState => {
+        const updatedSeats = prevState?.map(seat => {
+          if (seat.seat === seatNumber) {
+            if (seat.status === 'Selected') {
+              return { ...seat, status: 'Empty' };
+            }
+
+            return { ...seat, status: 'Selected' };
+          }
+          return seat;
+        });
+
+        return updatedSeats;
+      });
+    }
   };
 
   const getLinkHref = () => {
@@ -115,7 +161,7 @@ export const SeatsBooking = ({
     );
     const queryParams = new URLSearchParams();
     queryParams.set('selectedSeats', JSON.stringify(nonEmptySeats));
-    queryParams.set('routId', `${data.id}`);
+    queryParams.set('routId', `${data?.id}`);
     const pathWithParams = `/${lang}/my-order/new-order?${queryParams}`;
     return pathWithParams;
   };
@@ -262,7 +308,7 @@ export const SeatsBooking = ({
                   color: color_title,
                 }}
               >
-                {data.routes[0].from_place}
+                {data?.routes[0]?.cities[0].city}
               </Typography>
               <IoMdArrowForward width={3} height={3} />
               <Typography
@@ -274,7 +320,10 @@ export const SeatsBooking = ({
                   color: color_title,
                 }}
               >
-                {data.routes[0].to_place}
+                {
+                  data?.routes[0]?.cities[data?.routes[0]?.cities?.length - 1]
+                    .city
+                }
               </Typography>
 
               <CalendarIcon width={'24px'} height={'24px'} />
@@ -283,8 +332,8 @@ export const SeatsBooking = ({
                 color={'primary'}
                 sx={{ fontSize: { xs: '13px', md: '20px' } }}
               >
-                {data.departure_date
-                  ? dayjs(data.departure_date).format('DD.MM.YYYY')
+                {data?.departure_date
+                  ? dayjs(data?.departure_date).format('DD.MM.YYYY')
                   : dayjs().format('DD.MM.YYYY')}
               </Typography>
             </Box>
@@ -345,7 +394,7 @@ export const SeatsBooking = ({
                       rows_2={data?.bus[0]?.rows_2}
                       rows_3={data?.bus[0]?.rows_3}
                       enter_2={data?.bus[0]?.enter_2}
-                      seats={data?.bus[0]?.first_floor_seats}
+                      seats={firstFloorSeats}
                       seats_start={1}
                       handleCheck={handleCheck}
                       floor={1}
@@ -361,7 +410,7 @@ export const SeatsBooking = ({
                       rows_1={data?.bus[0]?.rows_4}
                       enter_1={data?.bus[0]?.enter_3}
                       rows_2={data?.bus[0]?.rows_5}
-                      seats={data?.bus[0]?.second_floor_seats}
+                      seats={secondFloorSeats}
                       seats_start={data?.bus[0]?.first_floor_seats_count + 1}
                       handleCheck={handleCheck}
                       floor={2}
@@ -390,23 +439,49 @@ export const SeatsBooking = ({
             >
               {staticData.cancel_btn.title}
             </Button>
-            <Button
-              sx={{
-                p: '8px 24px',
-                fontWeight: '400',
-                textTransform: 'none',
-                fontSize: { sm: '16px', lg: '20px' },
-              }}
-              variant={'contained'}
-              color={'success'}
-              LinkComponent={Link}
-              href={getLinkHref()}
-              disabled={
-                selectedSeats[1].length === 0 && selectedSeats[2].length === 0
-              }
-            >
-              {staticData.select_btn.title}
-            </Button>
+
+            {addPassengers ? (
+              <Button
+                sx={{
+                  p: '8px 24px',
+                  fontWeight: '400',
+                  textTransform: 'none',
+                  fontSize: { sm: '16px', lg: '20px' },
+                }}
+                variant={'contained'}
+                color={'success'}
+                onClick={() => {
+                  setSelectedSeats({
+                    1: [],
+                    2: [],
+                  });
+                  addPassClick(selectedSeats);
+                }}
+                disabled={
+                  selectedSeats[1].length === 0 && selectedSeats[2].length === 0
+                }
+              >
+                {staticData.select_btn.title}
+              </Button>
+            ) : (
+              <Button
+                sx={{
+                  p: '8px 24px',
+                  fontWeight: '400',
+                  textTransform: 'none',
+                  fontSize: { sm: '16px', lg: '20px' },
+                }}
+                variant={'contained'}
+                color={'success'}
+                LinkComponent={Link}
+                href={getLinkHref()}
+                disabled={
+                  selectedSeats[1].length === 0 && selectedSeats[2].length === 0
+                }
+              >
+                {staticData.select_btn.title}
+              </Button>
+            )}
           </Stack>
         </Box>
       </Box>

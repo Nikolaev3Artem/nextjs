@@ -97,36 +97,36 @@ const JourneyTable = ({
     setDense(event.target.checked);
   };
 
-  const handleClick = (id: any): any => {
-    rout.push(`/${lang}/dashboard/rout/${id}`);
-  };
+  // const handleClick = (id: any): any => {
+  //   rout.push(`/${lang}/dashboard/rout/${id}`);
+  // };
 
-  const handleClickDelete = async (id: any) => {
-    const session = await getSession();
-    try {
-      const response = await axios.delete(
-        `${BASE_URL}/${selectLang}/api/admin/service/rout/${id}/delete/`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + session.access,
-            'Content-Type':
-              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-          },
-        },
-      );
-      if (response.status === 204) {
-        enqueueSnackbar(`${staticData.journeyTable.snackBar.remove_success}`, {
-          variant: 'success',
-        });
-        rout.refresh();
-      }
-    } catch (error) {
-      console.error(error);
-      enqueueSnackbar(`${staticData.journeyTable.snackBar.remove_error}`, {
-        variant: 'error',
-      });
-    }
-  };
+  // const handleClickDelete = async (id: any) => {
+  //   const session = await getSession();
+  //   try {
+  //     const response = await axios.delete(
+  //       `${BASE_URL}/${selectLang}/api/admin/service/rout/${id}/delete/`,
+  //       {
+  //         headers: {
+  //           Authorization: 'Bearer ' + session.access,
+  //           'Content-Type':
+  //             'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+  //         },
+  //       },
+  //     );
+  //     if (response.status === 204) {
+  //       enqueueSnackbar(`${staticData.journeyTable.snackBar.remove_success}`, {
+  //         variant: 'success',
+  //       });
+  //       rout.refresh();
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     enqueueSnackbar(`${staticData.journeyTable.snackBar.remove_error}`, {
+  //       variant: 'error',
+  //     });
+  //   }
+  // };
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -297,8 +297,16 @@ const JourneyTable = ({
                           alignItems: 'center',
                         }}
                       >
-                        <Typography>{item.routes[0]?.from_place} -</Typography>
-                        <Typography> {item.routes[0]?.to_place}</Typography>
+                        <Typography>
+                          {item.routes[0]?.cities[0]?.city} -
+                        </Typography>
+                        <Typography>
+                          {
+                            item.routes[0]?.cities[
+                              item.routes[0]?.cities?.length - 1
+                            ].city
+                          }
+                        </Typography>
                       </Box>
                     </TableCell>
 
@@ -370,12 +378,44 @@ const JourneyTable = ({
                     <TableCell>
                       <Box
                         sx={{
-                          display: 'flex',
-                          columnGap: 1,
-                          alignItems: 'center',
+                          display: 'block',
                         }}
                       >
-                        {/* {item?.routes[0]} */}
+                        <Box
+                          display={'flex'}
+                          columnGap={1}
+                          alignItems={'center'}
+                        >
+                          <Box width={14} height={14}>
+                            <CalendarIcon width={14} height={14} />
+                          </Box>
+                          <Typography
+                            sx={{ fontSize: { xs: '10px', md: '12px' } }}
+                          >
+                            {item?.created_at
+                              ? dayjs(item?.created_at)
+                                  .locale(`${lang}`)
+                                  .format('DD.MM.YYYY')
+                              : dayjs().locale(`${lang}`).format('DD.MM.YYYY')}
+                          </Typography>
+                        </Box>
+                        <Box
+                          display={'flex'}
+                          columnGap={1}
+                          alignItems={'center'}
+                        >
+                          <Box width={14} height={14}>
+                            <ClockIcon width={14} height={14} />
+                          </Box>
+                          <Typography
+                            color={'primary'}
+                            sx={{ fontSize: { xs: '10px', md: '12px' } }}
+                          >
+                            {item?.created_at
+                              ? dayjs(item?.created_at).format('HH:mm')
+                              : dayjs().format('HH:mm')}
+                          </Typography>
+                        </Box>
                       </Box>
                     </TableCell>
                   </TableRow>

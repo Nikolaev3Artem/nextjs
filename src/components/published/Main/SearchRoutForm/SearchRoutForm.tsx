@@ -19,6 +19,7 @@ import { SearchJourney } from '@/components/published/Main/SearchRout';
 import { IJourney } from '@/interface/IJourney';
 import dayjs, { Dayjs } from 'dayjs';
 import { useRoutsContext } from '@/app/context';
+import { JourneyCard } from '../JourneyCard';
 
 interface State {
   to: string;
@@ -33,6 +34,7 @@ export const SearchRoutForm = ({
   popularRoutsTo,
   routsFrom,
   routsTo,
+  journey,
 }: {
   staticData: MainStaticDataProps;
   lang: Locale;
@@ -40,6 +42,7 @@ export const SearchRoutForm = ({
   popularRoutsTo: any;
   routsFrom: any;
   routsTo: any;
+  journey?: IJourney[];
 }) => {
   const {
     selectRoutsTo,
@@ -62,7 +65,7 @@ export const SearchRoutForm = ({
     setSearchJourney([]);
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey/?from_city=${values.from}&to_city=${values.to}&from_date=${values.date}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/journey?from_city=${values.from}&to_city=${values.to}&from_date=${values.date}`,
       );
 
       if (response.status === 200) {
@@ -135,6 +138,21 @@ export const SearchRoutForm = ({
         <Box mt={2}>
           <Typography>{staticData.no_results}</Typography>
         </Box>
+      )}
+      {journey && (
+        <Grid container direction={'column'} rowGap={4} mt={4}>
+          {journey.map(el => {
+            return (
+              <JourneyCard
+                key={el.id}
+                staticData={staticData}
+                data={el}
+                lang={lang}
+                date={values.date}
+              />
+            );
+          })}
+        </Grid>
       )}
     </>
   );

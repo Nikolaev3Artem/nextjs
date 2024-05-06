@@ -17,5 +17,9 @@
     "edit": {
       "title": "Redaguoti"
     }
+  },
+  "snackBar": {
+    "success": "Alterações salvas",
+    "error": "Erro ao salvar alterações"
   }
 }

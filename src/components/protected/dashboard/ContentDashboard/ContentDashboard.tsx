@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import { usePathname, useRouter } from 'next/navigation';
 import { Stack } from '@mui/material';
 import { IoIosArrowBack } from 'react-icons/io';
+import { useLangContext } from '@/app/context';
 
 interface IContentDashboardProps {
   children: React.ReactNode;
@@ -24,7 +25,7 @@ export const ContentDashboard = ({
   back,
 }: IContentDashboardProps) => {
   const [path, setPath] = useState('');
-
+  const { setSelectLang } = useLangContext();
   const pathname = usePathname();
   const router = useRouter();
   const handleBack = () => {
@@ -34,6 +35,9 @@ export const ContentDashboard = ({
     setPath(pathname);
   }, []);
 
+  useEffect(() => {
+    setSelectLang('uk');
+  }, []);
   return (
     <>
       <Box className={Style.content}>

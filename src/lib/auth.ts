@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { IProfile, IToken, IUser } from '@/interface/IUser';
 import { Locale } from '@/i18n.config';
 
@@ -14,6 +14,10 @@ interface LoginProps {
 
 interface CustomerProps {
   results: IProfile[];
+}
+
+interface AdminProps {
+  results: IUser[];
 }
 
 export async function login(values: LoginProps) {
@@ -48,14 +52,14 @@ export async function getSession() {
   return await JSON.parse(session);
 }
 
-export async function getUser() {
+export async function getCustomerStatus() {
   const session = cookies().get('session')?.value;
   if (!session) return null;
   try {
     const access = JSON.parse(session).access;
 
     const { data } = await axios.get<CustomerProps>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/customer`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -64,9 +68,33 @@ export async function getUser() {
       },
     );
 
-    return data.results[0].user;
+    return data.results[0]?.user?.is_staff;
   } catch (error) {
     console.log(error);
+    return false;
+  }
+}
+
+export async function getAdminStatus() {
+  const session = cookies().get('session')?.value;
+  if (!session) return null;
+  try {
+    const access = JSON.parse(session).access;
+
+    const { data } = await axios.get<AdminProps>(
+      `${process.env.NEXT_PUBLIC_BASE_URL}uk/api/admin`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + access,
+        },
+      },
+    );
+
+    return data.results[0].is_superuser;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
 }
 

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { generateKeyPair } from 'crypto';
 import { generateBusSeats } from '@/helpers/generateBusSeat';
 import { ISeat } from '@/interface/IRent';
+import theme from '@/theme';
 
 export interface BusSeatsProps {
   id: string;
@@ -20,6 +21,7 @@ export interface BusSeatsProps {
   enter_2?: boolean;
   enter_1?: boolean;
   small?: boolean;
+  vertical?: boolean;
 }
 
 export interface BusConstructorProps {
@@ -36,39 +38,18 @@ export interface BusConstructorProps {
   handleCheck: (arg: number, ar: number) => void;
   floor: number;
   small?: boolean;
+  setSelectedSeats?: any;
+  vertical?: boolean;
 }
 
 const BusSeats = (props: BusConstructorProps) => {
   const row = 2;
-  const [seats, setSeats] = useState<ISeat[]>();
-
-  useEffect(() => {
-    setSeats(props.seats);
-  }, [props]);
 
   const handleClick = (seatNumber: number, floor: number) => {
-    console.log(seats);
-
-    setSeats(prevState => {
-      console.log('prevState', prevState); // Log previous state
-      const updatedSeats = prevState?.map(seat => {
-        console.log('seat', seat); // Log each seat
-        console.log('seatNumber', seatNumber); // Log seatNumber
-        if (seat.seat === seatNumber) {
-          return { ...seat, status: 'Selected' };
-        }
-        return seat;
-      });
-      console.log('updatedSeats', updatedSeats); // Log updated seats
-      return updatedSeats; // Return the updated array of seats
-    });
-    if (seatNumber) {
-      props.handleCheck(seatNumber, floor);
-    }
+    props.handleCheck(seatNumber, floor);
   };
-
   const checkStatus = (id: number | null | undefined): string | undefined => {
-    const seat = seats?.find(seat => seat.seat === id);
+    const seat = props.seats?.find(seat => seat.seat === id);
 
     return seat ? seat.status : '';
   };
@@ -82,6 +63,7 @@ const BusSeats = (props: BusConstructorProps) => {
     wc,
     status,
     small,
+    vertical,
   }: BusSeatsProps) {
     return (
       <button
@@ -89,14 +71,18 @@ const BusSeats = (props: BusConstructorProps) => {
         onClick={() =>
           seatNumber ? handleClick(seatNumber, props?.floor) : null
         }
-        disabled={empty || enter1 || enter2}
-        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}`}
+        disabled={empty || enter1 || enter2 || wc}
+        className={`${Style.bus_seat} ${status?.toLocaleLowerCase() === 'empty' ? Style.new : status?.toLocaleLowerCase() === 'new' ? Style.new : status?.toLocaleLowerCase() === 'ordered' ? Style.ordered : status?.toLocaleLowerCase() === 'selected' ? Style.selected : ''} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''} ${small ? Style.small : ''}  ${vertical ? Style.vertical : ''}`}
       >
         <Typography
           sx={{
             fontSize: 'inherit',
             color: 'inherit',
-            transform: { md: 'rotate(-90deg)' },
+            transform: vertical
+              ? 'rotate(0deg)'
+              : theme.breakpoints.up('md')
+                ? 'rotate(-90deg)'
+                : 'none',
           }}
         >
           {enter1 || enter2 || empty || wc ? '' : seatNumber}
@@ -108,12 +94,16 @@ const BusSeats = (props: BusConstructorProps) => {
   function BusRow({
     seats,
     small,
+    vertical,
   }: {
     seats: BusSeatsProps[];
     small?: boolean;
+    vertical?: boolean;
   }) {
     return (
-      <div className={`${Style.bus_row}  ${small ? Style.small : ''}`}>
+      <div
+        className={`${Style.bus_row}  ${small ? Style.small : ''} ${vertical ? Style.vertical : ''}`}
+      >
         {seats.map(seat => (
           <BusSeat
             key={seat.id}
@@ -125,6 +115,7 @@ const BusSeats = (props: BusConstructorProps) => {
             wc={seat.wc}
             status={checkStatus(seat?.seatNumber)}
             small={small}
+            vertical={vertical}
           />
         ))}
       </div>
@@ -165,9 +156,16 @@ const BusSeats = (props: BusConstructorProps) => {
   }, []);
 
   return (
-    <Box className={`${Style.bus_layout}  ${props.small ? Style.small : ''}`}>
+    <Box
+      className={`${Style.bus_layout}  ${props.small ? Style.small : ''} ${props.vertical ? Style.vertical : ''}`}
+    >
       {busSeats.map((row, index) => (
-        <BusRow key={index} seats={row} small={props.small} />
+        <BusRow
+          key={index}
+          seats={row}
+          small={props.small}
+          vertical={props.vertical}
+        />
       ))}
     </Box>
   );

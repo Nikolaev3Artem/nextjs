@@ -18,6 +18,7 @@
 
   "snack_bar": {
     "error": "Incorrect password or username",
+    "server_error": "Something went wrong. Please try again later",
     "success": "Login successful"
   }
 }

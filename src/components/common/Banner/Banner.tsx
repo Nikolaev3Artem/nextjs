@@ -45,6 +45,7 @@ const Banner = (props: IBanner) => {
                               props.isMain ? Style.fz40 : Style.fz32,
                               Style.title,
                             )}
+                            fontFamily={'Inter'}
                             variant="h1"
                           >
                             {props.h1}

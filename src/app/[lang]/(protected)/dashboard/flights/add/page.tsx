@@ -16,12 +16,7 @@ import EditBusInfo from '@/components/protected/dashboard/Bus/EditBusInfo/EditBu
 import { ContentDashboard } from '@/components/protected/dashboard/ContentDashboard/ContentDashboard';
 import { IRent } from '@/interface/IRent';
 // import { IServiceBus } from '../add/page';
-import {
-  getDashboardBusDictionaries,
-  getDashboardJourneyDictionaries,
-  getDashboardRoutDictionaries,
-  getDashboardTubsDictionaries,
-} from '@/lib/dictionary';
+import { getDashboardJourneyDictionaries } from '@/lib/dictionary';
 import { TabMenuLocale } from '@/components/protected/dashboard/TabMenuLocale/TabMenuLocale';
 import { DashboardContainer } from '@/components/layout/DashboardContainer/DashboardContainer';
 import EditRoutInfo from '@/components/protected/dashboard/Rout/EditRoutInfo/EditRoutInfo';
@@ -49,7 +44,6 @@ export default async function AddJourney({
       <Fade in={true} timeout={600}>
         <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
           <ContentDashboard
-            // title={`ID ` + `${rent.id}` + `: ` + `${rent.name}`}
             title={`${staticData.new_journey} `}
             back={staticData.back}
           >

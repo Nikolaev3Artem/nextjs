@@ -1,7 +1,7 @@
 'use client';
 
 import { Locale } from '@/i18n.config';
-import { orderStaticData } from '@/interface/IStaticData';
+import { MainStaticDataProps, orderStaticData } from '@/interface/IStaticData';
 import { IProfile } from '@/interface/IUser';
 import {
   Grid,
@@ -31,6 +31,11 @@ import axios from 'axios';
 import { getSession } from '@/lib/auth';
 import { JourneyInfo } from '../JourneyInfo';
 import { getRoutInfo } from '../JourneyInfo/getInfo';
+import { fondyCheck } from '@/helpers/fondy';
+import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
+import dayjs from 'dayjs';
+import { getCurrency } from '@/helpers/getCurrency';
+import { useCurrencyContext } from '@/app/context';
 
 const discount = 30;
 
@@ -80,12 +85,14 @@ const getTotal = (values: State) => {
 
 export const AddPassengersForm = ({
   staticData,
+  mainStaticData,
   lang,
   userData,
 }: {
   staticData: orderStaticData;
   lang: Locale;
   userData: IProfile | null | undefined;
+  mainStaticData: MainStaticDataProps;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -98,6 +105,16 @@ export const AddPassengersForm = ({
   const [passengerSeat, setPassengerSeat] = useState<Seat[]>([]);
   const [data, setData] = useState<any>(null);
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  const [isShowModal, setIsShowModal] = useState(false);
+  const { selectCurrency } = useCurrencyContext();
+
+  const handleBookingClick = () => {
+    setIsShowModal(true);
+  };
+
+  const handleBookingClose = () => {
+    setIsShowModal(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +138,24 @@ export const AddPassengersForm = ({
       }
     }
     return transformedSeats;
+  };
+
+  const getOrderDesc = () => {
+    const pass_data = [];
+
+    for (const passengerKey in values) {
+      const passenger = values[passengerKey];
+      const pass = {
+        name: passenger.name,
+        surname: passenger.surname,
+        seat: passenger.seat,
+        floor: passenger.floor,
+      };
+      const passString = `${staticData.orderForm.passenger}: ${pass.name} ${pass.surname}, ${staticData.orderForm.floor}: ${pass.floor}, ${staticData.orderForm.seat}: ${pass.seat}`;
+      pass_data.push(passString);
+    }
+    const pass_data_string = pass_data.join(', ');
+    return `${staticData.orderForm.payment_button.title}: ${staticData.orderForm.journey}: ${data?.routes[0]?.from_place}-${data?.routes[0]?.to_place} ${pass_data_string}`;
   };
 
   useEffect(() => {
@@ -194,6 +229,7 @@ export const AddPassengersForm = ({
     try {
       const session = await getSession();
       if (!session) return null;
+      const ticket_id = [];
       for (const passengerKey in values) {
         if (Object.hasOwnProperty.call(values, passengerKey)) {
           const passenger = values[passengerKey];
@@ -212,7 +248,7 @@ export const AddPassengersForm = ({
           );
           formData.append('additional_baggage', passenger.luggage);
           formData.append('passanger_type', passenger.passanger_type);
-          formData.append('status', 'PAYED');
+          formData.append('status', 'NEW');
 
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_BASE_URL}/uk/api/journey/${routId}/create_ticket`,
@@ -224,10 +260,21 @@ export const AddPassengersForm = ({
               },
             },
           );
+          ticket_id.push(response?.data?.id);
         }
       }
 
-      router.push(`/${lang}/my-order`);
+      const tickets_row = ticket_id.join(',');
+
+      const response = await axios.post(`/${lang}/api/fondy`, {
+        order_id: `Id:rout${routId}:tickets:#${tickets_row}`,
+        order_desc: getOrderDesc(),
+        amount: getTotal(values) * 100,
+        currency: 'EUR',
+      });
+
+      const url = await response.data.response.checkout_url;
+      if (url) router.push(url);
     } catch (error) {
       console.error(error);
     }
@@ -255,374 +302,319 @@ export const AddPassengersForm = ({
     });
   };
 
+  const addPassClick = (pass: any) => {
+    setIsShowModal(false);
+    const newPassengers = [...passengerSeat].filter(el => el.seat !== null);
+    pass?.[1]?.map((seat: number) => {
+      const newPass = { floor: 1, seat: seat };
+      newPassengers.push(newPass);
+    });
+    pass?.[2]?.map((seat: number) => {
+      const newPass = { floor: 2, seat: seat };
+      newPassengers.push(newPass);
+    });
+
+    setPassengerSeat(newPassengers);
+  };
   return (
-    <Box>
-      <Grid
-        container
-        component={'form'}
-        bgcolor={'transparent'}
-        sx={{ rowGap: { xs: '16px', lg: 0 }, columnGap: { lg: '16px' } }}
-      >
+    <>
+      <Box>
         <Grid
-          item
-          xs={12}
-          lg={8}
-          sx={{ flexDirection: 'column' }}
-          rowGap={2}
+          container
+          component={'form'}
           bgcolor={'transparent'}
-          display={'flex'}
+          sx={{ rowGap: { xs: '16px', lg: 0 }, columnGap: { lg: '16px' } }}
         >
-          {Object.keys(values).map((key, index) => {
-            const value = values[key];
-            return (
-              <Grid
-                container
-                p={4}
-                bgcolor={'white'}
-                className={Style.content}
-                rowGap={2}
-                key={index}
-              >
+          <Grid
+            item
+            xs={12}
+            lg={8}
+            sx={{ flexDirection: 'column' }}
+            rowGap={2}
+            bgcolor={'transparent'}
+            display={'flex'}
+          >
+            {Object.keys(values).map((key, index) => {
+              const value = values[key];
+              return (
                 <Grid
-                  item
-                  xs={12}
-                  display={'flex'}
-                  justifyContent={'space-between'}
-                  alignContent={'center'}
+                  container
+                  p={4}
+                  bgcolor={'white'}
+                  className={Style.content}
+                  rowGap={2}
+                  key={index}
                 >
-                  <Typography>
-                    {staticData.orderForm.passenger} {index + 1}
-                  </Typography>
-                  {value.floor ? (
-                    <Typography>
-                      {staticData.orderForm.floor} {value.floor}
-                    </Typography>
-                  ) : (
-                    <Box display={'flex'} alignItems={'center'} columnGap={1}>
-                      <Typography>{staticData.orderForm.floor}</Typography>
-                      <Button
-                        sx={{
-                          p: '4px 8px',
-                          fontWeight: '400',
-                          textTransform: 'none',
-                          fontSize: '12px',
-
-                          justifyContent: 'flex-end',
-                        }}
-                        color="secondary"
-                        variant={'contained'}
-                        onClick={() => console.log('click')}
-                      >
-                        {staticData.orderForm.select_button.title}
-                      </Button>
-                    </Box>
-                  )}
-                  {value.seat ? (
-                    <Typography>
-                      {staticData.orderForm.seat} {value.seat}
-                    </Typography>
-                  ) : (
-                    <Box display={'flex'} alignItems={'center'} columnGap={1}>
-                      <Typography>{staticData.orderForm.seat}</Typography>
-                      <Button
-                        sx={{
-                          p: '4px 8px',
-                          fontWeight: '400',
-                          textTransform: 'none',
-                          fontSize: '12px',
-
-                          justifyContent: 'flex-end',
-                        }}
-                        color="secondary"
-                        variant={'contained'}
-                        onClick={() => console.log('click')}
-                      >
-                        {staticData.orderForm.select_button.title}
-                      </Button>
-                    </Box>
-                  )}
-                </Grid>
-                <Grid item xs={12} sm={5.8}>
-                  <TextField
-                    sx={{ my: 1 }}
-                    required
-                    fullWidth
-                    id="name"
-                    label={staticData.orderForm.name}
-                    value={values.name}
-                    onChange={handleChange(`passenger${index + 1}`)('name')}
-                    name="name"
-                    variant="outlined"
-                    autoFocus
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={5.8}>
-                  <TextField
-                    sx={{ my: 1 }}
-                    required
-                    fullWidth
-                    id="surname"
-                    label={staticData.orderForm.surname}
-                    value={values.surname}
-                    onChange={handleChange(`passenger${index + 1}`)('surname')}
-                    name="surname"
-                    variant="outlined"
-                    autoFocus
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={5.8}>
-                  <TextField
-                    sx={{ my: 1 }}
-                    required
-                    fullWidth
-                    id="phone"
-                    label={staticData.orderForm.phone}
-                    value={values.phone}
-                    onChange={handleChange(`passenger${index + 1}`)('phone')}
-                    name="phone"
-                    variant="outlined"
-                    autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12} sm={5.8}>
-                  <TextField
-                    sx={{ my: 1 }}
-                    required
-                    fullWidth
-                    id="email"
-                    label={staticData.orderForm.email}
-                    value={index === 0 ? values.passenger1.email : ''}
-                    onChange={handleChange(`passenger${index + 1}`)('email')}
-                    name="email"
-                    variant="outlined"
-                    autoFocus
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <Select
-                      labelId=" passanger_type"
-                      id=" passanger_type"
-                      value={
-                        index === 0
-                          ? values.passenger1?.passanger_type
-                          : values[`passenger${index + 1}`]?.passanger_type
-                      }
-                      defaultValue="adult"
-                      onChange={handleChange(`passenger${index + 1}`)(
-                        'passanger_type',
-                      )}
-                    >
-                      <MenuItem value="adult">
-                        {staticData.orderForm.adult}
-                      </MenuItem>
-                      <MenuItem value="child">
-                        {staticData.orderForm.child}
-                      </MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    sx={{ my: 1 }}
-                    fullWidth
-                    id="comment"
-                    label={staticData.orderForm.comment}
-                    value={values.comment}
-                    onChange={handleChange(`passenger${index + 1}`)('comment')}
-                    name="comment"
-                    variant="outlined"
-                    autoFocus
-                    multiline
-                    rows={4}
-                  />
-                </Grid>
-
-                <Grid item xs={6}>
-                  <FormControl>
-                    <FormLabel id="luggage">
-                      <Typography fontWeight={700}>
-                        {staticData.orderForm.extra_luggage}
-                      </Typography>
-                    </FormLabel>
-                    <RadioGroup
-                      aria-labelledby="luggage"
-                      defaultValue="base"
-                      name="luggage"
-                      onChange={handleChange(`passenger${index + 1}`)(
-                        'luggage',
-                      )}
-                      value={
-                        index === 0
-                          ? values.passenger1?.luggage
-                          : values[`passenger${index + 1}`]?.luggage
-                      }
-                    >
-                      <FormControlLabel
-                        value="base"
-                        control={<Radio sx={{ py: 0.5 }} />}
-                        label={staticData.orderForm.base_bag}
-                        className={
-                          values.passenger1.luggage === 'base'
-                            ? Style.radio_base
-                            : Style.radio_base_disable
-                        }
-                      />
-                      <FormControlLabel
-                        value="extra"
-                        control={<Radio sx={{ py: 0.5 }} />}
-                        label={staticData.orderForm.extra_bag}
-                        className={
-                          values.passenger1.luggage === 'extra'
-                            ? Style.radio_extra
-                            : Style.radio_extra_disable
-                        }
-                      />
-                      <FormControlLabel
-                        value="our"
-                        control={<Radio sx={{ py: 0.5 }} />}
-                        label={staticData.orderForm.our_bag}
-                        className={Style.radio_our}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-
-                <Grid
-                  item
-                  xs={4}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    alignItems: 'flex-end',
-                  }}
-                >
-                  <Typography
-                    fontSize={'20px'}
-                    display={'inline-flex'}
-                    alignItems={'baseline'}
-                    columnGap={0.5}
+                  <Grid
+                    item
+                    xs={12}
+                    display={'flex'}
+                    justifyContent={'space-between'}
+                    alignContent={'center'}
                   >
-                    {staticData.orderForm.price}
-                    <Typography
-                      fontWeight={700}
-                      component={'span'}
-                      fontSize={'24px'}
-                    >
-                      {data?.routes && value.passanger_type === 'adult'
-                        ? `${data?.routes[0].price}`
-                        : `${data?.routes[0].price - discount}`}
+                    <Typography>
+                      {staticData.orderForm.passenger} {index + 1}
                     </Typography>
-                    <Typography component={'span'} fontSize={'12px'}>
-                      UAH
-                    </Typography>
-                  </Typography>
-                </Grid>
+                    {value.floor ? (
+                      <Typography>
+                        {staticData.orderForm.floor} {value.floor}
+                      </Typography>
+                    ) : (
+                      <Box display={'flex'} alignItems={'center'} columnGap={1}>
+                        <Typography>{staticData.orderForm.floor}</Typography>
+                        <Button
+                          sx={{
+                            p: '4px 8px',
+                            fontWeight: '400',
+                            textTransform: 'none',
+                            fontSize: '12px',
 
-                {index !== 0 && (
-                  <Grid item xs={12} textAlign={'end'}>
-                    <Button
-                      sx={{
-                        p: '4px 8px',
-                        fontWeight: '400',
-                        textTransform: 'none',
-                        fontSize: '12px',
-                        backgroundColor: '#B22234',
-                        justifyContent: 'flex-end',
+                            justifyContent: 'flex-end',
+                          }}
+                          color="secondary"
+                          variant={'contained'}
+                          onClick={handleBookingClick}
+                        >
+                          {staticData.orderForm.select_button.title}
+                        </Button>
+                      </Box>
+                    )}
+                    {value.seat ? (
+                      <Typography>
+                        {staticData.orderForm.seat} {value.seat}
+                      </Typography>
+                    ) : (
+                      <Box display={'flex'} alignItems={'center'} columnGap={1}>
+                        <Typography>{staticData.orderForm.seat}</Typography>
+                        <Button
+                          sx={{
+                            p: '4px 8px',
+                            fontWeight: '400',
+                            textTransform: 'none',
+                            fontSize: '12px',
 
-                        '&:hover': {
-                          backgroundColor: '#DD5407',
-                        },
-                      }}
-                      variant={'contained'}
-                      onClick={() => Remove(index)}
-                    >
-                      {staticData.orderForm.remove_button.title}
-                    </Button>
+                            justifyContent: 'flex-end',
+                          }}
+                          color="secondary"
+                          variant={'contained'}
+                          onClick={handleBookingClick}
+                        >
+                          {staticData.orderForm.select_button.title}
+                        </Button>
+                      </Box>
+                    )}
                   </Grid>
-                )}
-              </Grid>
-            );
-          })}
+                  <Grid item xs={12} sm={5.8}>
+                    <TextField
+                      sx={{ my: 1 }}
+                      required
+                      fullWidth
+                      id="name"
+                      label={staticData.orderForm.name}
+                      value={values.name}
+                      onChange={handleChange(`passenger${index + 1}`)('name')}
+                      name="name"
+                      variant="outlined"
+                      autoFocus
+                    />
+                  </Grid>
 
-          <Grid item xs={12}>
-            <Button
-              sx={{
-                height: '54px',
-                fontWeight: '400',
-                textTransform: 'none',
-                fontSize: '16px',
-              }}
-              fullWidth
-              variant={'contained'}
-              color={'success'}
-              onClick={Add}
-            >
-              {staticData.orderForm.add_button.title}
-            </Button>
-          </Grid>
-        </Grid>
-        <Grid
-          item
-          p={4}
-          bgcolor={'white'}
-          className={Style.content}
-          xs={12}
-          lg={3.8}
-          sx={{ height: { lg: 'max-content' } }}
-        >
-          <Grid container display={'flex'} rowGap={2} width={'100%'}>
-            {data && (
-              <JourneyInfo data={data} staticData={staticData} lang={lang} />
-            )}
-            <Grid item xs={12}>
-              <Typography
-                color={'primary'}
-                sx={{ fontSize: { xs: '20px' } }}
-                display={'inline-flex'}
-                alignItems={'baseline'}
-                columnGap={1}
-              >
-                {staticData.orderForm.total}
-                <Typography
-                  component={'span'}
-                  color={'primary'}
-                  fontWeight={700}
-                  sx={{ fontSize: { xs: '24px' } }}
-                >
-                  {getTotal(values)}
-                </Typography>
-                <Typography
-                  component={'span'}
-                  color={'primary'}
-                  sx={{ fontSize: { xs: '12px' } }}
-                >
-                  {/* {data?.bus ? data.bus[0].name : ''} */} UAH
-                </Typography>
-              </Typography>
-            </Grid>
+                  <Grid item xs={12} sm={5.8}>
+                    <TextField
+                      sx={{ my: 1 }}
+                      required
+                      fullWidth
+                      id="surname"
+                      label={staticData.orderForm.surname}
+                      value={values.surname}
+                      onChange={handleChange(`passenger${index + 1}`)(
+                        'surname',
+                      )}
+                      name="surname"
+                      variant="outlined"
+                      autoFocus
+                    />
+                  </Grid>
 
-            <Grid item xs={12}>
-              <Button
-                sx={{
-                  height: '54px',
-                  fontWeight: '400',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                }}
-                fullWidth
-                variant={'contained'}
-                color={'secondary'}
-                startIcon={<LockIcon />}
-                // onClick={Reserve}
-              >
-                {staticData.orderForm.reserve_button.title}
-              </Button>
-            </Grid>
+                  <Grid item xs={12} sm={5.8}>
+                    <TextField
+                      sx={{ my: 1 }}
+                      required
+                      fullWidth
+                      id="phone"
+                      label={staticData.orderForm.phone}
+                      value={values.phone}
+                      onChange={handleChange(`passenger${index + 1}`)('phone')}
+                      name="phone"
+                      variant="outlined"
+                      autoFocus
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={5.8}>
+                    <TextField
+                      sx={{ my: 1 }}
+                      required
+                      fullWidth
+                      id="email"
+                      label={staticData.orderForm.email}
+                      value={index === 0 ? values.passenger1.email : ''}
+                      onChange={handleChange(`passenger${index + 1}`)('email')}
+                      name="email"
+                      variant="outlined"
+                      autoFocus
+                    />
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <Select
+                        labelId=" passanger_type"
+                        id=" passanger_type"
+                        value={
+                          index === 0
+                            ? values.passenger1?.passanger_type
+                            : values[`passenger${index + 1}`]?.passanger_type
+                        }
+                        defaultValue="adult"
+                        onChange={handleChange(`passenger${index + 1}`)(
+                          'passanger_type',
+                        )}
+                      >
+                        <MenuItem value="adult">
+                          {staticData.orderForm.adult}
+                        </MenuItem>
+                        <MenuItem value="child">
+                          {staticData.orderForm.child}
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12}>
+                    <TextField
+                      sx={{ my: 1 }}
+                      fullWidth
+                      id="comment"
+                      label={staticData.orderForm.comment}
+                      value={values.comment}
+                      onChange={handleChange(`passenger${index + 1}`)(
+                        'comment',
+                      )}
+                      name="comment"
+                      variant="outlined"
+                      autoFocus
+                      multiline
+                      rows={4}
+                    />
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    <FormControl>
+                      <FormLabel id="luggage">
+                        <Typography fontWeight={700}>
+                          {staticData.orderForm.extra_luggage}
+                        </Typography>
+                      </FormLabel>
+                      <RadioGroup
+                        aria-labelledby="luggage"
+                        defaultValue="base"
+                        name="luggage"
+                        onChange={handleChange(`passenger${index + 1}`)(
+                          'luggage',
+                        )}
+                        value={
+                          index === 0
+                            ? values.passenger1?.luggage
+                            : values[`passenger${index + 1}`]?.luggage
+                        }
+                      >
+                        <FormControlLabel
+                          value="base"
+                          control={<Radio sx={{ py: 0.5 }} />}
+                          label={staticData.orderForm.base_bag}
+                          className={
+                            values.passenger1.luggage === 'base'
+                              ? Style.radio_base
+                              : Style.radio_base_disable
+                          }
+                        />
+                        <FormControlLabel
+                          value="extra"
+                          control={<Radio sx={{ py: 0.5 }} />}
+                          label={staticData.orderForm.extra_bag}
+                          className={
+                            values.passenger1.luggage === 'extra'
+                              ? Style.radio_extra
+                              : Style.radio_extra_disable
+                          }
+                        />
+                        <FormControlLabel
+                          value="our"
+                          control={<Radio sx={{ py: 0.5 }} />}
+                          label={staticData.orderForm.our_bag}
+                          className={Style.radio_our}
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid
+                    item
+                    xs={4}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'flex-end',
+                      alignItems: 'flex-end',
+                    }}
+                  >
+                    <Typography
+                      fontSize={'20px'}
+                      display={'inline-flex'}
+                      alignItems={'baseline'}
+                      columnGap={0.5}
+                    >
+                      {staticData.orderForm.price}
+                      <Typography
+                        fontWeight={700}
+                        component={'span'}
+                        fontSize={'24px'}
+                      >
+                        {data?.routes && value.passanger_type === 'adult'
+                          ? `${data?.routes[0].price}`
+                          : `${data?.routes[0].price - discount}`}
+                      </Typography>
+                      <Typography component={'span'} fontSize={'12px'}>
+                        {getCurrency(selectCurrency)}
+                      </Typography>
+                    </Typography>
+                  </Grid>
+
+                  {index !== 0 && (
+                    <Grid item xs={12} textAlign={'end'}>
+                      <Button
+                        sx={{
+                          p: '4px 8px',
+                          fontWeight: '400',
+                          textTransform: 'none',
+                          fontSize: '12px',
+                          backgroundColor: '#B22234',
+                          justifyContent: 'flex-end',
+
+                          '&:hover': {
+                            backgroundColor: '#DD5407',
+                          },
+                        }}
+                        variant={'contained'}
+                        onClick={() => Remove(index)}
+                      >
+                        {staticData.orderForm.remove_button.title}
+                      </Button>
+                    </Grid>
+                  )}
+                </Grid>
+              );
+            })}
+
             <Grid item xs={12}>
               <Button
                 sx={{
@@ -634,14 +626,99 @@ export const AddPassengersForm = ({
                 fullWidth
                 variant={'contained'}
                 color={'success'}
-                onClick={Reserve}
+                onClick={Add}
               >
-                {staticData.orderForm.payment_button.title}
+                {staticData.orderForm.add_button.title}
               </Button>
             </Grid>
           </Grid>
+          <Grid
+            item
+            p={4}
+            bgcolor={'white'}
+            className={Style.content}
+            xs={12}
+            lg={3.8}
+            sx={{ height: { lg: 'max-content' } }}
+          >
+            <Grid container display={'flex'} rowGap={2} width={'100%'}>
+              {data && (
+                <JourneyInfo data={data} staticData={staticData} lang={lang} />
+              )}
+              <Grid item xs={12}>
+                <Typography
+                  color={'primary'}
+                  sx={{ fontSize: { xs: '20px' } }}
+                  display={'inline-flex'}
+                  alignItems={'baseline'}
+                  columnGap={1}
+                >
+                  {staticData.orderForm.total}
+                  <Typography
+                    component={'span'}
+                    color={'primary'}
+                    fontWeight={700}
+                    sx={{ fontSize: { xs: '24px' } }}
+                  >
+                    {getTotal(values)}
+                  </Typography>
+                  <Typography
+                    component={'span'}
+                    color={'primary'}
+                    sx={{ fontSize: { xs: '12px' } }}
+                  >
+                    {/* {data?.bus ? data.bus[0].name : ''} */}{' '}
+                    {getCurrency(selectCurrency)}
+                  </Typography>
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Button
+                  sx={{
+                    height: '54px',
+                    fontWeight: '400',
+                    textTransform: 'none',
+                    fontSize: '16px',
+                  }}
+                  fullWidth
+                  variant={'contained'}
+                  color={'secondary'}
+                  startIcon={<LockIcon />}
+                  // onClick={Reserve}
+                >
+                  {staticData.orderForm.reserve_button.title}
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  sx={{
+                    height: '54px',
+                    fontWeight: '400',
+                    textTransform: 'none',
+                    fontSize: '16px',
+                  }}
+                  fullWidth
+                  variant={'contained'}
+                  color={'success'}
+                  onClick={Reserve}
+                >
+                  {staticData.orderForm.payment_button.title}
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <SeatsBooking
+        data={data}
+        onClose={handleBookingClose}
+        isShowModal={isShowModal}
+        staticData={mainStaticData}
+        lang={lang}
+        addPassengers
+        addPassClick={addPassClick}
+      />
+    </>
   );
 };

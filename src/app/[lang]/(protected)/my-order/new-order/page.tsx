@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import Style from './newOrder.module.css';
 import { Locale } from '@/i18n.config';
-import { getOrderDictionaries } from '@/lib/dictionary';
+import { getMainDictionaries, getOrderDictionaries } from '@/lib/dictionary';
 import { getUserInfo } from '@/lib/auth';
 import { AddPassengersForm } from '@/components/protected/Orders/AddPassengersForm';
 
@@ -22,6 +22,8 @@ export default async function Order({
   params: { lang: Locale };
 }>) {
   const staticData = await getOrderDictionaries(params.lang);
+  const mainStaticData = await getMainDictionaries(params.lang);
+
   const userData = await getUserInfo();
   return (
     <Container
@@ -46,6 +48,7 @@ export default async function Order({
               staticData={staticData}
               lang={params.lang}
               userData={userData}
+              mainStaticData={mainStaticData}
             />
           </Box>
         </Grid>

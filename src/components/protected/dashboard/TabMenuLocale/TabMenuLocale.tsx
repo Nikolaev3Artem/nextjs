@@ -5,7 +5,7 @@ import { Tabs } from '@mui/material';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // import { useAppDispatch } from '../../../../store/auth/redux';
 // import { setLocales } from '../../../../store/localeSlice';
@@ -50,6 +50,7 @@ export const TabMenuLocale = ({
 }: ITabMenuLocaleProps) => {
   const [value, setValue] = React.useState<number>(0);
   const { setSelectLang } = useLangContext();
+
   function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
 
@@ -59,6 +60,7 @@ export const TabMenuLocale = ({
         hidden={value !== index}
         id={`simple-tabpanel-${index}`}
         aria-labelledby={`simple-tab-${index}`}
+        aria-selected={false}
         {...other}
       >
         {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
@@ -78,12 +80,7 @@ export const TabMenuLocale = ({
   };
 
   return (
-    <Box
-      pt={4}
-      px={4}
-      sx={{ backgroundColor: theme.palette.background.default }}
-      className={Style.content_dashboard}
-    >
+    <Box pt={4} className={Style.content_dashboard}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
           {staticData.tab &&

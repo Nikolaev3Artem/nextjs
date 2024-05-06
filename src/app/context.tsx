@@ -13,8 +13,16 @@ type LangContextType = {
   setSelectLang: (value: string) => void;
 };
 
+type CurrencyContextType = {
+  selectCurrency: number;
+  setSelectCurrency: (value: number) => void;
+};
+
 const RoutsContext = createContext<RoutsContextType | undefined>(undefined);
 const LangContext = createContext<LangContextType | undefined>(undefined);
+const CurrencyContext = createContext<CurrencyContextType | undefined>(
+  undefined,
+);
 
 export const RoutsContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -52,6 +60,24 @@ export const LangContextProvider: React.FC<{ children: React.ReactNode }> = ({
     </LangContext.Provider>
   );
 };
+
+export const CurrencyContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
+  const [selectCurrency, setSelectCurrency] = useState(3);
+
+  return (
+    <CurrencyContext.Provider
+      value={{
+        selectCurrency,
+        setSelectCurrency,
+      }}
+    >
+      {children}
+    </CurrencyContext.Provider>
+  );
+};
+
 export const useRoutsContext = () => {
   const context = useContext(RoutsContext);
   if (context === undefined) {
@@ -62,6 +88,14 @@ export const useRoutsContext = () => {
 
 export const useLangContext = () => {
   const context = useContext(LangContext);
+  if (context === undefined) {
+    throw new Error('error');
+  }
+  return context;
+};
+
+export const useCurrencyContext = () => {
+  const context = useContext(CurrencyContext);
   if (context === undefined) {
     throw new Error('error');
   }

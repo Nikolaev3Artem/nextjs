@@ -60,7 +60,6 @@ export const EditCity = ({
 }) => {
   useEffect(() => {
     if (data) {
-      // Update the form's default values with the new initialData
       reset({
         city: data.city || '',
         id: data.id || undefined,
@@ -127,7 +126,7 @@ export const EditCity = ({
   const coords_x = watch('coords_x');
   const cooords_y = watch('cooords_y');
   const address = watch('address');
-  console.log('city', city);
+
   async function onSubmitForm(data: StopsProps) {
     try {
       const session = await getSession();
@@ -142,24 +141,24 @@ export const EditCity = ({
       formData.append('cooords_y', data.cooords_y?.trim() || '');
 
       formData.append('address', data.address?.trim() || '');
-      console.log(data);
-      // const response = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/stop/create/`,
-      //   formData,
-      //   {
-      //     headers: {
-      //       Authorization: 'Bearer ' + session.access,
-      //       'Content-Type':
-      //         'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
-      //     },
-      //   },
-      // );
-      // if (response.status === 201) {
-      //   enqueueSnackbar(`${staticData.cityTable.snackBar.add_success}`, {
-      //     variant: 'success',
-      //   });
-      //   rout.push(`/${lang}/dashboard/city/`);
-      // }
+
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/city/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
+        },
+      );
+      if (response.status === 201) {
+        enqueueSnackbar(`${staticData.cityTable.snackBar.add_success}`, {
+          variant: 'success',
+        });
+        rout.push(`/${lang}/dashboard/city/`);
+      }
     } catch (error) {
       console.error(error);
       enqueueSnackbar(`${staticData.cityTable.snackBar.add_error}`, {

@@ -5,11 +5,12 @@ import { Hero } from '@/components/published/Hero';
 import { Wrapper } from '@/components/common/Wrapper';
 import { getMainDictionaries } from '@/lib/dictionary';
 import { MainSection } from '@/components/published/Main/MainSection';
+import { Metadata } from 'next';
 
 const getBanner = async (lang: Locale) => {
   try {
     const response = await axios.get<IGetBanner>(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/main/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/main`,
     );
     if (response.status === 200) {
       return {

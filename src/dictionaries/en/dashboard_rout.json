@@ -22,6 +22,7 @@
     "is_popular": "Popular rout",
     "city": "City",
     "departure_time": "Departure time",
+    "duration": "Travel duration",
     "order": "Order",
     "arrival_time": "Arrival time",
     "price": "Price",
@@ -29,13 +30,16 @@
     "save": "Save",
     "add_btn": "Add",
     "no_stop": "There are no stops",
+    "hours": "hours",
+    "minutes": "minutes",
 
     "snackBar": {
       "remove_success": "Card deleted",
       "remove_error": "Deletion error",
       "update_success": "Your changes have been saved",
       "add_success": "Your card has been added",
-      "add_error": "Error saving changes"
+      "add_error": "Error saving changes",
+      "add_stops_error": "Stop already adde"
     }
   },
   "errors": {

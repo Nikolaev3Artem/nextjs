@@ -1,40 +1,15 @@
-import { JourneySeatsBookingModal } from '@/components/published/Main/JourneySeatsBookingModal';
-
-import { IJourney, StopsProps } from '@/interface/IJourney';
-import {
-  dashboardCityStaticData,
-  MainStaticDataProps,
-} from '@/interface/IStaticData';
+import { StopsProps } from '@/interface/IJourney';
+import { dashboardCityStaticData } from '@/interface/IStaticData';
 import { grey } from '@mui/material/colors';
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { MdOutlineClose } from 'react-icons/md';
 import IconButton from '@mui/material/IconButton';
-import { IoMdArrowForward } from 'react-icons/io';
 import { BiSave } from 'react-icons/bi';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import dayjs from 'dayjs';
-
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-
-import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-
-import { useEffect, useState } from 'react';
-import theme from '@/theme';
-import Link from 'next/link';
 import { Locale } from '@/i18n.config';
-import { styled } from '@mui/material/styles';
-import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
+// import BusConstructor from '@/components/protected/dashboard/Bus/BusConstructor/BusConstructor';
 import { EditCityModal } from '../EditCityModal';
 import { useForm } from 'react-hook-form';
 import { getSession } from '@/lib/auth';
@@ -112,7 +87,7 @@ export const AddCity = ({
   const coords_x = watch('coords_x');
   const cooords_y = watch('cooords_y');
   const address = watch('address');
-  console.log('city', city);
+
   async function onSubmitForm(data: StopsProps) {
     try {
       const session = await getSession();
@@ -129,7 +104,7 @@ export const AddCity = ({
       formData.append('address', data.address?.trim() || '');
 
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/stop/create`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}${selectLang}/api/admin/city/create`,
         formData,
         {
           headers: {

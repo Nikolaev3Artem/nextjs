@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import Image from 'next/image';
+
 import { useRouter } from 'next/navigation';
 
 import * as yup from 'yup';
@@ -10,10 +10,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import axios from 'axios';
-import cn from 'clsx';
+import dayjs from 'dayjs';
 
-import { useKeenSlider } from 'keen-slider/react';
-import 'keen-slider/keen-slider.min.css';
 import { enqueueSnackbar } from 'notistack';
 
 import {
@@ -32,7 +30,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import Style from '@/components/published/Rent/CardInfo/cardinfo.module.css';
 import Circle from '../../../../../../public/icons/journey_from_circle.svg';
 import ToCircle from '../../../../../../public/icons/journey_to_circle.svg';
 import Marker from '../../../../../../public/icons/map-marker.svg';
@@ -44,15 +41,14 @@ import { grey } from '@mui/material/colors';
 const color_title = grey[800];
 const colorHeading = grey[900];
 
-import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
-
-import { useLangContext } from '@/app/context';
 import { getSession } from '@/lib/auth';
 import { Locale } from '@/i18n.config';
 import { IRent } from '@/interface/IRent';
-import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
+
 import { dashboardRoutStaticData } from '@/interface/IStaticData';
-import { IRout } from '@/interface/IJourney';
+import { IRout, StopsProps } from '@/interface/IJourney';
+import { getCurrency } from '@/helpers/getCurrency';
+
 // import BusService from '../../../Rent/BusService/BusService';
 
 interface IInfoCardProps {
@@ -62,37 +58,57 @@ interface IInfoCardProps {
 }
 
 interface CityProp {
-  id: number | null;
+  id: string;
   city: string;
-  price: number | null;
+  price: any;
+  address: string;
 }
+
+const colorIcon = grey[700];
 
 const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
   const BASE_URL: string | undefined = process.env.NEXT_PUBLIC_BASE_URL;
   const sm = useMediaQuery(theme.breakpoints.down('sm'));
   const [city, setCity] = useState<CityProp[]>([]);
-  const [selectedStop, setSelectedStop] = useState<CityProp>({
-    id: null,
+  const [stops, setStops] = useState<StopsProps[]>([]);
+  const [durationValues, setDurationValues] = useState<any>({
+    hour: '',
+    minute: '',
+  });
+
+  useEffect(() => {
+    const hours = `${String(Math.floor(parseInt(rout?.travel_time) / 60)).padStart(2, '0')}`;
+
+    const remainingMinutes = `${String(parseInt(rout?.travel_time) % 60).padStart(2, '0')}`;
+
+    setDurationValues({
+      hour: hours,
+      minute: remainingMinutes,
+    });
+  }, [rout.travel_time]);
+
+  const [selectedStop, setSelectedStop] = useState<StopsProps>({
+    id: '',
     city: '',
-    price: null,
+    price: undefined,
+    address: '',
   });
 
   const [deleteId, setDeleteId] = useState<any>([]);
 
   const nameRegex = /^[^\s№?]+$/;
   const UploadFileSchema = yup.object().shape({
-    from_place: yup
-      .string()
-      .max(30, `${staticData.errors.name_more30}`)
-      .matches(nameRegex, `${staticData.errors.error_text}`),
-    to_place: yup
-      .string()
-      .max(30, `${staticData.errors.name_more30}`)
-      .matches(nameRegex, `${staticData.errors.error_text}`),
+    from_place: yup.object().shape({
+      id: yup.number(),
+    }),
+    to_place: yup.object().shape({
+      id: yup.number().required(),
+    }),
     price: yup
       .number()
       .integer(staticData.errors.error_number)
       .positive(staticData.errors.error_number),
+    travel_time: yup.string().required(),
   });
 
   const {
@@ -100,37 +116,43 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
     handleSubmit,
     resetField,
     watch,
+    setValue,
+    getValues,
     formState: { errors, isDirty, isValid },
   } = useForm<IRout>({
     defaultValues: {
-      from_place: rout?.from_place || {},
-      to_place: rout?.to_place || {},
+      from_place: rout?.cities[0] || {},
+      to_place: rout?.cities[rout?.cities?.length - 1] || {},
       price: rout?.price || 0,
-      stops: rout?.stops || [],
+      cities: rout?.cities || [],
       is_stop: false,
+      is_popular: rout.isPopular,
+      travel_time: rout.travel_time || '',
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
     mode: 'onChange',
   });
-  const { selectLang } = useLangContext();
+
   const from_place = watch('from_place');
   const to_place = watch('to_place');
   const price = watch('price');
-  const stops = watch('stops');
+  const cities = watch('cities');
+  const is_stop = watch('is_stop');
 
+  const is_popular = watch('is_popular');
   const router = useRouter();
 
-  const handleDeleteStop = (id: number) => {
-    // setImagesList((prevImagesList: ItemProps[]) =>
-    //   prevImagesList.filter(
-    //     (item: ItemProps) => String(item.id) !== String(id),
-    //   ),
-    // );
-  };
-
-  const onSubmitForm = async (data: IRent) => {
+  const onSubmitForm = async (data: IRout) => {
     if (!rout) return;
+
+    const all_stops = [];
+    // const reversedArray = stops.slice().reverse();
+    stops.length > 0
+      ? all_stops.push(data.from_place, ...stops, data.to_place)
+      : all_stops.push(data.from_place, data.to_place);
+    console.log(data);
+    console.log(all_stops);
     // try {
     //   const session = await getSession();
     //   const formData = new FormData();
@@ -224,32 +246,25 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
     }
   };
 
-  const getCity = useCallback(async () => {
+  const getCities = useCallback(async () => {
     try {
-      // const response = await axios.get<CityProp[]>(`${BASE_URL}/${selectLang}/api/main`);
-      // get city
-      const response = {
-        data: {
-          results: [
-            {
-              id: 3,
-              city: 'Tokio',
-              price: 200,
-            },
-            {
-              id: 4,
-              city: 'Berlin',
-              price: 200,
-            },
-            {
-              id: 4,
-              city: 'NY',
-              price: 200,
-            },
-          ],
+      const session = await getSession();
+      if (!session) return null;
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/admin/city?limit=299`,
+        {
+          headers: {
+            Authorization: 'Bearer ' + session.access,
+            'Content-Type':
+              'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW',
+          },
         },
-      };
-      setCity(response.data.results);
+      );
+
+      if (response.status === 200) {
+        setCity(response.data.results);
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.log(error.message);
@@ -262,12 +277,24 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
   }, []);
 
   useEffect(() => {
-    getCity().catch(console.error);
-  }, [getCity]);
+    getCities().catch(console.error);
+  }, [getCities]);
+
+  useEffect(() => {
+    const newArray = rout?.cities?.slice(1, -1);
+    setStops(newArray);
+  }, [rout]);
 
   const handleAddCity = () => {
-    setCity(prevCity => [...prevCity, selectedStop]);
-    setSelectedStop({ id: null, city: '', price: null });
+    setStops(prevCity => [...prevCity, selectedStop]);
+    setSelectedStop({ id: '', city: '', price: 0, address: '' });
+  };
+
+  const handleDeleteStop = (id: string) => {
+    if (id) {
+      setStops(prevState => prevState.filter(el => el.id !== id));
+      setDeleteId((prevState: number[]) => [...prevState, id]);
+    }
   };
 
   return (
@@ -285,19 +312,6 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                   flexDirection={'column'}
                 >
                   <Container disableGutters>
-                    <Typography
-                      sx={{
-                        fontFamily: 'Inter',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        fontSize: '20px',
-                        lineHeight: '140%',
-                        color: color_title,
-                      }}
-                      mb={4}
-                    >
-                      {`${staticData.routTable.rout} ${rout ? rout?.from_place : ''} - ${rout ? rout?.to_place : ''}`}
-                    </Typography>
                     <Stack spacing={2}>
                       <Stack spacing={2} flexDirection={'column'}>
                         <Typography
@@ -312,14 +326,42 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                         >
                           {staticData.routTable.from}
                         </Typography>
-                        <TextField
+
+                        <Autocomplete
                           {...register('from_place')}
-                          size={'small'}
-                          FormHelperTextProps={{
-                            color: '#256223',
+                          disablePortal
+                          fullWidth={true}
+                          size="small"
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
+                          sx={{ backgroundColor: 'white' }}
+                          options={city}
+                          value={from_place}
+                          getOptionLabel={(item: CityProp) =>
+                            `${item.city}, ${item.address} `
+                          }
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label={staticData.routTable.city}
+                              FormHelperTextProps={{
+                                color: '#256223',
+                              }}
+                              // helperText={errors?.from_place?.message}
+                              // onError={!!errors?.from_place}
+                            />
+                          )}
+                          onChange={(event, newValue) => {
+                            newValue
+                              ? setValue('from_place', newValue)
+                              : setValue('from_place', {
+                                  id: undefined,
+                                  city: '',
+                                  price: undefined,
+                                  address: '',
+                                });
                           }}
-                          // helperText={errors?.from_place?.message}
-                          // error={!!errors?.from_place}
                         />
                       </Stack>
 
@@ -336,15 +378,180 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                         >
                           {staticData.routTable.to}
                         </Typography>
-                        <TextField
+                        <Autocomplete
                           {...register('to_place')}
-                          size={'small'}
-                          FormHelperTextProps={{
-                            color: '#256223',
+                          disablePortal
+                          fullWidth={true}
+                          size="small"
+                          sx={{ backgroundColor: 'white' }}
+                          options={city}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
+                          value={to_place}
+                          getOptionLabel={(item: CityProp) =>
+                            `${item.city}, ${item.address}`
+                          }
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              label={staticData.routTable.city}
+                              FormHelperTextProps={{
+                                color: '#256223',
+                              }}
+                              // helperText={errors?.from_place?.message.}
+                              // onError={!!errors?.from_place?.message?.city}
+                            />
+                          )}
+                          onChange={(event, newValue) => {
+                            newValue
+                              ? setValue('to_place', newValue)
+                              : setValue('to_place', {
+                                  id: undefined,
+                                  city: '',
+                                  price: undefined,
+                                });
                           }}
-                          // helperText={errors?.to_place?.message}
-                          // error={!!errors?.to_place}
                         />
+                        <Stack direction={'row'} columnGap={2}>
+                          <TextField
+                            size={'small'}
+                            type="number"
+                            label={staticData.routTable.price}
+                            InputLabelProps={{
+                              style: { color: '#808080' },
+                            }}
+                            value={watch('price') || ''}
+                            onChange={e =>
+                              setValue('price', e.target.value.toString())
+                            }
+                          />
+
+                          <Stack direction={'row'} alignItems={'center'}>
+                            <TextField
+                              type="number"
+                              label={staticData.routTable.hours}
+                              size="small"
+                              value={durationValues.hour}
+                              onChange={event =>
+                                setDurationValues({
+                                  ...durationValues,
+                                  hour: event.target.value,
+                                })
+                              }
+                              InputProps={{
+                                inputProps: { min: 0, max: 99 },
+                              }}
+                            />
+                            <Typography mx={1}>-</Typography>
+                            <TextField
+                              type="number"
+                              label={staticData.routTable.minutes}
+                              size="small"
+                              value={durationValues.minute}
+                              onChange={event =>
+                                setDurationValues({
+                                  ...durationValues,
+                                  minute: event.target.value,
+                                })
+                              }
+                              InputProps={{
+                                inputProps: { min: 0, max: 60 },
+                              }}
+                            />
+                          </Stack>
+                        </Stack>
+
+                        <Stack
+                          justifyContent={'flex-end'}
+                          alignItems={'center'}
+                          display={'flex'}
+                          flexDirection={'row'}
+                          columnGap={1}
+                        >
+                          <Checkbox
+                            {...register('is_popular')}
+                            color="success"
+                            checked={is_popular}
+                            sx={{ padding: 0, color: '#808080' }}
+                          />
+                          <Typography
+                            sx={{
+                              fontFamily: 'Inter',
+                              fontStyle: 'normal',
+
+                              fontSize: '16px',
+                              lineHeight: '140%',
+                              color: '#808080',
+                            }}
+                          >
+                            {staticData.routTable.is_popular}
+                          </Typography>
+                        </Stack>
+
+                        {rout.cities.slice(1, -1).length > 0 && (
+                          <Stack spacing={2} direction={'column'}>
+                            <Typography
+                              sx={{
+                                fontFamily: 'Inter',
+                                fontStyle: 'normal',
+                                fontWeight: 700,
+                                fontSize: '16px',
+                                lineHeight: '140%',
+                                color: color_title,
+                              }}
+                            >
+                              {staticData.routTable.stops}
+                            </Typography>
+
+                            {stops?.map((stop, ind) => {
+                              return (
+                                <Stack
+                                  key={`${stop.coords_x}${ind}`}
+                                  spacing={1}
+                                  direction={'row'}
+                                  p={'6px 14px'}
+                                  sx={{
+                                    borderRadius: '4px',
+                                    justifyContent: 'space-between',
+                                    border: '1px solid rgba(0, 0, 0, 0.23)',
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      fontFamily: 'Inter',
+                                      fontStyle: 'normal',
+                                      fontWeight: 400,
+                                      lineHeight: '140%',
+                                      color: color_title,
+                                    }}
+                                  >
+                                    {`${stop.city}, ${stop.address}`}
+                                  </Typography>
+
+                                  <IconButton
+                                    onClick={() => {
+                                      handleDeleteStop(stop?.id);
+                                    }}
+                                    sx={{
+                                      color: colorIcon,
+                                      fontSize: 16,
+                                      fill: '#424242',
+                                      '&:hover': { fill: 'red' },
+                                    }}
+                                    size={'small'}
+                                  >
+                                    <Trash
+                                      height={20}
+                                      width={20}
+                                      fill={'inherit'}
+                                    />
+                                  </IconButton>
+                                </Stack>
+                              );
+                            })}
+                          </Stack>
+                        )}
                       </Stack>
                     </Stack>
                   </Container>
@@ -373,43 +580,78 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                           {staticData.routTable.add_stop}
                         </Typography>
                         <Autocomplete
-                          value={selectedStop.city}
                           disablePortal
                           fullWidth={true}
                           size="small"
                           sx={{ backgroundColor: 'white' }}
-                          options={city.map((item: CityProp) => item.city)}
+                          options={city.map(item => ({
+                            city: item.city,
+                            id: item.id,
+                            address: item.address,
+                            price: item.price,
+                          }))}
+                          isOptionEqualToValue={(option, value) =>
+                            option.id === value.id
+                          }
+                          getOptionLabel={option =>
+                            `${option.city} ${option.address}`
+                          }
                           renderInput={params => (
                             <TextField
                               {...params}
                               label={staticData.routTable.city}
                             />
                           )}
-                          onInputChange={(event, newInputValue, reason) => {
+                          onChange={(event, newValue) => {
                             const selectedCity = city.find(
-                              item => item.city === newInputValue,
+                              item => item.id === newValue?.id,
                             );
-                            setSelectedStop(
-                              selectedCity || {
-                                id: null,
-                                city: newInputValue,
-                                price: null,
-                              },
-                            );
+
+                            selectedCity
+                              ? setSelectedStop(selectedCity)
+                              : setSelectedStop({
+                                  id: '',
+                                  city: '',
+                                  address: '',
+                                  coords_x: '',
+                                  cooords_y: '',
+                                });
+                          }}
+                        />
+                      </Stack>
+                      <Stack>
+                        <TextField
+                          size={'small'}
+                          type="number"
+                          value={selectedStop.price || ''}
+                          label={staticData.routTable.price}
+                          InputLabelProps={{
+                            style: { color: '#808080' },
+                          }}
+                          onChange={e => {
+                            const { value } = e.target;
+                            setSelectedStop(prevSelectedStop => ({
+                              ...prevSelectedStop,
+                              price: value,
+                            }));
                           }}
                         />
                       </Stack>
                       <Stack
-                        direction={'row'}
-                        spacing={1}
-                        justifyItems={'center'}
+                        justifyContent={'flex-end'}
                         alignItems={'center'}
                         display={'flex'}
+                        flexDirection={'row'}
+                        columnGap={1}
                       >
                         <Checkbox
-                          {...register('is_stop')}
+                          // {...register('is_stop')}
                           color="success"
                           sx={{ padding: 0, color: '#808080' }}
+                          checked={is_stop}
+                          onChange={() => {
+                            setValue('is_stop', !is_stop);
+                          }}
                         />
                         <Typography
                           sx={{
@@ -428,9 +670,34 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                             color={'secondary'}
                             size={'large'}
                             variant={'contained'}
+                            sx={{ textTransform: 'none' }}
                             fullWidth
-                            type={'submit'}
-                            disabled={!isValid}
+                            disabled={!is_stop || !selectedStop.price}
+                            onClick={() => {
+                              setValue('is_stop', false);
+
+                              const stopExists = stops.find(
+                                stop => stop.id === selectedStop.id,
+                              );
+                              setSelectedStop(prevSelectedStop => ({
+                                ...prevSelectedStop,
+                                price: '',
+                              }));
+                              if (!stopExists) {
+                                setStops(prevStops => [
+                                  ...prevStops,
+                                  selectedStop,
+                                ]);
+                                setValue('is_stop', false);
+                              } else {
+                                enqueueSnackbar(
+                                  `${staticData.routTable.snackBar.add_stops_error}`,
+                                  {
+                                    variant: 'error',
+                                  },
+                                );
+                              }
+                            }}
                           >
                             {staticData.routTable.add_stop}
                           </Button>
@@ -444,7 +711,7 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
             <Grid item xs={4} height={'100%'}>
               <Container disableGutters maxWidth={'md'}>
                 <Paper>
-                  <Box width={'100%'} height={732} p={2}>
+                  <Box width={'100%'} minHeight={732} p={2}>
                     <Grid
                       height={'100%'}
                       display={'flex'}
@@ -498,55 +765,58 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <Circle height={16} width={16} />
                                 </Box>
-
-                                <Stack
-                                  spacing={1}
-                                  alignItems={'start'}
-                                  direction={'column'}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontFamily: 'Inter',
-                                      fontStyle: 'normal',
-                                      fontWeight: 700,
-                                      fontSize: '16px',
-                                      lineHeight: '140%',
-                                      color: color_title,
-                                    }}
-                                    color={colorHeading}
-                                  >
-                                    {from_place.city}
-                                  </Typography>
-                                  <Box
-                                    display={'flex'}
-                                    alignItems={'center'}
-                                    justifyContent={'space-between'}
+                                {from_place.city && (
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'column'}
+                                    width={'100%'}
                                   >
                                     <Typography
                                       sx={{
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
-                                        fontWeight: 400,
-                                        fontSize: '12px',
-                                        lineHeight: '150%',
+                                        fontWeight: 700,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
                                         color: color_title,
                                       }}
                                       color={colorHeading}
                                     >
-                                      Двірцева площа, 1, Львів, Львівська
-                                      область
+                                      {from_place.city}
                                     </Typography>
-                                    <Box height={16} width={16}>
-                                      <Marker height={16} width={16} />
+                                    <Box
+                                      display={'flex'}
+                                      alignItems={'center'}
+                                      justifyContent={'space-between'}
+                                      width={'100%'}
+                                    >
+                                      <Typography
+                                        sx={{
+                                          fontFamily: 'Inter',
+                                          fontStyle: 'normal',
+                                          fontWeight: 400,
+                                          fontSize: '12px',
+                                          lineHeight: '150%',
+                                          color: color_title,
+                                        }}
+                                        color={colorHeading}
+                                      >
+                                        {from_place.address}
+                                      </Typography>
+                                      <Box height={16} width={16}>
+                                        <Marker height={16} width={16} />
+                                      </Box>
                                     </Box>
-                                  </Box>
-                                </Stack>
+                                  </Stack>
+                                )}
                               </Stack>
                             </Stack>
 
                             {stops.length > 0 ? (
-                              stops.map(stop => (
+                              stops.map((stop, ind) => (
                                 <Stack
+                                  key={`${stop.id} ${ind}`}
                                   spacing={1}
                                   direction={'column'}
                                   p={2}
@@ -569,20 +839,46 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                       spacing={1}
                                       alignItems={'start'}
                                       direction={'column'}
+                                      width={'100%'}
                                     >
-                                      <Typography
-                                        sx={{
-                                          fontFamily: 'Inter',
-                                          fontStyle: 'normal',
-                                          fontWeight: 700,
-                                          fontSize: '16px',
-                                          lineHeight: '140%',
-                                          color: color_title,
-                                        }}
-                                        color={colorHeading}
+                                      <Box
+                                        display={'flex'}
+                                        justifyContent={'space-between'}
+                                        alignItems={'flex-start'}
+                                        width={'100%'}
                                       >
-                                        {stop.city}
-                                      </Typography>
+                                        <Typography
+                                          sx={{
+                                            fontFamily: 'Inter',
+                                            fontStyle: 'normal',
+                                            fontWeight: 700,
+                                            fontSize: '16px',
+                                            lineHeight: '140%',
+                                            color: color_title,
+                                          }}
+                                          color={colorHeading}
+                                        >
+                                          {stop.city}
+                                        </Typography>
+                                        <IconButton
+                                          onClick={() => {
+                                            if (stop.id)
+                                              handleDeleteStop(stop.id);
+                                          }}
+                                          size={'small'}
+                                          sx={{
+                                            padding: 0,
+                                            fill: '#424242',
+                                            '&:hover': { fill: 'red' },
+                                          }}
+                                        >
+                                          <Trash
+                                            height={20}
+                                            width={20}
+                                            fill={'inherit'}
+                                          />
+                                        </IconButton>
+                                      </Box>
                                       <Typography
                                         sx={{
                                           fontFamily: 'Inter',
@@ -594,12 +890,15 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                         }}
                                         color={colorHeading}
                                       >
-                                        {stop.price} UAH
+                                        {stop.price
+                                          ? `${stop.price}  ${getCurrency(3)}`
+                                          : ''}
                                       </Typography>
                                       <Box
                                         display={'flex'}
                                         alignItems={'center'}
                                         justifyContent={'space-between'}
+                                        width={'100%'}
                                       >
                                         <Typography
                                           sx={{
@@ -612,18 +911,11 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                           }}
                                           color={colorHeading}
                                         >
-                                          Двірцева площа, 1, Львів, Львівська
-                                          область
+                                          {stop.address}
                                         </Typography>
-                                        <IconButton
-                                          onClick={() => {
-                                            if (stop.id)
-                                              handleDeleteStop(stop.id);
-                                          }}
-                                          size={'small'}
-                                        >
-                                          <Trash height={20} width={20} />
-                                        </IconButton>
+                                        <Box height={20} width={20}>
+                                          <Marker height={16} width={16} />
+                                        </Box>
                                       </Box>
                                     </Stack>
                                   </Stack>
@@ -653,51 +945,128 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                 <Box height={16} width={16}>
                                   <ToCircle height={16} width={16} />
                                 </Box>
-
-                                <Stack
-                                  spacing={1}
-                                  alignItems={'start'}
-                                  direction={'column'}
-                                >
-                                  <Typography
-                                    sx={{
-                                      fontFamily: 'Inter',
-                                      fontStyle: 'normal',
-                                      fontWeight: 700,
-                                      fontSize: '16px',
-                                      lineHeight: '140%',
-                                      color: color_title,
-                                    }}
-                                    color={colorHeading}
+                                {to_place?.city && (
+                                  <Stack
+                                    spacing={1}
+                                    alignItems={'start'}
+                                    direction={'column'}
                                   >
-                                    {to_place.city}
-                                  </Typography>
-                                  <Box
-                                    display={'flex'}
-                                    alignItems={'center'}
-                                    justifyContent={'space-between'}
-                                  >
+                                    <Typography
+                                      sx={{
+                                        fontFamily: 'Inter',
+                                        fontStyle: 'normal',
+                                        fontWeight: 700,
+                                        fontSize: '16px',
+                                        lineHeight: '140%',
+                                        color: color_title,
+                                      }}
+                                      color={colorHeading}
+                                    >
+                                      {to_place.city}
+                                    </Typography>
                                     <Typography
                                       sx={{
                                         fontFamily: 'Inter',
                                         fontStyle: 'normal',
                                         fontWeight: 400,
                                         fontSize: '12px',
-                                        lineHeight: '150%',
+                                        lineHeight: '140%',
                                         color: color_title,
                                       }}
                                       color={colorHeading}
                                     >
-                                      Двірцева площа, 1, Львів, Львівська
-                                      область
+                                      {`${staticData.routTable.price}: ${price} ${getCurrency(3)}`}
                                     </Typography>
-                                    <Box height={16} width={16}>
-                                      <Marker height={16} width={16} />
-                                    </Box>
-                                  </Box>
-                                </Stack>
+                                  </Stack>
+                                )}
                               </Stack>
+                              {to_place && (
+                                <Stack
+                                  direction={'row'}
+                                  display={'flex'}
+                                  alignItems={'flex-start'}
+                                >
+                                  <Box height={20} width={20}>
+                                    <Marker height={16} width={16} />
+                                  </Box>
+                                  <Typography
+                                    sx={{
+                                      fontFamily: 'Inter',
+                                      fontStyle: 'normal',
+                                      fontWeight: 400,
+                                      fontSize: '12px',
+                                      lineHeight: '150%',
+                                      color: color_title,
+                                    }}
+                                    color={colorHeading}
+                                  >
+                                    {to_place?.address}
+                                  </Typography>
+                                </Stack>
+                              )}
                             </Stack>
+                            <Stack
+                              spacing={1}
+                              alignItems={'start'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '12px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {staticData.routTable.duration}:
+                              </Typography>
+                              {(durationValues.hour ||
+                                durationValues.minute) && (
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '12px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {`${durationValues.hour} ${staticData.routTable.hours} ${durationValues.minute} ${staticData.routTable.minutes}`}
+                                </Typography>
+                              )}
+                            </Stack>
+                            {is_popular && (
+                              <Box
+                                display={'flex'}
+                                alignItems={'center'}
+                                justifyContent={'start'}
+                              >
+                                <Checkbox
+                                  checked
+                                  color="success"
+                                  sx={{ padding: 0, color: '#808080' }}
+                                />
+                                <Typography
+                                  sx={{
+                                    fontFamily: 'Inter',
+                                    fontStyle: 'normal',
+                                    fontWeight: 400,
+                                    fontSize: '12px',
+                                    lineHeight: '150%',
+                                    color: color_title,
+                                  }}
+                                  color={colorHeading}
+                                >
+                                  {staticData.routTable.is_popular}
+                                </Typography>
+                              </Box>
+                            )}
+
                             <Box display={'flex'}>
                               <Button
                                 sx={{ height: 50 }}
@@ -707,7 +1076,6 @@ const EditRoutInfo = ({ rout, staticData, lang }: IInfoCardProps) => {
                                 fullWidth
                                 type={'submit'}
                                 disabled={!isValid}
-                                onClick={handleAddCity}
                               >
                                 {staticData.routTable.save}
                               </Button>

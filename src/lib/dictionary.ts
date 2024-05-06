@@ -4,15 +4,18 @@ import type { Locale } from '@/i18n.config';
 // const dictionaries = {
 //   en: async () => ({
 //     ...(await import(`@/dictionaries/en/common.json`)).default,
+//     ...(await import(`@/dictionaries/en/meta.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_about.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_rule.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_contacts.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_tabs.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_tickets.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_rent.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_city.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_bus.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_rout.json`)).default,
+//     ...(await import(`@/dictionaries/en/dashboard_parcels.json`)).default,
 //     ...(await import(`@/dictionaries/en/dashboard_journey.json`)).default,
 //     ...(await import(`@/dictionaries/en/footer.json`)).default,
 //     ...(await import(`@/dictionaries/en/header.json`)).default,
@@ -33,14 +36,17 @@ import type { Locale } from '@/i18n.config';
 
 //   uk: async () => ({
 //     ...(await import(`@/dictionaries/uk/common.json`)).default,
+//     ...(await import(`@/dictionaries/uk/meta.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_about.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_rule.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_contacts.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_rout.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_tabs.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_city.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_tickets.json`)).default,
+//     ...(await import(`@/dictionaries/uk/dashboard_parcels.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_journey.json`)).default,
 //     ...(await import(`@/dictionaries/uk/dashboard_rent.json`)).default,
 //     ...(await import(`@/dictionaries/uk/footer.json`)).default,
@@ -61,9 +67,11 @@ import type { Locale } from '@/i18n.config';
 //   }),
 //   lt: async () => ({
 //     ...(await import(`@/dictionaries/lt/common.json`)).default,
+//     ...(await import(`@/dictionaries/lt/meta.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_about.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_contacts.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_rout.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_rule.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_tabs.json`)).default,
@@ -71,6 +79,7 @@ import type { Locale } from '@/i18n.config';
 //     ...(await import(`@/dictionaries/lt/dashboard_tickets.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_journey.json`)).default,
 //     ...(await import(`@/dictionaries/lt/dashboard_rent.json`)).default,
+//     ...(await import(`@/dictionaries/lt/dashboard_parcels.json`)).default,
 //     ...(await import(`@/dictionaries/lt/footer.json`)).default,
 //     ...(await import(`@/dictionaries/lt/header.json`)).default,
 //     ...(await import(`@/dictionaries/lt/infobuy.json`)).default,
@@ -89,13 +98,16 @@ import type { Locale } from '@/i18n.config';
 //   }),
 //   pt: async () => ({
 //     ...(await import(`@/dictionaries/pt/common.json`)).default,
+//     ...(await import(`@/dictionaries/pt/meta.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_about.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_bus.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_contacts.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_journey.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_rout.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_rule.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_tabs.json`)).default,
+//     ...(await import(`@/dictionaries/pt/dashboard_parcels.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_city.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_tickets.json`)).default,
 //     ...(await import(`@/dictionaries/pt/dashboard_rent.json`)).default,
@@ -124,6 +136,13 @@ const commonDictionaries = {
   pt: async () => (await import(`@/dictionaries/pt/common.json`)).default,
 };
 
+const metaDictionaries = {
+  en: async () => (await import(`@/dictionaries/en/meta.json`)).default,
+  uk: async () => (await import(`@/dictionaries/uk/meta.json`)).default,
+  lt: async () => (await import(`@/dictionaries/lt/meta.json`)).default,
+  pt: async () => (await import(`@/dictionaries/pt/meta.json`)).default,
+};
+
 const aboutDictionaries = {
   en: async () => (await import(`@/dictionaries/en/about.json`)).default,
   uk: async () => (await import(`@/dictionaries/uk/about.json`)).default,
@@ -148,6 +167,29 @@ const dashboardAboutDictionaries = {
   pt: async () =>
     (await import(`@/dictionaries/pt/dashboard_about.json`)).default,
 };
+
+const dashboardContactsDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_contacts.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_contacts.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_contacts.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_contacts.json`)).default,
+};
+
+const dashboardParcelsDictionaries = {
+  en: async () =>
+    (await import(`@/dictionaries/en/dashboard_parcels.json`)).default,
+  uk: async () =>
+    (await import(`@/dictionaries/uk/dashboard_parcels.json`)).default,
+  lt: async () =>
+    (await import(`@/dictionaries/lt/dashboard_parcels.json`)).default,
+  pt: async () =>
+    (await import(`@/dictionaries/pt/dashboard_parcels.json`)).default,
+};
+
 const dashboardRuleDictionaries = {
   en: async () =>
     (await import(`@/dictionaries/en/dashboard_rule.json`)).default,
@@ -339,6 +381,10 @@ export const getDashboardDictionaries = async (lang: Locale) =>
 
 export const getDashboardAboutDictionaries = async (lang: Locale) =>
   dashboardAboutDictionaries[lang]();
+
+export const getDashboardParcelstDictionaries = async (lang: Locale) =>
+  dashboardParcelsDictionaries[lang]();
+
 export const getDashboardRuleDictionaries = async (lang: Locale) =>
   dashboardRuleDictionaries[lang]();
 
@@ -371,6 +417,8 @@ export const getContactDictionaries = async (lang: Locale) =>
 
 export const getCommonDictionaries = async (lang: Locale) =>
   commonDictionaries[lang]();
+export const getMetaDictionaries = async (lang: Locale) =>
+  metaDictionaries[lang]();
 
 export const getAboutDictionaries = async (lang: Locale) =>
   aboutDictionaries[lang]();
@@ -398,6 +446,9 @@ export const getDashboardRentsDictionaries = async (lang: Locale) =>
 
 export const getDashboardBusDictionaries = async (lang: Locale) =>
   dashboardBusDictionaries[lang]();
+
+export const getDashboardContactsDictionaries = async (lang: Locale) =>
+  dashboardContactsDictionaries[lang]();
 
 export const getDashboardTicketsDictionaries = async (lang: Locale) =>
   dashboardTicketsDictionaries[lang]();

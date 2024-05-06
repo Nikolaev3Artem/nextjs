@@ -112,10 +112,10 @@ export function Login({
         console.log('error message: ', error.message);
         return error.message;
       } else {
-        enqueueSnackbar(`${staticData.snack_bar.error}`, {
+        enqueueSnackbar(`${staticData.snack_bar.server_error}`, {
           variant: 'error',
         });
-        console.log('unexpected error: ');
+
         return 'An unexpected error occurred';
       }
     } finally {

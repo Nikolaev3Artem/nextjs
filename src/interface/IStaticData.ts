@@ -63,6 +63,7 @@ export interface MainStaticDataProps {
     routs: string;
     duration: string;
     hour: string;
+    passenger: string;
     seat: string;
     baggage: { title: string; light_luggage: string; heavy_luggage: string };
     cancellation: string;
@@ -122,6 +123,7 @@ export interface loginStaticDataProp {
   snack_bar: {
     error: string;
     success: string;
+    server_error: string;
   };
 }
 
@@ -226,6 +228,10 @@ export interface profileStaticData {
       title: string;
     };
   };
+  snackBar: {
+    success: string;
+    error: string;
+  };
 }
 
 export interface orderStaticData {
@@ -295,6 +301,45 @@ export interface dashboardAboutStaticData {
   };
   snackBar: {
     success: string;
+  };
+  preview: string;
+}
+
+export interface dashboardContactsStaticData {
+  contacts: string;
+  home: string;
+  back: string;
+
+  form: {
+    errors: {
+      size: string;
+      formats: string;
+      title_more60: string;
+      text_more60: string;
+      alt_more30: string;
+      email_formats: string;
+    };
+    text: {
+      h1: string;
+      label: string;
+      description: string;
+      alt: string;
+      banner: string;
+      schedule: string;
+      lunchtime: string;
+      weekend: string;
+      address: string;
+      email: string;
+      phone: string;
+      workDay: { name: string; title: string; shot_name: string }[];
+    };
+    save_btn: {
+      text: string;
+    };
+  };
+  snackBar: {
+    success: string;
+    error: string;
   };
   preview: string;
 }
@@ -487,6 +532,7 @@ export interface dashboardRoutStaticData {
     add_stop: string;
     city: string;
     departure_time: string;
+    duration: string;
     order: string;
     arrival_time: string;
     price: string;
@@ -495,12 +541,15 @@ export interface dashboardRoutStaticData {
     add_btn: string;
     no_stop: string;
     is_popular: string;
+    hours: string;
+    minutes: string;
     snackBar: {
       remove_success: string;
       remove_error: string;
       update_success: string;
       add_success: string;
       add_error: string;
+      add_stops_error: string;
     };
   };
   errors: {
@@ -588,13 +637,31 @@ export interface dashboardJourneyStaticData {
     reserve: string;
     passenger_list: string;
     name: string;
+    title: string;
+    services: string;
+    plate: string;
+    seats_first_floor: string;
+    wc: string;
+    seats_second_floor: string;
     seat: string;
     comment: string;
     luggage: string;
+    extra_luggage: string;
+    base_bag: string;
+    extra_bag: string;
     from: string;
     to: string;
+    no: string;
+    yes: string;
     next_step: string;
     choose_journey: string;
+
+    seats_status: {
+      payed: string;
+      available: string;
+      reserved: string;
+    };
+
     snackBar: {
       remove_success: string;
       remove_error: string;

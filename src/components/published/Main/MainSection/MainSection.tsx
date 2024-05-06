@@ -12,6 +12,7 @@ import Style from './page.module.css';
 
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import { IPopular } from '@/interface/IPopular';
+import { IJourney } from '@/interface/IJourney';
 
 const getPopularRouts = async (lang: Locale): Promise<IPopular[]> => {
   try {
@@ -30,7 +31,21 @@ const getPopularRouts = async (lang: Locale): Promise<IPopular[]> => {
 const getRoute = async (lang: Locale): Promise<IPopular[]> => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/routes/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/routes`,
+    );
+
+    if (response.status === 200) {
+      return response.data.results;
+    } else return [];
+  } catch (error) {
+    return [];
+  }
+};
+
+const getJourney = async (lang: Locale): Promise<IJourney[]> => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/journey?limit=5`,
     );
 
     if (response.status === 200) {
@@ -50,13 +65,18 @@ export const MainSection = async ({
 }) => {
   const routs = await getRoute(lang);
   const popularRouts = await getPopularRouts(lang);
-  const routsFrom = [...new Set(routs.map(item => item.from_place))];
-  const routsTo = [...new Set(routs.map(item => item.to_place))];
+  const journey = await getJourney(lang);
+  const routsFrom = [...new Set(routs.map(item => item?.cities[0]?.city))];
+  const routsTo = [
+    ...new Set(routs.map(item => item?.cities[item?.cities.length - 1]?.city)),
+  ];
   const popularRoutsFrom = [
-    ...new Set(popularRouts.map(item => item.from_place)),
+    ...new Set(popularRouts.map(item => item?.cities[0]?.city)),
   ].slice(0, 4);
   const popularRoutsTo = [
-    ...new Set(popularRouts.map(item => item.to_place)),
+    ...new Set(
+      popularRouts.map(item => item?.cities[item?.cities.length - 1]?.city),
+    ),
   ].slice(0, 4);
 
   return (
@@ -78,6 +98,7 @@ export const MainSection = async ({
         popularRoutsTo={popularRoutsTo}
         routsFrom={routsFrom}
         routsTo={routsTo}
+        journey={journey}
       />
     </Container>
   );

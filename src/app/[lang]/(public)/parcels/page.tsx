@@ -9,7 +9,7 @@ import { getParcelsDictionaries } from '@/lib/dictionary';
 const getParcels = async (lang: Locale) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/parcel/`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/parcel`,
     );
     if (response.status === 200) {
       return {

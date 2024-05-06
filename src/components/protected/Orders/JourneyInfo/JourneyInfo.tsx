@@ -13,6 +13,7 @@ import CalendarIcon from '../../../../../public/icons/calendar-month.svg';
 import { orderStaticData } from '@/interface/IStaticData';
 import { IJourney } from '@/interface/IJourney';
 import dayjs from 'dayjs';
+import { getTimeDuration } from '@/helpers/getTimeDuration';
 
 export const JourneyInfo = ({
   data,
@@ -162,11 +163,7 @@ export const JourneyInfo = ({
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {dayjs(
-                dayjs(data?.departure_time).diff(dayjs(data?.arrival_time)),
-              )
-                .locale(`${lang}`)
-                .format('HH:mm')}
+              {getTimeDuration(data?.arrival_date, data?.departure_date)}
             </Typography>
           </Typography>
         </Grid>
@@ -207,8 +204,8 @@ export const JourneyInfo = ({
                 <FromCircleSvg width={12} height={13} />
               </Box>
 
-              {data.routes[0].stops &&
-                data.routes[0].stops.map((el, ind) => {
+              {data.routes[0].cities &&
+                data.routes[0].cities.map((el, ind) => {
                   return (
                     <Box
                       key={ind}
@@ -244,8 +241,8 @@ export const JourneyInfo = ({
                   {data.routes[0].from_place}
                 </Typography>
               </Box>
-              {data.routes[0].stops &&
-                data.routes[0].stops.map(stop => {
+              {data.routes[0].cities &&
+                data.routes[0].cities.map(stop => {
                   return (
                     <Box
                       key={stop.id}

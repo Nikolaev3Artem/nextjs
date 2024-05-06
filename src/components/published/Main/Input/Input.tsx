@@ -47,12 +47,11 @@ export function Input({
 
   useEffect(() => {
     if (active === true) {
-      console.log('to', selectRoutsTo);
       setValue2(selectRoutsTo);
       setValue1(selectRoutsFrom);
       setValues({ ...values, ['from']: selectRoutsFrom });
       setValues({ ...values, ['to']: selectRoutsTo });
-      console.log('from', selectRoutsFrom);
+
       setTimeout(() => {}, 1000);
       window.scrollTo({
         top: 0,
@@ -81,6 +80,7 @@ export function Input({
               value={value1}
               disablePortal
               fullWidth={true}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               options={routsFrom}
               renderInput={params => (
                 <TextField {...params} label={staticData.from} />
@@ -120,6 +120,7 @@ export function Input({
               fullWidth={true}
               disablePortal
               options={routsTo}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
               renderInput={params => (
                 <TextField {...params} label={staticData.to} />
               )}

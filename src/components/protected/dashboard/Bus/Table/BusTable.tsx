@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { grey } from '@mui/material/colors';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React from 'react';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
@@ -80,9 +80,13 @@ const BusTable = ({
 
   const handleClickDelete = async (id: any) => {
     const session = await getSession();
+    if (!session) {
+      redirect(`/${lang}/auth`);
+    }
+
     try {
       const response = await fetch(
-        `${BASE_URL}/${selectLang}/api/admin/service/bus/${id}/delete/`,
+        `${BASE_URL}/${selectLang}/api/admin/service/bus/${id}/delete`,
         {
           method: 'DELETE',
           headers: {
@@ -92,12 +96,14 @@ const BusTable = ({
           },
         },
       );
-      if (response.status === 204) {
+
+      if (response.status === 200) {
         enqueueSnackbar(`${staticData.busTable.snackBar.remove_success}`, {
           variant: 'success',
         });
-        revalidatePath('/uk/dashboard/bus');
-        rout.refresh();
+        // revalidatePath(`/${lang}/dashboard/`);
+        // rout.refresh();
+        redirect(`/${lang}/dashboard/bus`);
       }
     } catch (error) {
       console.error(error);
@@ -270,6 +276,7 @@ const BusTable = ({
                         direction={'row'}
                         spacing={2}
                         width={'100%'}
+                        sx={{ color: colorIcon }}
                       >
                         <IconButton
                           onClick={() => {
@@ -284,7 +291,11 @@ const BusTable = ({
                           onClick={() => {
                             handleClickDelete(item.id);
                           }}
-                          sx={{ color: colorIcon, fontSize: 16 }}
+                          sx={{
+                            color: 'inherit',
+                            fontSize: 16,
+                            '&:hover': { color: 'red' },
+                          }}
                           size={'small'}
                         >
                           <FiTrash2 />
