@@ -476,7 +476,7 @@ export interface dashboardTicketsStaticData {
       text: string;
     };
     status: string;
-    options: string[];
+    options: { name: string; title: string }[];
   };
   ticketsTable: {
     name: string;

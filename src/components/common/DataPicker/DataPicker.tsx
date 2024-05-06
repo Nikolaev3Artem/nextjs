@@ -13,6 +13,7 @@ import 'dayjs/locale/lt';
 import 'dayjs/locale/pt';
 import 'dayjs/locale/uk';
 import debounce from '@mui/utils/debounce';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 import * as React from 'react';
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export function DataPicker({
   values,
   isWhite,
   small,
+  isShowDelIcon = false,
 }: {
   staticData: string;
   lang: Locale;
@@ -35,9 +37,10 @@ export function DataPicker({
   values: any;
   isWhite?: boolean;
   small?: boolean;
+  isShowDelIcon?: boolean;
 }) {
-  const [datePickerValue, setDatePickerValue] = React.useState<Dayjs | null>(
-    dayjs(),
+  const [datePickerValue, setDatePickerValue] = React.useState<null | Dayjs>(
+    null,
   );
   const [open, setOpen] = useState<boolean>(false);
 
@@ -46,11 +49,21 @@ export function DataPicker({
     setDatePickerValue(newValue);
     setValues({ ...values, date: newValue?.toISOString() });
   }, 1000);
+
+  React.useEffect(() => {
+    minOff ? setDatePickerValue(null) : setDatePickerValue(today);
+  }, [minOff]);
+
+  const handleClearDate = () => {
+    setDatePickerValue(null);
+    setValues({ ...values, date: '' });
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
       <Box
         width={minOff ? '100%' : 'initial'}
         sx={{
+          position: 'relative',
           '& .MuiFormControl-root': {
             width: '100%',
             backgroundColor: isWhite ? 'white' : 'transparent',
@@ -64,8 +77,9 @@ export function DataPicker({
           label={staticData}
           minDate={minOff ? null : today}
           autoFocus={false}
-          value={minOff ? null : datePickerValue}
+          value={datePickerValue}
           slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
+          // onChange={newValue => handleDateChange(newValue)}
           onChange={handleDateChange}
           // @ts-ignore
 
@@ -73,6 +87,15 @@ export function DataPicker({
             <TextField {...params} onClick={e => setOpen(true)} />
           )}
         />
+        {values.date && isShowDelIcon && (
+          <IconButton
+            size={'small'}
+            sx={{ position: 'absolute', top: 3, right: 34 }}
+            onClick={handleClearDate}
+          >
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        )}
       </Box>
     </LocalizationProvider>
   );

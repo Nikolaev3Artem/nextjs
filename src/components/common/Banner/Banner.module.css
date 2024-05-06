@@ -27,7 +27,6 @@
 .banner .content__title,
 .banner .content__title_page {
   position: relative;
-
   display: flex;
   align-items: center;
   max-width: 80%;
@@ -39,7 +38,7 @@
 
 .banner .title {
   display: flex;
-  font-family: 'Inter', serif;
+  font-family: inherit;
   font-style: normal;
   font-weight: 700;
   line-height: 140%;

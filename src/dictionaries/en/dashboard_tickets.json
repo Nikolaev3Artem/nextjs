@@ -9,7 +9,12 @@
       "text": "New tickets"
     },
     "status": "Status",
-    "options": ["Booked", "New", "Payed"]
+
+    "options": [
+      { "name": "RESERVED", "title": "Booked" },
+      { "name": "PAYED", "title": "Payed" },
+      { "name": "NEW", "title": "New" }
+    ]
   },
   "ticketsTable": {
     "number": "Number",

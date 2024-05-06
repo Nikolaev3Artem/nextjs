@@ -9,7 +9,11 @@
       "text": "Новий квиток"
     },
     "status": "Cтатус",
-    "options": ["Заброньований", "Новий", "Сплачений"]
+    "options": [
+      { "name": "RESERVED", "title": "Заброньований" },
+      { "name": "PAYED", "title": "Сплачений" },
+      { "name": "NEW", "title": "Новий" }
+    ]
   },
   "ticketsTable": {
     "number": "Номер",
