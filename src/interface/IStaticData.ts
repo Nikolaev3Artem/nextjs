@@ -220,6 +220,9 @@ export interface profileStaticData {
     login: string;
     password: string;
   };
+  errors: {
+    format_error: string;
+  };
   button: {
     save: {
       title: string;

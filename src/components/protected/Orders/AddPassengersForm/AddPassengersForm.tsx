@@ -36,8 +36,8 @@ import { SeatsBooking } from '@/components/published/Main/SeatsBooking';
 import dayjs from 'dayjs';
 import { getCurrency } from '@/helpers/getCurrency';
 import { useCurrencyContext } from '@/app/context';
-
-const discount = 30;
+import { discount } from '@/helpers/constants';
+import { enqueueSnackbar, SnackbarProvider } from 'notistack';
 
 interface UserData {
   email: string;
@@ -174,16 +174,19 @@ export const AddPassengersForm = ({
           updatedValues[passengerKey] = {
             id: passengerKey,
             email: userData?.email || '',
-            name: userData?.first_name || '',
-            surname: userData?.last_name || '',
-            phone: userData?.phone || '',
+            name: '',
+            surname: '',
+            phone: '',
             passanger_type: prevState[passengerKey]?.passanger_type || 'adult',
             comment: prevState[passengerKey]?.comment || '',
             luggage: prevState[passengerKey]?.luggage || 'base',
             seat: seat.seat || null,
             floor: seat.floor || null,
-            price: data?.routes[0]?.price || null,
-            status: 'PAYED',
+            price:
+              prevState[passengerKey]?.passanger_type === 'child'
+                ? data?.routes[0]?.price - discount
+                : data?.routes[0]?.price || null,
+            status: 'NEW',
           };
         });
 
@@ -225,7 +228,7 @@ export const AddPassengersForm = ({
 
   const Reserve = async (event: React.SyntheticEvent) => {
     event.preventDefault();
-
+    let error_text;
     try {
       const session = await getSession();
       if (!session) return null;
@@ -274,9 +277,15 @@ export const AddPassengersForm = ({
       });
 
       const url = await response.data.response.checkout_url;
+
+      error_text = await response.data.response;
       if (url) router.push(url);
     } catch (error) {
       console.error(error);
+      //@ts-ignore
+      enqueueSnackbar(`${error.response.data}`, {
+        variant: 'error',
+      });
     }
   };
 
@@ -318,6 +327,7 @@ export const AddPassengersForm = ({
   };
   return (
     <>
+      <SnackbarProvider />
       <Box>
         <Grid
           container
@@ -667,7 +677,6 @@ export const AddPassengersForm = ({
                     color={'primary'}
                     sx={{ fontSize: { xs: '12px' } }}
                   >
-                    {/* {data?.bus ? data.bus[0].name : ''} */}{' '}
                     {getCurrency(selectCurrency)}
                   </Typography>
                 </Typography>

@@ -60,6 +60,7 @@ export interface StopsProps {
   coords_x?: string;
   cooords_y?: string;
   address?: string;
+  is_stop?: boolean;
 }
 
 export interface IRout {
@@ -71,6 +72,6 @@ export interface IRout {
   to_place: any;
   is_stop?: boolean;
   is_popular?: boolean;
-  travel_time: string;
+  selected_stops: any[];
   cities: StopsProps[];
 }

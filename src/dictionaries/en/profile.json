@@ -10,6 +10,9 @@
     "login": "Login",
     "password": "Password"
   },
+  "errors": {
+    "format_error": "Wrong format"
+  },
   "button": {
     "save": {
       "title": "Save"

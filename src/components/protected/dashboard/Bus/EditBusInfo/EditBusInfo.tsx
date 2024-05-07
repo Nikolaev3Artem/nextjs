@@ -197,6 +197,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
     handleSubmit,
     resetField,
     watch,
+    setValue,
     formState: { errors, isDirty, isValid },
   } = useForm<IRent>({
     defaultValues: {
@@ -220,6 +221,10 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       enter_1: bus.enter_1 || false,
       enter_2: bus.enter_2 || false,
       enter_3: bus.enter_3 || false,
+      wc_2: bus?.wc_2 ? 'yes' : 'no',
+      // wc_2: 'no',
+      wc_row_1: bus.wc_row_1 || '2',
+      wc_row_2: bus.wc_row_2 || '2',
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -232,6 +237,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const second_floor_seats_count = watch('second_floor_seats_count');
   const plates_number = watch('plates_number');
   const wc = watch('wc');
+  const wc_2 = watch('wc_2');
   const rentable = watch('rentable');
   const photo = watch('photo');
   const is_wc_working = watch('is_wc_working');
@@ -243,6 +249,8 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const enter_1 = watch('enter_1');
   const enter_2 = watch('enter_2');
   const enter_3 = watch('enter_3');
+  const wc_row_1 = watch('wc_row_1');
+  const wc_row_2 = watch('wc_row_2');
 
   const rout = useRouter();
 
@@ -294,7 +302,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       );
       formData.append('rentable', data.rentable);
       formData.append('wc', data?.wc === 'yes' ? 'true' : 'false');
-
+      formData.append('wc_2', data.wc_2 === 'yes' ? 'true' : 'false');
       formData.append('rows_1', data?.rows_1?.toString() || '');
 
       formData.append('rows_2', data?.rows_2?.toString() || '');
@@ -308,6 +316,9 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       formData.append('enter_1', data?.enter_1?.toString() || 'false');
 
       formData.append('enter_2', data?.enter_2?.toString() || 'false');
+
+      formData.append('wc_row_1', data?.wc_row_1?.toString() || '2');
+      formData.append('wc_row_2', data?.wc_row_2?.toString() || '2');
 
       formData.append('enter_3', data?.enter_3?.toString() || 'false');
       formData.append('plates_number', data.plates_number);
@@ -799,12 +810,46 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                       {staticData.busTable.yes}
                                     </MenuItem>
                                   </Select>
-                                  <Typography fontSize={12}>
-                                    {staticData.busTable.seats_first_floor}: 2
-                                  </Typography>
+                                  <Box display={'flex'}>
+                                    <Typography fontSize={12}>
+                                      {staticData.busTable.seats_first_floor}:
+                                    </Typography>
+                                    <Select
+                                      labelId="demo-simple-select-standard-label"
+                                      id="demo-simple-select-standard"
+                                      value={wc_row_1}
+                                      variant="standard"
+                                      size="small"
+                                      onChange={event =>
+                                        setValue('wc_row_1', event.target.value)
+                                      }
+                                      label={staticData.busTable.row}
+                                      sx={{
+                                        fontSize: '12px',
+                                        paddingLeft: '4px',
+                                      }}
+                                    >
+                                      <MenuItem
+                                        value={2}
+                                        sx={{
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        2
+                                      </MenuItem>
+                                      <MenuItem
+                                        value={4}
+                                        sx={{
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        4
+                                      </MenuItem>
+                                    </Select>
+                                  </Box>
                                 </Stack>
                               </Grid>
-                              <Grid item xs={1.5} mb={2}>
+                              <Grid item xs={1.2} mb={2}>
                                 <Stack rowGap={2}>
                                   <Typography>
                                     {staticData.busTable.enter}
@@ -846,6 +891,64 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   </Typography>
                                 </Stack>
                               </Grid>
+                              <Grid item xs={2}>
+                                <Stack rowGap={2}>
+                                  <Typography>
+                                    {staticData.busTable.wc}/{' '}
+                                    {staticData.busTable.kitchen}
+                                  </Typography>
+                                  <Select
+                                    {...register('wc_2')}
+                                    id="wc_2"
+                                    value={wc_2}
+                                    size="small"
+                                  >
+                                    <MenuItem value="no">
+                                      {staticData.busTable.no}
+                                    </MenuItem>
+                                    <MenuItem value="yes">
+                                      {staticData.busTable.yes}
+                                    </MenuItem>
+                                  </Select>
+                                  <Box display={'flex'}>
+                                    <Typography fontSize={12}>
+                                      {staticData.busTable.seats_first_floor}:
+                                    </Typography>
+                                    <Select
+                                      labelId="demo-simple-select-standard-label"
+                                      id="demo-simple-select-standard"
+                                      value={wc_row_2}
+                                      variant="standard"
+                                      size="small"
+                                      onChange={event =>
+                                        setValue('wc_row_2', event.target.value)
+                                      }
+                                      label={staticData.busTable.row}
+                                      sx={{
+                                        fontSize: '12px',
+                                        paddingLeft: '4px',
+                                      }}
+                                    >
+                                      <MenuItem
+                                        value={2}
+                                        sx={{
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        2
+                                      </MenuItem>
+                                      <MenuItem
+                                        value={4}
+                                        sx={{
+                                          fontSize: '12px',
+                                        }}
+                                      >
+                                        4
+                                      </MenuItem>
+                                    </Select>
+                                  </Box>
+                                </Stack>
+                              </Grid>
                             </Grid>
 
                             <BusConstructor
@@ -853,6 +956,9 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                               rows_2={rows_2}
                               rows_3={rows_3}
                               is_wc={wc}
+                              is_wc_2={wc_2}
+                              wc_row_1={wc_row_1}
+                              wc_row_2={wc_row_2}
                               enter_2={enter_2}
                               enter_1={enter_1}
                               setSeatsCount={setFirstFloorSeatsCount}

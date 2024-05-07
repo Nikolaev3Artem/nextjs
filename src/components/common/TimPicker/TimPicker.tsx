@@ -67,7 +67,7 @@ export function TimPicker({
           label={staticData}
           minTime={minOff ? null : today}
           autoFocus={false}
-          value={minOff ? null : datePickerValue}
+          value={datePickerValue}
           slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
           onChange={newValue => {
             setDatePickerValue(newValue);

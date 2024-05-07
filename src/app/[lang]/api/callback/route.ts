@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         );
         const responses = await Promise.all(requests);
         if (responses.every(response => response.status === 200)) {
-          return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}`, 302);
+          return NextResponse.redirect(redirectUrl, 302);
         } else {
           return NextResponse.redirect(redirectUrl, 302);
         }

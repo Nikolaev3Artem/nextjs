@@ -167,6 +167,9 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       enter_2: false,
       enter_3: false,
       wc: 'no',
+      wc_2: 'no',
+      wc_row_1: '',
+      wc_row_2: '',
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -190,8 +193,12 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const enter_1 = watch('enter_1');
   const enter_2 = watch('enter_2');
   const enter_3 = watch('enter_3');
+  const wc_row_1 = watch('wc_row_1');
+  const wc_row_2 = watch('wc_row_2');
   //@ts-ignore
   const wc = useWatch({ name: 'wc', control: control });
+  //@ts-ignore
+  const wc_2 = useWatch({ name: 'wc_2', control: control });
 
   async function onSubmitForm(data: IRent) {
     try {
@@ -226,6 +233,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         data?.is_wc_working?.toString() || 'false',
       );
       formData.append('wc', data.wc === 'yes' ? 'true' : 'false');
+      formData.append('wc_2', data.wc_2 === 'yes' ? 'true' : 'false');
       formData.append('rows_1', data?.rows_1?.toString() || '');
       formData.append('rows_2', data?.rows_2?.toString() || '');
       formData.append('rows_3', data?.rows_3?.toString() || '');
@@ -234,6 +242,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       formData.append('enter_1', data?.enter_1?.toString() || '');
       formData.append('enter_2', data?.enter_2?.toString() || '');
       formData.append('enter_3', data?.enter_3?.toString() || '');
+      formData.append('wc_row_1', data?.wc_row_1?.toString() || '');
+      formData.append('wc_row_2', data?.wc_row_2?.toString() || '');
 
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       const response = await axios.post(
@@ -476,7 +486,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         </Tabs>
                         <CustomTabPanel value={float} index={0}>
                           <Grid container spacing={2}>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -497,7 +507,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={1.5} height={'100%'}>
+                            <Grid item xs={1.2} height={'100%'}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.enter}
@@ -518,7 +528,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -558,12 +568,46 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                     {staticData.busTable.yes}
                                   </MenuItem>
                                 </Select>
-                                <Typography fontSize={12}>
-                                  {staticData.busTable.seats_first_floor}: 2
-                                </Typography>
+                                <Box display={'flex'}>
+                                  <Typography fontSize={12}>
+                                    {staticData.busTable.seats_first_floor}:
+                                  </Typography>
+                                  <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={wc_row_1}
+                                    variant="standard"
+                                    size="small"
+                                    onChange={event =>
+                                      setValue('wc_row_1', event.target.value)
+                                    }
+                                    label={staticData.busTable.row}
+                                    sx={{
+                                      fontSize: '12px',
+                                      paddingLeft: '4px',
+                                    }}
+                                  >
+                                    <MenuItem
+                                      value={2}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      2
+                                    </MenuItem>
+                                    <MenuItem
+                                      value={4}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      4
+                                    </MenuItem>
+                                  </Select>
+                                </Box>
                               </Stack>
                             </Grid>
-                            <Grid item xs={1.5} mb={2}>
+                            <Grid item xs={1.2} mb={2}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.enter}
@@ -584,7 +628,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -605,14 +649,76 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.wc}/{' '}
+                                  {staticData.busTable.kitchen}
+                                </Typography>
+                                <Select
+                                  {...register('wc_2')}
+                                  id="wc_2"
+                                  value={wc_2}
+                                  size="small"
+                                >
+                                  <MenuItem value="no">
+                                    {staticData.busTable.no}
+                                  </MenuItem>
+                                  <MenuItem value="yes">
+                                    {staticData.busTable.yes}
+                                  </MenuItem>
+                                </Select>
+                                <Box display={'flex'}>
+                                  <Typography fontSize={12}>
+                                    {staticData.busTable.seats_first_floor}:
+                                  </Typography>
+                                  <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={wc_row_2}
+                                    variant="standard"
+                                    size="small"
+                                    onChange={event =>
+                                      setValue('wc_row_2', event.target.value)
+                                    }
+                                    label={staticData.busTable.row}
+                                    sx={{
+                                      fontSize: '12px',
+                                      paddingLeft: '4px',
+                                    }}
+                                  >
+                                    <MenuItem
+                                      value={2}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      2
+                                    </MenuItem>
+                                    <MenuItem
+                                      value={4}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      4
+                                    </MenuItem>
+                                  </Select>
+                                </Box>
+                              </Stack>
+                            </Grid>
                           </Grid>
 
                           <BusConstructor
                             rows_1={rows_1}
                             rows_2={rows_2}
                             rows_3={rows_3}
+                            wc_row_1={wc_row_1}
+                            wc_row_2={wc_row_2}
                             //@ts-ignore
                             is_wc={wc}
+                            //@ts-ignore
+                            is_wc_2={wc_2}
                             enter_2={enter_2}
                             enter_1={enter_1}
                             setSeatsCount={setFirstFloorSeatsCount}

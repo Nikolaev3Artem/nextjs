@@ -39,7 +39,7 @@ export interface IRentProps {
 const getTickets = async (lang: Locale) => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets?limit=599`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/tickets?limit=999`,
     );
 
     if (response.status === 200) {

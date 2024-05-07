@@ -28,7 +28,8 @@
 }
 
 .bus_seat.enter,
-.bus_seat.wc {
+.bus_seat.wc,
+.bus_seat.wc_large {
   background-color: transparent;
   position: relative;
   border: none;
@@ -51,6 +52,24 @@
   top: 65px;
   left: 0;
   width: 65px;
+  border: 1px solid #bfbfbf;
+  height: 32px;
+  font-size: 10px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #bfbfbf;
+}
+
+.bus_seat.wc_large::before {
+  content: 'WC / Kitchen';
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 170px;
   border: 1px solid #bfbfbf;
   height: 32px;
   font-size: 10px;

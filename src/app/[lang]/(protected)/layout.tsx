@@ -8,6 +8,7 @@ import {
   getHeaderDictionaries,
 } from '@/lib/dictionary';
 import axios from 'axios';
+import { SnackbarProvider } from 'notistack';
 
 const getContact = async (lang: Locale): Promise<PhoneType[]> => {
   try {

@@ -41,6 +41,8 @@ import axios from 'axios';
 import { getSession } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 
+import { discount } from '@/helpers/constants';
+
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -56,8 +58,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     duration: theme.transitions.duration.shortest,
   }),
 }));
-
-const discount = 30;
 
 export const TicketsCard = ({
   staticData,
@@ -244,9 +244,9 @@ export const TicketsCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {data?.journey[0]?.routes[0]?.travel_time
+                {/* {data?.journey[0]?.routes[0]?.travel_time
                   ? `${String(Math.floor(parseInt(data?.journey[0]?.routes[0]?.travel_time) / 60)).padStart(2, '0')}:${String(parseInt(data?.journey[0]?.routes[0]?.travel_time) % 60).padStart(2, '0')}  ${staticData.routs_card.hour}`
-                  : ''}
+                  : ''} */}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>
