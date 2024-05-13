@@ -3,6 +3,8 @@ import { Locale } from '@/i18n.config';
 import { PhoneType } from '@/interface/IEditorText';
 import { getAdminStatus, getCustomerStatus, getUserInfo } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { revalidateTag } from 'next/cache';
+
 import {
   getDashboardDictionaries,
   getHeaderDictionaries,
@@ -15,6 +17,7 @@ const getContact = async (lang: Locale): Promise<PhoneType[]> => {
     const response = await axios.get<PhoneType[]>(
       `${process.env.NEXT_PUBLIC_BASE_URL}${lang}/api/social_media/`,
     );
+    revalidateTag('city');
 
     if (response.status === 200) {
       return response.data;

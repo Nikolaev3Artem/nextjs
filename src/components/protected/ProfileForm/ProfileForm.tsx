@@ -217,6 +217,11 @@ export const ProfileForm = ({
                   bottom: '-17px',
                 },
               }}
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
+              }}
             />
             <TextField
               sx={{ my: 1, position: 'relative' }}
@@ -230,6 +235,11 @@ export const ProfileForm = ({
               variant="outlined"
               helperText={errors?.surname?.message}
               error={!!errors?.surname}
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
+              }}
               FormHelperTextProps={{
                 sx: {
                   position: 'absolute',
@@ -244,6 +254,11 @@ export const ProfileForm = ({
                 my: 1,
                 position: 'relative',
                 visibility: staticData.form.patronymic ? 'visible' : 'hidden',
+              }}
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
               }}
               fullWidth
               id="patronymic"
@@ -262,7 +277,10 @@ export const ProfileForm = ({
               }}
             />
             <FormControl sx={{ my: 1, width: '100%' }} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
+              <InputLabel
+                htmlFor="outlined-adornment-password"
+                sx={{ color: '#808080' }}
+              >
                 {staticData.form.password}
               </InputLabel>
 
@@ -303,6 +321,11 @@ export const ProfileForm = ({
               variant="outlined"
               helperText={errors?.phone?.message}
               error={!!errors?.phone}
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
+              }}
               FormHelperTextProps={{
                 sx: {
                   position: 'absolute',
@@ -323,6 +346,11 @@ export const ProfileForm = ({
               error={!!errors?.email}
               name="email"
               variant="outlined"
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
+              }}
               FormHelperTextProps={{
                 sx: {
                   position: 'absolute',
@@ -351,6 +379,11 @@ export const ProfileForm = ({
               // onChange={handleChange('login')}
               name="login"
               variant="outlined"
+              InputLabelProps={{
+                sx: {
+                  color: '#808080',
+                },
+              }}
             />
           </Grid>
 

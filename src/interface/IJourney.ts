@@ -68,10 +68,10 @@ export interface IRout {
   id: string;
   isPopular: boolean;
   price?: number | string | null;
-
+  travel_time?: any;
   to_place: any;
   is_stop?: boolean;
   is_popular?: boolean;
-  selected_stops: any[];
+  selected_stops?: any[];
   cities: StopsProps[];
 }

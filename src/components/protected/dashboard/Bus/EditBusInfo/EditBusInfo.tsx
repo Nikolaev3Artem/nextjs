@@ -51,6 +51,7 @@ import { IRent } from '@/interface/IRent';
 import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import BusConstructor from '../BusConstructor/BusConstructor';
+import { BusService } from '@/components/common/BusService';
 
 // import BusService from '../../../Rent/BusService/BusService';
 
@@ -78,7 +79,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const [secondFloorSeatsCount, setSecondFloorSeatsCount] = useState<
     number | null
   >(null);
-
+  console.log(bus);
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     loop: true,
@@ -97,6 +98,19 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
 
     setImagesList(bus.images_list);
   }, [bus.images_list]);
+
+  useEffect(() => {
+    setValue('second_floor_seats_count', bus?.second_floor_seats_count);
+  }, []);
+
+  useEffect(() => {
+    const selectedServices = bus?.busIdService?.map((id: number) => {
+      return staticData.busTable.services_options.find(
+        option => option.id === id,
+      );
+    });
+    setValue('busIdService', selectedServices);
+  }, [bus]);
 
   function Arrow(props: {
     disabled: boolean;
@@ -205,8 +219,8 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       first_floor_seats_count:
         firstFloorSeatsCount || bus?.first_floor_seats_count || 0,
       second_floor_seats_count:
-        secondFloorSeatsCount || bus?.second_floor_seats_count || 0,
-      busIdService: [],
+        bus?.second_floor_seats_count || secondFloorSeatsCount || 0,
+      busIdService: bus?.busIdService || [],
       photo: bus?.photo || null,
       rentable: bus?.rentable || false,
       uploaded_images: {},
@@ -222,7 +236,6 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       enter_2: bus.enter_2 || false,
       enter_3: bus.enter_3 || false,
       wc_2: bus?.wc_2 ? 'yes' : 'no',
-      // wc_2: 'no',
       wc_row_1: bus.wc_row_1 || '2',
       wc_row_2: bus.wc_row_2 || '2',
     },
@@ -233,6 +246,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   const { selectLang } = useLangContext();
   const files = watch('uploaded_images');
   const name = watch('name');
+  const busDataService = watch('busIdService');
   const first_floor_seats_count = watch('first_floor_seats_count');
   const second_floor_seats_count = watch('second_floor_seats_count');
   const plates_number = watch('plates_number');
@@ -321,7 +335,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
       formData.append('wc_row_2', data?.wc_row_2?.toString() || '2');
 
       formData.append('enter_3', data?.enter_3?.toString() || 'false');
-      formData.append('plates_number', data.plates_number);
+      formData.append('plates_number', data?.plates_number || '');
       data.photo?.length
         ? formData.append('photo', data.photo[0] || null)
         : formData.append('photo', bus.photo);
@@ -411,39 +425,15 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
         {/* @ts-ignore */}
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <Grid container direction={'row'} spacing={2}>
-            <Grid item xs={6} height={'100%'}>
+            <Grid item xs={7.5} height={'100%'}>
               <Paper>
-                <Box p={4} display={'flex'} width={'100%'}>
+                <Box p={3} display={'flex'} width={'100%'}>
                   <Container disableGutters>
-                    <Typography
-                      sx={{
-                        fontFamily: 'Inter',
-                        fontStyle: 'normal',
-                        fontWeight: 700,
-                        fontSize: '20px',
-                        lineHeight: '140%',
-                        color: color_title,
-                      }}
-                      mb={4}
-                    >
-                      {staticData.busTable.fill_form}
-                    </Typography>
                     <Stack spacing={2}>
                       <Stack spacing={2} flexDirection={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.name}
-                        </Typography>
                         <TextField
                           {...register('name')}
+                          label={staticData.busTable.name}
                           size={'small'}
                           FormHelperTextProps={{
                             color: '#256223',
@@ -454,21 +444,10 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                       </Stack>
 
                       <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.plate}
-                        </Typography>
                         <TextField
                           {...register('plates_number')}
                           size={'small'}
+                          label={staticData.busTable.plate}
                           FormHelperTextProps={{
                             color: '#256223',
                           }}
@@ -477,48 +456,37 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         />
                       </Stack>
                       <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
+                        <Autocomplete
+                          {...register('busIdService')}
+                          // disablePortal
+                          value={busDataService}
+                          size={'small'}
+                          id="bus-service"
+                          multiple
+                          options={staticData.busTable.services_options || []}
+                          getOptionLabel={(option: IServiceBus) =>
+                            option.title || ''
+                          }
+                          onInputChange={(event, value) =>
+                            setValue('busIdService', value)
+                          }
+                          fullWidth
+                          onChange={(e, value) => {
+                            setValue('busIdService', value);
                           }}
-                        >
-                          {staticData.busTable.services}
-                        </Typography>
-                        {/* <Autocomplete
-                        {...register('busIdService')}
-                        // disablePortal
-                        size={'small'}
-                        id="bus-service"
-                        multiple
-                        options={serviceBus || []}
-                        getOptionLabel={(option: IServiceBus) =>
-                          option.name || ''
-                        }
-                        // onInputChange={event => }
-                        fullWidth
-                        onChange={(e, value) => setValue('busIdService', value)}
-                        renderInput={params => <TextField {...params} />}
-                      /> */}
+                          renderInput={params => (
+                            <TextField
+                              {...params}
+                              InputLabelProps={{
+                                style: { color: '#808080' },
+                              }}
+                              label={staticData.busTable.services}
+                            />
+                          )}
+                        />
                       </Stack>
 
                       <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.poster}
-                        </Typography>
                         <TextField
                           {...register('photo', {
                             onChange: event => {
@@ -534,6 +502,9 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                               }
                             },
                           })}
+                          inputProps={{
+                            style: { color: '#808080' },
+                          }}
                           size={'small'}
                           type={'file'}
                           FormHelperTextProps={{
@@ -543,18 +514,6 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                       </Stack>
 
                       <Stack spacing={2} direction={'column'}>
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.images}
-                        </Typography>
                         <TextField
                           {...register('uploaded_images', {
                             onChange: event => {
@@ -584,6 +543,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                           size={'small'}
                           type={'file'}
                           inputProps={{
+                            style: { color: '#808080' },
                             multiple: true,
                           }}
                         />
@@ -646,23 +606,38 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         alignItems={'center'}
                         display={'flex'}
                       >
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.wc}
-                        </Typography>
                         <Checkbox
                           {...register('is_wc_working')}
                           color="success"
                           checked={is_wc_working}
+                          sx={{ padding: 0, color: '#808080' }}
                         />
+                        <Typography
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+
+                            fontSize: '16px',
+                            lineHeight: '140%',
+                            color: '#808080',
+                          }}
+                        >
+                          {staticData.busTable.wc}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+
+                            fontSize: '16px',
+                            lineHeight: '140%',
+                            color: '#808080',
+                          }}
+                        >
+                          {is_wc_working
+                            ? staticData.busTable.working
+                            : staticData.busTable.not_working}
+                        </Typography>
                       </Stack>
                       <Stack
                         direction={'row'}
@@ -671,23 +646,24 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                         alignItems={'center'}
                         display={'flex'}
                       >
-                        <Typography
-                          sx={{
-                            fontFamily: 'Inter',
-                            fontStyle: 'normal',
-                            fontWeight: 700,
-                            fontSize: '16px',
-                            lineHeight: '140%',
-                            color: color_title,
-                          }}
-                        >
-                          {staticData.busTable.rentable}
-                        </Typography>
                         <Checkbox
                           {...register('rentable')}
                           color="success"
                           checked={rentable}
+                          sx={{ padding: 0, color: '#808080' }}
                         />
+                        <Typography
+                          sx={{
+                            fontFamily: 'Inter',
+                            fontStyle: 'normal',
+
+                            fontSize: '16px',
+                            lineHeight: '140%',
+                            color: '#808080',
+                          }}
+                        >
+                          {staticData.busTable.rentable}
+                        </Typography>
                       </Stack>
                       <Stack width={'100%'}>
                         <Box>
@@ -728,7 +704,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                           </Tabs>
                           <CustomTabPanel value={float} index={0}>
                             <Grid container spacing={2}>
-                              <Grid item xs={2}>
+                              <Grid item xs={1.8}>
                                 <Stack rowGap={2}>
                                   <Typography>
                                     {staticData.busTable.row}
@@ -749,7 +725,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   </Typography>
                                 </Stack>
                               </Grid>
-                              <Grid item xs={1.5} height={'100%'}>
+                              <Grid item xs={1.2} height={'100%'}>
                                 <Stack rowGap={2}>
                                   <Typography>
                                     {staticData.busTable.enter}
@@ -770,7 +746,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   </Typography>
                                 </Stack>
                               </Grid>
-                              <Grid item xs={2}>
+                              <Grid item xs={1.8}>
                                 <Stack rowGap={2}>
                                   <Typography>
                                     {staticData.busTable.row}
@@ -870,7 +846,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   </Typography>
                                 </Stack>
                               </Grid>
-                              <Grid item xs={2}>
+                              <Grid item xs={1.8}>
                                 <Stack rowGap={2}>
                                   <Typography>
                                     {staticData.busTable.row}
@@ -1047,7 +1023,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                 </Box>
               </Paper>
             </Grid>
-            <Grid item xs={5} height={'100%'}>
+            <Grid item xs={4.5} height={'100%'}>
               <Container disableGutters maxWidth={'md'}>
                 <Paper>
                   <Box width={'100%'} height={732} px={3} py={3}>
@@ -1335,7 +1311,7 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                 >
                                   {staticData.busTable.services}
                                 </Typography>
-                                {/* <BusService busIdService={rent.busIdService} /> */}
+                                <BusService busIdService={busDataService} />
                               </Stack>
                               <Stack
                                 spacing={1}
@@ -1396,10 +1372,10 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
                                   }}
                                   color={colorHeading}
                                 >
-                                  {second_floor_seats_count}
-                                  {/* {secondFloorSeatsCount
+                                  {/* {second_floor_seats_count} */}
+                                  {secondFloorSeatsCount
                                     ? secondFloorSeatsCount
-                                    : bus.second_floor_seats_count} */}
+                                    : second_floor_seats_count}
                                 </Typography>
                               </Stack>
                             </Stack>

@@ -590,8 +590,8 @@ export const AddPassengersForm = ({
                         fontSize={'24px'}
                       >
                         {data?.routes && value.passanger_type === 'adult'
-                          ? `${data?.routes[0].price}`
-                          : `${data?.routes[0].price - discount}`}
+                          ? `${data?.routes[0]?.price}`
+                          : `${data?.routes[0]?.price - discount}`}
                       </Typography>
                       <Typography component={'span'} fontSize={'12px'}>
                         {getCurrency(selectCurrency)}

@@ -12,7 +12,7 @@
     { "id": 1, "name": "profile", "title": "Profile", "path": "/profile" },
     {
       "id": 2,
-      "name": "my_tickets",
+      "name": "tickets",
       "title": "My tickets",
       "path": "/my-order"
     }

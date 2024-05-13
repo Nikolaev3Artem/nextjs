@@ -450,6 +450,7 @@ export interface dashboardBusStaticData {
     kitchen: string;
     no: string;
     yes: string;
+    services_options: { name: string; title: string; id: number }[];
     snackBar: {
       remove_success: string;
       remove_error: string;

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Autocomplete,
   Box,
   Checkbox,
   MenuItem,
@@ -46,6 +47,7 @@ import { getSession } from '@/lib/auth';
 import BusConstructor from '../BusConstructor/BusConstructor';
 import { revalidatePath } from 'next/cache';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { BusService } from '@/components/common/BusService';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -168,8 +170,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       enter_3: false,
       wc: 'no',
       wc_2: 'no',
-      wc_row_1: '',
-      wc_row_2: '',
+      wc_row_1: '2',
+      wc_row_2: '2',
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -180,7 +182,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const first_floor_seats_count = watch('first_floor_seats_count');
   const second_floor_seats_count = watch('second_floor_seats_count');
   const plates_number = watch('plates_number');
-  // const busDataService = watch('busIdService');
+  const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
   const is_wc_working = watch('is_wc_working');
@@ -195,6 +197,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const enter_3 = watch('enter_3');
   const wc_row_1 = watch('wc_row_1');
   const wc_row_2 = watch('wc_row_2');
+  const rentable = watch('rentable');
   //@ts-ignore
   const wc = useWatch({ name: 'wc', control: control });
   //@ts-ignore
@@ -364,35 +367,35 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         ))}
                     </Stack>
                     <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        {staticData.busTable.services}
-                      </Typography>
-                      {/* <Autocomplete
+                      <Autocomplete
                         {...register('busIdService')}
                         // disablePortal
+
                         size={'small'}
                         id="bus-service"
                         multiple
-                        options={serviceBus || []}
+                        options={staticData.busTable.services_options || []}
                         getOptionLabel={(option: IServiceBus) =>
-                          option.name || ''
+                          option.title || ''
                         }
                         onInputChange={(event, value) =>
                           setValue('busIdService', value)
                         }
                         fullWidth
-                        onChange={(e, value) => setValue('busIdService', value)}
-                        renderInput={params => <TextField {...params} />}
-                      /> */}
+                        onChange={(e, value) => {
+                          // const selectedIds = value.map(item => item.id);
+                          setValue('busIdService', value);
+                        }}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            InputLabelProps={{
+                              style: { color: '#808080' },
+                            }}
+                            label={staticData.busTable.services}
+                          />
+                        )}
+                      />
                     </Stack>
                     <Stack spacing={2} direction={'column'}>
                       <TextField
@@ -444,6 +447,32 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         {is_wc_working
                           ? staticData.busTable.working
                           : staticData.busTable.not_working}
+                      </Typography>
+                    </Stack>
+
+                    <Stack
+                      direction={'row'}
+                      spacing={1}
+                      justifyItems={'center'}
+                      alignItems={'center'}
+                      display={'flex'}
+                    >
+                      <Checkbox
+                        {...register('rentable')}
+                        color="success"
+                        sx={{ padding: 0, color: '#808080' }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: '#808080',
+                        }}
+                      >
+                        {staticData.busTable.rentable}
                       </Typography>
                     </Stack>
 
@@ -1003,7 +1032,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                               >
                                 {staticData.busTable.services}:
                               </Typography>
-                              {/* <BusService busIdService={busDataService} /> */}
+                              <BusService busIdService={busDataService} />
                             </Stack>
                             <Stack
                               spacing={1}
@@ -1036,6 +1065,39 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 {is_wc_working
                                   ? staticData.busTable.working
                                   : staticData.busTable.not_working}
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              spacing={1}
+                              alignItems={'center'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                              >
+                                {staticData.busTable.rentable}:
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {rentable
+                                  ? staticData.busTable.yes
+                                  : staticData.busTable.no}
                               </Typography>
                             </Stack>
                             <Stack

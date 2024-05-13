@@ -40,7 +40,7 @@ interface Rent {
 
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
-  plates_number: string;
+  plates_number?: string;
   lang: Locale;
   staticData: BusRentStaticDataPageProp;
 }

@@ -478,7 +478,7 @@ export const JourneyCard = ({
                         <Typography
                           sx={{ fontSize: { xs: '13px', md: '16px' } }}
                         >
-                          {data.routes[0]?.cities[0].city}
+                          {data.routes[0]?.cities[0]?.city}
                         </Typography>
                       </Box>
                       {data.routes[0]?.cities?.slice(1, -1)?.length > 0 &&
@@ -511,7 +511,7 @@ export const JourneyCard = ({
                           {
                             data.routes[0]?.cities[
                               data.routes[0]?.cities.length - 1
-                            ].city
+                            ]?.city
                           }
                         </Typography>
                       </Box>

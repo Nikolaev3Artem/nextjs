@@ -67,7 +67,7 @@
   "navDashboard": [
     {
       "id": 1,
-      "name": "main",
+      "name": "home",
       "path": "/dashboard/content",
       "title": "Головна"
     },
@@ -80,8 +80,8 @@
 
     {
       "id": 4,
-      "name": "ruler",
-      "path": "/dashboard/content/ruler",
+      "name": "rules",
+      "path": "/dashboard/content/rules",
       "title": "Правила"
     },
     {
@@ -92,14 +92,8 @@
     },
 
     {
-      "id": 6,
-      "name": "bus_rent",
-      "path": "/dashboard/content/bus_rent",
-      "title": "Оренда автобусів"
-    },
-    {
       "id": 7,
-      "name": "contacts",
+      "name": "contact",
       "path": "/dashboard/content/contacts",
       "title": "Контакти"
     }

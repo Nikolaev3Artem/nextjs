@@ -37,6 +37,15 @@
     "kitchen": "Cozinha",
     "no": "Nem",
     "yes": "Sim",
+    "services_options": [
+      { "name": "wifi", "title": "Wifi", "id": 1 },
+      { "name": "wc", "title": "WC", "id": 2 },
+      { "name": "ac", "title": "AC", "id": 3 },
+      { "name": "plug", "title": "Plug", "id": 4 },
+      { "name": "usb", "title": "USB", "id": 5 },
+      { "name": "display", "title": "Display", "id": 6 },
+      { "name": "music", "title": "Music", "id": 7 }
+    ],
 
     "snackBar": {
       "remove_success": "Kortelė sėkmingai pašalinta",

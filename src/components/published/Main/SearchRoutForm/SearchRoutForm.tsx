@@ -58,6 +58,20 @@ export const SearchRoutForm = ({
     date: isoDate,
   });
 
+  React.useEffect(() => {
+    setValues(prev => ({
+      ...prev,
+      to: selectRoutsTo,
+    }));
+  }, [selectRoutsTo]);
+
+  React.useEffect(() => {
+    setValues(prev => ({
+      ...prev,
+      from: selectRoutsFrom,
+    }));
+  }, [selectRoutsFrom]);
+
   const [searchJourney, setSearchJourney] = React.useState<IJourney[]>();
 
   const Search = async (event: React.SyntheticEvent) => {

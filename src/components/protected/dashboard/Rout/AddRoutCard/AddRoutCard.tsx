@@ -47,6 +47,7 @@ import { TimPicker } from '@/components/common/TimPicker';
 import dayjs from 'dayjs';
 import { getCurrency } from '@/helpers/getCurrency';
 import { time } from 'console';
+import { revalidatePath } from 'next/cache';
 // import BusService from '../../../Rent/BusService/BusService';
 
 interface IInfoCardProps {

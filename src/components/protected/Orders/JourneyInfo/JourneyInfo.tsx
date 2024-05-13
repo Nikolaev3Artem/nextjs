@@ -182,7 +182,7 @@ export const JourneyInfo = ({
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {data?.routes ? data.routes[0].cities[0].city : ''}
+              {data?.routes ? data.routes[0]?.cities[0]?.city : ''}
             </Typography>
             <Typography
               component={'span'}
@@ -234,8 +234,8 @@ export const JourneyInfo = ({
               flexDirection={'column'}
               sx={{ rowGap: { xs: '8px', md: '6px' } }}
             >
-              {data.routes[0].cities &&
-                data.routes[0].cities.map(stop => {
+              {data?.routes[0]?.cities &&
+                data?.routes[0]?.cities?.map(stop => {
                   return (
                     <Box
                       key={stop.id}

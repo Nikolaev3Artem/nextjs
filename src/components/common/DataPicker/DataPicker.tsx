@@ -43,6 +43,7 @@ export function DataPicker({
     null,
   );
   const [open, setOpen] = useState<boolean>(false);
+  const [cleared, setCleared] = React.useState<boolean>(false);
 
   const today = dayjs();
   const handleDateChange = debounce(newValue => {
@@ -51,12 +52,28 @@ export function DataPicker({
   }, 1000);
 
   React.useEffect(() => {
+    if (cleared) {
+      const timeout = setTimeout(() => {
+        setCleared(false);
+      }, 1500);
+
+      return () => clearTimeout(timeout);
+    }
+    return () => {};
+  }, [cleared]);
+
+  React.useEffect(() => {
+    if (values.date === '') setCleared(true);
+  }, [values.date]);
+
+  React.useEffect(() => {
     minOff ? setDatePickerValue(null) : setDatePickerValue(today);
   }, [minOff]);
 
   const handleClearDate = () => {
     setDatePickerValue(null);
     setValues({ ...values, date: '' });
+    setCleared(true);
   };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
@@ -78,13 +95,22 @@ export function DataPicker({
           minDate={minOff ? null : today}
           autoFocus={false}
           value={datePickerValue}
-          slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
+          slotProps={{
+            textField: { size: small ? 'small' : 'medium' },
+            field: { clearable: true, onClear: () => setCleared(true) },
+          }}
           // onChange={newValue => handleDateChange(newValue)}
           onChange={handleDateChange}
           // @ts-ignore
 
           onViewChange={(params: object) => (
-            <TextField {...params} onClick={e => setOpen(true)} />
+            <TextField
+              {...params}
+              onClick={e => setOpen(true)}
+              InputLabelProps={{
+                sx: { color: '#808080' },
+              }}
+            />
           )}
         />
         {values.date && isShowDelIcon && (

@@ -80,9 +80,9 @@
 
     {
       "id": 4,
-      "name": "ruler",
-      "path": "/dashboard/content/ruler",
-      "title": "Ruler"
+      "name": "rules",
+      "path": "/dashboard/content/rules",
+      "title": "Rules"
     },
     {
       "id": 5,
@@ -91,12 +91,6 @@
       "title": "Parcels"
     },
 
-    {
-      "id": 6,
-      "name": "bus_rent",
-      "path": "/dashboard/content/bus_rent",
-      "title": "Bus rent"
-    },
     {
       "id": 7,
       "name": "contacts",

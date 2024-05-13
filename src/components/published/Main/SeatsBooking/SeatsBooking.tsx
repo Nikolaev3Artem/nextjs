@@ -308,7 +308,7 @@ export const SeatsBooking = ({
                   color: color_title,
                 }}
               >
-                {data?.routes[0]?.cities[0].city}
+                {data?.routes[0]?.cities[0]?.city}
               </Typography>
               <IoMdArrowForward width={3} height={3} />
               <Typography
@@ -322,7 +322,7 @@ export const SeatsBooking = ({
               >
                 {
                   data?.routes[0]?.cities[data?.routes[0]?.cities?.length - 1]
-                    .city
+                    ?.city
                 }
               </Typography>
 
