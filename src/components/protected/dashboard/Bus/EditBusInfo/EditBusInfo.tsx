@@ -52,6 +52,7 @@ import { IServiceBus } from '@/app/[lang]/(protected)/dashboard/bus/add/page';
 import { dashboardBusStaticData } from '@/interface/IStaticData';
 import BusConstructor from '../BusConstructor/BusConstructor';
 import { BusService } from '@/components/common/BusService';
+import { BiSad } from 'react-icons/bi';
 
 // import BusService from '../../../Rent/BusService/BusService';
 
@@ -104,11 +105,18 @@ const EditBusInfo = ({ bus, staticData, lang }: IInfoCardProps) => {
   }, []);
 
   useEffect(() => {
-    const selectedServices = bus?.busIdService?.map((id: number) => {
-      return staticData.busTable.services_options.find(
-        option => option.id === id,
-      );
-    });
+    if (!bus || bus?.busIdService?.length < 1) {
+      return;
+    }
+
+    let selectedServices;
+    bus?.busIdService
+      ? (selectedServices = bus?.busIdService?.map((id: number) => {
+          return staticData.busTable.services_options.find(
+            option => option.id === id,
+          );
+        }))
+      : (selectedServices = []);
     setValue('busIdService', selectedServices);
   }, [bus]);
 
