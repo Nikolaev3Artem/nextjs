@@ -220,6 +220,9 @@ export interface profileStaticData {
     login: string;
     password: string;
   };
+  errors: {
+    format_error: string;
+  };
   button: {
     save: {
       title: string;
@@ -447,6 +450,7 @@ export interface dashboardBusStaticData {
     kitchen: string;
     no: string;
     yes: string;
+    services_options: { name: string; title: string; id: number }[];
     snackBar: {
       remove_success: string;
       remove_error: string;
@@ -476,7 +480,7 @@ export interface dashboardTicketsStaticData {
       text: string;
     };
     status: string;
-    options: string[];
+    options: { name: string; title: string }[];
   };
   ticketsTable: {
     name: string;

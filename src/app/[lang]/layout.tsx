@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Locale, i18n } from '@/i18n.config';
 import { Suspense } from 'react';
-import { Inter } from 'next/font/google';
+// import { Inter } from 'next/font/google';
 import Loading from './loading';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,11 +13,39 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
 import { getMetaDictionaries } from '@/lib/dictionary';
 import { CurrencyContextProvider } from '../context';
 
-const inter = Inter({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
+// const inter = Inter({
+//   weight: ['300', '400', '500', '700'],
+//   subsets: ['latin'],
+//   display: 'swap',
+//   fallback: ['Helvetica', 'Arial', 'sans-serif'],
+// });
+
+import localFont from 'next/font/local';
+
+const inter = localFont({
+  variable: '--font-inter',
+  src: [
+    {
+      path: '../../../public/fonts/Inter-Black.ttf',
+      weight: '700',
+    },
+    {
+      path: '../../../public/fonts/Inter-Medium.ttf',
+      weight: '500',
+    },
+    {
+      path: '../../../public/fonts/Inter-Regular.ttf',
+      weight: '400',
+    },
+    {
+      path: '../../../public/fonts/Inter-Light.ttf',
+      weight: '300',
+    },
+    {
+      path: '../../../public/fonts/Inter-Thin.ttf',
+      weight: '200',
+    },
+  ],
 });
 
 export async function generateStaticParams() {

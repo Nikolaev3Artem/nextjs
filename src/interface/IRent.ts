@@ -19,7 +19,7 @@ export interface IRent {
   second_floor_seats?: ISeat[];
   lang?: Locale;
 
-  plates_number: string;
+  plates_number?: string;
   first_floor_seats_count?: number;
   second_floor_seats_count?: number;
   wc?: any;
@@ -32,6 +32,9 @@ export interface IRent {
   enter_1?: boolean;
   enter_2?: boolean;
   enter_3?: boolean;
+  wc_2?: any;
+  wc_row_1?: string;
+  wc_row_2?: string;
 }
 
 export interface ISeat {

@@ -40,6 +40,9 @@ export interface BusConstructorProps {
   small?: boolean;
   setSelectedSeats?: any;
   vertical?: boolean;
+  wc_row_1?: string;
+  wc_row_2?: string;
+  is_wc_2?: string;
 }
 
 const BusSeats = (props: BusConstructorProps) => {
@@ -145,11 +148,13 @@ const BusSeats = (props: BusConstructorProps) => {
       row,
       props?.rows_2,
       props?.is_wc,
-      row,
+      props?.wc_row_1,
       props?.enter_2,
       row,
       props?.rows_3,
-      props.seats_start,
+      props?.seats_start,
+      props?.is_wc_2,
+      props?.wc_row_2,
     );
 
     setBusSeats(busSeats.busSeats);

@@ -13,6 +13,7 @@ import 'dayjs/locale/lt';
 import 'dayjs/locale/pt';
 import 'dayjs/locale/uk';
 import debounce from '@mui/utils/debounce';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 import * as React from 'react';
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export function DataPicker({
   values,
   isWhite,
   small,
+  isShowDelIcon = false,
 }: {
   staticData: string;
   lang: Locale;
@@ -35,22 +37,50 @@ export function DataPicker({
   values: any;
   isWhite?: boolean;
   small?: boolean;
+  isShowDelIcon?: boolean;
 }) {
-  const [datePickerValue, setDatePickerValue] = React.useState<Dayjs | null>(
-    dayjs(),
+  const [datePickerValue, setDatePickerValue] = React.useState<null | Dayjs>(
+    null,
   );
   const [open, setOpen] = useState<boolean>(false);
+  const [cleared, setCleared] = React.useState<boolean>(false);
 
   const today = dayjs();
   const handleDateChange = debounce(newValue => {
     setDatePickerValue(newValue);
     setValues({ ...values, date: newValue?.toISOString() });
   }, 1000);
+
+  React.useEffect(() => {
+    if (cleared) {
+      const timeout = setTimeout(() => {
+        setCleared(false);
+      }, 1500);
+
+      return () => clearTimeout(timeout);
+    }
+    return () => {};
+  }, [cleared]);
+
+  React.useEffect(() => {
+    if (values.date === '') setCleared(true);
+  }, [values.date]);
+
+  React.useEffect(() => {
+    minOff ? setDatePickerValue(null) : setDatePickerValue(today);
+  }, [minOff]);
+
+  const handleClearDate = () => {
+    setDatePickerValue(null);
+    setValues({ ...values, date: '' });
+    setCleared(true);
+  };
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={lang}>
       <Box
         width={minOff ? '100%' : 'initial'}
         sx={{
+          position: 'relative',
           '& .MuiFormControl-root': {
             width: '100%',
             backgroundColor: isWhite ? 'white' : 'transparent',
@@ -64,15 +94,34 @@ export function DataPicker({
           label={staticData}
           minDate={minOff ? null : today}
           autoFocus={false}
-          value={minOff ? null : datePickerValue}
-          slotProps={{ textField: { size: small ? 'small' : 'medium' } }}
+          value={datePickerValue}
+          slotProps={{
+            textField: { size: small ? 'small' : 'medium' },
+            field: { clearable: true, onClear: () => setCleared(true) },
+          }}
+          // onChange={newValue => handleDateChange(newValue)}
           onChange={handleDateChange}
           // @ts-ignore
 
           onViewChange={(params: object) => (
-            <TextField {...params} onClick={e => setOpen(true)} />
+            <TextField
+              {...params}
+              onClick={e => setOpen(true)}
+              InputLabelProps={{
+                sx: { color: '#808080' },
+              }}
+            />
           )}
         />
+        {values.date && isShowDelIcon && (
+          <IconButton
+            size={'small'}
+            sx={{ position: 'absolute', top: 3, right: 34 }}
+            onClick={handleClearDate}
+          >
+            <HighlightOffOutlinedIcon />
+          </IconButton>
+        )}
       </Box>
     </LocalizationProvider>
   );

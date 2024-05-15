@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  Autocomplete,
   Box,
   Checkbox,
   MenuItem,
@@ -46,6 +47,7 @@ import { getSession } from '@/lib/auth';
 import BusConstructor from '../BusConstructor/BusConstructor';
 import { revalidatePath } from 'next/cache';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { BusService } from '@/components/common/BusService';
 
 const color_title = grey[800];
 const colorHeading = grey[900];
@@ -167,6 +169,9 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       enter_2: false,
       enter_3: false,
       wc: 'no',
+      wc_2: 'no',
+      wc_row_1: '2',
+      wc_row_2: '2',
     },
     // @ts-ignore
     resolver: yupResolver(UploadFileSchema),
@@ -177,7 +182,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const first_floor_seats_count = watch('first_floor_seats_count');
   const second_floor_seats_count = watch('second_floor_seats_count');
   const plates_number = watch('plates_number');
-  // const busDataService = watch('busIdService');
+  const busDataService = watch('busIdService');
   const photo = watch('photo');
   const is_active = watch('is_active');
   const is_wc_working = watch('is_wc_working');
@@ -190,8 +195,13 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
   const enter_1 = watch('enter_1');
   const enter_2 = watch('enter_2');
   const enter_3 = watch('enter_3');
+  const wc_row_1 = watch('wc_row_1');
+  const wc_row_2 = watch('wc_row_2');
+  const rentable = watch('rentable');
   //@ts-ignore
   const wc = useWatch({ name: 'wc', control: control });
+  //@ts-ignore
+  const wc_2 = useWatch({ name: 'wc_2', control: control });
 
   async function onSubmitForm(data: IRent) {
     try {
@@ -226,6 +236,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
         data?.is_wc_working?.toString() || 'false',
       );
       formData.append('wc', data.wc === 'yes' ? 'true' : 'false');
+      formData.append('wc_2', data.wc_2 === 'yes' ? 'true' : 'false');
       formData.append('rows_1', data?.rows_1?.toString() || '');
       formData.append('rows_2', data?.rows_2?.toString() || '');
       formData.append('rows_3', data?.rows_3?.toString() || '');
@@ -234,6 +245,8 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
       formData.append('enter_1', data?.enter_1?.toString() || '');
       formData.append('enter_2', data?.enter_2?.toString() || '');
       formData.append('enter_3', data?.enter_3?.toString() || '');
+      formData.append('wc_row_1', data?.wc_row_1?.toString() || '');
+      formData.append('wc_row_2', data?.wc_row_2?.toString() || '');
 
       data.photo?.length && formData.append('photo', data.photo[0] || null);
       const response = await axios.post(
@@ -354,35 +367,35 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         ))}
                     </Stack>
                     <Stack spacing={2} direction={'column'}>
-                      <Typography
-                        sx={{
-                          fontFamily: 'Inter',
-                          fontStyle: 'normal',
-
-                          fontSize: '16px',
-                          lineHeight: '140%',
-                          color: color_title,
-                        }}
-                      >
-                        {staticData.busTable.services}
-                      </Typography>
-                      {/* <Autocomplete
+                      <Autocomplete
                         {...register('busIdService')}
                         // disablePortal
+
                         size={'small'}
                         id="bus-service"
                         multiple
-                        options={serviceBus || []}
+                        options={staticData.busTable.services_options || []}
                         getOptionLabel={(option: IServiceBus) =>
-                          option.name || ''
+                          option.title || ''
                         }
                         onInputChange={(event, value) =>
                           setValue('busIdService', value)
                         }
                         fullWidth
-                        onChange={(e, value) => setValue('busIdService', value)}
-                        renderInput={params => <TextField {...params} />}
-                      /> */}
+                        onChange={(e, value) => {
+                          // const selectedIds = value.map(item => item.id);
+                          setValue('busIdService', value);
+                        }}
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            InputLabelProps={{
+                              style: { color: '#808080' },
+                            }}
+                            label={staticData.busTable.services}
+                          />
+                        )}
+                      />
                     </Stack>
                     <Stack spacing={2} direction={'column'}>
                       <TextField
@@ -437,6 +450,32 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                       </Typography>
                     </Stack>
 
+                    <Stack
+                      direction={'row'}
+                      spacing={1}
+                      justifyItems={'center'}
+                      alignItems={'center'}
+                      display={'flex'}
+                    >
+                      <Checkbox
+                        {...register('rentable')}
+                        color="success"
+                        sx={{ padding: 0, color: '#808080' }}
+                      />
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: '#808080',
+                        }}
+                      >
+                        {staticData.busTable.rentable}
+                      </Typography>
+                    </Stack>
+
                     <Stack width={'100%'}>
                       <Box>
                         <Tabs
@@ -476,7 +515,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                         </Tabs>
                         <CustomTabPanel value={float} index={0}>
                           <Grid container spacing={2}>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -497,7 +536,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={1.5} height={'100%'}>
+                            <Grid item xs={1.2} height={'100%'}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.enter}
@@ -518,7 +557,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -558,12 +597,46 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                     {staticData.busTable.yes}
                                   </MenuItem>
                                 </Select>
-                                <Typography fontSize={12}>
-                                  {staticData.busTable.seats_first_floor}: 2
-                                </Typography>
+                                <Box display={'flex'}>
+                                  <Typography fontSize={12}>
+                                    {staticData.busTable.seats_first_floor}:
+                                  </Typography>
+                                  <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={wc_row_1}
+                                    variant="standard"
+                                    size="small"
+                                    onChange={event =>
+                                      setValue('wc_row_1', event.target.value)
+                                    }
+                                    label={staticData.busTable.row}
+                                    sx={{
+                                      fontSize: '12px',
+                                      paddingLeft: '4px',
+                                    }}
+                                  >
+                                    <MenuItem
+                                      value={2}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      2
+                                    </MenuItem>
+                                    <MenuItem
+                                      value={4}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      4
+                                    </MenuItem>
+                                  </Select>
+                                </Box>
                               </Stack>
                             </Grid>
-                            <Grid item xs={1.5} mb={2}>
+                            <Grid item xs={1.2} mb={2}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.enter}
@@ -584,7 +657,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
-                            <Grid item xs={2}>
+                            <Grid item xs={1.8}>
                               <Stack rowGap={2}>
                                 <Typography>
                                   {staticData.busTable.row}
@@ -605,14 +678,76 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 </Typography>
                               </Stack>
                             </Grid>
+                            <Grid item xs={2}>
+                              <Stack rowGap={2}>
+                                <Typography>
+                                  {staticData.busTable.wc}/{' '}
+                                  {staticData.busTable.kitchen}
+                                </Typography>
+                                <Select
+                                  {...register('wc_2')}
+                                  id="wc_2"
+                                  value={wc_2}
+                                  size="small"
+                                >
+                                  <MenuItem value="no">
+                                    {staticData.busTable.no}
+                                  </MenuItem>
+                                  <MenuItem value="yes">
+                                    {staticData.busTable.yes}
+                                  </MenuItem>
+                                </Select>
+                                <Box display={'flex'}>
+                                  <Typography fontSize={12}>
+                                    {staticData.busTable.seats_first_floor}:
+                                  </Typography>
+                                  <Select
+                                    labelId="demo-simple-select-standard-label"
+                                    id="demo-simple-select-standard"
+                                    value={wc_row_2}
+                                    variant="standard"
+                                    size="small"
+                                    onChange={event =>
+                                      setValue('wc_row_2', event.target.value)
+                                    }
+                                    label={staticData.busTable.row}
+                                    sx={{
+                                      fontSize: '12px',
+                                      paddingLeft: '4px',
+                                    }}
+                                  >
+                                    <MenuItem
+                                      value={2}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      2
+                                    </MenuItem>
+                                    <MenuItem
+                                      value={4}
+                                      sx={{
+                                        fontSize: '12px',
+                                      }}
+                                    >
+                                      4
+                                    </MenuItem>
+                                  </Select>
+                                </Box>
+                              </Stack>
+                            </Grid>
                           </Grid>
 
                           <BusConstructor
                             rows_1={rows_1}
                             rows_2={rows_2}
                             rows_3={rows_3}
+                            wc_row_1={wc_row_1}
+                            wc_row_2={wc_row_2}
                             //@ts-ignore
                             is_wc={wc}
+                            //@ts-ignore
+                            is_wc_2={wc_2}
                             enter_2={enter_2}
                             enter_1={enter_1}
                             setSeatsCount={setFirstFloorSeatsCount}
@@ -897,7 +1032,7 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                               >
                                 {staticData.busTable.services}:
                               </Typography>
-                              {/* <BusService busIdService={busDataService} /> */}
+                              <BusService busIdService={busDataService} />
                             </Stack>
                             <Stack
                               spacing={1}
@@ -930,6 +1065,39 @@ const AddBusCard = ({ serviceBus, staticData, lang }: IAddRenCardProps) => {
                                 {is_wc_working
                                   ? staticData.busTable.working
                                   : staticData.busTable.not_working}
+                              </Typography>
+                            </Stack>
+                            <Stack
+                              spacing={1}
+                              alignItems={'center'}
+                              direction={'row'}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                              >
+                                {staticData.busTable.rentable}:
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  fontFamily: 'Inter',
+                                  fontStyle: 'normal',
+                                  fontWeight: 400,
+                                  fontSize: '16px',
+                                  lineHeight: '150%',
+                                  color: color_title,
+                                }}
+                                color={colorHeading}
+                              >
+                                {rentable
+                                  ? staticData.busTable.yes
+                                  : staticData.busTable.no}
                               </Typography>
                             </Stack>
                             <Stack

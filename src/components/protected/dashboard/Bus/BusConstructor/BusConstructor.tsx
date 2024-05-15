@@ -11,6 +11,7 @@ export interface BusSeatsProps {
   seatNumber?: number;
   wc?: boolean;
   empty?: boolean;
+  wc_large?: boolean;
 }
 
 export interface BusConstructorProps {
@@ -18,10 +19,13 @@ export interface BusConstructorProps {
   rows_2?: number;
   rows_3?: number;
   is_wc?: string;
+  is_wc_2?: string;
   enter_2?: boolean;
   enter_1?: boolean;
   setSeatsCount?: any;
   seats_start: number;
+  wc_row_1?: string;
+  wc_row_2?: string;
 }
 
 const BusConstructor = (props: BusConstructorProps) => {
@@ -34,11 +38,12 @@ const BusConstructor = (props: BusConstructorProps) => {
     empty,
     seatNumber,
     wc,
+    wc_large,
   }: BusSeatsProps) {
     return (
       <Box
         id={id}
-        className={`${Style.bus_seat} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : ''}`}
+        className={`${Style.bus_seat} ${enter1 || enter2 ? Style.enter : empty ? Style.empty : wc ? Style.wc : wc_large ? Style.wc_large : ''}`}
       >
         <Typography
           sx={{
@@ -65,6 +70,7 @@ const BusConstructor = (props: BusConstructorProps) => {
             empty={seat.empty}
             seatNumber={seat.seatNumber}
             wc={seat.wc}
+            wc_large={seat.wc_large}
           />
         ))}
       </div>
@@ -94,11 +100,13 @@ const BusConstructor = (props: BusConstructorProps) => {
       row,
       props?.rows_2,
       props?.is_wc,
-      row,
+      props?.wc_row_1,
       props?.enter_2,
       row,
       props?.rows_3,
       props?.seats_start,
+      props?.is_wc_2,
+      props?.wc_row_2,
     );
 
     setBusSeats(busSeats.busSeats);

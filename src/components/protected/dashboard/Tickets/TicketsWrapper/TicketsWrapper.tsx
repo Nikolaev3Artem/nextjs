@@ -4,8 +4,12 @@ import {
   Autocomplete,
   Container,
   Fade,
+  FormControl,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   Typography,
 } from '@mui/material';
@@ -14,6 +18,7 @@ import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 import Error from 'next/error';
 
@@ -38,6 +43,7 @@ import { DataPicker } from '@/components/common/DataPicker';
 import TicketsTable from '../Table/TicketsTable';
 import dayjs from 'dayjs';
 import { FaTrashAlt } from 'react-icons/fa';
+import { relative } from 'path';
 
 interface State {
   search: string;
@@ -109,8 +115,15 @@ export const TicketsWrapper = ({
               'day',
             );
 
-          // Include the ticket if any of the conditions are true
-          return (nameMatches || cityMatches) && (dateMatches || !values.date);
+          const filterMatches =
+            obj?.status.toLowerCase() === values.status.toLowerCase();
+
+          const anyFilterMatches = nameMatches || cityMatches || filterMatches;
+
+          const dateFilterMatches = dateMatches || !values.date;
+
+          const statusFilterMatches = filterMatches || !values.status;
+          return anyFilterMatches && dateFilterMatches && statusFilterMatches;
         }),
       );
     } else {
@@ -121,7 +134,7 @@ export const TicketsWrapper = ({
   return (
     <>
       <Grid container mb={3} spacing={3} display={'flex'}>
-        <Grid item xs={3}>
+        <Grid item xs={3} position={'relative'}>
           <TextField
             sx={{
               width: '100%',
@@ -133,6 +146,7 @@ export const TicketsWrapper = ({
             }}
             size={'small'}
             id="outlined-basic"
+            value={values.search}
             label={staticData.searchForm.label}
             onChange={event => {
               const newInputValue = event.target.value;
@@ -147,9 +161,22 @@ export const TicketsWrapper = ({
               ),
             }}
           />
+
+          {values.search && (
+            <IconButton
+              size={'small'}
+              sx={{ position: 'absolute', top: 27, right: 32 }}
+              onClick={() => {
+                console.log('click');
+                setValues({ ...values, search: '' });
+              }}
+            >
+              <HighlightOffOutlinedIcon />
+            </IconButton>
+          )}
         </Grid>
         <Grid item xs={3}>
-          <Box display={'flex'}>
+          <Box display={'flex'} position={'relative'}>
             <DataPicker
               staticData={staticData.searchForm.date}
               lang={lang}
@@ -158,38 +185,53 @@ export const TicketsWrapper = ({
               isWhite
               small
               minOff
+              isShowDelIcon
             />
-            {values.date && (
-              <IconButton
-                size={'small'}
-                onClick={() => {
-                  console.log('click');
-                  setValues({ ...values, date: '' });
-                }}
-              >
-                <FaTrashAlt />
-              </IconButton>
-            )}
           </Box>
         </Grid>
-        {/* <Grid item xs={2}>
-          <Autocomplete
-            value={values.status}
-            disablePortal
-            fullWidth={true}
-            size="small"
-            sx={{ backgroundColor: 'white' }}
-            options={staticData.searchForm.options}
-            // isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={params => (
-              <TextField {...params} label={staticData.searchForm.status} />
-            )}
-            onInputChange={(event, newInputValue, reason) => {
-              setValues({ ...values, ['status']: newInputValue });
-            }}
-          />
-        </Grid> */}
-        <Grid item xs={4} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Grid item xs={2.5} display={'flex'} position={'relative'}>
+          <FormControl fullWidth sx={{ display: 'flex' }}>
+            <InputLabel id="status-select-label" sx={{ top: '-6px' }}>
+              {staticData.searchForm.status}
+            </InputLabel>
+            <Select
+              labelId="status-select-label"
+              id="status-select"
+              value={values.status}
+              label={staticData.searchForm.status}
+              size="small"
+              sx={{ backgroundColor: 'white' }}
+              MenuProps={{
+                disableScrollLock: true,
+              }}
+              onChange={event => {
+                setValues({
+                  ...values,
+                  ['status']: event.target.value as string,
+                });
+              }}
+            >
+              {staticData.searchForm.options.map((option, ind) => (
+                <MenuItem key={`${option.name}-${ind}`} value={option.name}>
+                  {option.title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {values.status && (
+            <IconButton
+              size={'small'}
+              sx={{ position: 'absolute', top: 27, right: 27 }}
+              onClick={() => {
+                console.log('click');
+                setValues({ ...values, status: '' });
+              }}
+            >
+              <HighlightOffOutlinedIcon />
+            </IconButton>
+          )}
+        </Grid>
+        <Grid item xs={3.5} sx={{ display: 'flex' }}>
           <Button
             color={'secondary'}
             variant={'contained'}

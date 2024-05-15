@@ -250,7 +250,11 @@ const BusTable = ({
                       {item.name}
                     </TableCell>
                     <TableCell align="left">
-                      {/* <BusService busIdService={item.busIdService} /> */}
+                      <BusService
+                        busIdService={
+                          item.busIdService ? item.busIdService : []
+                        }
+                      />
                     </TableCell>
                     <TableCell component="th" scope="row">
                       {item.plates_number}

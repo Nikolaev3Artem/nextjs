@@ -54,6 +54,7 @@ import {
 import { Locale } from '@/i18n.config';
 import { logout } from '@/lib/auth';
 import { PhoneType } from '@/interface/IEditorText';
+import Logout from '@mui/icons-material/Logout';
 
 const drawerWidth = 200;
 const primary = theme.palette.primary.main;
@@ -71,7 +72,7 @@ export const DrawerHeader = styled('div')(({ theme }: { theme: any }) => {
 
 const color_active = blue[300];
 
-const getIcon = (name: string) => {
+export const getIcon = (name: string) => {
   switch (name) {
     case 'home':
       return <AiFillHome />;
@@ -286,7 +287,18 @@ export function DashboardNavBar({
                     href={`/${lang}${setting.path}`}
                     className={Style.List_hover}
                   >
-                    <Typography component={'p'} textAlign="center">
+                    <Typography
+                      component={'div'}
+                      sx={{ display: 'flex', alignItems: 'center' }}
+                      textAlign="center"
+                    >
+                      <ListItemIcon>
+                        {setting.name === 'profile' ? (
+                          <FaUser fontSize="small" color="white" />
+                        ) : (
+                          <HiTicket fontSize="small" color="white" />
+                        )}
+                      </ListItemIcon>
                       {setting.title}
                     </Typography>
                   </Link>
@@ -300,7 +312,14 @@ export function DashboardNavBar({
                   justifyContent: { xs: 'center', md: 'flex-start' },
                 }}
               >
-                <Typography component={'span'} textAlign="center">
+                <Typography
+                  component={'div'}
+                  textAlign="center"
+                  sx={{ display: 'flex', alignItems: 'center' }}
+                >
+                  <ListItemIcon>
+                    <Logout fontSize="small" sx={{ color: 'white' }} />
+                  </ListItemIcon>
                   {staticData.header.sign_out}
                 </Typography>
               </MenuItem>
@@ -438,6 +457,9 @@ export function DashboardNavBar({
                         },
                       }}
                     >
+                      <ListItemIcon color="white" sx={{ color: 'white' }}>
+                        {getIcon(text.name)}
+                      </ListItemIcon>
                       <ListItemText
                         primaryTypographyProps={{
                           color: theme.palette.background.paper,

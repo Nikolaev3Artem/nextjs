@@ -17,7 +17,7 @@
     { "id": 1, "name": "profile", "title": "Perfil", "path": "/profile" },
     {
       "id": 2,
-      "name": "my_tickets",
+      "name": "tickets",
       "title": "Meus ingressos",
       "path": "/my-order"
     }

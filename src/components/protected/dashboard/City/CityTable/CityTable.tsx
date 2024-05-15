@@ -120,14 +120,12 @@ const CityTable = ({
         enqueueSnackbar(`${staticData.cityTable.snackBar.remove_success}`, {
           variant: 'success',
         });
-        setCityList((prevImagesList: StopsProps[]) => {
-          const updatedImagesList = prevImagesList.filter(
-            (el: StopsProps) => el.id !== id,
-          );
-          return updatedImagesList;
-        });
-
-        rout.refresh();
+        // setCityList((prevImagesList: StopsProps[]) => {
+        //   const updatedImagesList = prevImagesList.filter(
+        //     (el: StopsProps) => el.id !== id,
+        //   );
+        //   return updatedImagesList;
+        // });
       }
     } catch (error) {
       console.error(error);

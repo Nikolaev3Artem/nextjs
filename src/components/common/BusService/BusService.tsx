@@ -63,22 +63,7 @@ export const BusService = ({ busIdService }: IRent) => {
             </Box>
           ))}
         </Stack>
-      ) : (
-        <Typography
-          sx={{
-            fontFamily: 'Inter',
-            fontStyle: 'normal',
-            textTransform: 'none',
-            fontWeight: 400,
-            fontSize: '14px',
-            lineHeight: '150%',
-          }}
-          variant="h6"
-          color={color}
-        >
-          none
-        </Typography>
-      )}
+      ) : null}
     </>
   );
 };

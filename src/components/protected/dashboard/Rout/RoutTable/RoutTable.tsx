@@ -26,6 +26,7 @@ import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import Circle from '../../../../../../public/icons/journey_from_circle.svg';
 import Bus_marker from '../../../../../../public/icons/bus-marker.svg';
 import Checked_icon from '../../../../../../public/icons/checked.svg';
+import ToCircle from '../../../../../../public/icons/journey_to_circle.svg';
 
 import Style from './busform.module.css';
 import axios from 'axios';
@@ -175,19 +176,7 @@ const RoutTable = ({
               >
                 {staticData.routTable.to}
               </TableCell>
-              <TableCell
-                sx={{
-                  fontFamily: 'Inter',
-                  fontStyle: 'normal',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  lineHeight: '150%',
-                  color: colorHeader,
-                }}
-                align="left"
-              >
-                {staticData.routTable.duration}
-              </TableCell>
+
               <TableCell
                 sx={{
                   fontFamily: 'Inter',
@@ -258,7 +247,14 @@ const RoutTable = ({
                                   alignItems: 'center',
                                 }}
                               >
-                                <Bus_marker width={16} height={16} />
+                                {el?.is_stop ? (
+                                  <Bus_marker width={16} height={16} />
+                                ) : (
+                                  <Box height={16} width={16}>
+                                    <ToCircle height={16} width={16} />
+                                  </Box>
+                                )}
+
                                 <Typography fontSize={'12px'}>
                                   {el.city}
                                 </Typography>
@@ -288,18 +284,7 @@ const RoutTable = ({
                         </Typography>
                       </Box>
                     </TableCell>
-                    <TableCell align="left">
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          columnGap: 1,
-                          alignItems: 'center',
-                        }}
-                      >
-                        <TimeClock width={16} height={16} /> {item?.to_place}
-                        {`${String(Math.floor(parseInt(item?.travel_time) / 60)).padStart(2, '0')}:${String(parseInt(item?.travel_time) % 60).padStart(2, '0')}`}
-                      </Box>
-                    </TableCell>
+
                     <TableCell align="left">
                       {item?.isPopular ? (
                         <Box

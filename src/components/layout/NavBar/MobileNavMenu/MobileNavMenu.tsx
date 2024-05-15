@@ -3,7 +3,7 @@ import { headerStaticDataProp } from '@/interface/IStaticData';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import CloseIcon from '@mui/icons-material/Close';
-import { Fade, Stack, useMediaQuery } from '@mui/material';
+import { Fade, ListItemIcon, Stack, useMediaQuery } from '@mui/material';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -27,6 +27,9 @@ import { useState } from 'react';
 import { PhoneType } from '@/interface/IEditorText';
 
 import theme from '@/theme';
+import { getIcon } from '../../DashboardNavBar';
+import Logout from '@mui/icons-material/Logout';
+import { MdDashboard } from 'react-icons/md';
 
 export const MobileNavMenu = ({
   staticData,
@@ -192,6 +195,15 @@ export const MobileNavMenu = ({
                           href={`/${lang}${setting.path}`}
                           className={Style.List_hover}
                         >
+                          <ListItemIcon
+                            sx={{
+                              minWidth: '40px',
+                              color: theme.palette.background.paper,
+                              fontSize: '18px',
+                            }}
+                          >
+                            {getIcon(setting.name)}
+                          </ListItemIcon>
                           <Typography component={'span'} textAlign="center">
                             {setting.title}
                           </Typography>
@@ -207,7 +219,14 @@ export const MobileNavMenu = ({
                         }}
                       >
                         <Link href={`/${lang}/dashboard/content`}>
-                          <Typography component={'span'} textAlign="center">
+                          <Typography
+                            component={'span'}
+                            sx={{ display: 'flex', alignItems: 'center' }}
+                            textAlign="center"
+                          >
+                            <ListItemIcon>
+                              <MdDashboard fontSize="small" color="white" />
+                            </ListItemIcon>
                             {staticData.dashboard}
                           </Typography>
                         </Link>
@@ -221,7 +240,14 @@ export const MobileNavMenu = ({
                         justifyContent: { xs: 'center', md: 'flex-start' },
                       }}
                     >
-                      <Typography component={'span'} textAlign="center">
+                      <Typography
+                        component={'span'}
+                        textAlign="center"
+                        sx={{ display: 'flex', alignItems: 'center' }}
+                      >
+                        <ListItemIcon>
+                          <Logout fontSize="small" sx={{ color: 'white' }} />
+                        </ListItemIcon>
                         {staticData.sign_out}
                       </Typography>
                     </MenuItem>
@@ -297,6 +323,15 @@ export const MobileNavMenu = ({
           >
             <Link href={`/${lang}${page.path}`} passHref>
               <Typography sx={{ color: 'white' }} textAlign="center">
+                <ListItemIcon
+                  sx={{
+                    minWidth: '40px',
+                    color: 'white',
+                    fontSize: '18px',
+                  }}
+                >
+                  {getIcon(page.name)}
+                </ListItemIcon>
                 {page.title}
               </Typography>
             </Link>

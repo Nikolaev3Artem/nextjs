@@ -38,6 +38,8 @@ import { DashboardNavBar } from '@/components/layout/DashboardNavBar';
 
 import theme from '@/theme';
 import { PhoneType } from '@/interface/IEditorText';
+import { MdDashboard } from 'react-icons/md';
+import { HiTicket } from 'react-icons/hi2';
 
 export const NavBarAdmin = ({
   lang,
@@ -193,7 +195,24 @@ export const NavBarAdmin = ({
                           onClick={handleCloseUserMenu}
                         >
                           <Link href={`/${lang}${setting.path}`}>
-                            <Typography component={'span'} textAlign="center">
+                            <Typography
+                              component={'span'}
+                              textAlign="center"
+                              sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  minWidth: '40px',
+                                  color: '#808080',
+                                  fontSize: '18px',
+                                }}
+                              >
+                                {setting.name === 'profile' ? (
+                                  <FaUser fontSize="small" />
+                                ) : (
+                                  <HiTicket fontSize="small" />
+                                )}
+                              </ListItemIcon>
                               {setting.title}
                             </Typography>
                           </Link>

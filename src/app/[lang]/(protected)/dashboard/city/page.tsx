@@ -1,6 +1,7 @@
 import styles from './flights.module.css';
 import { Fade, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import { revalidatePath } from 'next/cache';
 
 import axios from 'axios';
 

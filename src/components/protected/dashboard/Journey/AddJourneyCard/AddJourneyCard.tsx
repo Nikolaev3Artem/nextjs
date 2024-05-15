@@ -122,6 +122,11 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
     date: '',
   });
 
+  const [arrivalValues, setArrivalValues] = useState<any>({
+    time: '',
+    date: '',
+  });
+
   function a11yProps(index: number) {
     return {
       id: `tab-${index}`,
@@ -189,14 +194,20 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
       const session = await getSession();
       const formData = new FormData();
 
-      const result = dayjs(departureValues.date)
-        .add(dayjs(departureValues.time).hour(), 'hour')
-        .add(dayjs(departureValues.time).minute(), 'minute');
+      // const result = dayjs(departureValues.date)
+      //   .add(dayjs(departureValues.time).hour(), 'hour')
+      //   .add(dayjs(departureValues.time).minute(), 'minute');
 
-      const arrival_date = getDurationValue(departureValues, rout.travel_time);
+      // const arrival_date = getDurationValue(departureValues, rout.travel_time);
       formData.append('created_at ', isoDate.toISOString());
-      formData.append('departure_date ', dayjs(result).toISOString() || '');
-      formData.append('arrival_date ', dayjs(arrival_date).toISOString() || '');
+      formData.append(
+        'departure_date ',
+        dayjs(departureValues.date).toISOString() || '',
+      );
+      formData.append(
+        'arrival_date ',
+        dayjs(arrivalValues.date).toISOString() || '',
+      );
       formData.append('is_active', 'true' || 'false');
 
       const response = await axios.post(
@@ -528,14 +539,49 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                           lang={lang}
                           setValues={setDepartureValues}
                           values={departureValues}
+                          small
                           minOff
                         />
-                        <TimPicker
+                        {/* <TimPicker
                           staticData={staticData.journeyTable.departure_time}
                           lang={lang}
                           setValues={setDepartureValues}
                           values={departureValues}
+                          minOff
+                          small
+                        /> */}
+                      </Stack>
+                    </Stack>
+                    <Stack spacing={2} flexDirection={'column'} mt={2}>
+                      <Typography
+                        sx={{
+                          fontFamily: 'Inter',
+                          fontStyle: 'normal',
+                          fontWeight: 700,
+                          fontSize: '16px',
+                          lineHeight: '140%',
+                          color: color_title,
+                        }}
+                      >
+                        {`${staticData.journeyTable.arrival_time}`}
+                      </Typography>
+                      <Stack spacing={2} direction={'row'}>
+                        <DataPicker
+                          staticData={staticData.journeyTable.departure_date}
+                          lang={lang}
+                          setValues={setArrivalValues}
+                          values={arrivalValues}
+                          small
+                          minOff
                         />
+                        {/* <TimPicker
+                          staticData={staticData.journeyTable.departure_time}
+                          lang={lang}
+                          setValues={setArrivalValues}
+                          values={arrivalValues}
+                          minOff
+                          small
+                        /> */}
                       </Stack>
                       {selectedBus && (
                         <Stack width={'100%'}>
@@ -1092,7 +1138,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                             >
                               {staticData.journeyTable.departure_time}
                             </Typography>
-                            {(departureValues.time || departureValues.date) && (
+                            {departureValues.date && (
                               <Stack
                                 spacing={1}
                                 direction={'column'}
@@ -1172,7 +1218,7 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                             >
                               {staticData.journeyTable.arrival_time}
                             </Typography>
-                            {(departureValues.time || departureValues.date) && (
+                            {arrivalValues.date && (
                               <Stack
                                 spacing={1}
                                 direction={'column'}
@@ -1203,15 +1249,10 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                       }}
                                       color={colorHeading}
                                     >
-                                      {departureValues.date &&
-                                      departureValues.time &&
-                                      rout.travel_time
-                                        ? dayjs(
-                                            getDurationValue(
-                                              departureValues,
-                                              rout.travel_time,
-                                            ),
-                                          ).format('HH:mm')
+                                      {departureValues.time
+                                        ? dayjs(arrivalValues.time).format(
+                                            'HH:mm',
+                                          )
                                         : ''}
                                     </Typography>
                                   </Stack>
@@ -1235,15 +1276,10 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                       }}
                                       color={colorHeading}
                                     >
-                                      {departureValues.date &&
-                                      departureValues.time &&
-                                      rout.travel_time
-                                        ? dayjs(
-                                            getDurationValue(
-                                              departureValues,
-                                              rout.travel_time,
-                                            ),
-                                          ).format('DD.MM.YYYY')
+                                      {departureValues.date
+                                        ? dayjs(departureValues.date).format(
+                                            'DD.MM.YYYY',
+                                          )
                                         : ''}
                                     </Typography>
                                   </Stack>
@@ -1261,8 +1297,8 @@ const AddJourneyCard = ({ staticData, lang }: IInfoCardProps) => {
                                 disabled={
                                   !rout.id ||
                                   !bus.id ||
-                                  !departureValues.time ||
-                                  !departureValues.date
+                                  !departureValues.date ||
+                                  !arrivalValues.date
                                 }
                               >
                                 {staticData.journeyTable.to_journey}

@@ -35,8 +35,9 @@ const getBus = async (lang: Locale) => {
   }
 };
 export interface IServiceBus {
-  id?: string;
+  id?: number;
   name?: string;
+  title?: string;
 }
 
 export interface IServiceBusProps {

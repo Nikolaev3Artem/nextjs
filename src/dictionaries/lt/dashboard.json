@@ -80,8 +80,8 @@
 
     {
       "id": 4,
-      "name": "ruler",
-      "path": "/dashboard/content/ruler",
+      "name": "rules",
+      "path": "/dashboard/content/rules",
       "title": "Taisyklės"
     },
     {

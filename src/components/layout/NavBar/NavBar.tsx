@@ -37,7 +37,9 @@ import { PhoneType } from '@/interface/IEditorText';
 import { logout } from '@/lib/auth';
 
 import theme from '@/theme';
-const drawerWidth = 180;
+import { MdDashboard } from 'react-icons/md';
+import { HiTicket } from 'react-icons/hi2';
+const drawerWidth = 250;
 const primary = theme.palette.primary.main;
 
 export const NavBar = ({
@@ -235,7 +237,18 @@ export const NavBar = ({
                           onClick={handleCloseUserMenu}
                         >
                           <Link href={`/${lang}${setting.path}`}>
-                            <Typography component={'span'} textAlign="center">
+                            <Typography
+                              component={'span'}
+                              textAlign="center"
+                              sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              <ListItemIcon>
+                                {setting.name === 'profile' ? (
+                                  <FaUser fontSize="small" />
+                                ) : (
+                                  <HiTicket fontSize="small" />
+                                )}
+                              </ListItemIcon>
                               {setting.title}
                             </Typography>
                           </Link>
@@ -244,7 +257,20 @@ export const NavBar = ({
                       {(is_superuser || is_staff) && (
                         <MenuItem onClick={handleCloseUserMenu}>
                           <Link href={`/${lang}/dashboard/content`}>
-                            <Typography component={'span'} textAlign="center">
+                            <Typography
+                              component={'span'}
+                              textAlign="center"
+                              sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                              <ListItemIcon
+                                sx={{
+                                  minWidth: '40px',
+                                  color: '#808080',
+                                  fontSize: '18px',
+                                }}
+                              >
+                                <MdDashboard />
+                              </ListItemIcon>
                               {staticData.dashboard}
                             </Typography>
                           </Link>

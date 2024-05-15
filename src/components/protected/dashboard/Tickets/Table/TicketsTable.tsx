@@ -420,13 +420,13 @@ const TicketsTable = ({
               bgcolor={getColor(item.status.toLowerCase())}
             >
               <Typography fontSize={'12px'} color={'white'}>
-                {item.status === 'NEW'
-                  ? `${staticData.searchForm.options[1]}`
-                  : item.status === 'PAYED'
-                    ? `${staticData.searchForm.options[2]}`
-                    : item.status === 'RESERVED'
-                      ? `${staticData.searchForm.options[0]}`
-                      : ''}
+                {
+                  staticData.searchForm.options.filter(
+                    option =>
+                      option.name.toLocaleLowerCase() ===
+                      item?.status?.toLowerCase(),
+                  )[0]?.title
+                }
               </Typography>
             </Box>
           </TableCell>

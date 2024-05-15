@@ -67,7 +67,7 @@ export const JourneyInfo = ({
               fontWeight={'700'}
               sx={{ fontSize: { xs: '19px', md: '24px' } }}
             >
-              {data?.routes[0]?.from_place}
+              {data?.routes[0]?.cities[0].city}
             </Typography>
             <Box display={'flex'} columnGap={1} alignItems={'center'}>
               <Typography
@@ -75,8 +75,7 @@ export const JourneyInfo = ({
                   fontSize: { xs: '10px', md: '12px' },
                 }}
               >
-                {/* {data.departure_date} */} Двірцева площа, 1, Львів,
-                Львівська область
+                {data?.routes[0]?.cities[0].address}
               </Typography>
               <Box width={'20px'} height={'20px'}>
                 <MapIcon width={20} height={20} />
@@ -89,7 +88,7 @@ export const JourneyInfo = ({
               fontWeight={'700'}
               sx={{ fontSize: { xs: '19px', md: '24px' } }}
             >
-              {data?.routes[0].to_place}
+              {data?.routes[0]?.cities[data?.routes[0]?.cities.length - 1].city}
             </Typography>
             <Box display={'flex'} columnGap={1} alignItems={'center'}>
               <Typography
@@ -97,8 +96,10 @@ export const JourneyInfo = ({
                   fontSize: { xs: '10px', md: '12px' },
                 }}
               >
-                {/* {data.departure_date} */} Lisboa 1100-341, 1100-341 Buenos
-                Aires
+                {
+                  data?.routes[0]?.cities[data?.routes[0]?.cities.length - 1]
+                    .address
+                }
               </Typography>
               <Box width={'20px'} height={'20px'}>
                 <MapIcon width={20} height={20} />
@@ -181,14 +182,16 @@ export const JourneyInfo = ({
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {data?.routes ? data.routes[0].from_place : ''}
+              {data?.routes ? data.routes[0]?.cities[0]?.city : ''}
             </Typography>
             <Typography
               component={'span'}
               color={'primary'}
               sx={{ fontSize: { xs: '16px', md: '20px' } }}
             >
-              {data?.routes ? data.routes[0].to_place : ''}
+              {data?.routes
+                ? data.routes[0]?.cities[data.routes[0]?.cities.length - 1].city
+                : ''}
             </Typography>
           </Typography>
         </Grid>
@@ -204,8 +207,8 @@ export const JourneyInfo = ({
                 <FromCircleSvg width={12} height={13} />
               </Box>
 
-              {data.routes[0].cities &&
-                data.routes[0].cities.map((el, ind) => {
+              {data.routes[0]?.cities?.slice(1, -1)?.length > 0 &&
+                data.routes[0]?.cities?.slice(1, -1)?.map((el, ind) => {
                   return (
                     <Box
                       key={ind}
@@ -231,18 +234,8 @@ export const JourneyInfo = ({
               flexDirection={'column'}
               sx={{ rowGap: { xs: '8px', md: '6px' } }}
             >
-              <Box
-                component={'li'}
-                display={'flex'}
-                columnGap={1}
-                alignItems={'center'}
-              >
-                <Typography sx={{ fontSize: { xs: '16px', md: '16px' } }}>
-                  {data.routes[0].from_place}
-                </Typography>
-              </Box>
-              {data.routes[0].cities &&
-                data.routes[0].cities.map(stop => {
+              {data?.routes[0]?.cities &&
+                data?.routes[0]?.cities?.map(stop => {
                   return (
                     <Box
                       key={stop.id}
@@ -257,16 +250,6 @@ export const JourneyInfo = ({
                     </Box>
                   );
                 })}
-              <Box
-                component={'li'}
-                display={'flex'}
-                columnGap={1}
-                alignItems={'center'}
-              >
-                <Typography sx={{ fontSize: { xs: '16px', md: '16px' } }}>
-                  {data.routes[0].to_place}
-                </Typography>
-              </Box>
             </Box>
           </Box>
         </Grid>

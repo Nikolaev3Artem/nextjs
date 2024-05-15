@@ -11,7 +11,7 @@ import Collapse from '@mui/material/Collapse';
 import { IconButtonProps } from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { IJourney, ITickets, StopsProps } from '@/interface/IJourney';
+import { IJourney, IRout, ITickets, StopsProps } from '@/interface/IJourney';
 import { MainStaticDataProps } from '@/interface/IStaticData';
 import dayjs from 'dayjs';
 import {
@@ -37,6 +37,11 @@ import BagSuitcaseSvgDisable from '../../../../../public/icons/bag-suitcase-disa
 import { getTimeDuration } from '@/helpers/getTimeDuration';
 import { getCurrency } from '@/helpers/getCurrency';
 import { useCurrencyContext } from '@/app/context';
+import axios from 'axios';
+import { getSession } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
+
+import { discount } from '@/helpers/constants';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -54,8 +59,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-const discount = 30;
-
 export const TicketsCard = ({
   staticData,
   data,
@@ -67,6 +70,45 @@ export const TicketsCard = ({
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const { selectCurrency } = useCurrencyContext();
+  const [rout, setRout] = React.useState<IRout>();
+  const router = useRouter();
+
+  const getRout = React.useCallback(async () => {
+    try {
+      const session = await getSession();
+      if (!session) {
+        router.push(`/${lang}/auth`);
+      }
+      const id = data?.journey[0]?.routes[0]?.id;
+
+      if (id) {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/${lang}/api/routes/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + session.access,
+            },
+          },
+        );
+
+        if (response.status === 200) {
+          setRout(response.data);
+        }
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.message);
+        return error.message;
+      } else {
+        console.log('unexpected error: ', error);
+        return 'An unexpected error occurred';
+      }
+    }
+  }, []);
+  React.useEffect(() => {
+    getRout().catch(console.error);
+  }, [getRout]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -202,9 +244,9 @@ export const TicketsCard = ({
               <Typography
                 sx={{ fontSize: { xs: '10px', md: '12px' }, display: 'flex' }}
               >
-                {data?.journey[0]?.routes[0]?.travel_time
+                {/* {data?.journey[0]?.routes[0]?.travel_time
                   ? `${String(Math.floor(parseInt(data?.journey[0]?.routes[0]?.travel_time) / 60)).padStart(2, '0')}:${String(parseInt(data?.journey[0]?.routes[0]?.travel_time) % 60).padStart(2, '0')}  ${staticData.routs_card.hour}`
-                  : ''}
+                  : ''} */}
               </Typography>
               <ToSvg width={24} height={59} />
             </Grid>
@@ -227,17 +269,15 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data.journey[0]
-                    ? data.journey[0]?.routes[0]?.cities[0]?.city
-                    : ''}
+                  {rout ? rout?.cities[0]?.city : ''}
                 </Typography>
-                <Box display={'flex'} columnGap={1}>
+                <Box display={'flex'} columnGap={1} alignItems={'flex-end'}>
                   <Typography
                     sx={{
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data.journey[0]?.routes[0]?.cities[0]?.address || ''}
+                    {rout ? rout?.cities[0]?.address : ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -250,21 +290,17 @@ export const TicketsCard = ({
                   fontWeight={'700'}
                   sx={{ fontSize: { xs: '19px', md: '24px' } }}
                 >
-                  {data?.journey[0]
-                    ? data.journey[0]?.routes[0]?.cities[
-                        data.journey[0]?.routes?.length - 1
-                      ]?.city
-                    : ''}
+                  {rout ? rout?.cities[rout?.cities?.length - 1]?.city : ''}
                 </Typography>
-                <Box display={'flex'} columnGap={1}>
+                <Box display={'flex'} columnGap={1} alignItems={'flex-end'}>
                   <Typography
                     sx={{
                       fontSize: { xs: '10px', md: '12px' },
                     }}
                   >
-                    {data?.journey[0]?.routes[0]?.cities[
-                      data.journey[0]?.routes?.length - 1
-                    ]?.address || ''}
+                    {rout
+                      ? rout?.cities[rout?.cities?.length - 1]?.address
+                      : ''}
                   </Typography>
                   <Box width={'20px'} height={'20px'}>
                     <MapIcon width={20} height={20} />
@@ -438,13 +474,13 @@ export const TicketsCard = ({
                     component={'span'}
                     sx={{ fontSize: { xs: '13px', md: '16px' }, mr: 1 }}
                   >
-                    {data?.journey[0]?.routes[0]?.from_place}
+                    {rout?.cities[0].city} -
                   </Typography>
                   <Typography
                     component={'span'}
                     sx={{ fontSize: { xs: '13px', md: '16px' } }}
                   >
-                    {data?.journey[0]?.routes[0]?.to_place}
+                    {rout?.cities[rout?.cities?.length - 1].city}
                   </Typography>
                 </Box>
                 <Box display={'flex'} columnGap={2}>
@@ -458,8 +494,9 @@ export const TicketsCard = ({
                       <FromCircleSvg width={12} height={13} />
                     </Box>
 
-                    {data?.journey[0]?.routes[0]?.cities &&
-                      data?.journey[0]?.routes[0]?.cities.map((el, ind) => {
+                    {rout?.cities &&
+                      rout?.cities?.slice(1, -1)?.length > 0 &&
+                      rout?.cities?.slice(1, -1)?.map((el, ind) => {
                         return (
                           <Box
                             component={'li'}
@@ -489,46 +526,24 @@ export const TicketsCard = ({
                     flexDirection={'column'}
                     sx={{ rowGap: { xs: '12px', md: '6px' } }}
                   >
-                    <Box
-                      component={'li'}
-                      display={'flex'}
-                      columnGap={1}
-                      alignItems={'center'}
-                    >
-                      <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data?.journey[0]?.routes[0]?.from_place}
-                      </Typography>
-                    </Box>
-                    {data?.journey[0]?.routes[0]?.cities &&
-                      data?.journey[0]?.routes[0]?.cities.map(
-                        (stop: StopsProps, ind) => {
-                          return (
-                            <Box
-                              component={'li'}
-                              display={'flex'}
-                              columnGap={1}
-                              alignItems={'center'}
-                              key={ind}
+                    {rout?.cities &&
+                      rout?.cities?.map((stop: StopsProps, ind) => {
+                        return (
+                          <Box
+                            component={'li'}
+                            display={'flex'}
+                            columnGap={1}
+                            alignItems={'center'}
+                            key={ind}
+                          >
+                            <Typography
+                              sx={{ fontSize: { xs: '13px', md: '16px' } }}
                             >
-                              <Typography
-                                sx={{ fontSize: { xs: '13px', md: '16px' } }}
-                              >
-                                {stop.city}
-                              </Typography>
-                            </Box>
-                          );
-                        },
-                      )}
-                    <Box
-                      component={'li'}
-                      display={'flex'}
-                      columnGap={1}
-                      alignItems={'center'}
-                    >
-                      <Typography sx={{ fontSize: { xs: '13px', md: '16px' } }}>
-                        {data.journey[0]?.routes[0]?.to_place}
-                      </Typography>
-                    </Box>
+                              {stop.city}
+                            </Typography>
+                          </Box>
+                        );
+                      })}
                   </Box>
                 </Box>
               </Grid>
